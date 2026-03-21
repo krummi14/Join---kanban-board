@@ -13,9 +13,9 @@ async function loadData(path = "") {
     return responseToJson;
 }
 
-async function putData() {
+async function putData(path = "") {
     // unter eigener ID speichern
-    await fetch(BASE_URL + "/contacts/" + (extractIDs() - 1) + ".json", {
+    await fetch(BASE_URL + path + (extractIDs() - 1) + ".json", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(insertNewContactData())
@@ -23,12 +23,9 @@ async function putData() {
     contactsList.push(insertNewContactData());
 }
 
-function extractIDs() {
-    // ID extrahieren
-    let ids = Object.values(contactsList).map(contact => Number(contact.id));
-    console.log(ids);
-    // höchste ID bestimmen
-    let nextId = Math.max(...ids) + 1;
-    console.log(nextId);
-    return nextId
+async function deleteData(path = "") {
+    let response = await fetch(BASE_URL + path + ".json", {
+        method: "DELETE",
+    });
+    return responseToJSON = await response.json();
 }
