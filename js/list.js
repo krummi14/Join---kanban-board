@@ -9,7 +9,6 @@ function renderList(responseToJson) {
     }
 }
 
-function createList(data) {
-    contactsList = [];
-    renderList(data);
+function createList(responseToJson) {
+    renderList(responseToJson);
 }
