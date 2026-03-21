@@ -14,21 +14,21 @@ async function loadData(path = "") {
 }
 
 async function putData() {
+    // unter eigener ID speichern
+    await fetch(BASE_URL + "/contacts/" + (extractIDs() - 1) + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(insertNewContactData())
+    });
+    contactsList.push(insertNewContactData());
+}
+
+function extractIDs() {
+    // ID extrahieren
     let ids = Object.values(contactsList).map(contact => Number(contact.id));
     console.log(ids);
     // höchste ID bestimmen
     let nextId = Math.max(...ids) + 1;
     console.log(nextId);
-    const newContact = {
-        name: "Peter Mafay",
-        id: nextId,
-        email: "peter@hotmail.com",
-        phone: "+49 1667829465"
-    };
-    // unter eigener ID speichern
-    await fetch(BASE_URL + "/contacts/" + (nextId - 1) + ".json", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newContact)
-    });
+    return nextId
 }
