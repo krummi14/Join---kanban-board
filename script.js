@@ -1,15 +1,13 @@
-BASE_URL = "https://join---kanban-board-5501a-default-rtdb.europe-west1.firebasedatabase.app/";
-const userDataArr = [];
+const BASE_URL = "https://join---the-kanban-system-default-rtdb.europe-west1.firebasedatabase.app/";
+let contactsList = [];
 
-async function fetchUser() {
-  const user = await fetch(BASE_URL + "users.json");
-  const userData = await user.json();
+function init() {
+    getData("/contacts"); //direkt auf Kontakte zugreifen
+}
 
-  let userArr = Object.keys(userData);
-  for (let i = 0; i < userArr.length; i++) {
-    const currentUser = userData[userArr[i]];
-    userDataArr.push(currentUser);
-  }
-  
-  return userDataArr;    
+async function addContact() {
+    await putData();
+    let data = await loadData();
+    contactsList = data;
+    createList(data);
 }
