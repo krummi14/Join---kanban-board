@@ -4,21 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Join Please Login</title>
+      <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
-    <div>
-      <label for="name">Name:</label>
-      <input id="name" type="text" placeholder="Name eingeben" />
-    </div>
+
+ <div id="splash_screen">
+    <img src="assets/img/login_join.png" id="splash_logo">
+  </div>
+
+
+  <header class="header">
+    <img src="assets/img/login_join.svg" alt="Logo" class="logo">
+  </header>
+
+
+  <main class="login-container">
+
+    <h2>Login</h2>
 
     <div>
       <label for="email">E-Mail:</label>
-      <input id="email" type="email" placeholder="E-Mail eingeben" />
+      <input id="email" type="email" placeholder="Email" />
     </div>
 
-    <button id="saveBtn">Speichern</button>
+    <div>
+      <label for="password">Password:</label>
+      <input id="password" type="password" placeholder="Password" />
+    </div>
 
+    <button id="login-btn">Log In</button>
+    <button id="guest-login-btn">Guest Log In</button>
+
+  </main>
+
+
+  <div class="signup-section">
+    <button>Not a Join user?</button>
+    <button class="signup-btn">Sign up</button>
+  </div>
+
+
+  <footer class="footer">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Legal notice</a>
+  </footer>
+
+     <script src="js/login.js"></script>
     <script type="module" src="js/firebase.js"></script>
+     
   </body>
 </html>
