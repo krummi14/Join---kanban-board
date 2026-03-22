@@ -1,14 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Join Please Login</title>
-</head>
+  </head>
 
-<body>
+  <body>
+    <div>
+      <label for="name">Name:</label>
+      <input id="name" type="text" placeholder="Name eingeben" />
+    </div>
 
-</body>
+    <div>
+      <label for="email">E-Mail:</label>
+      <input id="email" type="email" placeholder="E-Mail eingeben" />
+    </div>
 
+    <button id="saveBtn">Speichern</button>
+
+    <script type="module" src="js/firebase.js"></script>
+  </body>
 </html>

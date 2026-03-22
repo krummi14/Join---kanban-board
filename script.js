@@ -17,3 +17,6 @@ function deleteContact(id) {
     deleteData("/contacts/" + id);
     contactsList = contactsList.filter(contact => contact.id !== id);
 }
+
+
+
