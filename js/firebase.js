@@ -37,9 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
 */
 
 const BASE_URL = "https://join---kanban-board-5501a-default-rtdb.europe-west1.firebasedatabase.app/";
+export { BASE_URL };
 
-
-async function putData(path = "", data = {}) {
+export async function putData(path = "", data = {}) {
   await fetch(BASE_URL + path + ".json", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -47,27 +47,30 @@ async function putData(path = "", data = {}) {
   });
 }
 
-async function getData(path = "") {
-  let response = await fetch(BASE_URL + path + ".json");
-  return await response.json();
+export async function getData(path = "") {
+  const res = await fetch(BASE_URL + path + ".json");
+  return await res.json();
 }
 
-async function deleteData(path = "") {
-  await fetch(BASE_URL + path + ".json", {
-    method: "DELETE"
-  });
+export async function deleteData(path = "") {
+  await fetch(BASE_URL + path + ".json", { method: "DELETE" });
 }
+
+
+
+/*
+
+import { getData, putData } from "./firebase.js";
 
 async function saveContact() {
-let id = Date.now().toString();
+  const id = Date.now().toString();
 
-  let data = {
+  const data = {
     name: document.getElementById("name").value,
     email: document.getElementById("email").value
   };
 
   await putData("contacts/" + id, data);
-
   loadContacts();
 }
 
@@ -113,7 +116,7 @@ init();
 
 document.getElementById("saveBtn").addEventListener("click", saveContact);
 
-/*
+//-------------------------------------
 async function getData(path = "") {
     if (contactsList.length > 0) {
         return contactsList;
