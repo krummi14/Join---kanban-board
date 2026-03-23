@@ -10,3 +10,13 @@
 body {
   display: flex;
 }
+
+h1 {
+  font-size: 61px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 47px;
+  font-weight: 500;
+}

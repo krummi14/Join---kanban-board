@@ -1,0 +1,82 @@
+.main_header {
+  position: absolute;
+  top: 206px;
+  left: 328px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.main_header hr {
+  width: 59px;
+  border: none;
+  transform: rotate(90deg);
+  border-top: 3px solid #29abe2;
+  border-radius: 2px;
+}
+
+.main_header p {
+  font-size: 27px;
+  color: #2a3647;
+}
+
+.key_matix {
+  position: absolute;
+  top: 335px;
+  left: 328px;
+  width: 560px;
+  height: 562px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.todo_done {
+  display: flex;
+  justify-content: space-between;
+}
+
+#to_do {
+  width: 264px;
+  height: 168px;
+  background: #fff;
+  border-radius: 30px;
+}
+
+#done {
+  width: 264px;
+  height: 168px;
+  background: #fff;
+  border-radius: 30px;
+}
+
+.urgent {
+  width: 100%;
+  height: 168px;
+  background: #fff;
+  border-radius: 30px;
+}
+
+.tasks {
+  display: flex;
+  gap: 24px;
+}
+
+#tasks_in_board, #tasks_in_progress, #awaiting_feedback {
+  width: 168px;
+  height: 168px;
+  background: #fff;
+  border-radius: 30px;
+}
+
+.good_morning {
+  position: absolute;
+  top: 547.5px;
+  left: 968px;
+}
+
+.user_name {
+  font-size: 64px;
+  font-weight: 700;
+  color: #29abe2;
+}
