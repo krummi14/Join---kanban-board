@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="shortcut icon" href="./assets/icon/favicon.svg" type="image/x-icon">
     <title>Your contacts in Join</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/assets.css">
+    <link rel="stylesheet" href="./style/standard.css">
+    <link rel="stylesheet" href="./style/contacts.css">
 
     <script src="./js/firebase.js"></script>
     <script src="./js/list.js"></script>
@@ -13,16 +18,112 @@
 </head>
 
 <body onload="init()">
-    <p>Name:</p>
-    <input id="name" type="text">
-    <p>Email:</p>
-    <input id="email" type="email">
-    <p>Phone:</p>
-    <input id="phone" type="tel">
-    
-    <button onclick="addContact()">Füge Kontakt hinzu</button>
-    <button onclick="deleteContact(5)">Kontakt löschen</button>
-    
+    <section class="sidebar">
+        <div class="logo_nav">
+            <img class="logo" src="./assets/img/join_logo.svg" alt="Join Logo">
+            <nav class="nav">
+                <ul>
+                    <li><a href="#"><img class="summery" src="./assets/icon/summary_off.svg" alt="summery"></a></li>
+                    <li><a href="#"><img class="add_task" src="./assets/icon/add_off.svg" alt="add task"></a></li>
+                    <li><a href="#"><img class="board" src="./assets/icon/board_off.svg" alt="board"></a></li>
+                    <li><a href="#"><img class="contact" src="./assets/icon/contact_off.svg" alt="contact"></a></li>
+                </ul>
+            </nav>
+        </div>
+        <ul class="police_legal">
+            <li><a href="./html/privacy_policy.html">Privacy Policy</a></li>
+            <li><a href="./html/legal_notice.html">Legal Notice</a></li>
+        </ul>
+    </section>
+
+    <section class="content">
+        <header class="header">
+            <p>Kanban Project Management Tool</p>
+            <div>
+                <img src="./assets/icon/help_off.svg" alt="help icon">
+                <div id="user">
+                    <!-- gen user name -->
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="contact_main">
+                <section class="contact_list">
+                    <button class="add_contact_button">
+                        <p class="add_contact_text">Add new contact</p>
+                        <img class="add_contact_icon" src="./assets/icon/person_add.svg" alt="Add contact icon">
+                    </button>
+
+                    <div id="list_content" class="list_content">
+                        <table id="tableA" class="list">
+                            <tr class="horizontal_divider">
+                                <th class="prename_first_letter">A</th>
+                            </tr>
+                            <tr>
+                                <td class="contact_initials"><span class="contact_initials_bg">AM</span></td>
+                                <td class="contact_name_and_email">
+                                    <ul>
+                                        <li class="contact_name">Kontakt A1</li>
+                                        <li class="contact_email">email Kontakt A1</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="contact_initials"><span class="contact_initials_bg">AS</span></td>
+                                <td class="contact_name_and_email">
+                                    <ul>
+                                        <li class="contact_name">Kontakt A2</li>
+                                        <li class="contact_email">email Kontakt A2</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table id="tableB" class="list">
+                            <tr class="horizontal_divider">
+                                <th class="prename_first_letter">B</th>
+                            </tr>
+                            <tr>
+                                <td class="contact_initials"><span class="contact_initials_bg">BZ</span></td>
+                                <td class="contact_name_and_email">
+                                    <ul>
+                                        <li class="contact_name">Kontakt B1</li>
+                                        <li class="contact_email">email Kontakt B1</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="contact_content">
+                    <span class="contact_content_header_and_slogan">
+                        <h2 class="contact_headline_h2">Contacts</h2>
+                        <div class="vertical_divider"></div>
+                        <h3 class="contact_slogan">Better with a team</h3>
+                    </span>
+                </section>
+            </div>
+
+
+
+
+            <!-- Testversion for contacts
+            <p>Name:</p>
+            <input id="name" type="text">
+            <p>Email:</p>
+            <input id="email" type="email">
+            <p>Phone:</p>
+            <input id="phone" type="tel">
+
+            <button onclick="addContact()">Füge Kontakt hinzu</button>
+            <button onclick="deleteContact(5)">Kontakt löschen</button>
+            -->
+        </main>
+
+    </section>
+
     <script src="./script.js"></script>
 </body>
 

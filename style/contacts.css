@@ -1,0 +1,103 @@
+/* --contacts-- */
+/* contact_main */
+.contact_main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+/* contact_list */
+.contact_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 560px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 24px 80px;
+}
+
+.prename_first_letter {
+    font-size: 20px;
+    font-weight: 400;
+    padding: 16px;
+}
+
+.list_content {
+    width: 100%;
+}
+
+.list {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.horizontal_divider {
+    border-bottom: 1px solid rgba(209, 209, 209, 1);
+}
+
+.contact_initials {
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+    padding: 16px 0;
+}
+
+.contact_initials_bg {
+    display: inline-block;
+    line-height: 42px;
+    text-align: center;
+    height: 42px;
+    width: 42px;
+    background-color: orange;
+    border-radius: 100%;
+}
+
+.contact_name_and_email {
+    padding-left: 40px;
+}
+
+.contact_name {
+    font-size: 20px;
+    font-weight: 400;
+    color: black;
+}
+
+.contact_email {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 124, 238, 1);
+}
+
+/* contact_content */
+.contact_content {
+    width: 100%;
+    margin-top: 96px;
+    margin-left: 64px;
+}
+
+.contact_content_header_and_slogan {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.contact_headline_h2 {
+    font-size: 61px;
+    font-weight: 700;
+}
+
+.vertical_divider {
+    background-color: rgba(41, 171, 226, 1);
+    width: 3px;
+    height: 64px;
+    border-radius: 24px;
+}
+
+.contact_slogan {
+    font-size: 27px;
+    font-weight: 400;
+    color: rgba(42, 54, 71, 1);
+}

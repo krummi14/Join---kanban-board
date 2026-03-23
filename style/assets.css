@@ -1,0 +1,23 @@
+.add_contact_button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    height: 56px;
+    background-color: rgba(42, 54, 71, 1);
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-size: 21px;
+}
+
+.add_contact_button:hover {
+    background-color: rgba(41, 171, 226, 1);
+}
+
+.add_contact_icon {
+    width: 32px;
+    height: 32px;
+}
