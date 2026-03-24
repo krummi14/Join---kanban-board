@@ -39,6 +39,29 @@ function pushContactIntoTableheader(contactsIndex) {
 
 function contactColor(contactsIndex) {
     let contentInitialBackgroundColor = document.getElementById(`initial_bg_color_${contactsIndex}`);
-    let randomColor = initialBackgroundColors[Math.floor(Math.random() * initialBackgroundColors.length)];
+    let randomColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
     contentInitialBackgroundColor.style.backgroundColor = randomColor;
+    intitialBackgroundcolors.push(randomColor);
+}
+
+function openContactInformation(contactsIndex) {
+    toggleContactColor(contactsIndex);
+    createContentInformation(contactsIndex);
+}
+
+function toggleContactColor(contactsIndex) {
+    let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
+    contentContactWrapper.classList.toggle('contact_wrapper_active');
+}
+
+function createContentInformation(contactsIndex) {
+    let contentContactInformation = document.getElementById("contact_information");
+    contentContactInformation.innerHTML = getContactsInformationTemplate(contactsIndex);
+    contactColorInContactInformation(contactsIndex)
+}
+
+function contactColorInContactInformation(contactsIndex) {
+    let contentInitialBackgroundColorContentInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
+    let initialsColor = intitialBackgroundcolors[contactsIndex];
+    contentInitialBackgroundColorContentInformation.style.backgroundColor = initialsColor;
 }

@@ -63,10 +63,17 @@
     border-radius: 12px;
     cursor: pointer;
     padding: 16px 8px;
+    color: black;
 }
 
 .contact_wrapper:hover {
     background-color: rgba(209, 209, 209, 1);
+    color: black;
+}
+
+.contact_wrapper_active {
+    background-color: rgba(42, 54, 71, 1);
+    color: white;
 }
 
 .contact_initials {
@@ -81,8 +88,8 @@
     text-align: center;
     height: 42px;
     width: 42px;
-    background-color: orange;
     border-radius: 100%;
+    border: 2px solid white;
 }
 
 .contact_name_and_email {
@@ -91,8 +98,7 @@
 
 .contact_name {
     font-size: 20px;
-    font-weight: 400;
-    color: black;
+    font-weight: 400;  
 }
 
 .contact_email {
