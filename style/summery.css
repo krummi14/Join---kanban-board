@@ -36,18 +36,32 @@
   justify-content: space-between;
 }
 
-#to_do {
+.to_do,
+.done {
   width: 264px;
   height: 168px;
   background: #fff;
   border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
-#done {
-  width: 264px;
-  height: 168px;
-  background: #fff;
-  border-radius: 30px;
+#to_do_count,
+#done_count {
+  font-size: 64px;
+  font-weight: 600;
+  color: #000000;
+  text-align: center;
+}
+
+#to_do_count span,
+#done_count span {
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  color: #000000;
 }
 
 .urgent {
@@ -55,6 +69,10 @@
   height: 168px;
   background: #fff;
   border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
 .tasks {
@@ -62,14 +80,75 @@
   gap: 24px;
 }
 
-#tasks_in_board, #tasks_in_progress, #awaiting_feedback {
+#urgent_count {
+  font-size: 64px;
+  font-weight: 600;
+  color: #000000;
+  text-align: center;
+}
+
+#urgent_count span {
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  color: #000000;
+}
+
+.urgent hr {
+  width: 102px;
+  border: none;
+  transform: rotate(90deg);
+  border-top: 3px solid #d1d1d1;
+  border-radius: 2px;
+}
+
+#deadline {
+  font-size: 21px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  color: #000000;
+} 
+
+#deadline span {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000;
+} 
+
+.tasks_in_board,
+.tasks_in_progress,
+.awaiting_feedback {
   width: 168px;
   height: 168px;
   background: #fff;
   border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.good_morning {
+#board_count,
+#progress_count,
+#feedback_count {
+  font-size: 64px;
+  font-weight: 600;
+  color: #000000;
+}
+
+#board_count span,
+#progress_count span,
+#feedback_count span {
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  color: #000000;
+}
+
+
+#good_morning {
   position: absolute;
   top: 547.5px;
   left: 968px;

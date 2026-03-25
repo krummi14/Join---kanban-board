@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../style/summery.css">
 </head>
 
-<body>
+<body onload="init()">
   <section class="sidebar">
     <div class="logo_nav">
       <img class="logo" src="../assets/img/join_logo.svg" alt="Join Logo">
@@ -37,9 +37,8 @@
       <p>Kanban Project Management Tool</p>
       <div>
         <img src="../assets/icon/help_off.svg" alt="help icon">
-        <div id="user">
-          <!-- gen user name -->
-        </div>
+        <!-- id for user name -->
+        <div id="user">G</div>
       </div>
     </header>
 
@@ -51,26 +50,53 @@
       </section>
 
       <section class="key_matix">
-        <div class="todo_done">
-          <div id="to_do"></div>
-          <div id="done"></div>
-        </div>
 
-        <div class="urgent"></div>
+        <section class="todo_done">
+          <div class="to_do">
+            <img src="../assets/icon/to_do.svg" alt="to do icon">
+            <!-- id for count template -->
+            <div id="to_do_count">0<br><span>To-do</span></div>
+          </div>
+          <div class="done">
+            <img src="../assets/icon/done.svg" alt="done icon">
+            <!-- id for count template -->
+            <div id="done_count">0<br><span>Done</span></div>
+          </div>
+        </section>
+
+        <div class="urgent">
+          <img src="../assets/icon/urgent.svg" alt="urgent icon">
+          <!-- id for count template -->
+          <div id="urgent_count">0<br><span>Urgent</span></div>
+          <hr>
+          <!-- id for deadline template -->
+          <div id="deadline">November 11, 2026<br><span>Upcoming Deadline</span></div>
+        </div>
 
         <div class="tasks">
-          <div id="tasks_in_board"></div>
-          <div id="tasks_in_progress"></div>
-          <div id="awaiting_feedback"></div>
+          <div class="tasks_in_board">
+            <div id="board_count">0<br><span>Tasks in <br> Board</span></div>
+          </div>
+
+          <div class="tasks_in_progress">
+            <div id="progress_count">0<br><span>Tasks in <br> Progress</span></div>
+          </div>
+
+          <div class="awaiting_feedback">
+            <div id="feedback_count">0<br><span>Awaiting <br> Feedback</span></div>
+          </div>
         </div>
+
       </section>
 
-      <section class="good_morning">
-        <h2>Good Morning,<br><span class="user_name">User!</span></h2>
+      <section id="good_morning">
+        <h2>Good Morning!</h2>
       </section>
     </main>
     
   </section>
+
+  <script src="../js/summery.js"></script>
 
 </body>
 
