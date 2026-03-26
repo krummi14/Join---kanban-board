@@ -1,13 +1,9 @@
-async function initSummery() {
+async function initAddTask() {
   const userDataArr = await fetchUser();
-  
-  const refSummeryUser = document.getElementById("good_morning");
-  refSummeryUser.innerHTML = `<h2>Good Morning,<br><span class="user_name">${userDataArr[1].name}!</span></h2>`;
 
   let initials = getInitials(userDataArr[1].name);
   const refUser = document.getElementById("user");
   refUser.innerHTML = initials;
-
 }
 
 
