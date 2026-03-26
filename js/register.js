@@ -1,7 +1,7 @@
-import { putData } from "./firebase.js";
+import { putData, getData } from "./firebase.js";
 
 const showError = (fieldId, message) =>
-  document.getElementById(fieldId).textContent = message;
+  (document.getElementById(fieldId).textContent = message);
 
 const clearErrors = () => {
   showError("name-error", "");
@@ -10,7 +10,6 @@ const clearErrors = () => {
   showError("confirm-error", "");
   showError("privacy-error", "");
 };
-
 
 function validateName(name) {
   const regex = /^[A-Za-z]+ [A-Za-z]+$/;
@@ -32,6 +31,16 @@ function validateEmail(email) {
 
   showError("email-error", "");
   return true;
+}
+
+async function emailExists(email) {
+  const users = await getData("users");
+  if (!users) return false;
+
+  for (let id in users) {
+    if (users[id].email === email) return true;
+  }
+  return false;
 }
 
 function passwordsMatch(password, confirm) {
@@ -105,27 +114,33 @@ async function registerUser(name, email, password) {
 }
 
 function finishSignup() {
-  document.getElementById("success-modal")
-    .classList.remove("hidden");
+  document.getElementById("success-modal").classList.remove("hidden");
 
   confetti({
     particleCount: 120,
     spread: 80,
-    origin: { y: 0.6 }
+    origin: { y: 0.6 },
   });
 }
 
-
 async function handleSignup() {
   clearErrors();
+
   const data = getFormData();
+
   if (!runValidation(data)) return;
+
+  if (await emailExists(data.email)) {
+    showError("email-error", "Email already exists");
+    return;
+  }
+
   await registerUser(data.name, data.email, data.password);
+
   finishSignup();
 }
 
-document.getElementById("signup-btn")
-  .addEventListener("click", handleSignup);
+document.getElementById("signup-btn").addEventListener("click", handleSignup);
 
 function checkName(inputEvent) {
   validateName(inputEvent.target.value);
@@ -136,29 +151,42 @@ function checkEmail(inputEvent) {
 function checkPassword(inputEvent) {
   validatePassword(
     inputEvent.target.value,
-    document.getElementById("confirm-password").value
+    document.getElementById("confirm-password").value,
   );
 }
 function checkConfirm(inputEvent) {
   validatePassword(
     document.getElementById("password").value,
-    inputEvent.target.value
+    inputEvent.target.value,
   );
 }
 
-document.getElementById("name")
-  .addEventListener("blur", checkName);
+document.getElementById("name").addEventListener("blur", checkName);
 
-document.getElementById("email")
-  .addEventListener("blur", checkEmail);
+document.getElementById("email").addEventListener("blur", checkEmail);
 
-document.getElementById("password")
-  .addEventListener("blur", checkPassword);
+document.getElementById("password").addEventListener("blur", checkPassword);
 
-document.getElementById("confirm-password")
+document
+  .getElementById("confirm-password")
   .addEventListener("blur", checkConfirm);
 
-  document.getElementById("go-login")
-  ?.addEventListener("click", () => {
-    location.href = "index.html";
-  });
+document.getElementById("go-login")?.addEventListener("click", () => {
+  location.href = "index.html";
+});
+
+function toggleSignupButton() {
+  const data = getFormData();
+
+  const valid =
+    validateName(data.name) &&
+    validateEmail(data.email) &&
+    validatePassword(data.password, data.confirm) &&
+    validatePrivacy(data.privacy); 
+
+  document.getElementById("signup-btn").disabled = !valid;
+}
+
+document
+  .querySelectorAll("input")
+  .forEach((input) => input.addEventListener("input", toggleSignupButton));

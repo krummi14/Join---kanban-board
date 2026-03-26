@@ -41,7 +41,7 @@ body {
 
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh; 
 }
 
 .header {
@@ -82,17 +82,19 @@ body {
 }
 
 .main {
-  flex: 1;
+  flex: 1; 
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;
+  padding: 40px 20px 20px 20px; 
+  box-sizing: border-box;
 }
 
 .login-container {
   position: relative;
-  max-width: 550px;
-  width: 100%;
+  max-width: 500px;
+  width: 90%;
   padding: 70px 74px;
   background: white;
   border-radius: 30px;
@@ -123,34 +125,76 @@ body {
   margin-bottom: 25px;
 }
 
+.register-container {
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  padding: 55px 74px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 25px;
+}
+
+.register-container h1 {
+  font-size: 55px;
+
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+.register-container h1::after {
+  content: "";
+  display: block;
+  width: 130px;
+  height: 3px;
+  background-color: #29abe2;
+  margin: 10px auto 0 auto;
+  border-radius: 2px;
+}
+
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.register-container h1 {
+  font-size: 55px;
+
+  margin: 0;
+  padding-bottom: 20px;
+}
+
 * {
   box-sizing: border-box;
 }
 
 .input-wrapper {
   position: relative;
-  margin-bottom: 10px;
-  margin: 0;
+  width: 100%;
+  margin-bottom: 15px; 
 }
 
-input {
+.input-wrapper input {
   width: 100%;
-  padding: 12px 40px 12px 12px;
-  margin-top: 5px;
-  margin-bottom: 15px;
+  padding: 12px 40px 12px 16px; 
   border: 1px solid #ccc;
   border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 16px; 
 }
 
 .input-icon {
   position: absolute;
-  right: 10px;
   top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  opacity: 0.6;
+  right: 12px;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%); 
+  object-fit: contain;
+  pointer-events: none; 
 }
-
 .button-group {
   display: flex;
   justify-content: center;
@@ -175,7 +219,7 @@ input {
   padding: 10px 20px;
   background-color: white;
   color: #2a3647;
-  border: 2px solid #2a3647;
+  border: 1.5px solid #2a3647;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -246,14 +290,13 @@ input {
 
 .footer {
   text-align: center;
-  margin-top: 0;
-  padding-bottom: 30px;
+  padding: 20px 0;
 }
 
 .footer a {
   margin: 0 10px;
   text-decoration: none;
-  color: #2a3647;
+  color: #a8a8a8;
 }
 
 .footer a:hover {
@@ -262,25 +305,27 @@ input {
 
 /*REGISTER*/
 
-.back-arrow {
-  position: absolute;
-  /* top: 15px; */
-  /* left: 30px; */
-  color: #29abe2;
-  font-size: 46px;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+.title-row {
+  position: relative;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.back-arrow span {
-  display: inline-block;
-  width: 25px;
-  height: 2px;
-  background-color: #3399ff;
-  margin-left: 6px;
+.title-row h1 {
+  margin: 0;
+}
+
+
+.back-arrow {
+  position: absolute;
+  left: -43px;
+  top: 37%;
+  transform: translateY(-50%);
+}
+
+.back-arrow img {
+  width: 24px;
+  cursor: pointer;
 }
 .modal {
   position: fixed;
@@ -323,6 +368,16 @@ input {
   background-color: #4bb8eb;
 }
 
+.main-register {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;
+
+  box-sizing: border-box;
+}
+
 @keyframes pop {
   from {
     transform: scale(0.7);
@@ -331,6 +386,16 @@ input {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  #splash_screen {
+    background-color: #2a3647;
+  }
+
+  #splash_logo {
+    content: url("/login_join_white.svg");
   }
 }
 
@@ -358,6 +423,12 @@ input {
     margin: 20px auto;
   }
 
+  .register-container h1 {
+    font-size: 47px;
+    margin: 0;
+    padding-bottom: 20px;
+  }
+
   input {
     max-width: 400px;
   }
@@ -373,7 +444,6 @@ input {
 
   .main {
     height: auto;
-    margin-top: 40px;
   }
 
   .button-group {
@@ -394,12 +464,75 @@ input {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin-top: 27px;
     text-align: center;
   }
 
   .signup-btn {
     margin: 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .login-container h1 {
+    font-size: 45px;
+    margin: 0;
+    padding-bottom: 20px;
+  }
+
+  .login-container {
+    position: relative;
+    max-width: 400px;
+    width: 90%;
+    padding: 76px 26px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 0;
+  }
+
+  .register-container h1 {
+    font-size: 43px;
+    margin: 0;
+    padding-bottom: 20px;
+  }
+
+  .register-container {
+    padding: 76px 26px;
+    max-width: 400px;
+    width: 90%;
+  }
+
+  .register-container input {
+    font-size: 14px;
+    padding: 10px 36px 10px 12px;
+  }
+
+  .register-container .input-wrapper {
+    margin-bottom: 12px;
+  }
+
+  .back-arrow {
+    position: absolute;
+    left: 0;
+    top: 37%;
+    transform: translateY(-50%);
+  }
+
+  .back-arrow img {
+    width: 19px;
+    cursor: pointer;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-bottom: 30px;
   }
 }

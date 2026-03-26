@@ -15,15 +15,20 @@
   </div>
 </header>
 
-<main class="main">
+<main class="main-register">
 
-  <div class="login-container">
-    <a href="index.html" class="back-arrow">&#8592;</a>
-    <h1>Sign Up</h1>
+  <div class="register-container">
+  <div class="title-row">
+  <a href="index.html" class="back-arrow">
+    <img src="/back-arrow.svg" alt="back">
+  </a>
+  <h1>Sign Up</h1>
+</div>
 
 
     <div class="input-wrapper">
       <input id="name" type="text" placeholder="Name">
+        <img src="/person.svg" class="input-icon">
     </div>
 
     <div id="name-error" class="error"></div>
@@ -31,12 +36,14 @@
 
     <div class="input-wrapper">
       <input id="email" type="email" placeholder="Email">
+       <img src="/mail.svg" class="input-icon">
     </div>
 
     <div id="email-error" class="error"></div>
 
     <div class="input-wrapper">
       <input id="password" type="password" placeholder="Password">
+      <img src="/lock.svg" class="input-icon">
     </div>
 
     <div id="password-error" class="error"></div>
@@ -44,6 +51,7 @@
 
     <div class="input-wrapper">
       <input id="confirm-password" type="password" placeholder="Confirm Password">
+        <img src="/lock.svg" class="input-icon">
     </div>
 
     <div id="confirm-error" class="error"></div>
@@ -57,7 +65,7 @@
 
 
     <div class="button-group">
-      <button id="signup-btn" class="signup-btn">Sign Up</button>
+      <button id="signup-btn" class="signup-btn" disabled>Sign Up</button>
     </div>
 
   </div>
