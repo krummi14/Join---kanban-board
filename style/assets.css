@@ -21,3 +21,19 @@
     width: 32px;
     height: 32px;
 }
+
+.edit_and_delete_button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    color: rgba(42, 54, 71, 1);
+    background-color: #f6f7f8;;
+    border: none;
+    font-weight: 400;
+}
+
+.edit_and_delete_button:hover {
+    color: rgba(41, 171, 226, 1);
+    font-weight: bold;
+}

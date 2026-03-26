@@ -13,7 +13,9 @@ let contactName = document.getElementById("name");
 let contactPhone = document.getElementById("phone");
 let contactID = document.getElementById("contact_id");
 let contentContactsListHeader = document.getElementById('list_content');
+let contentContactInformation = document.getElementById("contact_information");
 let prenameInitialsList = [];
+let activeContact = null;
 
 async function init() {
     await getData("/contacts"); //direkt auf Kontakte zugreifen

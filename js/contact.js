@@ -45,17 +45,29 @@ function contactColor(contactsIndex) {
 }
 
 function openContactInformation(contactsIndex) {
-    toggleContactColor(contactsIndex);
+    if (activeContact == contactsIndex) {
+        closeContactInformation(contactsIndex);
+        return;
+    }
+    if (activeContact !== null && activeContact !== contactsIndex) {
+        closeContactInformation(activeContact);
+    }
+    let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
+    contentContactWrapper.classList.add('contact_wrapper_active');
+    contentContactInformation.classList.remove("contact_information_deactive");
+    contentContactInformation.classList.add("contact_information_animation");
     createContentInformation(contactsIndex);
+    activeContact = contactsIndex;
 }
 
-function toggleContactColor(contactsIndex) {
+function closeContactInformation(contactsIndex) {
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
-    contentContactWrapper.classList.toggle('contact_wrapper_active');
+    contentContactWrapper.classList.remove('contact_wrapper_active');
+    contentContactInformation.classList.add("contact_information_deactive");
+    activeContact = null;
 }
 
 function createContentInformation(contactsIndex) {
-    let contentContactInformation = document.getElementById("contact_information");
     contentContactInformation.innerHTML = getContactsInformationTemplate(contactsIndex);
     contactColorInContactInformation(contactsIndex)
 }

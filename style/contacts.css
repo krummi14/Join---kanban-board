@@ -98,7 +98,7 @@
 
 .contact_name {
     font-size: 20px;
-    font-weight: 400;  
+    font-weight: 400;
 }
 
 .contact_email {
@@ -119,6 +119,7 @@
     flex-direction: row;
     align-items: center;
     gap: 16px;
+    margin-bottom: 24px;
 }
 
 .contact_headline_h2 {
@@ -137,4 +138,90 @@
     font-size: 27px;
     font-weight: 400;
     color: rgba(42, 54, 71, 1);
+}
+
+/* contact_information*/
+.contact_information_deactive {
+    display: none;
+}
+
+@keyframes slideRight {
+    from {
+        transform: translateX(250px);
+    }
+    to {
+        transform: translateX(0px);
+    }
+}
+
+.contact_information_animation {
+    animation: slideRight 125ms forwards;
+}
+
+.contact_information_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+}
+
+.contact_information_header_gap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact_initials_size {
+    line-height: 120px;
+    height: 120px;
+    width: 120px;
+    font-size: 47px;
+    border: 4px solid white;
+}
+
+.contact_name_font_size {
+    font-size: 47px;
+}
+
+.edit_and_delete_button_direction {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.edit_and_delete_text {
+    font-size: 16px;
+}
+
+.edit_and_delete_icon {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.contact_information_headline {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 48px 0;
+}
+
+.contact_information_body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact_email_and_phone_information {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.email_and_phone_headline {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.contact_phone {
+    font-size: 16px;
+    font-weight: 400;
 }
