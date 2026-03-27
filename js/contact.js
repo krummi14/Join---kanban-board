@@ -8,6 +8,7 @@ async function deleteContact(contactsIndex) {
     contactsList = contactsList.filter(contact => contact.id !== deleteIndex + 1);
     renderContacts();
     closeContactInformation(contactsIndex);
+    closeContactDialog(contactsIndex);
 }
 
 function filterInitialsOfName(contactsIndex) {
@@ -76,7 +77,37 @@ function createContentInformation(contactsIndex) {
 }
 
 function contactColorInContactInformation(contactsIndex) {
-    let contentInitialBackgroundColorContentInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
+    let contentInitialBackgroundColorContactInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
-    contentInitialBackgroundColorContentInformation.style.backgroundColor = initialsColor;
+    contentInitialBackgroundColorContactInformation.style.backgroundColor = initialsColor;
+    
+}
+
+function contactColorInContactDialog(contactsIndex) {
+    let contentInitialBackgroundColorContactDialog = document.getElementById(`initial_bg_color_contact_dialog_${contactsIndex}`);
+    let initialsColor = intitialBackgroundcolors[contactsIndex];
+    contentInitialBackgroundColorContactDialog.style.backgroundColor = initialsColor;
+}
+
+function openContactDialog(contactsIndex, event) {
+    if (event) event.stopPropagation();
+    contentDialogofContacts.innerHTML = getContactsDialogTemplate(contactsIndex);
+    let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
+    contentDialogContact.showModal();
+    contentDialogContact.classList.add("dialog_opend");
+    contentDialogContact.classList.remove("dialog_closed");
+    contactColorInContactDialog(contactsIndex);
+}
+
+function closeContactDialog(contactsIndex) {
+    let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
+    contentDialogContact.classList.remove("dialog_opend");
+    contentDialogContact.classList.add("dialog_closed");
+    setTimeout(function () {
+        contentDialogContact.close();
+    }, 125);
+}
+
+function closeDialogOnBodyclick(event) {
+    event.stopPropagation()
 }

@@ -16,6 +16,8 @@ let contentContactsListHeader = document.getElementById('list_content');
 let contentContactInformation = document.getElementById("contact_information");
 let prenameInitialsList = [];
 let activeContact = null;
+let contentDialogofContacts = document.getElementById("contact_dialog_content");
+
 
 async function init() {
     await getData("/contacts"); //direkt auf Kontakte zugreifen

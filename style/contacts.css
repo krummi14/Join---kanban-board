@@ -225,3 +225,110 @@
     font-size: 16px;
     font-weight: 400;
 }
+
+/* contact_dialog*/
+.contact_dialog_content {
+    border-radius: 30px;
+    border: none;
+    top: 50%;
+    left: 50%;
+    height: 600px;
+    width: 1200px;
+    padding: 0;
+    transform: translate(-50%, -50%) translateX(500px);
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_direction {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.contact_dialog_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    background-color: rgba(42, 54, 71, 1);
+    height: 100%;
+    width: 640px;
+    color:white;
+    padding-left: 40px;
+}
+
+.logo_size_contact_dialog {
+    width: 56px;
+    height: 64px;
+}
+
+.contact_dialog_main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 48px;
+    height: 100%;
+    width: 100%;
+    padding-top: 56px;
+    padding-bottom: 136px;
+    padding-left: 64px;
+    padding-right: 56px;
+}
+
+.contact_dialog_close_button_direction {
+    display: flex;
+    justify-content: end;
+    height: 100%;
+}
+
+.contact_dialog_initial_and_assets {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 48px;
+}
+
+.contact_dialog_input_and_button_direction {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 75%;
+}
+
+.contact_dialog_input_direction {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.contact_dialog_button_direction {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+
+.contact_dialog_content.dialog_opend {
+    transform: translate(-50%, -50%) translateX(0);
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_content::backdrop {
+    background-color: rgb(184,185,186);
+    opacity: 0;
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_content.dialog_opend::backdrop {
+    opacity: 0.3;
+}
+
+.contact_dialog_content.dialog_closed {
+    transform: translate(-50%, -50%) translateX(500px);
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_content.dialog_closed::backdrop {
+    opacity: 0;
+}

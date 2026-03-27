@@ -37,3 +37,88 @@
     color: rgba(41, 171, 226, 1);
     font-weight: bold;
 }
+
+.contact_dialog_close_button {
+    height: 32px;
+    width: 32px;
+    font-size: 20px;
+    border: none;
+    background-color: white;
+    border-radius: 100%;
+    color: rgba(42, 54, 71, 1);
+}
+
+.contact_dialog_close_button:hover {
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
+.contact_dialog_input {
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    height: 54px;
+    padding: 8px 24px;
+}
+
+.contact_dialog_input::placeholder {
+    color: rgba(128, 128, 128, 0.3);
+}
+
+.contact_dialog_input:focus {
+    outline: none;
+    border-color: rgba(41, 171, 226, 1);
+}
+
+.contact_dialog_input_name {
+    background-image: url(../assets/icon/person.svg);
+    background-repeat: no-repeat;
+    background-position: 450px center;
+    background-size: 24px;
+}
+
+.contact_dialog_input_email {
+    background-image: url(../assets/icon/mail.svg);
+    background-repeat: no-repeat;
+    background-position: 450px center;
+    background-size: 24px;
+}
+
+.contact_dialog_input_phone {
+    background-image: url(../assets/icon/call.svg);
+    background-repeat: no-repeat;
+    background-position: 450px center;
+    background-size: 24px;
+}
+
+.contact_dialog_button {
+    font-size: 21px;
+    font-weight: 400;
+    border: 1px solid;
+    border-radius: 8px;
+    width: 112px;
+    height: 56px;
+}
+
+.contact_dialog_button_delete {
+    border: 1px solid rgba(42, 54, 71, 1);
+    background-color: white;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+.contact_dialog_button_delete:hover {
+    border: 1px solid rgba(41, 171, 226, 1);
+    color: rgba(41, 171, 226, 1);
+}
+
+.contact_dialog_button_save {
+    border: 1px solid rgba(42, 54, 71, 1);
+    background-color: rgba(42, 54, 71, 1);
+    color: white;
+}
+
+.contact_dialog_button_save:hover {
+    border: 1px solid rgba(41, 171, 226, 1);
+    background-color: rgba(41, 171, 226, 1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+}
