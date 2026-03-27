@@ -395,7 +395,7 @@ body {
   }
 
   #splash_logo {
-    content: url("/login_join_white.svg");
+    content: url("assets/img/login_join_white.svg");
   }
 }
 
