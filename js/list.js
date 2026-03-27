@@ -1,5 +1,8 @@
 function renderList(responseToJson) {
     for (let index = 0; index < responseToJson.length; index++) {
+        if (responseToJson[index] == null) {
+            responseToJson.splice(index, 1);
+        }
         contactsList.push({
             id: responseToJson[index].id,
             name: responseToJson[index].name,
@@ -10,6 +13,7 @@ function renderList(responseToJson) {
 }
 
 function createList(responseToJson) {
+    contactsList = [];
     renderList(responseToJson);
 }
 

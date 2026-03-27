@@ -2,9 +2,12 @@ function addContact() {
     putData("/contacts/");
 }
 
-function deleteContact(id) {
-    deleteData("/contacts/" + id);
-    contactsList = contactsList.filter(contact => contact.id !== id);
+async function deleteContact(contactsIndex) {
+    let deleteIndex = (contactsList[contactsIndex].id) - 1;
+    await deleteData("/contacts/" + deleteIndex);
+    contactsList = contactsList.filter(contact => contact.id !== deleteIndex + 1);
+    renderContacts();
+    closeContactInformation(contactsIndex);
 }
 
 function filterInitialsOfName(contactsIndex) {

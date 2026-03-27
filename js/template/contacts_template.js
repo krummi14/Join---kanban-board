@@ -30,7 +30,7 @@ function getContactsInformationTemplate(contactsIndex) {
                     <p class="contact_name contact_name_font_size">${contactsList[contactsIndex].name}</p>
                     <div class="edit_and_delete_button_direction">
                         <button class="edit_and_delete_button"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
-                        <button class="edit_and_delete_button"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
+                        <button class="edit_and_delete_button" onclick="deleteContact(${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
                     </div>
             </div>
             <h4 class="contact_information_headline">Contact Information</h4>
