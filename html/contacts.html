@@ -54,13 +54,17 @@
                 <section class="contact_list">
                     <div class="contact_list_scrollmethode">
                         <div class="background_add_contact_button">
-                            <button class="add_contact_button">
+                            <button class="add_contact_button" onclick="openAddNewContactDialog(null, event)">
                                 <p class="add_contact_text">Add new contact</p>
                                 <img class="add_contact_icon" src="../assets/icon/person_add.svg"
                                     alt="Add contact icon">
                             </button>
                         </div>
                         <div id="list_content" class="list_content"></div>
+                    </div>
+
+                    <div id="addNew_contact_dialog_content">
+
                     </div>
                 </section>
 
@@ -76,9 +80,9 @@
                     </div>
 
                     <div id="contact_dialog_content">
-                        
+
                     </div>
-                    
+
                 </section>
             </div>
 

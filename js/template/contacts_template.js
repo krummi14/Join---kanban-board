@@ -29,7 +29,7 @@ function getContactsInformationTemplate(contactsIndex) {
                 <span class="contact_information_header_gap">
                     <p class="contact_name contact_name_font_size">${contactsList[contactsIndex].name}</p>
                     <div class="edit_and_delete_button_direction">
-                        <button class="edit_and_delete_button" onclick="openContactDialog(${contactsIndex}, event)"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
+                        <button class="edit_and_delete_button" onclick="openEditContactDialog(${contactsIndex}, event)"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
                         <button class="edit_and_delete_button" onclick="deleteContact(${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
                     </div>
             </div>
@@ -47,28 +47,37 @@ function getContactsInformationTemplate(contactsIndex) {
             `;
 }
 
-function getContactsDialogTemplate(contactsIndex) {
+function getContactDialogTemplate(contactsIndex) {
     return `<dialog onclick="closeContactDialog(${contactsIndex})" id="contact_dialog_${contactsIndex}" class="contact_dialog_content dialog_closed">
                 <div class="contact_dialog_direction" onclick="closeDialogOnBodyclick(event)">
                         <header class="contact_dialog_header">
-                            <img class="logo logo_size_contact_dialog" src="../assets/img/join_logo.svg" alt="Join Logo">
-                            <h2 class="contact_headline_h2">Edit contact</h2>
+                            <div id="contact_dialog_header_direction" class="contact_dialog_header_direction">
+                                <img class="logo logo_size_contact_dialog" src="../assets/img/join_logo.svg" alt="Join Logo">
+                                <h2 id="edit_or_addNew_headline" class="contact_headline_h2">Edit contact</h2>
+                                <p id="addNew_description_text" class="contact_description_text" style="display:none">Tasks are better with a team</p>
+                            </div>
+                            <div class="header_dividingline"></div> 
                         </header>
                         <main class="contact_dialog_main">
                             <div class="contact_dialog_close_button_direction">
                                 <button class="contact_dialog_close_button" onclick="closeContactDialog(${contactsIndex})">X</button>
                             </div>
                             <div class="contact_dialog_initial_and_assets">
-                                <span id="initial_bg_color_contact_dialog_${contactsIndex}" class="contact_initials contact_initials_bg contact_initials_size">${filterInitialsOfName(contactsIndex)}</span>
+                                <div id="initial_bg_color_contact_dialog_${contactsIndex}" class="contact_initials contact_initials_bg contact_initials_size">
+                                    <p id="initial_text_${(contactsIndex)}">${filterInitialsOfName(contactsIndex)}</p>
+                                    <img id="initial_img_${(contactsIndex)}" src="../assets/icon/person_white.svg" class="display_none_button_or_img" style="width: 40px; height: 40px" alt="Contact undefined">
+                                </div>
                                 <div class="contact_dialog_input_and_button_direction">
                                     <div class="contact_dialog_input_direction">
-                                        <input id="contact_dialog_input_name" class="contact_dialog_input contact_dialog_input_name" placeholder="Name">
-                                        <input id="contact_dialog_input_email" class="contact_dialog_input contact_dialog_input_email" placeholder="Email">
-                                        <input id="contact_dialog_input_phone" class="contact_dialog_input contact_dialog_input_phone" placeholder="Phone">
+                                        <input id="contact_dialog_input_name" type="text" class="contact_dialog_input contact_dialog_input_name" placeholder="Name">
+                                        <input id="contact_dialog_input_email" type="email" class="contact_dialog_input contact_dialog_input_email" placeholder="Email">
+                                        <input id="contact_dialog_input_phone" type="tel" class="contact_dialog_input contact_dialog_input_phone" placeholder="Phone">
                                     </div>
                                     <div class="contact_dialog_button_direction">
-                                        <button class="contact_dialog_button contact_dialog_button_delete" onclick="deleteContact(${contactsIndex})">Delete</button>
-                                        <button class="contact_dialog_button contact_dialog_button_save">Save &#x2714</button>
+                                        <button id="contact_dialog_button_delete_${contactsIndex}" class="contact_dialog_button contact_dialog_button_delete" onclick="deleteContact(${contactsIndex})">Delete</button>
+                                        <button id="contact_dialog_button_save_${contactsIndex}" class="contact_dialog_button contact_dialog_button_save" onclick="">Save &#x2714</button>
+                                        <button id="contact_dialog_button_cancel_${contactsIndex}" class="disolay_none_button_or_img contact_dialog_button contact_dialog_button_delete" onclick="closeContactDialog(${contactsIndex})">Cancel</button>
+                                        <button id="contact_dialog_button_create_${contactsIndex}" class="disolay_none_button_or_img contact_dialog_button contact_dialog_button_save" onclick="">Create Contact &#x2714</button>
                                     </div>
                                 </div>
                             </div>

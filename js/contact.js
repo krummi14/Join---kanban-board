@@ -1,4 +1,4 @@
-function addContact() {
+function addNewContact() {
     putData("/contacts/");
 }
 
@@ -12,9 +12,13 @@ async function deleteContact(contactsIndex) {
 }
 
 function filterInitialsOfName(contactsIndex) {
-    let contactName = contactsList[contactsIndex].name;
-    let initials = contactName.split(' ').map(initial => initial.charAt(0)).join('');
-    return initials;
+    if (contactsIndex == contactsList.length) {
+        return;
+    } else {
+        let contactName = contactsList[contactsIndex].name;
+        let initials = contactName.split(' ').map(initial => initial.charAt(0)).join('');
+        return initials
+    };
 }
 
 function renderContacts() {
@@ -80,18 +84,26 @@ function contactColorInContactInformation(contactsIndex) {
     let contentInitialBackgroundColorContactInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
     contentInitialBackgroundColorContactInformation.style.backgroundColor = initialsColor;
-    
+
 }
 
 function contactColorInContactDialog(contactsIndex) {
     let contentInitialBackgroundColorContactDialog = document.getElementById(`initial_bg_color_contact_dialog_${contactsIndex}`);
+    let contentInitialImageAddNewContact = document.getElementById(`initial_img_${(contactsIndex)}`);
+    let contentInitialText = document.getElementById(`initial_text_${(contactsIndex)}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
-    contentInitialBackgroundColorContactDialog.style.backgroundColor = initialsColor;
+    if (initialsColor == undefined) {
+        contentInitialBackgroundColorContactDialog.style.backgroundColor = "rgba(209, 209, 209, 1)";
+        contentInitialImageAddNewContact.classList.remove("display_none_button_or_img");
+        contentInitialText.style.display = "none";
+    } else {
+        contentInitialBackgroundColorContactDialog.style.backgroundColor = initialsColor;
+    }
 }
 
-function openContactDialog(contactsIndex, event) {
+function openEditContactDialog(contactsIndex, event) {
     if (event) event.stopPropagation();
-    contentDialogofContacts.innerHTML = getContactsDialogTemplate(contactsIndex);
+    contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
     contentDialogContact.showModal();
     contentDialogContact.classList.add("dialog_opend");
@@ -110,4 +122,39 @@ function closeContactDialog(contactsIndex) {
 
 function closeDialogOnBodyclick(event) {
     event.stopPropagation()
+}
+
+function openAddNewContactDialog(contactsIndex, event) {
+    contactsIndex = contactsList.length;
+    if (event) event.stopPropagation();
+    contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
+    let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
+    contentDialogContact.showModal();
+    contentDialogContact.classList.add("dialog_opend");
+    contentDialogContact.classList.remove("dialog_closed");
+    if (contactsIndex == contactsList.length) {
+        createAddNewContactDialog(contactsIndex);
+    }
+    contactColorInContactDialog(contactsIndex);
+}
+
+function createAddNewContactDialog(contactsIndex) {
+    let contentDialogContactHeader = document.getElementById('edit_or_addNew_headline');
+    let contentDialogContactDescription = document.getElementById('addNew_description_text');
+    let contentDialogContactButtonDelete = document.getElementById(`contact_dialog_button_delete_${contactsIndex}`);
+    let contentDialogContactButtonSave = document.getElementById(`contact_dialog_button_save_${contactsIndex}`);
+    let contentDialogContactButtonCancel = document.getElementById(`contact_dialog_button_cancel_${contactsIndex}`);
+    let contentDialogContactButtonCreate = document.getElementById(`contact_dialog_button_create_${contactsIndex}`);
+    styleAddNewContactDialog(contentDialogContactHeader, contentDialogContactDescription, contact_dialog_header_direction, contentDialogContactButtonDelete, contentDialogContactButtonSave, contentDialogContactButtonCancel, contentDialogContactButtonCreate);
+}
+
+function styleAddNewContactDialog(headerText, descriptionText, directionOfHeaderAndDescription, deleteButton, saveButton, cancelButton, createButton) {
+    headerText.innerText = "Add contact";
+    descriptionText.style.display = "block";
+    directionOfHeaderAndDescription.style = "gap: 16px";
+    deleteButton.classList.add("disolay_none_button_or_img");
+    saveButton.classList.add("disolay_none_button_or_img"); 
+    cancelButton.classList.remove("disolay_none_button_or_img");
+    createButton.classList.remove("disolay_none_button_or_img");
+    createButton.style.width = "200px";
 }

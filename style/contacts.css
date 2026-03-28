@@ -227,6 +227,7 @@
 }
 
 /* contact_dialog*/
+/* Edit */
 .contact_dialog_content {
     border-radius: 30px;
     border: none;
@@ -251,7 +252,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 24px;
+    gap: 8px;
     background-color: rgba(42, 54, 71, 1);
     height: 100%;
     width: 640px;
@@ -259,9 +260,22 @@
     padding-left: 40px;
 }
 
+.contact_dialog_header_direction {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+}
+
 .logo_size_contact_dialog {
     width: 56px;
     height: 64px;
+}
+
+.header_dividingline {
+    height: 3px;
+    width: 90px;
+    background-color: rgba(41, 171, 226, 1);
 }
 
 .contact_dialog_main {
@@ -331,4 +345,9 @@
 
 .contact_dialog_content.dialog_closed::backdrop {
     opacity: 0;
+}
+
+.contact_description_text {
+    font-size: 27px;
+    font-weight: 400;
 }
