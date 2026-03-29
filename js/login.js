@@ -59,7 +59,7 @@ async function loginUser(email, password) {
     return showError("password-error", "Wrong email or password");
 
   localStorage.setItem("user", id);
-  location.href = "summary.html";
+  location.href = "../html/summary.html";
 }
 
 
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document.querySelector(".guest-btn")?.addEventListener("click", () =>
-    location.href = "summary.html"
+    location.href = "../html/summary.html"
   );
 
 });
