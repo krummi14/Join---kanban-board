@@ -9,14 +9,29 @@ async function loadData(path = "") {
     return responseToJson;
 }
 
-async function putData(path = "") {
-    // unter eigener ID speichern
-    await fetch(BASE_URL + path + (extractIDs() - 1) + ".json", {
+async function putNewData(path = "", contactsIndex) {
+    let newId = extractIDs(); // neue ID erzeugen
+    let newContact = insertNewContactData(contactsIndex); // Daten aus dem Dialog holen
+    newContact.id = newId;
+    await fetch(BASE_URL + path + (newId - 1) + ".json", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(insertNewContactData())
+        body: JSON.stringify(newContact)
     });
-    contactsList.push(insertNewContactData());
+    contactsList.push(newContact); // in Liste speichern
+    return newId;
+}
+
+async function putEditData(path = "", contactsIndex) {
+    let editContact = editCurrentContactData(contactsIndex); // Daten aus dem Dialog holen
+    let currentId = editContact.id 
+    await fetch(BASE_URL + path + currentId + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editContact)
+    });
+    contactsList[contactsIndex] = editContact; // in Liste speichern
+    return currentId;
 }
 
 async function deleteData(path = "") {

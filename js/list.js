@@ -18,11 +18,7 @@ function createList(responseToJson) {
 }
 
 function extractIDs() {
-    // ID extrahieren
-    let ids = Object.values(contactsList).map(contact => Number(contact.id));
-    console.log(ids);
-    // höchste ID bestimmen
-    let nextId = Math.max(...ids) + 1;
-    console.log(nextId);
+    let ids = Object.values(contactsList).map(contact => Number(contact.id)); // ID extrahieren
+    let nextId = Math.max(...ids) + 1; // höchste ID bestimmen
     return nextId
 }

@@ -1,5 +1,11 @@
-function addNewContact() {
-    putData("/contacts/");
+async function addNewContact(contactsIndex) {
+    activeContact = null;
+    let newContactId = await putNewData("/contacts/", contactsIndex);
+    renderContacts();
+    closeContactDialog(contactsIndex);
+    let newContactsIndex = contactsList.findIndex(contact => contact.id == newContactId);
+    openContactInformation(newContactsIndex);
+    openContactWasCreatedSuccesfull();
 }
 
 async function deleteContact(contactsIndex) {
@@ -9,6 +15,15 @@ async function deleteContact(contactsIndex) {
     renderContacts();
     closeContactInformation(contactsIndex);
     closeContactDialog(contactsIndex);
+}
+
+async function editContact(contactsIndex) {
+    activeContact = null;
+    let currentContactId = await putEditData("/contacts/", contactsIndex);
+    renderContacts();
+    let newContactsIndex = contactsList.findIndex(contact => contact.id == currentContactId);
+    closeContactDialog(contactsIndex);
+    openContactInformation(newContactsIndex);
 }
 
 function filterInitialsOfName(contactsIndex) {
@@ -24,6 +39,7 @@ function filterInitialsOfName(contactsIndex) {
 function renderContacts() {
     contentContactsListHeader.innerHTML = "";
     prenameInitialsList = [];
+    intitialBackgroundcolors = [];
     contactsList.sort((a, b) => a.name.localeCompare(b.name));
     for (let contactsIndex = 0; contactsIndex < contactsList.length; contactsIndex++) {
         firstLetterOfPrenameIsEqual(contactsIndex);
@@ -84,7 +100,6 @@ function contactColorInContactInformation(contactsIndex) {
     let contentInitialBackgroundColorContactInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
     contentInitialBackgroundColorContactInformation.style.backgroundColor = initialsColor;
-
 }
 
 function contactColorInContactDialog(contactsIndex) {
@@ -109,6 +124,16 @@ function openEditContactDialog(contactsIndex, event) {
     contentDialogContact.classList.add("dialog_opend");
     contentDialogContact.classList.remove("dialog_closed");
     contactColorInContactDialog(contactsIndex);
+    getCurrentContactData(contactsIndex);
+}
+
+function getCurrentContactData(contactsIndex) {
+    let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
+    let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
+    let contactInputPhone = document.getElementById(`contact_dialog_input_phone_${contactsIndex}`);
+    contactInputName.value = contactsList[contactsIndex].name;
+    contactInputEmail.value = contactsList[contactsIndex].email;
+    contactInputPhone.value = contactsList[contactsIndex].phone;
 }
 
 function closeContactDialog(contactsIndex) {
@@ -152,9 +177,21 @@ function styleAddNewContactDialog(headerText, descriptionText, directionOfHeader
     headerText.innerText = "Add contact";
     descriptionText.style.display = "block";
     directionOfHeaderAndDescription.style = "gap: 16px";
-    deleteButton.classList.add("disolay_none_button_or_img");
-    saveButton.classList.add("disolay_none_button_or_img"); 
-    cancelButton.classList.remove("disolay_none_button_or_img");
-    createButton.classList.remove("disolay_none_button_or_img");
+    deleteButton.classList.add("display_none_button_or_img");
+    saveButton.classList.add("display_none_button_or_img");
+    cancelButton.classList.remove("display_none_button_or_img");
+    createButton.classList.remove("display_none_button_or_img");
     createButton.style.width = "200px";
+}
+
+function openContactWasCreatedSuccesfull() {
+    let contentContactCreatedSuccesfully = document.getElementById("contact_createdSuccesfully");
+    contentContactCreatedSuccesfully.classList.remove("contact_createdSuccesfully_deactive");
+    contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_animation");
+    setTimeout(function () {
+        contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_deactive_animation");
+    }, 2000);
+    setTimeout(function () {
+        contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_deactive");
+    }, 4000);
 }

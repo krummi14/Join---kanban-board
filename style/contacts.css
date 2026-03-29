@@ -351,3 +351,38 @@
     font-size: 27px;
     font-weight: 400;
 }
+
+/* contact_created succesfully*/
+.contact_createdSuccesfully {
+    font-size: 20px;
+    font-weight: 400;
+    width: 320px;
+    text-align: center;
+    color: white;
+    background-color: rgba(42, 54, 71, 1);
+    border-radius: 20px;
+    padding: 16px;
+    margin-top: 56px;
+}
+
+.contact_createdSuccesfully_deactive {
+    display: none;
+}
+
+@keyframes slideLeft {
+    from {
+        transform: translateX(0px);
+    }
+    to {
+        transform: translateX(250px);
+    }
+}
+
+.contact_createdSuccesfully_animation {
+    animation: slideRight 2s forwards;
+}
+
+.contact_createdSuccesfully_deactive_animation {
+    animation: slideLeft 2s forwards;
+}
+
