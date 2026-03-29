@@ -41,7 +41,8 @@ async function checkUser(email, password) {
 
   for (let id in users) {
     let u = users[id];
-    if (u.email === email && u.password === password) return id;
+    if (u.email === email && u.password === password)
+     return id;
   }
   return null;
 }
@@ -59,6 +60,10 @@ async function loginUser(email, password) {
     return showError("password-error", "Wrong email or password");
 
   localStorage.setItem("user", id);
+
+  let userName = await getData(`users/${id}/name`);
+  localStorage.setItem("userName", userName);
+  
   location.href = "../html/summary.html";
 }
 

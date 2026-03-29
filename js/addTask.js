@@ -1,7 +1,6 @@
 async function initAddTask() {
-  const userDataArr = await fetchUser();
-
-  let initials = getInitials(userDataArr[1].name);
+  const userName = localStorage.getItem("userName");
+  let initials = getInitials(userName);
   const refUser = document.getElementById("user");
   refUser.innerHTML = initials;
 }

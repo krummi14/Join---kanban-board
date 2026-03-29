@@ -6,17 +6,14 @@ let contactPhone = document.getElementById("phone");
 let contactID = document.getElementById("contact_id");
 
 function init() {
-    getData("/contacts"); //direkt auf Kontakte zugreifen
+  getData("/contacts"); //direkt auf Kontakte zugreifen
 }
 
 function addContact() {
-    putData("/contacts/");
+  putData("/contacts/");
 }
 
 function deleteContact(id) {
-    deleteData("/contacts/" + id);
-    contactsList = contactsList.filter(contact => contact.id !== id);
+  deleteData("/contacts/" + id);
+  contactsList = contactsList.filter(contact => contact.id !== id);
 }
-
-
-

@@ -182,7 +182,7 @@ function toggleSignupButton() {
     validateName(data.name) &&
     validateEmail(data.email) &&
     validatePassword(data.password, data.confirm) &&
-    validatePrivacy(data.privacy); 
+    validatePrivacy(data.privacy);
 
   document.getElementById("signup-btn").disabled = !valid;
 }
