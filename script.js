@@ -17,3 +17,10 @@ function deleteContact(id) {
   deleteData("/contacts/" + id);
   contactsList = contactsList.filter(contact => contact.id !== id);
 }
+
+// Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
+function logout() {
+  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
+  window.location.href = '../index.html';
+}
