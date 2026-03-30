@@ -1,4 +1,5 @@
-const BASE_URL = "https://join---the-kanban-system-default-rtdb.europe-west1.firebasedatabase.app/";
+//const BASE_URL = "https://join---the-kanban-system-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join---kanban-board-5501a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const backgroundColors = [
     "#FF6B6B", "#4ECDC4", "#556270",

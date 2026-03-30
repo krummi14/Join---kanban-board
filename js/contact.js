@@ -8,13 +8,15 @@ async function addNewContact(contactsIndex) {
     openContactWasCreatedSuccesfull();
 }
 
-async function deleteContact(contactsIndex) {
+async function deleteContact(openDialog, contactsIndex) {
     let deleteIndex = (contactsList[contactsIndex].id) - 1;
     await deleteData("/contacts/" + deleteIndex);
     contactsList = contactsList.filter(contact => contact.id !== deleteIndex + 1);
     renderContacts();
     closeContactInformation(contactsIndex);
-    closeContactDialog(contactsIndex);
+    if (openDialog) {
+        closeContactDialog(contactsIndex);
+    }
 }
 
 async function editContact(contactsIndex) {

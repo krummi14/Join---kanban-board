@@ -25,7 +25,7 @@ async function putNewData(path = "", contactsIndex) {
 async function putEditData(path = "", contactsIndex) {
     let editContact = editCurrentContactData(contactsIndex); // Daten aus dem Dialog holen
     let currentId = editContact.id 
-    await fetch(BASE_URL + path + currentId + ".json", {
+    await fetch(BASE_URL + path + (currentId - 1) + ".json", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editContact)

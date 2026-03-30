@@ -30,7 +30,7 @@ function getContactsInformationTemplate(contactsIndex) {
                     <p class="contact_name contact_name_font_size">${contactsList[contactsIndex].name}</p>
                     <div class="edit_and_delete_button_direction">
                         <button class="edit_and_delete_button" onclick="openEditContactDialog(${contactsIndex}, event)"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
-                        <button class="edit_and_delete_button" onclick="deleteContact(${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
+                        <button class="edit_and_delete_button" onclick="deleteContact(false, ${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
                     </div>
             </div>
             <h4 class="contact_information_headline">Contact Information</h4>
@@ -77,7 +77,7 @@ function getContactDialogTemplate(contactsIndex) {
                                         <input id="contact_dialog_input_phone_${contactsIndex}" type="tel" class="contact_dialog_input contact_dialog_input_phone" placeholder="Phone">
                                     </div>
                                     <div class="contact_dialog_button_direction">
-                                        <button id="contact_dialog_button_delete_${contactsIndex}" class="contact_dialog_button contact_dialog_button_delete" onclick="deleteContact(${contactsIndex})">Delete</button>
+                                        <button id="contact_dialog_button_delete_${contactsIndex}" class="contact_dialog_button contact_dialog_button_delete" onclick="deleteContact(true, ${contactsIndex})">Delete</button>
                                         <button id="contact_dialog_button_save_${contactsIndex}" class="contact_dialog_button contact_dialog_button_save" onclick="editContact(${contactsIndex})">Save &#x2714</button>
                                         <button id="contact_dialog_button_cancel_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_delete" onclick="closeContactDialog(${contactsIndex})">Cancel</button>
                                         <button id="contact_dialog_button_create_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_save" onclick="addNewContact(${contactsIndex})">Create Contact &#x2714</button>
