@@ -634,6 +634,41 @@
   color: #29abe2;
 }
 
+/* logout menu */
+.logout_menu {
+  width: 150px;
+  height: 158px;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  background: #2a3647;
+  border-radius: 10px 0px 10px 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  gap: 26px;
+}
+
+/* Show logout menu on user_name hover or when hovering logout_menu itself */
+#user:hover + .logout_menu,
+.logout_menu:hover {
+  display: flex;
+}
+
+.logout_menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.logout_menu a:hover {
+  color: #29abe2;
+}
+
 /* main */
 .main_framework {
   width: 100%;

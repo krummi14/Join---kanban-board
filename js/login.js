@@ -101,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
       location.href = "register.html"
     )
   );
-
-
+  let userName = 'Guest';
+  localStorage.setItem("userName", userName);
   document.querySelector(".guest-btn")?.addEventListener("click", () =>
     location.href = "../html/summary.html"
   );
