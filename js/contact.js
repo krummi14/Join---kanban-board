@@ -1,16 +1,21 @@
 //import { getData, putNewData, deleteData, putEditData } from "./firebase.js";
 
 async function initContacts() {
-    const userName = localStorage.getItem("userName");
     await getData("/contacts");
     renderContacts();
+    userInitials();
+}
+
+// Start: Eingebaute Funktionen von den anderen
+// soll diese nicht glbal in script.js wandern, da sie mehrfach verwendet werden?
+function userInitials() {
+    const userName = localStorage.getItem("userName");
     if (userName !== 'Guest') {
         let initials = getInitials(userName);
         const refUser = document.getElementById("user");
         refUser.innerHTML = initials;
     }
 }
-
 // Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)
 function getInitials(fullName) {
     // Namen in einzelne Wörter aufteilen
@@ -18,6 +23,64 @@ function getInitials(fullName) {
     // Anfangsbuchstaben der ersten beiden Namen holen und zusammenfügen
     return names[0][0].toUpperCase() + names[1][0].toUpperCase();
 }
+
+function showError(errorId, message) {
+    let errorField = document.getElementById(errorId);
+    if (errorField) errorField.textContent = message;
+}
+
+function validateName(name, contactsIndex) {
+    const regex = /^[A-Za-z]+ [A-Za-z]+$/;
+    if (!regex.test(name)) {
+        showError(`name_error_${contactsIndex}`, "Please enter first & last name, letters only.");
+
+        return false;
+    }
+    showError(`name_error_${contactsIndex}`, "");
+    return true;
+}
+
+function validateEmail(email, contactsIndex) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) {
+        showError(`email_error_${contactsIndex}`, "Please enter a valid email address");
+        return false;
+    }
+    showError(`email_error_${contactsIndex}`, "");
+    return true;
+}
+// Ende: Eingebaute Funktionen von den anderen 
+// Start: Ergänzung zu den eingebauten Funktionen
+function validatePhone(phone, contactsIndex) {
+    const regex = /^\+\d{2}\s\d{6,}$/;
+    if (!regex.test(phone)) {
+        showError(`phone_error_${contactsIndex}`, "Please enter a valid phone number (f.e. +49 184551984)");
+        return false;
+    }
+    showError(`phone_error_${contactsIndex}`, "");
+    return true;
+}
+
+function validateForm(contactsIndex) {
+    let name = document.getElementById(`contact_dialog_input_name_${contactsIndex}`).value.trim();
+    let email = document.getElementById(`contact_dialog_input_email_${contactsIndex}`).value.trim();
+    let phone = document.getElementById(`contact_dialog_input_phone_${contactsIndex}`).value.trim();
+    const validName = validateName(name, contactsIndex);
+    const validEmail = validateEmail(email, contactsIndex);
+    const validPhone = validatePhone(phone, contactsIndex);
+    return validName && validEmail && validPhone;
+}
+
+function saveContact(contactsIndex) {
+    if (!validateForm(contactsIndex)) return;
+    editContact(contactsIndex);
+}
+
+function saveNewContact(contactsIndex) {
+    if (!validateForm(contactsIndex)) return;
+    addNewContact(contactsIndex);
+}
+// Ende: Ergänzung zu den eingebauten Funktionen
 
 async function addNewContact(contactsIndex) {
     activeContact = null;
