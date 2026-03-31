@@ -110,8 +110,8 @@
 /* contact_content */
 .contact_content {
     width: 100%;
-    margin-top: 96px;
-    margin-left: 64px;
+    padding-top: 96px;
+    padding-left: 64px;
 }
 
 .contact_content_header_and_slogan {

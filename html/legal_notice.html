@@ -10,9 +10,10 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../style/assets.css">
   <link rel="stylesheet" href="../style/standard.css">
+  <link rel="stylesheet" href="../style/legal_notice.css">
 </head>
 
-<body>
+<body onload="initLegalNotice()">
   <section class="sidebar">
     <div class="logo_nav">
       <img class="logo" src="../assets/img/join_logo.svg" alt="Join Logo">
@@ -21,7 +22,8 @@
           <li><a href="./summary.html"><img class="summery" src="../assets/icon/summary_off.svg" alt="summery"></a></li>
           <li><a href="./add_task.html"><img class="add_task" src="../assets/icon/add_off.svg" alt="add task"></a></li>
           <li><a href="./board.html"><img class="board" src="../assets/icon/board_off.svg" alt="board"></a></li>
-          <li><a href="./contacts.html"><img class="contact" src="../assets/icon/contact_off.svg" alt="contact"></a></li>
+          <li><a href="./contacts.html"><img class="contact" src="../assets/icon/contact_off.svg" alt="contact"></a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -32,18 +34,107 @@
   </section>
 
   <section class="content">
-    <header class="header">
+    <header class="header_framework">
       <p>Kanban Project Management Tool</p>
       <div>
         <img src="../assets/icon/help_off.svg" alt="help icon">
-        <div id="user">
-          <!-- gen user name -->
-        </div>
+        <!-- id for user name -->
+        <div id="user">G</div>
+        <section class="logout_menu">
+          <a href="./legal_notice.html">Legal Notice</a>
+          <a href="./privacy_policy.html">Privacy Policy</a>
+          <a href="#" onclick="logout()">Log out</a>
+        </section>
       </div>
     </header>
 
-    <main class="main">
-      <!-- main content -->
+    <main class="main_framework">
+      <section class="legalnotice_content">
+        <h1>Legal Notice</h1>
+
+        <article class="legalnotice_content_gap">
+          <span>
+            <h2>Imprint</h2>
+            <ul class="imprint_list">
+              <li>[Student Names List]</li>
+              <li>[Address of the JOIN operator - e.g. one of the students]</li>
+              <li>[Postcode and city]</li>
+            </ul>
+          </span>
+          <span>
+            <h3>Exploring the Board</h3>
+            <p>Email: [Email]</p>
+          </span>
+          <span>
+            <h3>Acceptance of terms</h3>
+            <p>By accessing and using <mark>Join</mark> (Product), you acknowledge and agree to the following terms and
+              conditions, and any policies,
+              guidelines, or amendments thereto that may be presented to you from time to time. We, the listed students,
+              may update
+              or change the terms and conditions from time to time without notice.</p>
+          </span>
+          <span>
+            <h3>Scope and ownership of the product</h3>
+            <p><mark>Join</mark> has been developed as part of a student group project in a web development bootcamp at
+              the <mark>Developer Akademie GmbH</mark>.
+              It has an educational purpose and is not intended for extensive personal & business usage. As such, we
+              cannot guarantee
+              consistent availability, reliability, accuracy, or any other aspect of quality regarding this Product.
+              <br><br>
+              The design of Join is owned by the <mark>Developer Akademie GmbH</mark>. Unauthorized use, reproduction,
+              modification, distribution, or
+              replication of the design is strictly prohibited.
+            </p>
+          </span>
+          <span>
+            <h3>Proprietary rights</h3>
+            <p>Proprietary rights
+              Aside from the design owned by <mark>Developer Akademie GmbH</mark>, we, the listed students, retain all
+              proprietary
+              rights in Join, including any associated copyrighted material, trademarks, and other proprietary
+              information.</p>
+          </span>
+          <span>
+            <h3>Use of the product</h3>
+            <p>Use of the product
+              <mark>Join</mark> is intended to be used for lawful purposes only, in accordance with all applicable laws
+              and
+              regulations. Any use of <mark>Join</mark> for illegal activities, or to harass, harm, threaten, or
+              intimidate another
+              person, is strictly prohibited. You are solely responsible for your interactions with other users of
+              <mark>Join</mark>.
+            </p>
+          </span>
+          <span>
+            <h3>Disclaimer of warranties and limitation of liability</h3>
+            <p><mark>Join</mark> is provided "as is" without warranty of any kind, whether express or implied, including
+              but not limited
+              to the implied warranties of merchantability, fitness for a particular purpose, and non-infringement. In
+              no
+              event will we, the listed students, or the <mark>Developer Akademie</mark>, be liable for any direct,
+              indirect,
+              incidental, special, consequential or exemplary damages, including but not limited to, damages for loss of
+              profits, goodwill, use, data, or other intangible losses, even if we have been advised of the possibility
+              of
+              such damages, arising out of or in connection with the use or performance of <mark>Join</mark>.</p>
+          </span>
+          <span>
+            <h3>Indemnity</h3>
+            <p>You agree to idemnify, defend and hold us, the listed students, the <mark>Developer Akademie</mark>, and
+              our affilates, partners, officers, directors, agents, and eployees, from and against claim, demand, loss,
+              damage, cost, or liability (including reasonable legal fees) arising out of or relating to your use of
+              <mark>Join</mark> and/or your breach of this Legal Notice.
+              <br>
+              <br>
+              For any questions or notices, please contact us at [contact Email].
+              <br>
+              <br>
+              Date: March 31, 2026
+            </p>
+          </span>
+        </article>
+
+      </section>
 
 
 
@@ -51,9 +142,10 @@
 
 
     </main>
-    
-  </section>
 
+  </section>
+  <script src="../script.js"></script>
+  <script src="../js/legal_notice.js"></script>
 </body>
 
 </html>

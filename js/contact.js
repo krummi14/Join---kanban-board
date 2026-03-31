@@ -7,7 +7,7 @@ async function initContacts() {
 }
 
 // Start: Eingebaute Funktionen von den anderen
-// soll diese nicht glbal in script.js wandern, da sie mehrfach verwendet werden?
+// soll diese nicht global in script.js wandern, da sie mehrfach verwendet werden?
 function userInitials() {
     const userName = localStorage.getItem("userName");
     if (userName !== 'Guest') {
@@ -33,7 +33,6 @@ function validateName(name, contactsIndex) {
     const regex = /^[A-Za-z]+ [A-Za-z]+$/;
     if (!regex.test(name)) {
         showError(`name_error_${contactsIndex}`, "Please enter first & last name, letters only.");
-
         return false;
     }
     showError(`name_error_${contactsIndex}`, "");
