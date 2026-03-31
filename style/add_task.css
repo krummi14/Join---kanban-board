@@ -1,0 +1,81 @@
+.main_header {
+  position: absolute;
+  top: 206px;
+  left: 328px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#taskForm {
+  position: absolute;
+  top: 335px;
+  left: 328px;
+  height: 562px;
+  background: #fff;
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+.left_form {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 8px;
+}
+
+.left_form div {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  gap: 8px;
+}
+
+hr {
+  height: 424px;
+  border-top: 1px solid #d1d1d1;
+}
+
+.right_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.priority_assignee {
+  display: flex;
+  flex-direction: column;
+}
+
+.form_buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+label {
+  font-size: 20px;
+  color: #2a3647;
+}
+
+label span {
+  color: #ff0000;
+}
+
+input {
+  width: 440px;
+  height: 48px;
+  background: #f1f1f1;
+  border-radius: 10px;
+  padding: 0 16px;
+}
+
+textarea {
+  width: 440px;
+  height: 120px;
+  background: #f1f1f1;
+  border-radius: 10px;
+  padding: 16px;
+}

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../style/assets.css">
   <link rel="stylesheet" href="../style/standard.css">
+  <link rel="stylesheet" href="../style/add_task.css">
 </head>
 
 <body onload="initAddTask()">
@@ -48,12 +49,51 @@
     </header>
 
     <main class="main_framework">
-      <!-- main content -->
+      <section class="main_header">
+        <h1>Add Task</h1>
+      </section>
 
+      <form id="taskForm">
 
+        <section class="left_form">
+          <div>
+            <label for="title">Title<span>*</span></label>
+            <input type="text" id="title" name="title" placeholder="Enter a title" required>
+          </div>
 
+          <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Enter a description" required></textarea>
+          </div>
 
+          <div>
+            <label for="dueDate">Due Date<span>*</span></label>
+            <input type="date" id="dueDate" name="dueDate" required>
+          </div>
+        </section>
 
+        <hr>
+
+        <section class="right_form">
+          <section class="priority_assignee">
+            <label for="priority">Priority:</label>
+            <select  id="priority" name="priority" required>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+
+            <label for="assignee">Assignee:</label>
+            <input type="text" id="assignee" name="assignee" required>
+          </section>
+
+          <section class="form_buttons">
+            <button type="reset">Clear</button>
+            <button type="submit">Create Task</button>
+          </section>
+        </section>
+
+      </form>
 
     </main>
 
