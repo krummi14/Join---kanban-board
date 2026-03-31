@@ -15,3 +15,10 @@ let prenameInitialsList = [];
 let activeContact = null;
 let contentDialogOfEditContact = document.getElementById("contact_dialog_content");
 let contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
+
+// Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
+function logout() {
+  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
+  window.location.href = '../index.html';
+}

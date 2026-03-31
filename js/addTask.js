@@ -1,8 +1,11 @@
 async function initAddTask() {
   const userName = localStorage.getItem("userName");
-  let initials = getInitials(userName);
-  const refUser = document.getElementById("user");
-  refUser.innerHTML = initials;
+
+  if (userName !== 'Guest') {
+    let initials = getInitials(userName);
+    const refUser = document.getElementById("user");
+    refUser.innerHTML = initials;
+  }
 }
 
 

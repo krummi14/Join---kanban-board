@@ -1,12 +1,13 @@
 async function initSummery() {
   const userName = localStorage.getItem("userName");
 
-  const refSummeryUser = document.getElementById("good_morning");
-  refSummeryUser.innerHTML = `<h2>Good Morning,<br><span class="user_name">${userName}!</span></h2>`;
-
-  let initials = getInitials(userName);
-  const refUser = document.getElementById("user");
-  refUser.innerHTML = initials;
+  if (userName !== 'Guest') {
+    const refSummeryUser = document.getElementById("good_morning");
+    refSummeryUser.innerHTML = `<h2>Good Morning,<br><span class="user_name">${userName}!</span></h2>`;
+    let initials = getInitials(userName);
+    const refUser = document.getElementById("user");
+    refUser.innerHTML = initials;
+  }
 }
 
 // Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)
