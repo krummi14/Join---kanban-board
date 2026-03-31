@@ -281,12 +281,12 @@
 .contact_dialog_main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     gap: 48px;
     height: 100%;
     width: 100%;
-    padding-top: 56px;
-    padding-bottom: 136px;
+    /*padding-top: 56px;
+    padding-bottom: 136px;*/
     padding-left: 64px;
     padding-right: 56px;
 }
@@ -294,27 +294,27 @@
 .contact_dialog_close_button_direction {
     display: flex;
     justify-content: end;
-    height: 100%;
+    margin-top: 24px;
 }
 
 .contact_dialog_initial_and_assets {
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 400px;
     gap: 48px;
 }
 
 .contact_dialog_input_and_button_direction {
     display: flex;
     flex-direction: column;
-    gap: 40px;
     width: 75%;
 }
 
 .contact_dialog_input_direction {
     display: flex;
     flex-direction: column;
-    /*gap: 32px;*/
+    height: 320px;
 }
 
 .contact_dialog_button_direction {
@@ -363,6 +363,10 @@
     border-radius: 20px;
     padding: 16px;
     margin-top: 56px;
+}
+
+.contact_etited_text_deactive {
+    display: none;
 }
 
 .contact_createdSuccesfully_deactive {

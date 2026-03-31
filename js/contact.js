@@ -70,25 +70,25 @@ function validateForm(contactsIndex) {
     return validName && validEmail && validPhone;
 }
 
-function saveContact(contactsIndex) {
+function saveContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
-    editContact(contactsIndex);
+    editContact(editOrAddNewContact, contactsIndex);
 }
 
-function saveNewContact(contactsIndex) {
+function saveNewContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
-    addNewContact(contactsIndex);
+    addNewContact(editOrAddNewContact, contactsIndex);
 }
 // Ende: Ergänzung zu den eingebauten Funktionen
 
-async function addNewContact(contactsIndex) {
+async function addNewContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let newContactId = await putNewData("/contacts/", contactsIndex);
     renderContacts();
     closeContactDialog(contactsIndex);
     let newContactsIndex = contactsList.findIndex(contact => contact.id == newContactId);
     openContactInformation(newContactsIndex);
-    openContactWasCreatedSuccesfull();
+    openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
 async function deleteContact(openDialog, contactsIndex) {
@@ -102,13 +102,14 @@ async function deleteContact(openDialog, contactsIndex) {
     }
 }
 
-async function editContact(contactsIndex) {
+async function editContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let currentContactId = await putEditData("/contacts/", contactsIndex);
     renderContacts();
     let newContactsIndex = contactsList.findIndex(contact => contact.id == currentContactId);
     closeContactDialog(contactsIndex);
     openContactInformation(newContactsIndex);
+    openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
 function filterInitialsOfName(contactsIndex) {
@@ -269,7 +270,19 @@ function styleAddNewContactDialog(headerText, descriptionText, directionOfHeader
     createButton.style.width = "200px";
 }
 
-function openContactWasCreatedSuccesfull() {
+function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
+    if (editOrAddNewContact == 'addNewContact') {
+        styleOfCreadedOrEditedSuccessfully();
+    }
+    if (editOrAddNewContact == 'editContact') {
+        let contentContactEditedTextSuccessfully = document.getElementById("contact_etited_text");
+        let contentContactCreatedTextSuccessfully = document.getElementById("contact_created_text");
+        contentContactEditedTextSuccessfully.classList.remove("contact_etited_text_deactive");
+        contentContactCreatedTextSuccessfully.classList.add("contact_etited_text_deactive");
+        styleOfCreadedOrEditedSuccessfully();
+}
+
+function styleOfCreadedOrEditedSuccessfully() {
     let contentContactCreatedSuccesfully = document.getElementById("contact_createdSuccesfully");
     contentContactCreatedSuccesfully.classList.remove("contact_createdSuccesfully_deactive");
     contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_animation");

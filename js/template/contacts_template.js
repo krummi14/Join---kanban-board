@@ -45,7 +45,8 @@ function getContactsInformationTemplate(contactsIndex) {
                 </span>
             <span>
             <div id="contact_createdSuccesfully" class="contact_createdSuccesfully contact_createdSuccesfully_deactive">
-                <p>Contact succesfully created</p>
+                <p id="contact_created_text">Contact successfully created</p>
+                <p id="contact_etited_text" class="contact_etited_text_deactive">Contact successfully edited</p>   
             </div>
             `;
 }
@@ -87,9 +88,9 @@ function getContactDialogTemplate(contactsIndex) {
                                     </div>
                                     <div class="contact_dialog_button_direction">
                                         <button type="button" id="contact_dialog_button_delete_${contactsIndex}" class="contact_dialog_button contact_dialog_button_delete" onclick="deleteContact(true, ${contactsIndex})">Delete</button>
-                                        <button type="button" id="contact_dialog_button_save_${contactsIndex}" class="contact_dialog_button contact_dialog_button_save" onclick="saveContact(${contactsIndex})">Save &#x2714</button>
+                                        <button type="button" id="contact_dialog_button_save_${contactsIndex}" class="contact_dialog_button contact_dialog_button_save" onclick="saveContact('editContact', ${contactsIndex})">Save &#x2714</button>
                                         <button type="button" id="contact_dialog_button_cancel_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_delete" onclick="closeContactDialog(${contactsIndex})">Cancel</button>
-                                        <button type="button" id="contact_dialog_button_create_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_save" onclick="saveNewContact(${contactsIndex})">Create Contact &#x2714</button>
+                                        <button type="button" id="contact_dialog_button_create_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_save" onclick="saveNewContact('addNewContact', ${contactsIndex})">Create Contact &#x2714</button>
                                     </div>
                                 </form>
                             </div>
