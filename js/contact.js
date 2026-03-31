@@ -1,3 +1,10 @@
+//import { getData, putNewData, deleteData, putEditData } from "./firebase.js";
+
+async function initContacts() {
+    await getData("/contacts");
+    renderContacts();
+}
+
 async function addNewContact(contactsIndex) {
     activeContact = null;
     let newContactId = await putNewData("/contacts/", contactsIndex);
@@ -197,3 +204,9 @@ function openContactWasCreatedSuccesfull() {
         contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_deactive");
     }, 4000);
 }
+
+//window.initContacts = initContacts;
+//window.addNewContact = addNewContact;
+//window.deleteContact = deleteContact;
+//window.editContact = editContact;
+//window.filterInitialsOfName = filterInitialsOfName;

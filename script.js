@@ -1,4 +1,3 @@
-//const BASE_URL = "https://join---the-kanban-system-default-rtdb.europe-west1.firebasedatabase.app/";
 const BASE_URL = "https://join---kanban-board-5501a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const backgroundColors = [
@@ -16,8 +15,3 @@ let prenameInitialsList = [];
 let activeContact = null;
 let contentDialogOfEditContact = document.getElementById("contact_dialog_content");
 let contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
-
-async function init() {
-    await getData("/contacts");
-    renderContacts();
-}

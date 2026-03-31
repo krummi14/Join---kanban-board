@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style/standard.css">
+  <link rel="stylesheet" href="./style/assets.css">
+  <link rel="stylesheet" href="./style/fonts.css">
+
+  <script src="./js/register.js"></script>
+  <script src="./js/firebase.js"></script>
+  <script src="./js/list.js"></script>
+</head>
+
+<body class="login_body">
+
+  <header class="header">
+    <div class="header-content">
+      <img src="assets/img/login_join.svg" class="logo">
+    </div>
+  </header>
+
+  <main class="main-register">
+
+    <div class="register-container">
+      <div class="title-row">
+        <a href="index.html" class="back-arrow">
+          <img src="assets/img/back-arrow.svg" alt="back">
+        </a>
+        <h1>Sign Up</h1>
+      </div>
+
+
+      <div class="input-wrapper">
+        <input id="name" type="text" placeholder="Name">
+        <img src="assets/img/person.svg" class="input-icon">
+      </div>
+
+      <div id="name-error" class="error"></div>
+
+
+      <div class="input-wrapper">
+        <input id="email" type="email" placeholder="Email">
+        <img src="assets/img/mail.svg" class="input-icon">
+      </div>
+
+      <div id="email-error" class="error"></div>
+
+      <div class="input-wrapper">
+        <input id="password" type="password" placeholder="Password">
+        <img src="assets/img/lock.svg" class="input-icon">
+      </div>
+
+      <div id="password-error" class="error"></div>
+
+
+      <div class="input-wrapper">
+        <input id="confirm-password" type="password" placeholder="Confirm Password">
+        <img src="assets/img/lock.svg" class="input-icon">
+      </div>
+
+      <div id="confirm-error" class="error"></div>
+
+      <div class="privacy">
+        <input type="checkbox" id="privacy">
+        <label for="privacy">I accept the Privacy Policy</label>
+      </div>
+
+      <div id="privacy-error" class="error"></div>
+
+
+      <div class="button-group">
+        <button id="signup-btn" class="signup-btn" disabled>Sign Up</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Legal notice</a>
+  </footer>
+
+  <div id="success-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Sign Up Complete 🎉</h2>
+      <button id="go-login" class="login-btn">Go to Login</button>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+  <!--<script type="module" src="js/register.js"></script>-->
+
+</body>
+
+</html>

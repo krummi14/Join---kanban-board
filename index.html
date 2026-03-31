@@ -1,16 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Join Please Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Join Please Login</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./style/standard.css">
+  <link rel="stylesheet" href="./style/assets.css">
+  <link rel="stylesheet" href="./style/fonts.css">
+
+  <script src="./js/login.js"></script>
+    <script src="./js/firebase.js"></script>
+  <script src="./js/list.js"></script>
 </head>
 
-<body>
+<body class="login_body">
+  <div id="splash_screen">
+    <img src="/assets/img/login_join.svg" id="splash_logo" />
+  </div>
 
-    <h1>   Testüberschrift</h1>
-    <h2> Test2</h2>
+  <header class="header">
+    <div class="header-content">
+      <img src="/assets/img/login_join.svg" class="logo" />
+
+      <div class="header-right desktop-only">
+        <span>Not a Join user?</span>
+        <button class="signup-btn">Sign up</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="login-container">
+      <h1>Log in</h1>
+
+      <div class="input-wrapper">
+        <input id="email" type="email" placeholder="Email" />
+        <img src="/assets/img/mail.svg" class="input-icon" />
+      </div>
+
+      <div id="email-error" class="error"></div>
+
+      <div class="input-wrapper">
+        <input id="password" type="password" placeholder="Password" />
+        <img src="/assets/img/lock.svg" class="input-icon" />
+      </div>
+
+      <div id="password-error" class="error"></div>
+      <div class="button-group">
+        <button id="login-btn">Log in</button>
+        <button class="guest-btn">Guest Log in</button>
+      </div>
+    </div>
+    <div class="signup-section mobile-only">
+      <span>Not a Join user?</span>
+      <button class="signup-btn">Sign up</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Legal notice</a>
+  </footer>
+
+  <script src="script.js"></script>
+  <!--<script type="module" src="./js/login.js"></script>-->
+
 </body>
 
 </html>

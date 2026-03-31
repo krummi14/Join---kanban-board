@@ -40,3 +40,20 @@ async function deleteData(path = "") {
     });
     return responseToJson = await response.json();
 }
+
+async function putUserData(path = "", data = {}) {
+await fetch(BASE_URL + path + ".json", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+}
+
+//export async function getData(path = "") {
+//  const res = await fetch(BASE_URL + path + ".json");
+//  return await res.json();
+//}
+
+//export async function deleteData(path = "") {
+//  await fetch(BASE_URL + path + ".json", { method: "DELETE" });
+//}

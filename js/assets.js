@@ -21,3 +21,4 @@ function editCurrentContactData(contactsIndex) {
         phone: contactInputPhone.value
     };
 }
+
