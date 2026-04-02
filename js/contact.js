@@ -267,7 +267,7 @@ function styleAddNewContactDialog(headerText, descriptionText, directionOfHeader
     saveButton.classList.add("display_none_button_or_img");
     cancelButton.classList.remove("display_none_button_or_img");
     createButton.classList.remove("display_none_button_or_img");
-    createButton.style.width = "200px";
+    //createButton.style.width = "240px";
 }
 
 function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
@@ -280,6 +280,7 @@ function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
         contentContactEditedTextSuccessfully.classList.remove("contact_etited_text_deactive");
         contentContactCreatedTextSuccessfully.classList.add("contact_etited_text_deactive");
         styleOfCreadedOrEditedSuccessfully();
+    }
 }
 
 function styleOfCreadedOrEditedSuccessfully() {

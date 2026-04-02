@@ -10,31 +10,32 @@
   <link rel="stylesheet" href="./style/standard.css">
   <link rel="stylesheet" href="./style/assets.css">
   <link rel="stylesheet" href="./style/fonts.css">
+  <link rel="stylesheet" href="./style/login_register.css">
 
   <script src="./js/login.js"></script>
-    <script src="./js/firebase.js"></script>
+  <script src="./js/firebase.js"></script>
   <script src="./js/list.js"></script>
 </head>
 
 <body class="login_body">
-  <div id="splash_screen">
-    <img src="/assets/img/login_join.svg" id="splash_logo" />
+  <div class="splash_screen" id="splash_screen">
+    <img src="/assets/img/login_join.svg" class="splash_logo" id="splash_logo" />
   </div>
 
-  <header class="header">
-    <div class="header-content">
+  <header class="header-login">
+    <div class="header-login-content">
       <img src="/assets/img/login_join.svg" class="logo" />
 
-      <div class="header-right desktop-only">
-        <span>Not a Join user?</span>
-        <button class="signup-btn">Sign up</button>
+      <div class="header-login-right desktop-only">
+        <span class="not_a_user_text_size">Not a Join user?</span>
+        <button class="button_basic_characteristics"><a class="signup-link" href="./register.html">Sign up</a></button>
       </div>
     </div>
   </header>
 
-  <main class="main">
+  <main class="main-login">
     <div class="login-container">
-      <h1>Log in</h1>
+      <h1 class="h1-mrg-btm">Log in</h1>
 
       <div class="input-wrapper">
         <input id="email" type="email" placeholder="Email" />
@@ -50,24 +51,23 @@
 
       <div id="password-error" class="error"></div>
       <div class="button-group">
-        <button id="login-btn">Log in</button>
-        <button class="guest-btn">Guest Log in</button>
+        <button class="button_basic_characteristics" id="login-btn">Log in</button>
+        <button class="button_basic_characteristics basic-btn-secondary">Guest Log in</button>
       </div>
     </div>
     <div class="signup-section mobile-only">
-      <span>Not a Join user?</span>
+      <span class="not_a_user_text_size">Not a Join user?</span>
       <button class="signup-btn">Sign up</button>
     </div>
   </main>
 
-  <footer class="footer">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Legal notice</a>
+  <footer class="footer-login">
+    <a href="/html/legal_notice.html">Legal Notice</a>
+    <a href="/html/privacy_policy.html">Privacy Policy</a>
   </footer>
 
   <script src="script.js"></script>
   <!--<script type="module" src="./js/login.js"></script>-->
-
 </body>
 
 </html>
