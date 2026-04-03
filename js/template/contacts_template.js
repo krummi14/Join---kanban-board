@@ -1,4 +1,6 @@
-function getContactsListHeaderTemplate(contactsIndex) {
+import { filterInitialsOfName } from "../contact.js";
+
+export function getContactsListHeaderTemplate(contactsIndex) {
     return `<table id="table_${contactsList[contactsIndex].name[0]}" class="list">
                 <tr class="horizontal_divider">
                     <th class="prename_first_letter">${contactsList[contactsIndex].name[0]}</th>
@@ -8,7 +10,7 @@ function getContactsListHeaderTemplate(contactsIndex) {
             `;
 }
 
-function getContactsListContentTemplate(contactsIndex) {
+export function getContactsListContentTemplate(contactsIndex) {
     return `<tr>
                 <td class="contact_person" colspan="2">
                     <div id="contact_wrapper_${contactsIndex}" class="contact_wrapper" onclick="openContactInformation(${contactsIndex})">
@@ -23,7 +25,7 @@ function getContactsListContentTemplate(contactsIndex) {
         `;
 }
 
-function getContactsInformationTemplate(contactsIndex) {
+export function getContactsInformationTemplate(contactsIndex) {
     return `<div class="contact_information_header">
                 <span id="initial_bg_color_contact_information_${contactsIndex}" class="contact_initials contact_initials_bg contact_initials_size">${filterInitialsOfName(contactsIndex)}</span>
                 <span class="contact_information_header_gap">
@@ -51,7 +53,7 @@ function getContactsInformationTemplate(contactsIndex) {
             `;
 }
 
-function getContactDialogTemplate(contactsIndex) {
+export function getContactDialogTemplate(contactsIndex) {
     return `<dialog onclick="closeContactDialog(${contactsIndex})" id="contact_dialog_${contactsIndex}" class="contact_dialog_content dialog_closed">
                 <div class="contact_dialog_direction" onclick="closeDialogOnBodyclick(event)">
                         <header class="contact_dialog_header">

@@ -1,4 +1,4 @@
-//import { getData } from "./firebase.js";
+import { getData } from "./firebase.js";
 
 const showError = (id, msg) =>
   document.getElementById(id).textContent = msg;

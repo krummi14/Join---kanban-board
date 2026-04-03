@@ -1,3 +1,8 @@
+export function createList(responseToJson) {
+    contactsList = [];
+    renderList(responseToJson);
+}
+
 function renderList(responseToJson) {
     for (let index = 0; index < responseToJson.length; index++) {
         if (responseToJson[index] == null) {
@@ -12,12 +17,7 @@ function renderList(responseToJson) {
     }
 }
 
-function createList(responseToJson) {
-    contactsList = [];
-    renderList(responseToJson);
-}
-
-function extractIDs() {
+export function extractIDs() {
     let ids = Object.values(contactsList).map(contact => Number(contact.id)); // ID extrahieren
     let nextId = Math.max(...ids) + 1; // höchste ID bestimmen
     return nextId

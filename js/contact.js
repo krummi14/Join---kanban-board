@@ -1,11 +1,14 @@
-//import { getData, putNewData, deleteData, putEditData } from "./firebase.js";
+import { getData, putNewData, putEditData, deleteData } from "./firebase.js";
+import { createList } from "./list.js";
+import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate } from "./template/contacts_template.js";
+
 
 async function initContacts() {
-    await getData("/contacts");
+    const data = await getData("/contacts");
+    createList(data);
     renderContacts();
     userInitials();
 }
-
 // Start: Eingebaute Funktionen von den anderen
 // soll diese nicht global in script.js wandern, da sie mehrfach verwendet werden?
 function userInitials() {
@@ -112,7 +115,7 @@ async function editContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
-function filterInitialsOfName(contactsIndex) {
+export function filterInitialsOfName(contactsIndex) {
     if (contactsIndex == contactsList.length) {
         return;
     } else {
@@ -295,8 +298,12 @@ function styleOfCreadedOrEditedSuccessfully() {
     }, 4000);
 }
 
-//window.initContacts = initContacts;
-//window.addNewContact = addNewContact;
-//window.deleteContact = deleteContact;
-//window.editContact = editContact;
-//window.filterInitialsOfName = filterInitialsOfName;
+window.initContacts = initContacts;
+window.openContactInformation = openContactInformation;
+window.openAddNewContactDialog = openAddNewContactDialog;
+window.openEditContactDialog = openEditContactDialog;
+window.closeContactDialog = closeContactDialog;
+window.closeDialogOnBodyclick = closeDialogOnBodyclick;
+window.saveNewContact = saveNewContact;
+window.saveContact = saveContact;
+window.deleteContact = deleteContact;
