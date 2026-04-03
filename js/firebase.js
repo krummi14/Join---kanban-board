@@ -1,4 +1,10 @@
-async function getData(path = "") {
+import { createList, extractIDs } from "./list.js";
+import { contactsList } from "./list.js";
+
+const BASE_URL =
+  "https://join---kanban-board-5501a-default-rtdb.europe-west1.firebasedatabase.app/";
+
+export async function getData(path = "") {
     return await loadData(path);
 }
 
@@ -9,51 +15,46 @@ async function loadData(path = "") {
     return responseToJson;
 }
 
-async function putNewData(path = "", contactsIndex) {
-    let newId = extractIDs(); // neue ID erzeugen
-    let newContact = insertNewContactData(contactsIndex); // Daten aus dem Dialog holen
+export async function putNewData(path = "", contactsIndex) {
+    let newId = extractIDs();
+    let newContact = insertNewContactData(contactsIndex);
     newContact.id = newId;
+
     await fetch(BASE_URL + path + (newId - 1) + ".json", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newContact)
     });
-    contactsList.push(newContact); // in Liste speichern
+
+    contactsList.push(newContact);
     return newId;
 }
 
-async function putEditData(path = "", contactsIndex) {
-    let editContact = editCurrentContactData(contactsIndex); // Daten aus dem Dialog holen
-    let currentId = editContact.id 
+export async function putEditData(path = "", contactsIndex) {
+    let editContact = editCurrentContactData(contactsIndex);
+    let currentId = editContact.id;
+
     await fetch(BASE_URL + path + (currentId - 1) + ".json", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editContact)
     });
-    contactsList[contactsIndex] = editContact; // in Liste speichern
+
+    contactsList[contactsIndex] = editContact;
     return currentId;
 }
 
-async function deleteData(path = "") {
+export async function deleteData(path = "") {
     let response = await fetch(BASE_URL + path + ".json", {
         method: "DELETE",
     });
-    return responseToJson = await response.json();
+    return await response.json();
 }
 
-async function putUserData(path = "", data = {}) {
-await fetch(BASE_URL + path + ".json", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+export async function putUserData(path = "", data = {}) {
+    await fetch(BASE_URL + path + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
 }
-
-//export async function getData(path = "") {
-//  const res = await fetch(BASE_URL + path + ".json");
-//  return await res.json();
-//}
-
-//export async function deleteData(path = "") {
-//  await fetch(BASE_URL + path + ".json", { method: "DELETE" });
-//}

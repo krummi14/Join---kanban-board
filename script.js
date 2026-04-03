@@ -8,17 +8,39 @@ const backgroundColors = [
 
 let intitialBackgroundcolors = [];
 let contactsList = [];
-let contactID = document.getElementById("contact_id");
-let contentContactsListHeader = document.getElementById('list_content');
-let contentContactInformation = document.getElementById("contact_information");
+let contactID;
+let contentContactsListHeader;
+let contentContactInformation;
 let prenameInitialsList = [];
 let activeContact = null;
-let contentDialogOfEditContact = document.getElementById("contact_dialog_content");
-let contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
+let contentDialogOfEditContact;
+let contentDialogOfAddNewContact;
 
-// Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
+function initElements() {
+  contactID = document.getElementById("contact_id");
+  contentContactsListHeader = document.getElementById('list_content');
+  contentContactInformation = document.getElementById("contact_information");
+  contentDialogOfEditContact = document.getElementById("contact_dialog_content");
+  contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
+}
+
 function logout() {
   localStorage.removeItem('user');
   sessionStorage.removeItem('user');
   window.location.href = '../index.html';
 }
+
+export {
+  logout,
+  contactsList,
+  backgroundColors,
+  intitialBackgroundcolors,
+  contactID,
+  contentContactsListHeader,
+  contentContactInformation,
+  prenameInitialsList,
+  activeContact,
+  contentDialogOfEditContact,
+  contentDialogOfAddNewContact,
+  initElements
+};

@@ -17,3 +17,5 @@ function getInitials(fullName) {
   // Anfangsbuchstaben der ersten beiden Namen holen und zusammenfügen
   return names[0][0].toUpperCase() + names[1][0].toUpperCase();
 }
+
+document.addEventListener("DOMContentLoaded", initSummery);

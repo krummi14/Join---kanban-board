@@ -1,13 +1,44 @@
-//import { getData, putNewData, deleteData, putEditData } from "./firebase.js";
+import { getData, putNewData, deleteData, putEditData } from "./firebase.js";
 
-async function initContacts() {
-    await getData("/contacts");
-    renderContacts();
+import { 
+    initElements,
+    contentContactsListHeader,
+    contentContactInformation,
+    prenameInitialsList,
+    intitialBackgroundcolors,
+    backgroundColors,
+        contentDialogOfEditContact,   // ✅ HINZUFÜGEN
+
+} from "../script.js";
+
+import { contactsList } from "./list.js";
+
+import { 
+    getContactDialogTemplate,
+    getContactsListHeaderTemplate,
+    getContactsListContentTemplate,
+    getContactsInformationTemplate
+} from "./template/contacts_template.js";
+
+let activeContact = null;
+
+
+console.log("contact.js loaded");
+
+
+
+export async function initContacts() {
+    initElements(); // DOM holen
+
+    await getData("/contacts"); // Daten laden
+
+    console.log("Header:", contentContactsListHeader); // DEBUG
+
+    renderContacts(); // erst DANACH benutzen!
     userInitials();
 }
 
 // Start: Eingebaute Funktionen von den anderen
-// soll diese nicht global in script.js wandern, da sie mehrfach verwendet werden?
 function userInitials() {
     const userName = localStorage.getItem("userName");
     if (userName !== 'Guest') {
@@ -16,11 +47,9 @@ function userInitials() {
         refUser.innerHTML = initials;
     }
 }
-// Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)
+
 function getInitials(fullName) {
-    // Namen in einzelne Wörter aufteilen
     const names = fullName.trim().split(' ');
-    // Anfangsbuchstaben der ersten beiden Namen holen und zusammenfügen
     return names[0][0].toUpperCase() + names[1][0].toUpperCase();
 }
 
@@ -48,8 +77,7 @@ function validateEmail(email, contactsIndex) {
     showError(`email_error_${contactsIndex}`, "");
     return true;
 }
-// Ende: Eingebaute Funktionen von den anderen 
-// Start: Ergänzung zu den eingebauten Funktionen
+
 function validatePhone(phone, contactsIndex) {
     const regex = /^\+\d{2}\s\d{6,}$/;
     if (!regex.test(phone)) {
@@ -70,18 +98,17 @@ function validateForm(contactsIndex) {
     return validName && validEmail && validPhone;
 }
 
-function saveContact(editOrAddNewContact, contactsIndex) {
+export function saveContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     editContact(editOrAddNewContact, contactsIndex);
 }
 
-function saveNewContact(editOrAddNewContact, contactsIndex) {
+export function saveNewContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     addNewContact(editOrAddNewContact, contactsIndex);
 }
-// Ende: Ergänzung zu den eingebauten Funktionen
 
-async function addNewContact(editOrAddNewContact, contactsIndex) {
+export async function addNewContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let newContactId = await putNewData("/contacts/", contactsIndex);
     renderContacts();
@@ -91,7 +118,7 @@ async function addNewContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
-async function deleteContact(openDialog, contactsIndex) {
+export async function deleteContact(openDialog, contactsIndex) {
     let deleteIndex = (contactsList[contactsIndex].id) - 1;
     await deleteData("/contacts/" + deleteIndex);
     contactsList = contactsList.filter(contact => contact.id !== deleteIndex + 1);
@@ -102,7 +129,7 @@ async function deleteContact(openDialog, contactsIndex) {
     }
 }
 
-async function editContact(editOrAddNewContact, contactsIndex) {
+export async function editContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let currentContactId = await putEditData("/contacts/", contactsIndex);
     renderContacts();
@@ -112,7 +139,7 @@ async function editContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
-function filterInitialsOfName(contactsIndex) {
+export function filterInitialsOfName(contactsIndex) {
     if (contactsIndex == contactsList.length) {
         return;
     } else {
@@ -124,8 +151,9 @@ function filterInitialsOfName(contactsIndex) {
 
 function renderContacts() {
     contentContactsListHeader.innerHTML = "";
-    prenameInitialsList = [];
-    intitialBackgroundcolors = [];
+
+    prenameInitialsList.length = 0;     // ❗ statt = [] (würde Import kaputt machen)
+    intitialBackgroundcolors.length = 0;    //❗ statt = [] (würde Import kaputt machen)
     contactsList.sort((a, b) => a.name.localeCompare(b.name));
     for (let contactsIndex = 0; contactsIndex < contactsList.length; contactsIndex++) {
         firstLetterOfPrenameIsEqual(contactsIndex);
@@ -154,7 +182,7 @@ function contactColor(contactsIndex) {
     intitialBackgroundcolors.push(randomColor);
 }
 
-function openContactInformation(contactsIndex) {
+export function openContactInformation(contactsIndex) {
     if (activeContact == contactsIndex) {
         closeContactInformation(contactsIndex);
         return;
@@ -202,7 +230,7 @@ function contactColorInContactDialog(contactsIndex) {
     }
 }
 
-function openEditContactDialog(contactsIndex, event) {
+export function openEditContactDialog(contactsIndex, event) {
     if (event) event.stopPropagation();
     contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
@@ -222,7 +250,7 @@ function getCurrentContactData(contactsIndex) {
     contactInputPhone.value = contactsList[contactsIndex].phone;
 }
 
-function closeContactDialog(contactsIndex) {
+export function closeContactDialog(contactsIndex) {
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
     contentDialogContact.classList.remove("dialog_opend");
     contentDialogContact.classList.add("dialog_closed");
@@ -231,11 +259,14 @@ function closeContactDialog(contactsIndex) {
     }, 125);
 }
 
-function closeDialogOnBodyclick(event) {
+
+export function closeDialogOnBodyclick(event) {
     event.stopPropagation()
 }
 
-function openAddNewContactDialog(contactsIndex, event) {
+
+
+export function openAddNewContactDialog(contactsIndex, event) {
     contactsIndex = contactsList.length;
     if (event) event.stopPropagation();
     contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
@@ -249,7 +280,10 @@ function openAddNewContactDialog(contactsIndex, event) {
     contactColorInContactDialog(contactsIndex);
 }
 
-function createAddNewContactDialog(contactsIndex) {
+
+
+
+export function createAddNewContactDialog(contactsIndex) {
     let contentDialogContactHeader = document.getElementById('edit_or_addNew_headline');
     let contentDialogContactDescription = document.getElementById('addNew_description_text');
     let contentDialogContactButtonDelete = document.getElementById(`contact_dialog_button_delete_${contactsIndex}`);
@@ -267,7 +301,7 @@ function styleAddNewContactDialog(headerText, descriptionText, directionOfHeader
     saveButton.classList.add("display_none_button_or_img");
     cancelButton.classList.remove("display_none_button_or_img");
     createButton.classList.remove("display_none_button_or_img");
-    //createButton.style.width = "240px";
+    createButton.style.width = "200px";
 }
 
 function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
@@ -300,3 +334,38 @@ function styleOfCreadedOrEditedSuccessfully() {
 //window.deleteContact = deleteContact;
 //window.editContact = editContact;
 //window.filterInitialsOfName = filterInitialsOfName;
+
+window.openAddNewContactDialog = openAddNewContactDialog;
+window.openContactInformation = openContactInformation;
+window.openEditContactDialog = openEditContactDialog;
+window.deleteContact = deleteContact;
+window.saveContact = saveContact;
+window.saveNewContact = saveNewContact;
+window.closeContactDialog = closeContactDialog;
+window.closeDialogOnBodyclick = closeDialogOnBodyclick;
+
+window.filterInitialsOfName = filterInitialsOfName;
+
+
+
+document.addEventListener("DOMContentLoaded", initContacts);
+/*
+Warum genau DIE exportiert werden
+
+Weil sie in deinem HTML benutzt werden:
+
+onclick="openAddNewContactDialog(...)"
+onclick="saveContact(...)"
+onclick="deleteContact(...)"
+
+👉 Ohne export sind sie im Module nicht global → funktionieren nicht
+
+
+*/
+
+//Probe 
+console.log("BEFORE WINDOW");
+
+window.openAddNewContactDialog = openAddNewContactDialog;
+
+console.log("AFTER WINDOW");
