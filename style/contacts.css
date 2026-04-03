@@ -16,6 +16,11 @@
     padding: 24px 0;
 }
 
+.add_contact_icon {
+    width: 32px;
+    height: 32px;
+}
+
 .contact_list_scrollmethode {
     overflow-y: auto;
     max-height: 100%;
@@ -149,6 +154,7 @@
     from {
         transform: translateX(250px);
     }
+
     to {
         transform: translateX(0px);
     }
@@ -256,7 +262,7 @@
     background-color: rgba(42, 54, 71, 1);
     height: 100%;
     width: 640px;
-    color:white;
+    color: white;
     padding-left: 40px;
 }
 
@@ -285,8 +291,6 @@
     gap: 48px;
     height: 100%;
     width: 100%;
-    /*padding-top: 56px;
-    padding-bottom: 136px;*/
     padding-left: 64px;
     padding-right: 56px;
 }
@@ -329,7 +333,7 @@
 }
 
 .contact_dialog_content::backdrop {
-    background-color: rgb(184,185,186);
+    background-color: rgb(184, 185, 186);
     opacity: 0;
     transition: all 125ms ease-in;
 }
@@ -377,6 +381,7 @@
     from {
         transform: translateX(0px);
     }
+
     to {
         transform: translateX(250px);
     }
@@ -389,4 +394,3 @@
 .contact_createdSuccesfully_deactive_animation {
     animation: slideLeft 2s forwards;
 }
-

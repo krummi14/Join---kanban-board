@@ -73,24 +73,27 @@ function getContactDialogTemplate(contactsIndex) {
                                 </div>
                                 <form id="contact_dialog_input_and_button_${contactsIndex}" class="contact_dialog_input_and_button_direction">
                                     <div class="contact_dialog_input_direction">
-                                        <div style="display: flex; flex-direction: column;">
-                                            <input id="contact_dialog_input_name_${contactsIndex}" type="text" class="contact_dialog_input contact_dialog_input_name" placeholder="Name">
-                                            <div id="name_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
+                                        <div class="input-wrapper">
+                                            <input id="contact_dialog_input_name_${contactsIndex}" type="text" placeholder="Name">
+                                            <img src="/assets/icon/person.svg" class="input-icon"/>
                                         </div>
-                                        <div style="display: flex; flex-direction: column;">
-                                            <input id="contact_dialog_input_email_${contactsIndex}" type="email" class="contact_dialog_input contact_dialog_input_email" placeholder="Email">
-                                            <div id="email_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
+                                        <div id="name_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
+                                        <div class="input-wrapper">
+                                            <input id="contact_dialog_input_email_${contactsIndex}" type="email" placeholder="Email">
+                                            <img src="/assets/icon/mail.svg" class="input-icon"/>
                                         </div>
-                                        <div style="display: flex; flex-direction: column;">
-                                            <input id="contact_dialog_input_phone_${contactsIndex}" type="tel" class="contact_dialog_input contact_dialog_input_phone" placeholder="Phone">
-                                            <div id="phone_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
+                                        <div id="email_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
+                                        <div class="input-wrapper">
+                                            <input id="contact_dialog_input_phone_${contactsIndex}" type="tel" placeholder="Phone">
+                                            <img src="/assets/icon/call.svg" class="input-icon"/>
                                         </div>
+                                        <div id="phone_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
                                     </div>
                                     <div class="contact_dialog_button_direction">
-                                        <button type="button" id="contact_dialog_button_delete_${contactsIndex}" class="contact_dialog_button contact_dialog_button_delete" onclick="deleteContact(true, ${contactsIndex})">Delete</button>
-                                        <button type="button" id="contact_dialog_button_save_${contactsIndex}" class="contact_dialog_button contact_dialog_button_save" onclick="saveContact('editContact', ${contactsIndex})">Save &#x2714</button>
-                                        <button type="button" id="contact_dialog_button_cancel_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_delete" onclick="closeContactDialog(${contactsIndex})">Cancel</button>
-                                        <button type="button" id="contact_dialog_button_create_${contactsIndex}" class="display_none_button_or_img contact_dialog_button contact_dialog_button_save" onclick="saveNewContact('addNewContact', ${contactsIndex})">Create Contact &#x2714</button>
+                                        <button type="button" id="contact_dialog_button_delete_${contactsIndex}" class="basic-btn-secondary contact_dialog_button_delete" onclick="deleteContact(true, ${contactsIndex})">Delete</button>
+                                        <button type="button" id="contact_dialog_button_save_${contactsIndex}" class="button_basic_characteristics contact_dialog_button_save" onclick="saveContact('editContact', ${contactsIndex})">Save &#x2714</button>
+                                        <button type="button" id="contact_dialog_button_cancel_${contactsIndex}" class="basic-btn-secondary display_none_button_or_img contact_dialog_button_delete" onclick="closeContactDialog(${contactsIndex})">Cancel  X</button>
+                                        <button type="button" id="contact_dialog_button_create_${contactsIndex}" class="button_basic_characteristics display_none_button_or_img contact_dialog_button_creat" onclick="saveNewContact('addNewContact', ${contactsIndex})">Create Contact &#x2714</button>
                                     </div>
                                 </form>
                             </div>

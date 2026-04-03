@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./style/standard.css">
   <link rel="stylesheet" href="./style/assets.css">
   <link rel="stylesheet" href="./style/fonts.css">
+  <link rel="stylesheet" href="./style/login_register.css">
 
   <script src="./js/firebase.js"></script>
   <script src="./js/list.js"></script>
@@ -16,8 +17,8 @@
 
 <body class="login_body">
 
-  <header class="header">
-    <div class="header-content">
+  <header class="header-login">
+    <div class="header-login-content">
       <img src="assets/img/login_join.svg" class="logo">
     </div>
   </header>
@@ -29,7 +30,7 @@
         <a href="index.html" class="back-arrow">
           <img src="assets/img/back-arrow.svg" alt="back">
         </a>
-        <h1>Sign Up</h1>
+        <h1 class="h1-mrg-btm">Sign Up</h1>
       </div>
 
 
@@ -72,16 +73,16 @@
 
 
       <div class="button-group">
-        <button id="signup-btn" class="signup-btn" disabled>Sign Up</button>
+        <button id="signup-btn" class="button_basic_characteristics" disabled>Sign Up</button>
       </div>
 
     </div>
 
   </main>
 
-  <footer class="footer">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Legal notice</a>
+  <footer class="footer-login">
+    <a href="/html/legal_notice.html">Legal Notice</a>
+    <a href="/html/privacy_policy.html">Privacy Policy</a>
   </footer>
 
   <div id="success-modal" class="modal hidden">
