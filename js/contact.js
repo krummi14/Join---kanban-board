@@ -2,34 +2,11 @@ import { getData, putNewData, putEditData, deleteData } from "./firebase.js";
 import { createList } from "./list.js";
 import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate } from "./template/contacts_template.js";
 
-
 async function initContacts() {
     const data = await getData("/contacts");
     createList(data);
     renderContacts();
     userInitials();
-}
-// Start: Eingebaute Funktionen von den anderen
-// soll diese nicht global in script.js wandern, da sie mehrfach verwendet werden?
-function userInitials() {
-    const userName = localStorage.getItem("userName");
-    if (userName !== 'Guest') {
-        let initials = getInitials(userName);
-        const refUser = document.getElementById("user");
-        refUser.innerHTML = initials;
-    }
-}
-// Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)
-function getInitials(fullName) {
-    // Namen in einzelne Wörter aufteilen
-    const names = fullName.trim().split(' ');
-    // Anfangsbuchstaben der ersten beiden Namen holen und zusammenfügen
-    return names[0][0].toUpperCase() + names[1][0].toUpperCase();
-}
-
-function showError(errorId, message) {
-    let errorField = document.getElementById(errorId);
-    if (errorField) errorField.textContent = message;
 }
 
 function validateName(name, contactsIndex) {
@@ -42,17 +19,6 @@ function validateName(name, contactsIndex) {
     return true;
 }
 
-function validateEmail(email, contactsIndex) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(email)) {
-        showError(`email_error_${contactsIndex}`, "Please enter a valid email address");
-        return false;
-    }
-    showError(`email_error_${contactsIndex}`, "");
-    return true;
-}
-// Ende: Eingebaute Funktionen von den anderen 
-// Start: Ergänzung zu den eingebauten Funktionen
 function validatePhone(phone, contactsIndex) {
     const regex = /^\+\d{2}\s\d{6,}$/;
     if (!regex.test(phone)) {
@@ -60,6 +26,16 @@ function validatePhone(phone, contactsIndex) {
         return false;
     }
     showError(`phone_error_${contactsIndex}`, "");
+    return true;
+}
+
+function validateEmail(email, contactsIndex) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email)) {
+        showError(`email_error_${contactsIndex}`, "Please enter a valid email address");
+        return false;
+    }
+    showError(`email_error_${contactsIndex}`, "");
     return true;
 }
 
@@ -82,7 +58,6 @@ function saveNewContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     addNewContact(editOrAddNewContact, contactsIndex);
 }
-// Ende: Ergänzung zu den eingebauten Funktionen
 
 async function addNewContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;

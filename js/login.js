@@ -1,8 +1,5 @@
 import { getData } from "./firebase.js";
 
-const showError = (id, msg) =>
-  document.getElementById(id).textContent = msg;
-
 const clearErrors = () => {
   showError("email-error", "");
   showError("password-error", "");
@@ -32,7 +29,6 @@ function validateLogin(email, password) {
   return true;
 }
 
-
 async function checkUser(email, password) {
   const users = await getData("users");
   if (!users) return null;
@@ -40,11 +36,10 @@ async function checkUser(email, password) {
   for (let id in users) {
     let u = users[id];
     if (u.email === email && u.password === password)
-     return id;
+      return id;
   }
   return null;
 }
-
 
 async function loginUser(email, password) {
 
@@ -61,7 +56,7 @@ async function loginUser(email, password) {
 
   let userName = await getData(`users/${id}/name`);
   localStorage.setItem("userName", userName);
-  
+
   location.href = "../html/summary.html";
 }
 

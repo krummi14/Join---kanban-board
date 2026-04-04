@@ -1,8 +1,5 @@
 import { putUserData, getData } from "./firebase.js";
 
-const showError = (fieldId, message) =>
-  (document.getElementById(fieldId).textContent = message);
-
 const clearErrors = () => {
   showError("name-error", "");
   showError("email-error", "");
