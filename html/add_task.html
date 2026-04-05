@@ -12,9 +12,11 @@
   <link rel="stylesheet" href="../style/standard.css">
   <link rel="stylesheet" href="../style/add_task.css">
 
+  <script src="../js/template.js"></script>
+
 </head>
 
-<body onload="initAddTask()">
+<body>
   <section class="sidebar">
     <div class="logo_nav">
       <img class="logo" src="../assets/img/join_logo.svg" alt="Join Logo">
@@ -58,15 +60,15 @@
       <form id="taskForm">
 
         <section class="left_form">
-          <div>
+          <section class="title">
             <label for="title">Title<span>*</span></label>
             <input type="text" id="title" name="title" placeholder="Enter a title" required>
-          </div>
+          </section>
 
-          <div>
-            <label for="description">Description:</label>
+          <section class="description">
+            <label for="description">Description</label>
             <textarea id="description" name="description" placeholder="Enter a description" required></textarea>
-          </div>
+          </section>
 
           <section class="due_date">
             <label for="dueDate">Due Date<span>*</span></label>
@@ -78,7 +80,7 @@
 
         <section class="right_form">
           <section class="priority">
-            <label for="priority">Priority:</label>
+            <label for="priority">Priority</label>
             <section id="priority" name="priority" required>
               <button type="button" id="prio_urgent" onclick="setPriority('urgent')">Urgent <img
                   src="../assets/icon/btn_urgent_off.svg" alt="Button Urgent"></button>
@@ -90,28 +92,33 @@
           </section>
 
           <section class="assignee">
-            <label for="assignee">Assignee:</label>
-            <select name="assignee" id="assignee">
-              <option value="">Select your option</option>
-            </select>
-
+            <label for="assignee">Assignee</label>
+            <section class="assignee_dropdown">
+              <button type="button" id="assignee" class="assignee_toggle" onclick="toggleAssigneeDropdown()"
+                aria-expanded="false" aria-controls="assigneeDropdownMenu">
+                <span id="assigneeLabel">Select contacts to assign</span>
+                <span class="assignee_arrow"><img src="../assets/icon/drop_down_arrow.svg" alt="Dropdown Arrow"></span>
+              </button>
+              <section id="assigneeDropdownMenu" class="assignee_menu"></section>
+              <section id="selectedContacts"></section>
+            </section>
           </section>
 
           <section class="category">
-            <label for="category">Category:</label>
-            <select name="category" id="category">
+            <label for="category">Category<span>*</span></label>
+            <select name="category" id="category" required>
               <option value="">Select task category</option>
             </select>
           </section>
 
           <section class="subtask">
-            <label for="subtask">Subtasks:</label>
+            <label for="subtask">Subtasks</label>
             <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
           </section>
 
           <section class="form_buttons">
-            <button class="button_basic_characteristics" type="reset">Clear</button>
-            <button class="button_basic_characteristics" type="submit">Create Task</button>
+            <button class="button_basic_characteristics clear_btn" type="reset">Clear &#x78;</button>
+            <button class="button_basic_characteristics create_btn" type="submit">Create Task &#x2713;</button>
           </section>
         </section>
 
@@ -121,7 +128,7 @@
 
   </section>
 
-  <script src="../js/addTask.js"></script>
+  <script type="module" src="../js/addTask.js"></script>
   <script src="../script.js"></script>
 </body>
 
