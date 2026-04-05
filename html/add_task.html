@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../style/assets.css">
   <link rel="stylesheet" href="../style/standard.css">
   <link rel="stylesheet" href="../style/add_task.css">
+
 </head>
 
 <body onload="initAddTask()">
@@ -22,7 +23,8 @@
           <li><a href="./summary.html"><img class="summery" src="../assets/icon/summary_off.svg" alt="summery"></a></li>
           <li><a href="./add_task.html"><img class="add_task" src="../assets/icon/add_off.svg" alt="add task"></a></li>
           <li><a href="./board.html"><img class="board" src="../assets/icon/board_off.svg" alt="board"></a></li>
-          <li><a href="./contact.html"><img class="contact" src="../assets/icon/contact_off.svg" alt="contact"></a></li>
+          <li><a href="./contacts.html"><img class="contact" src="../assets/icon/contact_off.svg" alt="contact"></a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -66,30 +68,50 @@
             <textarea id="description" name="description" placeholder="Enter a description" required></textarea>
           </div>
 
-          <div>
+          <section class="due_date">
             <label for="dueDate">Due Date<span>*</span></label>
             <input type="date" id="dueDate" name="dueDate" required>
-          </div>
+          </section>
         </section>
 
         <hr>
 
         <section class="right_form">
-          <section class="priority_assignee">
+          <section class="priority">
             <label for="priority">Priority:</label>
-            <select  id="priority" name="priority" required>
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+            <section id="priority" name="priority" required>
+              <button type="button" id="prio_urgent" onclick="setPriority('urgent')">Urgent <img
+                  src="../assets/icon/btn_urgent_off.svg" alt="Button Urgent"></button>
+              <button type="button" id="prio_medium" onclick="setPriority('medium')">Medium <img
+                  src="../assets/icon/btn_medium_off.svg" alt="Button Medium"></button>
+              <button type="button" id="prio_low" onclick="setPriority('low')">Low <img
+                  src="../assets/icon/btn_low_off.svg" alt="Button Low"></button>
+            </section>
+          </section>
+
+          <section class="assignee">
+            <label for="assignee">Assignee:</label>
+            <select name="assignee" id="assignee">
+              <option value="">Select your option</option>
             </select>
 
-            <label for="assignee">Assignee:</label>
-            <input type="text" id="assignee" name="assignee" required>
+          </section>
+
+          <section class="category">
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+              <option value="">Select task category</option>
+            </select>
+          </section>
+
+          <section class="subtask">
+            <label for="subtask">Subtasks:</label>
+            <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
           </section>
 
           <section class="form_buttons">
-            <button type="reset">Clear</button>
-            <button type="submit">Create Task</button>
+            <button class="button_basic_characteristics" type="reset">Clear</button>
+            <button class="button_basic_characteristics" type="submit">Create Task</button>
           </section>
         </section>
 

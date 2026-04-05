@@ -12,10 +12,8 @@
   top: 335px;
   left: 328px;
   height: 562px;
-  background: #fff;
   display: flex;
   gap: 24px;
-  padding: 24px;
 }
 
 .left_form {
@@ -30,6 +28,10 @@
   flex-direction: column;
   padding: 8px 0;
   gap: 8px;
+}
+
+#dueDate {
+  color: rgba(128, 128, 128, 0.3);
 }
 
 hr {
@@ -64,18 +66,54 @@ label span {
   color: #ff0000;
 }
 
-input {
-  width: 440px;
-  height: 48px;
-  background: #f1f1f1;
-  border-radius: 10px;
-  padding: 0 16px;
+.priority {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-textarea {
-  width: 440px;
-  height: 120px;
-  background: #f1f1f1;
+#prio_urgent,
+#prio_medium,
+#prio_low {
+  width: 136px;
+  height: 56px;
+  font-size: 20px;
+  font-weight: 400;
+  background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  padding: 16px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  box-sizing: border-box;
+}
+
+#prio_urgent:hover,
+#prio_medium:hover,
+#prio_low:hover {
+  box-shadow: #53535350 0 4px 2px -2px;
+}
+
+#prio_urgent.active {
+  background-color: #FF3B30;
+  color: #fff;
+}
+
+#prio_medium.active {
+  background-color: #FFA800;
+  color: #fff;
+}
+
+#prio_low.active {
+  background-color: #7AE229;
+  color: #fff;
+}
+
+.assignee,
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#assignee,
+#category {
+  color: rgba(128, 128, 128, 0.3);
 }

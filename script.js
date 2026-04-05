@@ -24,3 +24,9 @@ function logout() {
   sessionStorage.removeItem('user');
   window.location.href = '../index.html';
 }
+
+// get initials funktion
+function getInitials(fullName) {
+  const names = fullName.trim().split(' ');
+  return names[0][0].toUpperCase() + names[1][0].toUpperCase();
+}
