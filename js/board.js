@@ -1,4 +1,4 @@
-// Beispiel tasks (nicht aus dem BaaS)
+// Beispiel tasks (sollten später aus der BaaS/ Firebase in das leere Array tasks geschrieben werden)
 let tasks = [{
     'id': 0,
     'title': 'Putzen',
@@ -37,13 +37,12 @@ function filterAndCreateWorkflowarray(category, taskID) {
     document.getElementById(taskID).innerHTML = '';
     if (workflowArray.length == 0) {
         document.getElementById(taskID).innerHTML = '<p class="no_task_text"> No tasks ' + category + '</p>'
-    }
-    else {
+    } else {
         // Elemente zu workflowArray hinzufügen
         for (let index = 0; index < workflowArray.length; index++) {
-            const element = workflowArray[index];
+            const taskElement = workflowArray[index];
             // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
-            document.getElementById(taskID).innerHTML += generateTaskHTML(element);
+            document.getElementById(taskID).innerHTML += generateTaskHTML(taskElement);
         }
     }
 }

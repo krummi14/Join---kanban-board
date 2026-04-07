@@ -146,6 +146,15 @@ input:focus {
     width: 320px;
 }
 
+.input-wrapper input {
+    border: 1px solid rgba(168, 168, 168, 1);
+}
+
+input:focus {
+    outline: none;
+    border-color: rgba(41, 171, 226, 1);
+}
+
 .plus_add_task_button {
     height: 24px;
     width: 24px;
