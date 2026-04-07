@@ -1,5 +1,6 @@
 import { getData } from "./firebase.js";
 
+// JavaScript for Add Task Page
 let assigneeContacts = [];
 let selectedAssignees = [];
 
@@ -14,11 +15,12 @@ async function initAddTask() {
     refUser.innerHTML = initials;
   }
 
-  renderAssigneeContacts();
+  await renderAssigneeContacts();
   document.addEventListener("click", closeAssigneeDropdownOnOutsideClick);
 }
 
-// Functions for priority buttons
+// Function for priority buttons
+// Priority Button Functions
 function resetPriorityButtons() {
   const priorities = ["urgent", "medium", "low"];
 
@@ -29,29 +31,40 @@ function resetPriorityButtons() {
   });
 }
 
+// Set the priority and update button states
 function setPriority(priority) {
   const currentButton = document.getElementById("prio_" + priority);
   const isAlreadyActive = currentButton.classList.contains("active");
 
   resetPriorityButtons();
-  if (isAlreadyActive) return;
+
+  if (isAlreadyActive) {
+    return;
+  }
 
   currentButton.classList.add("active");
   currentButton.innerHTML = `${capitalize(priority)} <img src="../assets/icon/btn_${priority}_on.svg" alt="Button ${capitalize(priority)}">`;
 }
 
+// Utility function to capitalize the first letter of a string
 function capitalize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-// assignee dropdown functions
+// a function to show all contacts in the assignee dropdown with checkboxes
 async function renderAssigneeContacts() {
   const dropdownMenu = document.getElementById("assigneeDropdownMenu");
+
+  if (!dropdownMenu) {
+    return;
+  }
+
+  dropdownMenu.innerHTML = '<div class="assignee_status">Loading contacts...</div>';
 
   try {
     assigneeContacts = await fetchContacts();
   } catch (error) {
-    dropdownMenu.innerHTML = '<div class="assignee_status">Can not load contacts.</div>';
+    dropdownMenu.innerHTML = '<div class="assignee_status">Unable to load contacts.</div>';
     console.error("Failed to load contacts for assignee dropdown.", error);
     return;
   }
@@ -69,24 +82,55 @@ async function renderAssigneeContacts() {
 async function fetchContacts() {
   const contacts = await getData("contacts");
 
+  if (!contacts) {
+    return [];
+  }
+
   return Object.entries(contacts)
     .filter(([, contact]) => contact && typeof contact === "object")
     .map(([id, contact]) => ({
       id,
-      name: contact.name,
+      name: contact.name || "Unnamed contact",
+      email: contact.email || "",
     }))
     .sort((firstContact, secondContact) => firstContact.name.localeCompare(secondContact.name));
 }
 
+function createAssigneeOption(contact) {
+  const safeName = escapeHtml(contact.name);
+  const safeEmail = escapeHtml(contact.email);
+
+  return `
+    <label class="assignee_option" for="assignee_${contact.id}">
+      <span class="assignee_option_text">
+        <span class="assignee_option_name">${safeName}</span>
+        <span class="assignee_option_email">${safeEmail}</span>
+      </span>
+      <input type="checkbox" id="assignee_${contact.id}" value="${contact.id}" onchange="toggleAssigneeSelection('${contact.id}')">
+    </label>
+  `;
+}
+
 function toggleAssigneeDropdown() {
-  const isOpen = document.getElementById("assigneeDropdownMenu").classList.toggle("open");
-  document.getElementById("assignee").setAttribute("aria-expanded", String(isOpen));
+  const dropdownMenu = document.getElementById("assigneeDropdownMenu");
+  const toggleButton = document.getElementById("assignee");
+
+  if (!dropdownMenu || !toggleButton) {
+    return;
+  }
+
+  const isOpen = dropdownMenu.classList.toggle("open");
+  toggleButton.setAttribute("aria-expanded", String(isOpen));
 }
 
 function closeAssigneeDropdownOnOutsideClick(event) {
   const dropdownWrapper = document.querySelector(".assignee_dropdown");
   const dropdownMenu = document.getElementById("assigneeDropdownMenu");
   const toggleButton = document.getElementById("assignee");
+
+  if (!dropdownWrapper || !dropdownMenu || !toggleButton) {
+    return;
+  }
 
   if (dropdownWrapper.contains(event.target)) {
     return;
@@ -109,30 +153,31 @@ function toggleAssigneeSelection(contactId) {
 }
 
 function updateAssigneeLabel() {
-  const selectedContacts = document.getElementById("selectedContacts");
+  const assigneeLabel = document.getElementById("assigneeLabel");
+
+  if (!assigneeLabel) {
+    return;
+  }
+
+  if (selectedAssignees.length === 0) {
+    assigneeLabel.textContent = "Select contacts to assign";
+    return;
+  }
 
   const selectedNames = assigneeContacts
     .filter((contact) => selectedAssignees.includes(contact.id))
     .map((contact) => contact.name);
 
-  selectedContacts.textContent = selectedNames.map(getContactInitials).join(" ");
+  assigneeLabel.textContent = selectedNames.join(", ");
 }
 
-function getContactInitials(name) {
-  const parts = String(name || "")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-
-  if (parts.length === 0) {
-    return "";
-  }
-
-  if (parts.length === 1) {
-    return parts[0].slice(0, 2).toUpperCase();
-  }
-
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 window.setPriority = setPriority;
