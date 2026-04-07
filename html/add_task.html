@@ -67,7 +67,7 @@
 
           <section class="description">
             <label for="description">Description</label>
-            <textarea id="description" name="description" placeholder="Enter a description" required></textarea>
+            <textarea id="description" name="description" placeholder="Enter a description"></textarea>
           </section>
 
           <section class="due_date">
@@ -106,14 +106,24 @@
 
           <section class="category">
             <label for="category">Category<span>*</span></label>
-            <select name="category" id="category" required>
-              <option value="">Select task category</option>
-            </select>
+            <section class="category_dropdown">
+              <select name="category" id="category" required>
+                <option value="" selected hidden>Select task category</option>
+                <option value="Technical Task">Technical Task</option>
+                <option value="User Story">User Story</option>
+              </select>
+            </section>
           </section>
 
           <section class="subtask">
             <label for="subtask">Subtasks</label>
-            <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
+            <section class="subtask_input_wrapper">
+              <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
+              <button type="button" id="addSubtaskButton" class="subtask_add_button" aria-label="Add subtask">
+                <img src="../assets/icon/done.svg" alt="Add subtask">
+              </button>
+            </section>
+            <section id="subtaskList" class="subtask_list"></section>
           </section>
 
           <section class="form_buttons">
