@@ -187,27 +187,8 @@ function addSubtask() {
 
 function renderSubtasks() {
   const subtaskList = document.getElementById("subtaskList");
-
-  subtaskList.innerHTML = "";
-
-  subtasks.forEach((subtaskTitle, index) => {
-    const subtaskItem = document.createElement("section");
-    subtaskItem.className = "subtask_item";
-
-    const subtaskText = document.createElement("span");
-    subtaskText.className = "subtask_item_text";
-    subtaskText.textContent = subtaskTitle;
-
-    const removeButton = document.createElement("button");
-    removeButton.type = "button";
-    removeButton.className = "subtask_remove_button";
-    removeButton.setAttribute("aria-label", `Remove subtask ${subtaskTitle}`);
-    removeButton.textContent = "×";
-    removeButton.addEventListener("click", () => removeSubtask(index));
-
-    subtaskItem.append(subtaskText, removeButton);
-    subtaskList.appendChild(subtaskItem);
-  });
+  
+  subtaskList.innerHTML = subtasks.map((subtaskTitle, index) => createSubtaskItem(subtaskTitle, index)).join("");
 }
 
 function removeSubtask(index) {
@@ -287,3 +268,4 @@ function resetTaskFormState() {
 window.setPriority = setPriority;
 window.toggleAssigneeDropdown = toggleAssigneeDropdown;
 window.toggleAssigneeSelection = toggleAssigneeSelection;
+window.removeSubtask = removeSubtask;

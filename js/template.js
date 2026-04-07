@@ -8,3 +8,12 @@ function createAssigneeOption(contact) {
     </label>
   `;
 }
+
+function createSubtaskItem(subtaskTitle, index) {
+    return `
+    <section class="subtask_item">
+      <span class="subtask_item_text">${subtaskTitle}</span>
+      <button type="button" class="subtask_remove_button" aria-label="Remove subtask ${subtaskTitle}" onclick="removeSubtask(${index})">×</button>
+    </section>
+  `;
+}
