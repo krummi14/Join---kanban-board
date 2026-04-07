@@ -33,15 +33,18 @@ function filterAndCreateWorkflowarray(category, taskID) {
     // Filter das Array und sucht alle Tasks, die eine gleiche categrory haben 
     // und fügt sie in das workflowArray toDo hinzu
     let workflowArray = tasks.filter(t => t['category'] == category);
-
     // Div Container leeren und alle Elemente dem workflowArray
     document.getElementById(taskID).innerHTML = '';
-
-    // Elemente zu workflowArray hinzufügen
-    for (let index = 0; index < workflowArray.length; index++) {
-        const element = workflowArray[index];
-        // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
-        document.getElementById(taskID).innerHTML += generateTaskHTML(element);
+    if (workflowArray.length == 0) {
+        document.getElementById(taskID).innerHTML = '<p class="no_task_text"> No tasks ' + category + '</p>'
+    }
+    else {
+        // Elemente zu workflowArray hinzufügen
+        for (let index = 0; index < workflowArray.length; index++) {
+            const element = workflowArray[index];
+            // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
+            document.getElementById(taskID).innerHTML += generateTaskHTML(element);
+        }
     }
 }
 

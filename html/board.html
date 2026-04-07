@@ -54,6 +54,7 @@
 
     <main class="main_framework">
       <div class="board_main">
+
         <section class="main_header">
           <h1>Board</h1>
           <div class="input_wrapper_direction">
@@ -69,29 +70,45 @@
             </button>
           </div>
         </section>
+
         <section class="main_drag_and_drop">
-          <!--  Über diesen beiden Div soll nun ein Element abgeworfen/ losgelassen werden  
-      
-      Dafür wird ondrop="moveTo()" ondragover="allowDrop() benötigt
-
-      ondragleave="removeHighlight()" removed eine Klasse, wenn der Drag nicht über dem Div Container liegt-->
-
-          <div class="drag-area" id="to_do" ondrop="moveTo('to do')" ondragleave="removeHighlight('to_do')"
-            ondragover="allowDrop(event); highlight('to_do')"></div>
-          <div class="drag-area" id="in_progress" ondrop="moveTo('in progress')"
-            ondragleave="removeHighlight('in_progress')" ondragover="allowDrop(event); highlight('in_progress')"></div>
-          <div class="drag-area" id="await_feedback" ondrop="moveTo('await feedback')"
-            ondragleave="removeHighlight('await_feedback')" ondragover="allowDrop(event); highlight('await_feedback')">
+          <div class="drag_content_gap">
+            <div class="drag_area_header">
+              <h4>To do</h4>
+              <button class="plus_add_task_button">+</button>
+            </div>
+            <div class="drag_area" id="to_do" ondrop="moveTo('to do')" ondragleave="removeHighlight('to_do')"
+              ondragover="allowDrop(event); highlight('to_do')"></div>
           </div>
-          <div class="drag-area" id="done" ondrop="moveTo('done')" ondragleave="removeHighlight('done')"
-            ondragover="allowDrop(event); highlight('done')">
+          <div class="drag_content_gap">
+            <div class="drag_area_header">
+              <h4>In progress</h4>
+              <button class="plus_add_task_button">+</button>
+            </div>
+            <div class="drag_area" id="in_progress" ondrop="moveTo('in progress')"
+              ondragleave="removeHighlight('in_progress')" ondragover="allowDrop(event); highlight('in_progress')">
+            </div>
+          </div>
+          <div class="drag_content_gap">
+            <div class="drag_area_header">
+              <h4>Await feedback</h4>
+              <button class="plus_add_task_button">+</button>
+            </div>
+            <div class="drag_area" id="await_feedback" ondrop="moveTo('await feedback')"
+              ondragleave="removeHighlight('await_feedback')"
+              ondragover="allowDrop(event); highlight('await_feedback')">
+            </div>
+          </div>
+          <div class="drag_content_gap">
+            <div class="drag_area_header">
+              <h4>Done</h4>
+            </div>
+            <div class="drag_area" id="done" ondrop="moveTo('done')" ondragleave="removeHighlight('done')"
+              ondragover="allowDrop(event); highlight('done')">
+            </div>
           </div>
 
         </section>
-
-
-
-
 
       </div>
     </main>
