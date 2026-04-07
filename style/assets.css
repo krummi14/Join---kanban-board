@@ -59,7 +59,6 @@
     height: 24px;
     transform: translateY(-50%);
     object-fit: contain;
-    pointer-events: none;
 }
 
 input::placeholder {
@@ -75,6 +74,20 @@ input:focus {
     color: red;
     font-size: 12px;
     margin: 0;
+}
+
+.close_button {
+    height: 32px;
+    width: 32px;
+    font-size: 20px;
+    border: none;
+    background-color: white;
+    border-radius: 100%;
+    color: rgba(42, 54, 71, 1);
+}
+
+.close_button:hover {
+    background-color: rgba(128, 128, 128, 0.3);
 }
 
 /*contacts*/
@@ -99,20 +112,6 @@ input:focus {
     font-weight: bold;
 }
 
-.contact_dialog_close_button {
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    border: none;
-    background-color: white;
-    border-radius: 100%;
-    color: rgba(42, 54, 71, 1);
-}
-
-.contact_dialog_close_button:hover {
-    background-color: rgba(128, 128, 128, 0.3);
-}
-
 .contact_dialog_button_delete {
     font-size: 20px;
     font-weight: 400;
@@ -131,4 +130,18 @@ input:focus {
 
 .display_none_button_or_img {
     display: none;
+}
+
+/*board*/
+.search_icon_size {
+    width: 32px;
+    height: 32px;
+}
+
+.add_task_button {
+    width: 160px;
+}
+
+.input-wrapper_size {
+    width: 320px;
 }

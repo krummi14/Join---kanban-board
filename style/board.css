@@ -1,0 +1,61 @@
+.board_main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.main_header {
+    /*position: absolute;
+    top: 206px;
+    left: 328px;*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    /*gap: 8px;*/
+    padding: 80px 64px;
+}
+
+.input_wrapper_direction {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    width: 520px;
+}
+
+.main_drag_and_drop {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+    height: 100%;
+    padding: 0 64px;
+}
+
+
+
+.drag-area {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 240px;
+    /*height: 200px;*/
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px dashed black;
+    margin-bottom: 50px;
+    
+}
+
+/** Hintergrund Farbe wenn die Elemente über den DivContainer liegen **/
+.drag-area-highlight {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.todo {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+}

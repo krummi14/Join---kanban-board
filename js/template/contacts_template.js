@@ -66,7 +66,7 @@ export function getContactDialogTemplate(contactsIndex) {
                         </header>
                         <main class="contact_dialog_main">
                             <div class="contact_dialog_close_button_direction">
-                                <button class="contact_dialog_close_button" onclick="closeContactDialog(${contactsIndex})">X</button>
+                                <button class="close_button" onclick="closeContactDialog(${contactsIndex})">X</button>
                             </div>
                             <div class="contact_dialog_initial_and_assets">
                                 <div id="initial_bg_color_contact_dialog_${contactsIndex}" class="contact_initials contact_initials_bg contact_initials_size">
