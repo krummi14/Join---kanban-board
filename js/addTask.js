@@ -1,12 +1,15 @@
-import { getData } from "./firebase.js";
+import { getData, putData } from "./firebase.js";
 
 let assigneeContacts = [];
 let selectedAssignees = [];
+let subtasks = [];
+let selectedPriority = "";
 
 document.addEventListener("DOMContentLoaded", initAddTask);
 
 async function initAddTask() {
   const userName = localStorage.getItem("userName");
+  const taskForm = document.getElementById("taskForm");
 
   if (userName !== 'Guest') {
     let initials = getInitials(userName);
@@ -14,8 +17,11 @@ async function initAddTask() {
     refUser.innerHTML = initials;
   }
 
+  setupSubtaskControls();
   renderAssigneeContacts();
   document.addEventListener("click", closeAssigneeDropdownOnOutsideClick);
+  taskForm.addEventListener("reset", resetTaskFormState);
+  taskForm.addEventListener("submit", handleTaskSubmit);
 }
 
 // Functions for priority buttons
@@ -34,10 +40,14 @@ function setPriority(priority) {
   const isAlreadyActive = currentButton.classList.contains("active");
 
   resetPriorityButtons();
-  if (isAlreadyActive) return;
+  if (isAlreadyActive) {
+    selectedPriority = "";
+    return;
+  }
 
   currentButton.classList.add("active");
   currentButton.innerHTML = `${capitalize(priority)} <img src="../assets/icon/btn_${priority}_on.svg" alt="Button ${capitalize(priority)}">`;
+  selectedPriority = priority;
 }
 
 function capitalize(text) {
@@ -68,6 +78,10 @@ async function renderAssigneeContacts() {
 
 async function fetchContacts() {
   const contacts = await getData("contacts");
+
+  if (!contacts) {
+    return [];
+  }
 
   return Object.entries(contacts)
     .filter(([, contact]) => contact && typeof contact === "object")
@@ -133,6 +147,141 @@ function getContactInitials(name) {
   }
 
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// create and manage subtasks
+function setupSubtaskControls() {
+  const subtaskInput = document.getElementById("subtask");
+  const addSubtaskButton = document.getElementById("addSubtaskButton");
+
+  updateSubtaskButtonState();
+  renderSubtasks();
+
+  subtaskInput.addEventListener("input", updateSubtaskButtonState);
+  subtaskInput.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+    addSubtask();
+  });
+
+  addSubtaskButton.addEventListener("click", addSubtask);
+}
+
+function addSubtask() {
+  const subtaskInput = document.getElementById("subtask");
+  const subtaskTitle = subtaskInput.value.trim();
+
+  if (!subtaskTitle) {
+    updateSubtaskButtonState();
+    return;
+  }
+
+  subtasks.push(subtaskTitle);
+  subtaskInput.value = "";
+  renderSubtasks();
+  updateSubtaskButtonState();
+}
+
+function renderSubtasks() {
+  const subtaskList = document.getElementById("subtaskList");
+
+  subtaskList.innerHTML = "";
+
+  subtasks.forEach((subtaskTitle, index) => {
+    const subtaskItem = document.createElement("section");
+    subtaskItem.className = "subtask_item";
+
+    const subtaskText = document.createElement("span");
+    subtaskText.className = "subtask_item_text";
+    subtaskText.textContent = subtaskTitle;
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "subtask_remove_button";
+    removeButton.setAttribute("aria-label", `Remove subtask ${subtaskTitle}`);
+    removeButton.textContent = "×";
+    removeButton.addEventListener("click", () => removeSubtask(index));
+
+    subtaskItem.append(subtaskText, removeButton);
+    subtaskList.appendChild(subtaskItem);
+  });
+}
+
+function removeSubtask(index) {
+  subtasks.splice(index, 1);
+  renderSubtasks();
+}
+
+function updateSubtaskButtonState() {
+  const subtaskInput = document.getElementById("subtask");
+  const addSubtaskButton = document.getElementById("addSubtaskButton");
+  const subtaskInputWrapper = document.querySelector(".subtask_input_wrapper");
+  const hasInput = subtaskInput.value.trim().length > 0;
+
+  addSubtaskButton.disabled = !hasInput;
+  subtaskInputWrapper.classList.toggle("has-value", hasInput);
+}
+
+function buildTaskPayload() {
+  const taskId = Date.now().toString();
+  const title = document.getElementById("title").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("dueDate").value;
+  const category = document.getElementById("category").value;
+  const assignedContacts = assigneeContacts.filter((contact) => selectedAssignees.includes(contact.id));
+
+  return {
+    id: taskId,
+    title,
+    description,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    assignees: assignedContacts,
+    subtasks: subtasks.map((subtaskTitle) => ({
+      title: subtaskTitle,
+      done: false,
+    })),
+  };
+}
+
+async function handleTaskSubmit(event) {
+  event.preventDefault();
+
+  const task = buildTaskPayload();
+  const createButton = event.submitter;
+
+  try {
+    if (createButton) {
+      createButton.disabled = true;
+    }
+
+    await putData(`tasks/${task.id}`, task);
+    event.target.reset();
+  } catch (error) {
+    console.error("Failed to create task.", error);
+    window.alert("Task could not be created. Please try again.");
+  } finally {
+    if (createButton) {
+      createButton.disabled = false;
+    }
+  }
+}
+
+function resetTaskFormState() {
+  window.setTimeout(() => {
+    selectedPriority = "";
+    selectedAssignees = [];
+    subtasks = [];
+    resetPriorityButtons();
+    renderAssigneeContacts();
+    updateAssigneeLabel();
+    renderSubtasks();
+    updateSubtaskButtonState();
+  }, 0);
 }
 
 window.setPriority = setPriority;
