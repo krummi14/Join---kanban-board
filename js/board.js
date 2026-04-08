@@ -1,31 +1,30 @@
-// Beispiel tasks (sollten später aus der BaaS/ Firebase in das leere Array tasks geschrieben werden)
-let tasks = [{
-    'id': 0,
-    'title': 'Putzen',
-    'category': 'to do'
-}, {
-    'id': 1,
-    'title': 'Kochen',
-    'category': 'in progress'
-}, {
-    'id': 2,
-    'title': 'Einkaufen',
-    'category': 'in progress'
-}, {
-    'id': 3,
-    'title': 'Schlafen',
-    'category': 'await feedback'
-}, {
-    'id': 4,
-    'title': 'Saugen',
-    'category': 'done'
-}];
+import { getData } from "./firebase.js";
 
-// Variable für aktuelles Drag-Element
+let tasks = [];
 let currentDraggedElement;
+
 
 function initBoard() {
     userInitials();
+    loadTasks(); // 🔥 lädt Tasks aus Firebase! statt updateHTML
+}
+
+async function loadTasks() {
+    const data = await getData("tasks");
+
+    if (!data) {
+        tasks = [];
+        updateHTML();
+        return;
+    }
+
+    tasks = Object.entries(data).map(([id, task]) => ({
+      id,
+    ...task,
+    initials: getAssigneesInitials(task),
+    priorityIcon: getPriorityIcon(task.priority)
+    }));
+
     updateHTML();
 }
 
@@ -54,6 +53,37 @@ function updateHTML() {
     filterAndCreateWorkflowarray('done', 'done');
 }
 
+
+//Assignees Initials
+function getAssigneesInitials(task) {
+    if (!task.assignees) return "";
+
+    return task.assignees
+        .map(a => getContactInitials(a.name))
+        .join(" ");
+}
+
+// Initialen berechnen
+function getContactInitials(name) {
+    const parts = String(name || "")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+    if (parts.length === 0) return "";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// ⚡ Priority anzeigen
+function getPriorityIcon(priority) {
+    if (priority === "urgent") return "///";
+    if (priority === "medium") return "/";
+    if (priority === "low") return "/";
+    return "";
+}
+
 // übergibt dem currentDraggedlement die Id des bewegten Elements
 function startDragging(id) {
     currentDraggedElement = id;
@@ -64,10 +94,13 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
-// z.B. Task mit der id 1: Das Feld "category" ändert sich zu 'to do' oder 'in prograss'
 function moveTo(category) {
-    tasks[currentDraggedElement]['category'] = category;
-    // damit dieser Verschiebe-Vorgang im HTML zu sehen ist: updateHTML() Methode hier aufruden
+    const task = tasks.find(t => t.id == currentDraggedElement);
+
+    if (task) {
+        task.category = category;
+    }
+
     updateHTML();
 }
 
@@ -79,3 +112,11 @@ function highlight(id) {
 function removeHighlight(id) {
     document.getElementById(id).classList.remove('drag-area-highlight');
 }
+
+
+window.initBoard = initBoard;
+window.startDragging = startDragging;
+window.allowDrop = allowDrop;
+window.moveTo = moveTo;
+window.highlight = highlight;
+window.removeHighlight = removeHighlight;

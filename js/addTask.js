@@ -1,4 +1,4 @@
-import { getData, putData } from "./firebase.js";
+import { getData, putUserData } from "./firebase.js";  //es gibt kein putData! in firebase JS
 
 let assigneeContacts = [];
 let selectedAssignees = [];
@@ -230,15 +230,20 @@ function buildTaskPayload() {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("dueDate").value;
-  const category = document.getElementById("category").value;
-  const assignedContacts = assigneeContacts.filter((contact) => selectedAssignees.includes(contact.id));
+
+  const assignedContacts = assigneeContacts.filter((contact) =>
+    selectedAssignees.includes(contact.id)
+  );
 
   return {
     id: taskId,
     title,
     description,
     dueDate,
-    category,
+
+    // DAS IST WICHTIG, es muss ja zuerst in to do reinkommen alles was hier erstellt wird!
+    category: "to do",
+
     priority: selectedPriority,
     assignees: assignedContacts,
     subtasks: subtasks.map((subtaskTitle) => ({
@@ -259,7 +264,7 @@ async function handleTaskSubmit(event) {
       createButton.disabled = true;
     }
 
-    await putData(`tasks/${task.id}`, task);
+   await putUserData(`tasks/${task.id}`, task); //putData
     event.target.reset();
   } catch (error) {
     console.error("Failed to create task.", error);
