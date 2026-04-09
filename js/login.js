@@ -69,9 +69,7 @@ function checkPassword(e) {
   validatePassword(e.target.value);
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
-
 
   document.getElementById("login-btn")
     .addEventListener("click", () => {
@@ -81,23 +79,25 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
-
   document.getElementById("email")
     .addEventListener("blur", checkEmail);
 
   document.getElementById("password")
     .addEventListener("blur", checkPassword);
 
-
   document.querySelectorAll(".signup-btn").forEach(btn =>
     btn.addEventListener("click", () =>
       location.href = "register.html"
     )
   );
-  let userName = 'Guest';
-  localStorage.setItem("userName", userName);
-  document.querySelector(".guest-btn")?.addEventListener("click", () =>
-    location.href = "../html/summary.html"
-  );
+
+  // GUEST LOGIN (richtig) Jeder User wird automatisch als "Guest" gespeichert auch wenn er sich normal einloggt ❌
+  
+  document.querySelector(".guest-btn")?.addEventListener("click", () => {
+    localStorage.setItem("user", "guest");
+    localStorage.setItem("userName", "Guest");
+
+    location.href = "../html/summary.html";
+  });
 
 });

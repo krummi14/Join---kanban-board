@@ -286,16 +286,22 @@ export function createAddTaskForm(taskForm, createTaskValue) {
     const assignedContacts = state.assigneeContacts.filter((contact) => state.selectedAssignees.includes(contact.id));
 
     return {
-      id: Date.now().toString(),
-      title: elements.title?.value.trim() || "",
-      description: elements.description?.value.trim() || "",
-      dueDate: elements.dueDate?.value || "",
-      category: elements.category?.value || "",
-      priority: state.selectedPriority,
-      assignees: assignedContacts,
-      subtasks: state.subtasks.map((subtaskTitle) => ({
-        title: subtaskTitle,
-        done: false,
+    id: Date.now().toString(),
+    title: elements.title?.value.trim() || "",
+    description: elements.description?.value.trim() || "",
+    dueDate: elements.dueDate?.value || "",
+
+    // 🔥 WICHTIG
+    status: "to do",
+
+    // 🔥 nur für Beschreibung
+    type: elements.category?.value || "",
+
+    priority: state.selectedPriority,
+    assignees: assignedContacts,
+    subtasks: state.subtasks.map((subtaskTitle) => ({
+      title: subtaskTitle,
+      done: false,
       })),
     };
   }

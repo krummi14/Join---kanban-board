@@ -1,52 +1,72 @@
-// Beispiel tasks (sollten später aus der BaaS/ Firebase in das leere Array tasks geschrieben werden)
-let tasks = [{
-    'id': 0,
-    'title': 'Putzen',
-    'category': 'to do'
-}, {
-    'id': 1,
-    'title': 'Kochen',
-    'category': 'in progress'
-}, {
-    'id': 2,
-    'title': 'Einkaufen',
-    'category': 'in progress'
-}, {
-    'id': 3,
-    'title': 'Schlafen',
-    'category': 'await feedback'
-}, {
-    'id': 4,
-    'title': 'Saugen',
-    'category': 'done'
-}];
+import { getData, putUserData } from "./firebase.js";
 
-// Variable für aktuelles Drag-Element
+let tasks = [];
 let currentDraggedElement;
 
+// 🚀 INIT
 function initBoard() {
     userInitials();
-    updateHTML();
+    loadTasks();
 }
 
+// 📥 LOAD FROM FIREBASE
+async function loadTasks() {
+  const data = await getData("tasks");
+
+  if (!data) {
+    tasks = [];
+    updateHTML();
+    return;
+  }
+
+  tasks = Object.entries(data).map(([id, task]) => ({
+    id,
+    ...task,
+
+    // 🔥 WICHTIG: STATUS normalisieren
+    status: normalizeCategory(task.status),
+
+    initials: getAssigneesInitials(task),
+    priorityIcon: getPriorityIcon(task.priority),
+  }));
+
+  console.log("TASKS FROM FIREBASE:", tasks);
+
+  updateHTML();
+}
+
+// 🔧 CATEGORY NORMALIZER
+function normalizeCategory(category) {
+    return String(category || "")
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " "); // entfernt doppelte Spaces
+}
+
+// 🔍 FILTER + RENDER
 function filterAndCreateWorkflowarray(category, taskID) {
-    // Filter das Array und sucht alle Tasks, die eine gleiche categrory haben 
-    // und fügt sie in das workflowArray toDo hinzu
-    let workflowArray = tasks.filter(t => t['category'] == category);
-    // Div Container leeren und alle Elemente dem workflowArray
-    document.getElementById(taskID).innerHTML = '';
-    if (workflowArray.length == 0) {
-        document.getElementById(taskID).innerHTML = '<p class="no_task_text"> No tasks ' + category + '</p>'
-    } else {
-        // Elemente zu workflowArray hinzufügen
-        for (let index = 0; index < workflowArray.length; index++) {
-            const taskElement = workflowArray[index];
-            // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
-            document.getElementById(taskID).innerHTML += generateTaskHTML(taskElement);
-        }
+    console.log("CATEGORY:", `"${category}"`);
+
+    let workflowArray = tasks.filter(t => 
+          normalizeCategory(t.status) === normalizeCategory(category)
+    );
+
+    console.log("MATCHED:", workflowArray);
+
+    const container = document.getElementById(taskID);
+    container.innerHTML = '';
+
+    if (workflowArray.length === 0) {
+        container.innerHTML = `<p class="no_task_text">No tasks ${category}</p>`;
+        return;
+    }
+
+    for (let task of workflowArray) {
+        container.innerHTML += generateTaskHTML(task);
     }
 }
 
+// 🔄 UPDATE BOARD
 function updateHTML() {
     filterAndCreateWorkflowarray('to do', 'to_do');
     filterAndCreateWorkflowarray('in progress', 'in_progress');
@@ -54,28 +74,74 @@ function updateHTML() {
     filterAndCreateWorkflowarray('done', 'done');
 }
 
-// übergibt dem currentDraggedlement die Id des bewegten Elements
+// 👤 ASSIGNEES INITIALS
+function getAssigneesInitials(task) {
+    if (!task.assignees) return "";
+
+    return task.assignees
+        .map(a => getContactInitials(a.name))
+        .join(" ");
+}
+
+// ✍️ INITIALS HELPER
+function getContactInitials(name) {
+    const parts = String(name || "")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+    if (parts.length === 0) return "";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// ⚡ PRIORITY ICON
+function getPriorityIcon(priority) {
+    if (priority === "urgent") return "///";
+    if (priority === "medium") return "/";
+    if (priority === "low") return "/";
+    return "";
+}
+
+// 🖱️ DRAG START
 function startDragging(id) {
     currentDraggedElement = id;
 }
 
-// erlaubt dem Div Container das Element abzuwerfen
+// 🧱 ALLOW DROP
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
-// z.B. Task mit der id 1: Das Feld "category" ändert sich zu 'to do' oder 'in prograss'
-function moveTo(category) {
-    tasks[currentDraggedElement]['category'] = category;
-    // damit dieser Verschiebe-Vorgang im HTML zu sehen ist: updateHTML() Methode hier aufruden
-    updateHTML();
+// 🔄 MOVE + FIREBASE SYNC
+async function moveTo(category) {
+  const task = tasks.find(t => t.id == currentDraggedElement);
+
+  if (task) {
+    // 🔥 WICHTIG: status ändern
+    task.status = category;
+
+    await putUserData(`tasks/${task.id}`, task);
+  }
+
+  updateHTML();
 }
 
-// Nice to have: Klasse hinzufügen wenn die Elemente über dem Div Container liegen
+// ✨ HIGHLIGHT
 function highlight(id) {
     document.getElementById(id).classList.add('drag-area-highlight');
 }
-// Nice to have: Klasse removen wenn die Elemente den Div Container verlassen (gegen Funktion für highlight(id))
+
+// ❌ REMOVE HIGHLIGHT
 function removeHighlight(id) {
     document.getElementById(id).classList.remove('drag-area-highlight');
 }
+
+// 🌍 GLOBAL EXPORTS
+window.initBoard = initBoard;
+window.startDragging = startDragging;
+window.allowDrop = allowDrop;
+window.moveTo = moveTo;
+window.highlight = highlight;
+window.removeHighlight = removeHighlight;
