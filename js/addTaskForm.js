@@ -2,7 +2,8 @@ import { getData, putUserData } from "./firebase.js";
 
 const formControllers = new WeakMap();
 
-export function createAddTaskForm(taskForm) {
+  
+export function createAddTaskForm(taskForm, createTaskValue) {
   if (!taskForm) {
     return null;
   }
@@ -310,7 +311,7 @@ export function createAddTaskForm(taskForm) {
         createButton.disabled = true;
       }
 
-      await putUserData(`tasks/${task.id}`, task);
+      await putUserData(`${createTaskValue}/${task.id}`, task);
       taskForm.reset();
     } catch (error) {
       console.error("Failed to create task.", error);
