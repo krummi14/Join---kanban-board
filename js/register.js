@@ -1,7 +1,4 @@
-import { putData, getData } from "./firebase.js";
-
-const showError = (fieldId, message) =>
-  (document.getElementById(fieldId).textContent = message);
+import { putUserData, getData } from "./firebase.js";
 
 const clearErrors = () => {
   showError("name-error", "");
@@ -110,7 +107,7 @@ function runValidation(userInput) {
 
 async function registerUser(name, email, password) {
   const id = Date.now().toString();
-  await putData("users/" + id, { name, email, password });
+  await putUserData("users/" + id, { name, email, password });
 }
 
 function finishSignup() {

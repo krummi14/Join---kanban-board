@@ -1,20 +1,48 @@
-const BASE_URL =
-  "https://join---kanban-board-5501a-default-rtdb.europe-west1.firebasedatabase.app/";
-export { BASE_URL };
-
-export async function putData(path = "", data = {}) {
-  await fetch(BASE_URL + path + ".json", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-}
+import { extractIDs } from "./list.js";
+import { insertNewContactData, editCurrentContactData } from "./assets.js";
 
 export async function getData(path = "") {
-  const res = await fetch(BASE_URL + path + ".json");
-  return await res.json();
+    let response = await fetch(BASE_URL + path + ".json");
+    let responseToJson = await response.json();
+    return responseToJson;
+}
+
+export async function putNewData(path = "", contactsIndex) {
+    let newId = extractIDs(); // neue ID erzeugen
+    let newContact = insertNewContactData(contactsIndex); // Daten aus dem Dialog holen
+    newContact.id = newId;
+    await fetch(BASE_URL + path + (newId - 1) + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newContact)
+    });
+    contactsList.push(newContact); // in Liste speichern
+    return newId;
+}
+
+export async function putEditData(path = "", contactsIndex) {
+    let editContact = editCurrentContactData(contactsIndex); // Daten aus dem Dialog holen
+    let currentId = editContact.id
+    await fetch(BASE_URL + path + (currentId - 1) + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editContact)
+    });
+    contactsList[contactsIndex] = editContact; // in Liste speichern
+    return currentId;
 }
 
 export async function deleteData(path = "") {
-  await fetch(BASE_URL + path + ".json", { method: "DELETE" });
+    let response = await fetch(BASE_URL + path + ".json", {
+        method: "DELETE",
+    });
+    return await response.json();
+}
+
+export async function putUserData(path = "", data = {}) {
+    await fetch(BASE_URL + path + ".json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
 }
