@@ -4,22 +4,22 @@ const formControllers = new WeakMap();
 const PRIORITIES = ["urgent", "medium", "low"];
 const DEFAULT_CATEGORY_LABEL = "Select task category";
 
-export function createAddTaskForm(taskForm, createTaskValue) {
+export function createAddTaskForm(taskForm, createTaskCategory) {
   const existingController = formControllers.get(taskForm);
 
   if (existingController) return existingController;
 
-  const context = createFormContext(taskForm, createTaskValue);
+  const context = createFormContext(taskForm, createTaskCategory);
   initializeForm(context);
   const controller = createController(context);
   formControllers.set(taskForm, controller);
   return controller;
 }
 
-function createFormContext(taskForm, createTaskValue) {
+function createFormContext(taskForm, createTaskCategory) {
   const context = {
     taskForm,
-    createTaskValue,
+    createTaskCategory,
     state: createInitialState(),
     elements: createElements(taskForm),
   };
@@ -439,7 +439,7 @@ async function handleTaskSubmit(context, event) {
 
   try {
     setSubmitterDisabled(createButton, true);
-    await putUserData(`${context.createTaskValue}/${task.id}`, task);
+    await putUserData(`${context.createTaskCategory}/${task.id}`, task);
     context.taskForm.reset();
   } catch (error) {
     console.error("Failed to create task.", error);
@@ -488,7 +488,7 @@ function buildTaskPayload(context) {
     title: context.elements.title?.value.trim() || "",
     description: context.elements.description?.value.trim() || "",
     dueDate: context.elements.dueDate?.value || "",
-    status: "to do",
+    status: `${context.createTaskCategory}`,
     type: context.state.selectedCategory,
     priority: context.state.selectedPriority,
     assignees: assignedContacts,
