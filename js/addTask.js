@@ -5,7 +5,7 @@ let addTaskFormController = null;
 async function initAddTask() {
   const userName = localStorage.getItem("userName");
   const taskForm = document.getElementById("taskForm");
-  const createTaskValue = document.getElementById("createTask").value;
+  const createTaskCategory = document.getElementById("createTask").value;
 
   if (!taskForm) {
     return null;
@@ -23,7 +23,7 @@ async function initAddTask() {
     addTaskFormController.destroy();
   }
 
-  addTaskFormController = createAddTaskForm(taskForm, createTaskValue);
+  addTaskFormController = createAddTaskForm(taskForm, createTaskCategory);
   return addTaskFormController;
 }
 
