@@ -105,11 +105,16 @@
           <section class="category">
             <label for="category">Category<span>*</span></label>
             <section class="category_dropdown">
-              <select name="category" id="category" required>
-                <option value="" selected hidden>Select task category</option>
-                <option value="Technical Task">Technical Task</option>
-                <option value="User Story">User Story</option>
-              </select>
+              <input type="hidden" name="category" id="category" value="">
+              <button type="button" id="categoryToggle" class="category_toggle" data-category-toggle="true"
+                aria-expanded="false" aria-controls="categoryDropdownMenu">
+                <span id="categoryLabel">Select task category</span>
+                <span class="category_arrow"><img src="../assets/icon/drop_down_arrow.svg" alt="Dropdown Arrow"></span>
+              </button>
+              <section id="categoryDropdownMenu" class="category_menu">
+                <button type="button" class="category_option" data-category-value="Technical Task">Technical Task</button>
+                <button type="button" class="category_option" data-category-value="User Story">User Story</button>
+              </section>
             </section>
           </section>
 
