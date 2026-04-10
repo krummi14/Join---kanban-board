@@ -126,3 +126,159 @@
     justify-content: space-between;
     width: 100%;
 }
+
+.task_title { font-weight: 700; }
+.avatar { border-radius: 50%; }
+
+
+
+.task_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.task_progress_wrapper {
+  margin-bottom: 8px;
+}
+
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+
+.avatar_group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 1;
+}
+
+.priority_icon {
+  display: flex;
+  align-items: center;
+}
+
+.priority_icon img {
+  width: 18px;
+  height: 18px;
+}
+
+.progressbar {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0; /* <- DAS ist der sichtbare Grundbalken */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressbar_fill {
+  height: 100%;
+  background: #29abe2;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/*overlay*/
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden; /* Hintergrund NICHT scrollbar */
+}
+
+
+
+.hidden {
+  display: none;
+}
+
+.task_overlay {
+  background: white;
+  width: 420px;     
+  max-width: 90%;      
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+}
+
+.task_overlay > * {
+  margin-bottom: 20px;
+}
+
+
+.overlay_category {
+  background: #2a3647;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.overlay_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+}
+.overlay_header button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.task_overlay h2 {
+  font-size: 32px;   
+  font-weight: 700;
+  margin: 0;
+}
+
+.assignee_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.task_assignees_overlay {
+  margin-top: 8px;
+}
+
+.subtask_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.task_subtasks {
+  margin-top: 12px;
+}
+
+.task_priority_overlay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

@@ -1,5 +1,6 @@
 import { getData, putUserData } from "./firebase.js";
 
+
 let tasks = [];
 let currentDraggedElement;
 
@@ -19,16 +20,20 @@ async function loadTasks() {
     return;
   }
 
-  tasks = Object.entries(data).map(([id, task]) => ({
-    id,
-    ...task,
+  tasks = Object.entries(data).map(([id, task]) => {
+    const prepared = prepareTask(task);
+    console.log("PRIORITY DEBUG:", task.priority, prepared.priorityIcon); // 👈 HIER
+    return {
+      id,
+      ...prepared,
 
-    // 🔥 WICHTIG: STATUS normalisieren
-    status: normalizeCategory(task.status),
+      // Status normalisieren
+      status: normalizeCategory(task.status),
 
-    initials: getAssigneesInitials(task),
-    priorityIcon: getPriorityIcon(task.priority),
-  }));
+      // Icons separat (falls du sie extra willst)
+      priorityIcon: getPriorityIcon(task.priority),
+    };
+  });
 
   console.log("TASKS FROM FIREBASE:", tasks);
 
@@ -74,14 +79,6 @@ function updateHTML() {
     filterAndCreateWorkflowarray('done', 'done');
 }
 
-// 👤 ASSIGNEES INITIALS
-function getAssigneesInitials(task) {
-    if (!task.assignees) return "";
-
-    return task.assignees
-        .map(a => getContactInitials(a.name))
-        .join(" ");
-}
 
 // ✍️ INITIALS HELPER
 function getContactInitials(name) {
@@ -98,11 +95,12 @@ function getContactInitials(name) {
 
 // ⚡ PRIORITY ICON
 function getPriorityIcon(priority) {
-    if (priority === "urgent") return "///";
-    if (priority === "medium") return "/";
-    if (priority === "low") return "/";
-    return "";
+  if (priority === "urgent") return "../assets/img/urgent_icon.svg";
+  if (priority === "medium") return "../assets/img/medium_icon.svg";
+  if (priority === "low") return "../assets/img/low_icon.svg";
+  return "";
 }
+
 
 // 🖱️ DRAG START
 function startDragging(id) {
@@ -138,6 +136,97 @@ function removeHighlight(id) {
     document.getElementById(id).classList.remove('drag-area-highlight');
 }
 
+function generateAvatarHTML(assignees) {
+  let visible = assignees.slice(0, 3);
+  let rest = assignees.length - 3;
+
+  let html = "";
+
+  for (let i = 0; i < visible.length; i++) {
+    html += generateSingleAvatar(visible[i]);
+  }
+
+  if (rest > 0) {
+    html += generateExtraAvatar(rest);
+  }
+
+  return html;
+}
+
+function prepareTask(task) {
+  return {
+    ...task,
+
+    doneSubtasks: task.subtasks?.filter(st => st.done).length || 0,
+    totalSubtasks: task.subtasks?.length || 0,
+
+    progress: task.subtasks?.length
+      ? (task.subtasks.filter(st => st.done).length / task.subtasks.length) * 100
+      : 0,
+
+    avatarHTML: generateAvatarHTML(task.assignees || []),
+    priorityIcon: getPriorityIcon(task.priority)
+    
+  };
+}
+
+// overlay
+function openOverlay(taskId) {
+  const task = tasks.find(t => t.id === taskId);
+
+  if (!task) return; // 🔥 wichtig
+
+  const overlay = document.getElementById("overlay");
+
+  overlay.innerHTML = generateTaskOverlay(task);
+  overlay.classList.remove("hidden");
+}
+
+function closeOverlay() {
+  document.getElementById("overlay").classList.add("hidden");
+}
+
+function generateAssigneesContent(task) {
+  let html = "";
+
+  if (!task.assignees) return "";
+
+  for (let i = 0; i < task.assignees.length; i++) {
+    html += generateAssignee(task.assignees[i]);
+  }
+
+  return html;
+}
+
+function generateSubtasksContent(task) {
+  let html = "";
+
+  if (!task.subtasks) return "";
+
+  for (let i = 0; i < task.subtasks.length; i++) {
+    html += generateSubtask(task, task.subtasks[i], i);
+  }
+
+  return html;
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "";
+
+  // falls schon richtig formatiert (15/02/2026)
+  if (dateString.includes("/")) return dateString;
+
+  const date = new Date(dateString);
+
+  if (isNaN(date)) return dateString; // fallback
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 // 🌍 GLOBAL EXPORTS
 window.initBoard = initBoard;
 window.startDragging = startDragging;
@@ -145,3 +234,11 @@ window.allowDrop = allowDrop;
 window.moveTo = moveTo;
 window.highlight = highlight;
 window.removeHighlight = removeHighlight;
+window.getContactInitials = getContactInitials;
+
+
+window.openOverlay = openOverlay;
+window.closeOverlay = closeOverlay;
+window.generateAssigneesContent = generateAssigneesContent;
+window.generateSubtasksContent = generateSubtasksContent;
+window.formatDate = formatDate;
