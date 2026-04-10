@@ -3,7 +3,6 @@ import { createAddTaskForm } from "./addTaskForm.js";
 let addTaskFormController = null;
 
 async function initAddTask() {
-  document.getElementById("addTaskContainer").innerHTML = createAddTaskFormTemplate();
   const taskForm = document.getElementById("taskForm");
   if (!taskForm) return null;
   updateUserBadge();
