@@ -7,7 +7,7 @@ export function createAddTaskForm(taskForm, createTaskStatus) {
   if (!taskForm) return null;
   const existing = formControllers.get(taskForm);
   if (existing) return existing;
-  const context = createContext(taskForm, createTaskStatus);
+  const context = createContext(taskForm, createTaskStatus); // Create a context object to hold state and elements
   initializeForm(context);
   const controller = createController(context);
   formControllers.set(taskForm, controller);
@@ -15,7 +15,12 @@ export function createAddTaskForm(taskForm, createTaskStatus) {
 }
 
 function createContext(taskForm, createTaskStatus) {
-  const context = { taskForm, createTaskStatus, state: createState(), elements: createElements(taskForm) };
+  const context = { 
+    taskForm, 
+    createTaskStatus, // Store the create task status in the context for later use
+    state: createState(), 
+    elements: createElements(taskForm) 
+  };
   context.handlers = createHandlers(context);
   return context;
 }
@@ -36,17 +41,24 @@ function createElements(taskForm) {
 
 function getInputElements(taskForm) {
   return {
-    title: byId(taskForm, "title"), description: byId(taskForm, "description"), dueDate: byId(taskForm, "dueDate"),
-    category: byId(taskForm, "category"), subtaskInput: byId(taskForm, "subtask"),
-    addSubtaskButton: byId(taskForm, "addSubtaskButton"), subtaskList: byId(taskForm, "subtaskList"),
+    title: byId(taskForm, "title"), 
+    description: byId(taskForm, "description"), 
+    dueDate: byId(taskForm, "dueDate"),
+    category: byId(taskForm, "category"), 
+    subtaskInput: byId(taskForm, "subtask"),
+    addSubtaskButton: byId(taskForm, "addSubtaskButton"), 
+    subtaskList: byId(taskForm, "subtaskList"),
   };
 }
 
 function getDropdownElements(taskForm) {
   return {
-    assigneeToggle: byId(taskForm, "assignee"), assigneeMenu: byId(taskForm, "assigneeDropdownMenu"),
-    selectedContacts: byId(taskForm, "selectedContacts"), categoryToggle: byId(taskForm, "categoryToggle"),
-    categoryMenu: byId(taskForm, "categoryDropdownMenu"), categoryLabel: byId(taskForm, "categoryLabel"),
+    assigneeToggle: byId(taskForm, "assignee"), 
+    assigneeMenu: byId(taskForm, "assigneeDropdownMenu"),
+    selectedContacts: byId(taskForm, "selectedContacts"), 
+    categoryToggle: byId(taskForm, "categoryToggle"),
+    categoryMenu: byId(taskForm, "categoryDropdownMenu"), 
+    categoryLabel: byId(taskForm, "categoryLabel"),
   };
 }
 
@@ -56,10 +68,14 @@ function byId(taskForm, id) {
 
 function createHandlers(context) {
   return {
-    documentClick: (event) => closeDropdownsOnOutsideClick(context, event), formReset: () => resetTaskFormState(context),
-    formSubmit: (event) => handleTaskSubmit(context, event), formClick: (event) => delegateFormClick(context, event),
-    formChange: (event) => handleAssigneeChange(context, event), subtaskInput: () => updateSubtaskButtonState(context),
-    subtaskKeydown: (event) => handleSubtaskKeydown(context, event), addSubtaskClick: () => addSubtask(context),
+    documentClick: (event) => closeDropdownsOnOutsideClick(context, event), 
+    formReset: () => resetTaskFormState(context),
+    formSubmit: (event) => handleTaskSubmit(context, event), 
+    formClick: (event) => delegateFormClick(context, event),
+    formChange: (event) => handleAssigneeChange(context, event), 
+    subtaskInput: () => updateSubtaskButtonState(context),
+    subtaskKeydown: (event) => handleSubtaskKeydown(context, event), 
+    addSubtaskClick: () => addSubtask(context),
   };
 }
 
@@ -229,7 +245,6 @@ function createPriorityMarkup(priority, state) {
 
 async function renderAssigneeContacts(context) {
   const menu = context.elements.assigneeMenu;
-  if (!menu) return;
   try { context.state.assigneeContacts = await fetchContacts(); }
   catch (error) { return showContactLoadError(menu, error); }
   if (!context.state.assigneeContacts.length) return showEmptyContacts(context, menu);
@@ -314,9 +329,10 @@ async function handleTaskSubmit(context, event) {
   finally { setSubmitterDisabled(button, false); }
 }
 
+// This function simulates saving the task to a backend. Replace with actual API call as needed.
 function saveTask(context) {
   const task = buildTaskPayload(context);
-  return putUserData(`${context.createTaskStatus}/${task.id}`, task);
+  return putUserData(`${context.createTaskStatus}/${task.id}`, task); // Simulate network delay with a timeout
 }
 
 function setSubmitterDisabled(button, disabled) {
@@ -352,11 +368,18 @@ function destroy(context) {
   formControllers.delete(context.taskForm);
 }
 
+// Helper functions to build task payload and manage form state
 function buildTaskPayload(context) {
   return {
-    id: Date.now().toString(), title: context.elements.title?.value.trim() || "", description: context.elements.description?.value.trim() || "",
-    dueDate: context.elements.dueDate?.value || "", status: context.createTaskStatus, type: context.state.selectedCategory,
-    priority: context.state.selectedPriority, assignees: getAssignedContacts(context), subtasks: createSubtaskPayload(context.state.subtasks),
+    id: Date.now().toString(), 
+    title: context.elements.title?.value.trim() || "", 
+    description: context.elements.description?.value.trim() || "",
+    dueDate: context.elements.dueDate?.value || "", 
+    status: context.createTaskStatus, // The status of the task when created
+    type: context.state.selectedCategory,
+    priority: context.state.selectedPriority, 
+    assignees: getAssignedContacts(context), 
+    subtasks: createSubtaskPayload(context.state.subtasks),
   };
 }
 
