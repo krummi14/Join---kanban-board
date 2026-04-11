@@ -1,8 +1,14 @@
-import { getData, putUserData } from "./firebase.js";
+import { deleteData, getData, putUserData } from "./firebase.js";
 
 
 let tasks = [];
 let currentDraggedElement;
+const BOARD_COLUMNS = [
+  { path: "to_do", label: "to do", containerId: "to_do" },
+  { path: "in_progress", label: "in progress", containerId: "in_progress" },
+  { path: "await_feedback", label: "await feedback", containerId: "await_feedback" },
+  { path: "done", label: "done", containerId: "done" },
+];
 
 // 🚀 INIT
 function initBoard() {
@@ -12,30 +18,25 @@ function initBoard() {
 
 // 📥 LOAD FROM FIREBASE
 async function loadTasks() {
-  const data = await getData("tasks");
+  const columnData = await Promise.all(
+    BOARD_COLUMNS.map((column) => getData(column.path))
+  );
 
-  if (!data) {
-    tasks = [];
-    updateHTML();
-    return;
-  }
+  tasks = BOARD_COLUMNS.flatMap((column, index) => {
+    const data = columnData[index];
 
-  tasks = Object.entries(data).map(([id, task]) => {
-    const prepared = prepareTask(task);
-    console.log("PRIORITY DEBUG:", task.priority, prepared.priorityIcon); // 👈 HIER
-    return {
+    if (!data) {
+      return [];
+    }
+
+    return Object.entries(data).map(([id, task]) => ({
       id,
-      ...prepared,
-
-      // Status normalisieren
-      status: normalizeCategory(task.status),
-
-      // Icons separat (falls du sie extra willst)
+      ...prepareTask(task),
+      status: column.path,
+      sourcePath: column.path,
       priorityIcon: getPriorityIcon(task.priority),
-    };
+    }));
   });
-
-  console.log("TASKS FROM FIREBASE:", tasks);
 
   updateHTML();
 }
@@ -48,21 +49,24 @@ function normalizeCategory(category) {
         .replace(/\s+/g, " "); // entfernt doppelte Spaces
 }
 
+function getBoardColumn(category) {
+  return BOARD_COLUMNS.find((column) => normalizeCategory(column.path) === normalizeCategory(category));
+}
+
 // 🔍 FILTER + RENDER
-function filterAndCreateWorkflowarray(category, taskID) {
-    console.log("CATEGORY:", `"${category}"`);
+function filterAndCreateWorkflowarray(category) {
+  const column = getBoardColumn(category);
+  if (!column) return;
 
-    let workflowArray = tasks.filter(t => 
-          normalizeCategory(t.status) === normalizeCategory(category)
-    );
+  let workflowArray = tasks.filter(t => 
+      normalizeCategory(t.sourcePath || t.status) === normalizeCategory(column.path)
+  );
 
-    console.log("MATCHED:", workflowArray);
-
-    const container = document.getElementById(taskID);
+  const container = document.getElementById(column.containerId);
     container.innerHTML = '';
 
     if (workflowArray.length === 0) {
-        container.innerHTML = `<p class="no_task_text">No tasks ${category}</p>`;
+    container.innerHTML = `<p class="no_task_text">No tasks ${column.label}</p>`;
         return;
     }
 
@@ -73,10 +77,7 @@ function filterAndCreateWorkflowarray(category, taskID) {
 
 // 🔄 UPDATE BOARD
 function updateHTML() {
-    filterAndCreateWorkflowarray('to do', 'to_do');
-    filterAndCreateWorkflowarray('in progress', 'in_progress');
-    filterAndCreateWorkflowarray('await feedback', 'await_feedback');
-    filterAndCreateWorkflowarray('done', 'done');
+  BOARD_COLUMNS.forEach((column) => filterAndCreateWorkflowarray(column.path));
 }
 
 
@@ -115,15 +116,24 @@ function allowDrop(ev) {
 // 🔄 MOVE + FIREBASE SYNC
 async function moveTo(category) {
   const task = tasks.find(t => t.id == currentDraggedElement);
+  const targetColumn = getBoardColumn(category);
 
-  if (task) {
-    // 🔥 WICHTIG: status ändern
-    task.status = category;
-
-    await putUserData(`tasks/${task.id}`, task);
+  if (!task || !targetColumn) {
+    return;
   }
 
-  updateHTML();
+  if ((task.sourcePath || task.status) === targetColumn.path) {
+    updateHTML();
+    return;
+  }
+
+  const previousPath = task.sourcePath || task.status;
+  const updatedTask = getTaskForStorage(task, targetColumn.path);
+
+  await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
+  await deleteData(`${previousPath}/${task.id}`);
+
+  await loadTasks();
 }
 
 // ✨ HIGHLIGHT
@@ -167,6 +177,14 @@ function prepareTask(task) {
     avatarHTML: generateAvatarHTML(task.assignees || []),
     priorityIcon: getPriorityIcon(task.priority)
     
+  };
+}
+
+function getTaskForStorage(task, status) {
+  const { doneSubtasks, totalSubtasks, progress, avatarHTML, priorityIcon, sourcePath, ...taskData } = task;
+  return {
+    ...taskData,
+    status,
   };
 }
 
