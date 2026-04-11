@@ -1,23 +1,27 @@
 import { getData, putUserData } from "./firebase.js";
+import { normalizeStatus} from "./assets.js";
+
 const formControllers = new WeakMap();
 const PRIORITIES = ["urgent", "medium", "low"];
 const DEFAULT_CATEGORY_LABEL = "Select task category";
 
-export function createAddTaskForm(taskForm, createTaskPath) {
+
+
+export function createAddTaskForm(taskForm, createTaskStatus) {  //GEÄNDERT
   if (!taskForm) return null;
   const existing = formControllers.get(taskForm);
   if (existing) return existing;
-  const context = createContext(taskForm, createTaskPath); // Create a context object to hold state and elements
+const context = createContext(taskForm, createTaskStatus); // Create a context object to hold state and elements
   initializeForm(context);
   const controller = createController(context);
   formControllers.set(taskForm, controller);
   return controller;
 }
 
-function createContext(taskForm, createTaskPath) {
+function createContext(taskForm, createTaskStatus) {    //GEÄNDERT
   const context = { 
     taskForm, 
-    createTaskPath, // Store the create task path in the context for later use
+    createTaskStatus, // Store the create task path in the context for later use
     state: createState(), 
     elements: createElements(taskForm) 
   };
@@ -292,11 +296,46 @@ function getSelectedNames(context) {
   return context.state.assigneeContacts.filter((contact) => context.state.selectedAssignees.includes(contact.id)).map((contact) => contact.name);
 }
 
+/*
 function addSubtask(context) {
   const title = context.elements.subtaskInput?.value.trim();
   if (!title) return updateSubtaskButtonState(context);
-  context.state.subtasks.push(title);
+
+  context.state.subtasks.push({   // GEÄNDERT WEIL SUBTASK ERSCHEINT NICHT, Du speicherst KEINE Subtasks beim Erstellen der Task
+    title: title,
+    done: false
+  });
+
   context.elements.subtaskInput.value = "";
+  renderSubtasks(context);
+  updateSubtaskButtonState(context);
+}
+
+*/
+function addSubtask(context) {
+console.log("🔥 ADD SUBTASK FUNCTION RUNNING");
+
+  console.log("INPUT ELEMENT:", context.elements.subtaskInput);
+
+ const input = context.elements.subtaskInput;
+
+  console.log("INPUT VALUE:", input?.value);
+  const title = input?.value.trim();
+
+  if (!title) return updateSubtaskButtonState(context);
+
+  if (!Array.isArray(context.state.subtasks)) {
+    context.state.subtasks = [];
+  }
+
+  context.state.subtasks.push({
+    title,
+    done: false
+  });
+
+  console.log("SUBTASK STATE NOW:", context.state.subtasks);
+
+  input.value = "";
   renderSubtasks(context);
   updateSubtaskButtonState(context);
 }
@@ -332,7 +371,10 @@ async function handleTaskSubmit(context, event) {
 // This function simulates saving the task to a backend. Replace with actual API call as needed.
 function saveTask(context) {
   const task = buildTaskPayload(context);
-  return putUserData(`${context.createTaskPath}/${task.id}`, task); // Simulate network delay with a timeout
+
+  console.log("🔥 SAVING TO FIREBASE:", task);
+
+  return putUserData(`tasks/${task.id}`, task);
 }
 
 function setSubmitterDisabled(button, disabled) {
@@ -368,27 +410,38 @@ function destroy(context) {
   formControllers.delete(context.taskForm);
 }
 
-// Helper functions to build task payload and manage form state
 function buildTaskPayload(context) {
-  return {
-    id: Date.now().toString(), 
-    title: context.elements.title?.value.trim() || "", 
+
+  console.log("🧠 STATE SUBTASKS (BEFORE SAVE):", context.state.subtasks);
+
+  const task = {
+    id: Date.now().toString(),
+    title: context.elements.title?.value.trim() || "",
     description: context.elements.description?.value.trim() || "",
-    dueDate: context.elements.dueDate?.value || "", 
-    status: context.createTaskPath, // The status of the task when created
+    dueDate: context.elements.dueDate?.value || "",
+    status: normalizeStatus(context.createTaskStatus),
     type: context.state.selectedCategory,
-    priority: context.state.selectedPriority, 
-    assignees: getAssignedContacts(context), 
+    priority: context.state.selectedPriority,
+    assignees: getAssignedContacts(context),
     subtasks: createSubtaskPayload(context.state.subtasks),
   };
+
+  console.log("💾 FINAL TASK OBJECT:", task);
+
+  return task;
 }
 
 function getAssignedContacts(context) {
   return context.state.assigneeContacts.filter((contact) => context.state.selectedAssignees.includes(contact.id));
 }
 
-function createSubtaskPayload(subtasks) {
-  return subtasks.map((title) => ({ title, done: false }));
+function createSubtaskPayload(subtasks) { //GEÄNDERT
+  return subtasks.map((st) => {
+    return {
+      title: st.title || st,
+      done: st.done ?? false
+    };
+  });
 }
 
 function resetCategorySelection(context) {
