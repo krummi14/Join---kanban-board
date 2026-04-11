@@ -52,31 +52,42 @@ function getBoardColumn(category) {
   return BOARD_COLUMNS.find((column) => normalizeCategory(column.path) === normalizeCategory(category));
 }
 
+function getTasksForColumn(category) {
+  const column = getBoardColumn(category);
+  if (!column) {
+    return [];
+  }
+
+  return tasks.filter((task) =>
+    normalizeCategory(task.sourcePath || task.status) === normalizeCategory(column.path)
+  );
+}
+
 // 🔍 FILTER + RENDER
-function filterAndCreateWorkflowarray(category) {
+function renderColumn(category) {
   const column = getBoardColumn(category);
   if (!column) return;
 
-  let workflowArray = tasks.filter(t => 
-      normalizeCategory(t.sourcePath || t.status) === normalizeCategory(column.path)
-  );
+  const workflowArray = getTasksForColumn(column.path);
 
   const container = document.getElementById(column.containerId);
-    container.innerHTML = '';
+  if (!container) return;
 
-    if (workflowArray.length === 0) {
+  if (workflowArray.length === 0) {
     container.innerHTML = `<p class="no_task_text">No tasks ${column.label}</p>`;
-        return;
-    }
+    return;
+  }
 
-    for (let task of workflowArray) {
-        container.innerHTML += generateTaskHTML(task);
-    }
+  container.innerHTML = workflowArray.map((task) => generateTaskHTML(task)).join("");
+}
+
+function updateColumns(categories) {
+  categories.forEach((category) => renderColumn(category));
 }
 
 // 🔄 UPDATE BOARD
 function updateHTML() {
-  BOARD_COLUMNS.forEach((column) => filterAndCreateWorkflowarray(column.path));
+  updateColumns(BOARD_COLUMNS.map((column) => column.path));
 }
 
 
@@ -122,17 +133,31 @@ async function moveTo(category) {
   }
 
   if ((task.sourcePath || task.status) === targetColumn.path) {
-    updateHTML();
+    renderColumn(targetColumn.path);
     return;
   }
 
   const previousPath = task.sourcePath || task.status;
-  const updatedTask = getTaskForStorage(task, targetColumn.path);
+  const previousStatus = task.status;
+  const previousSourcePath = task.sourcePath;
 
-  await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
-  await deleteData(`${previousPath}/${task.id}`);
+  task.status = targetColumn.path;
+  task.sourcePath = targetColumn.path;
 
-  await loadTasks();
+  updateColumns([previousPath, targetColumn.path]);
+
+  try {
+    const updatedTask = getTaskForStorage(task, targetColumn.path);
+
+    await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
+    await deleteData(`${previousPath}/${task.id}`);
+    currentDraggedElement = null;
+  } catch (error) {
+    task.status = previousStatus;
+    task.sourcePath = previousSourcePath;
+    updateColumns([previousPath, targetColumn.path]);
+    throw error;
+  }
 }
 
 // ✨ HIGHLIGHT
