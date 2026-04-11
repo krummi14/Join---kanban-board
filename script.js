@@ -45,3 +45,9 @@ function showError(errorId, message) {
     let errorField = document.getElementById(errorId);
     if (errorField) errorField.textContent = message;
 }
+
+// global function to get the add task form template and render it in the container
+// the status of the task and the firebase path ("to_do", "in_progress", "await feedback")
+function getAddTaskFormTemplate(status) {
+  document.getElementById("addTaskContainer").innerHTML = createAddTaskFormTemplate(status);
+}
