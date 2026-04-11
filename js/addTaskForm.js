@@ -7,21 +7,21 @@ const DEFAULT_CATEGORY_LABEL = "Select task category";
 
 
 
-export function createAddTaskForm(taskForm, createTaskStatus) {  //GEÄNDERT
+export function createAddTaskForm(taskForm, createTaskPath) {
   if (!taskForm) return null;
   const existing = formControllers.get(taskForm);
   if (existing) return existing;
-const context = createContext(taskForm, createTaskStatus); // Create a context object to hold state and elements
+const context = createContext(taskForm, createTaskPath); // Create a context object to hold state and elements
   initializeForm(context);
   const controller = createController(context);
   formControllers.set(taskForm, controller);
   return controller;
 }
 
-function createContext(taskForm, createTaskStatus) {    //GEÄNDERT
+function createContext(taskForm, createTaskPath) {
   const context = { 
     taskForm, 
-    createTaskStatus, // Store the create task path in the context for later use
+    createTaskPath, // Store the create task path in the context for later use
     state: createState(), 
     elements: createElements(taskForm) 
   };
@@ -374,7 +374,7 @@ function saveTask(context) {
 
   console.log("🔥 SAVING TO FIREBASE:", task);
 
-  return putUserData(`tasks/${task.id}`, task);
+  return putUserData(`${context.createTaskPath}/${task.id}`, task);
 }
 
 function setSubmitterDisabled(button, disabled) {
@@ -419,7 +419,7 @@ function buildTaskPayload(context) {
     title: context.elements.title?.value.trim() || "",
     description: context.elements.description?.value.trim() || "",
     dueDate: context.elements.dueDate?.value || "",
-    status: normalizeStatus(context.createTaskStatus),
+    status: normalizeStatus(context.createTaskPath),
     type: context.state.selectedCategory,
     priority: context.state.selectedPriority,
     assignees: getAssignedContacts(context),

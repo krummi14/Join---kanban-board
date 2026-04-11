@@ -1,6 +1,5 @@
-import { getData, putUserData } from "./firebase.js";
-import { normalizeStatus, normalizeCategory } from "./assets.js";
 import { deleteData, getData, putUserData } from "./firebase.js";
+import { normalizeCategory } from "./assets.js";
 
 
 let tasks = [];
@@ -17,7 +16,10 @@ const BOARD_COLUMNS = [
 
 // 🚀 INIT
 function initBoard() {
-    userInitials();
+    if (typeof window.userInitials === "function") {
+      window.userInitials();
+    }
+
     loadTasks();
 }
 
@@ -36,12 +38,6 @@ async function loadTasks() {
 
     return Object.entries(data).map(([id, task]) => ({
       id,
-      ...prepared,
-
-      // Status normalisieren
-  status: normalizeStatus(task.status).replaceAll("_", " "), //wegen addTaskpaylpad GEÄNDERT
-
-      // Icons separat (falls du sie extra willst)
       ...prepareTask(task),
       status: column.path,
       sourcePath: column.path,
@@ -50,15 +46,6 @@ async function loadTasks() {
   });
 
   updateHTML();
-}
-
-
-// 🔧 CATEGORY NORMALIZER
-function normalizeCategory(category) {
-    return String(category || "")
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, " "); // entfernt doppelte Spaces
 }
 
 function getBoardColumn(category) {
@@ -70,11 +57,6 @@ function filterAndCreateWorkflowarray(category) {
   const column = getBoardColumn(category);
   if (!column) return;
 
-let workflowArray = tasks.filter(t => {
-    console.log("CHECK:", t.title, t.status);
-
-    return normalizeCategory(t.status) === normalizeCategory(category);
-});
   let workflowArray = tasks.filter(t => 
       normalizeCategory(t.sourcePath || t.status) === normalizeCategory(column.path)
   );
@@ -258,7 +240,9 @@ window.toggleSubtask = async function(taskId, index) {
     ? (task.doneSubtasks / task.totalSubtasks) * 100
     : 0;
 
-  await putUserData(`tasks/${task.id}`, task);
+  const taskPath = task.sourcePath || task.status;
+
+  await putUserData(`${taskPath}/${task.id}`, getTaskForStorage(task, taskPath));
 
   updateHTML();
 };
