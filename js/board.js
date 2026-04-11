@@ -1,8 +1,11 @@
 import { getData, putUserData } from "./firebase.js";
-
+import { normalizeStatus, normalizeCategory } from "./assets.js";
 
 let tasks = [];
 let currentDraggedElement;
+
+
+
 
 // 🚀 INIT
 function initBoard() {
@@ -28,7 +31,7 @@ async function loadTasks() {
       ...prepared,
 
       // Status normalisieren
-      status: normalizeCategory(task.status),
+  status: normalizeStatus(task.status).replaceAll("_", " "), //wegen addTaskpaylpad GEÄNDERT
 
       // Icons separat (falls du sie extra willst)
       priorityIcon: getPriorityIcon(task.priority),
@@ -40,21 +43,17 @@ async function loadTasks() {
   updateHTML();
 }
 
-// 🔧 CATEGORY NORMALIZER
-function normalizeCategory(category) {
-    return String(category || "")
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, " "); // entfernt doppelte Spaces
-}
+
 
 // 🔍 FILTER + RENDER
 function filterAndCreateWorkflowarray(category, taskID) {
     console.log("CATEGORY:", `"${category}"`);
 
-    let workflowArray = tasks.filter(t => 
-          normalizeCategory(t.status) === normalizeCategory(category)
-    );
+let workflowArray = tasks.filter(t => {
+    console.log("CHECK:", t.title, t.status);
+
+    return normalizeCategory(t.status) === normalizeCategory(category);
+});
 
     console.log("MATCHED:", workflowArray);
 
@@ -210,6 +209,24 @@ function generateSubtasksContent(task) {
   return html;
 }
 
+window.toggleSubtask = async function(taskId, index) {
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) return;
+
+  task.subtasks[index].done = !task.subtasks[index].done;
+
+  task.doneSubtasks = task.subtasks.filter(st => st.done).length;
+  task.totalSubtasks = task.subtasks.length;
+
+  task.progress = task.totalSubtasks
+    ? (task.doneSubtasks / task.totalSubtasks) * 100
+    : 0;
+
+  await putUserData(`tasks/${task.id}`, task);
+
+  updateHTML();
+};
+
 function formatDate(dateString) {
   if (!dateString) return "";
 
@@ -226,6 +243,7 @@ function formatDate(dateString) {
 
   return `${day}/${month}/${year}`;
 }
+
 
 // 🌍 GLOBAL EXPORTS
 window.initBoard = initBoard;
