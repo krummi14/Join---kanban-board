@@ -16,7 +16,7 @@ function createAssigneeOption(contact) {
   `;
 }
 
-function createAddTaskFormTemplate(status) {
+function createAddTaskFormTemplate(path) {
   return`
         <form id="taskForm">
         <section class="left_form">
@@ -88,7 +88,7 @@ function createAddTaskFormTemplate(status) {
 
           <section class="form_buttons">
             <button class="button_basic_characteristics clear_btn" type="reset">Clear &#x78;</button>
-            <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${status}">Create Task &#x2713;</button>
+            <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${path}">Create Task &#x2713;</button>
           </section>
         </section>
       </form>

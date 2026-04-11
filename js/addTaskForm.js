@@ -3,21 +3,21 @@ const formControllers = new WeakMap();
 const PRIORITIES = ["urgent", "medium", "low"];
 const DEFAULT_CATEGORY_LABEL = "Select task category";
 
-export function createAddTaskForm(taskForm, createTaskStatus) {
+export function createAddTaskForm(taskForm, createTaskPath) {
   if (!taskForm) return null;
   const existing = formControllers.get(taskForm);
   if (existing) return existing;
-  const context = createContext(taskForm, createTaskStatus); // Create a context object to hold state and elements
+  const context = createContext(taskForm, createTaskPath); // Create a context object to hold state and elements
   initializeForm(context);
   const controller = createController(context);
   formControllers.set(taskForm, controller);
   return controller;
 }
 
-function createContext(taskForm, createTaskStatus) {
+function createContext(taskForm, createTaskPath) {
   const context = { 
     taskForm, 
-    createTaskStatus, // Store the create task status in the context for later use
+    createTaskPath, // Store the create task path in the context for later use
     state: createState(), 
     elements: createElements(taskForm) 
   };
@@ -332,7 +332,7 @@ async function handleTaskSubmit(context, event) {
 // This function simulates saving the task to a backend. Replace with actual API call as needed.
 function saveTask(context) {
   const task = buildTaskPayload(context);
-  return putUserData(`${context.createTaskStatus}/${task.id}`, task); // Simulate network delay with a timeout
+  return putUserData(`${context.createTaskPath}/${task.id}`, task); // Simulate network delay with a timeout
 }
 
 function setSubmitterDisabled(button, disabled) {
@@ -375,7 +375,7 @@ function buildTaskPayload(context) {
     title: context.elements.title?.value.trim() || "", 
     description: context.elements.description?.value.trim() || "",
     dueDate: context.elements.dueDate?.value || "", 
-    status: context.createTaskStatus, // The status of the task when created
+    status: context.createTaskPath, // The status of the task when created
     type: context.state.selectedCategory,
     priority: context.state.selectedPriority, 
     assignees: getAssignedContacts(context), 
