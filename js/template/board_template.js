@@ -95,7 +95,9 @@ function getColorFromName(name) {
   return ["#ff7a00","#9327ff","#00c4cc","#1fd7c1","#ff5eb3","#6e52ff"][name.length % 6];
 }
 
-
+function getNoAssigneesCardTemplate() {
+  return `<span class="no_assignees">No Users assigned</span>`;
+}
 
 /*overlay*/ 
 
@@ -201,6 +203,32 @@ function generateSubtask(task, st, i) {
       <span>${st.title}</span>
 
     </label>
+  `;
+}
+
+
+function getNoSubtasksTemplate() {
+  return `<p>No subtasks yet</p>`;
+}
+
+
+function getNoAssigneesTemplate() {
+  return `<p>No Users assigned</p>`;
+}
+
+
+function getAssigneeTemplate(a, isYou) {
+  return `
+    <div class="assignee_row">
+
+      <div class="avatar"
+           style="background:${getColorFromName(a.name)}">
+        ${getContactInitials(a.name)}
+      </div>
+
+      <span>${a.name} ${isYou ? "(you)" : ""}</span>
+
+    </div>
   `;
 }
 

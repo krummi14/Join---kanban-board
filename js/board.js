@@ -16,11 +16,17 @@ const BOARD_COLUMNS = [
 
 // 🚀 INIT
 function initBoard() {
-    if (typeof window.userInitials === "function") {
-      window.userInitials();
-    }
+  if (typeof window.userInitials === "function") {
+    window.userInitials();
+  }
 
-    loadTasks();
+  loadTasks();
+
+  // 🔥 Overlay Click Listener einmal setzen
+  const overlay = document.getElementById("overlay");
+  if (overlay) {
+    overlay.addEventListener("click", handleOverlayClick);
+  }
 }
 
 // 📥 LOAD FROM FIREBASE
@@ -187,6 +193,16 @@ function generateAvatarHTML(assignees) {
   return html;
 }
 
+function getAvatarHTML(task) {
+  const hasAssignees = task.assignees && task.assignees.length > 0;
+
+  if (!hasAssignees) {
+    return getNoAssigneesCardTemplate();
+  }
+
+  return generateAvatarHTML(task.assignees);
+}
+
 function prepareTask(task) {
   return {
     ...task,
@@ -198,11 +214,12 @@ function prepareTask(task) {
       ? (task.subtasks.filter(st => st.done).length / task.subtasks.length) * 100
       : 0,
 
-    avatarHTML: generateAvatarHTML(task.assignees || []),
+    avatarHTML: getAvatarHTML(task), // 🔥 sauber!
+
     priorityIcon: getPriorityIcon(task.priority)
-    
   };
 }
+
 
 function getTaskForStorage(task, status) {
   const { doneSubtasks, totalSubtasks, progress, avatarHTML, priorityIcon, sourcePath, ...taskData } = task;
@@ -228,22 +245,42 @@ function closeOverlay() {
   document.getElementById("overlay").classList.add("hidden");
 }
 
-function generateAssigneesContent(task) {
-  let html = "";
+function handleOverlayClick(event) {
+  if (event.target.id === "overlay") {
+    closeOverlay();
+  }
+}
 
-  if (!task.assignees) return "";
+
+function getCurrentUserName() {
+  return localStorage.getItem("userName") || "";
+}
+
+
+function generateAssigneesContent(task) {
+  if (!task.assignees || task.assignees.length === 0) {
+    return getNoAssigneesTemplate(); // 🔥 TEMPLATE
+  }
+
+  let html = "";
+  const currentUser = getCurrentUserName();
 
   for (let i = 0; i < task.assignees.length; i++) {
-    html += generateAssignee(task.assignees[i]);
+    const a = task.assignees[i];
+    const isYou = a.name === currentUser;
+
+    html += getAssigneeTemplate(a, isYou); // 🔥 TEMPLATE
   }
 
   return html;
 }
 
 function generateSubtasksContent(task) {
-  let html = "";
+  if (!task.subtasks || task.subtasks.length === 0) {
+    return getNoSubtasksTemplate(); // 
+  }
 
-  if (!task.subtasks) return "";
+  let html = "";
 
   for (let i = 0; i < task.subtasks.length; i++) {
     html += generateSubtask(task, task.subtasks[i], i);
@@ -288,6 +325,10 @@ function formatDate(dateString) {
 
   return `${day}/${month}/${year}`;
 }
+
+
+
+
 
 
 // 🌍 GLOBAL EXPORTS
