@@ -15,12 +15,14 @@ let prenameInitialsList = [];
 let activeContact = null;
 let contentDialogOfEditContact = document.getElementById("contact_dialog_content");
 let contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
+let contentContact = document.getElementById("contact_content");
+let contentEditButton = document.getElementById("contact_dialog_edit_button_content");
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {
-  localStorage.removeItem('user');
-  sessionStorage.removeItem('user');
-  window.location.href = '../index.html';
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
+    window.location.href = '../index.html';
 }
 
 // Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)

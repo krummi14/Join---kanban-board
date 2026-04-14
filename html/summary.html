@@ -22,7 +22,8 @@
           <li><a href="./summary.html"><img class="summery" src="../assets/icon/summary_off.svg" alt="summery"></a></li>
           <li><a href="./add_task.html"><img class="add_task" src="../assets/icon/add_off.svg" alt="add task"></a></li>
           <li><a href="./board.html"><img class="board" src="../assets/icon/board_off.svg" alt="board"></a></li>
-          <li><a href="./contacts.html"><img class="contact" src="../assets/icon/contact_off.svg" alt="contact"></a></li>
+          <li><a href="./contacts.html"><img class="contact" src="../assets/icon/contact_off.svg" alt="contact"></a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -34,12 +35,14 @@
 
   <section class="content">
     <header class="header_framework">
-      <p>Kanban Project Management Tool</p>
+      <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
+      <p class="join_header_text">Kanban Project Management Tool</p>
       <div>
-        <img src="../assets/icon/help_off.svg" alt="help icon">
+        <img class="help_icon" src="../assets/icon/help_off.svg" alt="help icon">
         <!-- id for user name -->
         <div id="user">G</div>
         <section class="logout_menu">
+          <a class="help_logout_menu" href="./help.html">Help</a>
           <a href="./legal_notice.html">Legal Notice</a>
           <a href="./privacy_policy.html">Privacy Policy</a>
           <a href="#" onclick="logout()">Log out</a>
@@ -50,27 +53,28 @@
     <main class="main_framework">
       <section class="main_header">
         <h1>Join 360</h1>
-        <hr>
-        <p>Key Metrics at a Glance</p>
+        <hr class="hr_desktop">
+        <p class="respo_header_text_size">Key Metrics at a Glance</p>
+        <hr class="hr_mobile">
       </section>
 
       <section class="key_matix">
 
         <section class="todo_done">
           <div class="to_do">
-            <img src="../assets/icon/to_do.svg" alt="to do icon">
+            <img class="icons" src="../assets/icon/to_do.svg" alt="to do icon">
             <!-- id for count template -->
             <div id="to_do_count">0<br><span>To-do</span></div>
           </div>
           <div class="done">
-            <img src="../assets/icon/done.svg" alt="done icon">
+            <img class="icons" src="../assets/icon/done.svg" alt="done icon">
             <!-- id for count template -->
             <div id="done_count">0<br><span>Done</span></div>
           </div>
         </section>
 
         <div class="urgent">
-          <img src="../assets/icon/urgent.svg" alt="urgent icon">
+          <img class="icons" src="../assets/icon/urgent.svg" alt="urgent icon">
           <!-- id for count template -->
           <div id="urgent_count">0<br><span>Urgent</span></div>
           <hr>
@@ -98,8 +102,31 @@
         <h2>Good Morning!</h2>
       </section>
     </main>
-    
+    <footer id="responsive_menu" class="responsive_menu">
+      <a href="./summary.html" class="responsive_menu_button">
+        <img class="responsive_menu_img responsive_menu_summary_img" src="../assets/icon/summary_respo.svg"
+          alt="summary_respo_icon">
+        <p class="responsive_menu_text">Summary</p>
+      </a>
+      <a href="./add_task.html" class="responsive_menu_button">
+        <img class="responsive_menu_img responsive_menu_add_task_img" src="../assets/icon/add_task_respo.svg"
+          alt="add_task_respo_icon">
+        <p class="responsive_menu_text">Add Task</p>
+      </a>
+      <a href="./board.html" class="responsive_menu_button">
+        <img class="responsive_menu_img responsive_menu_board_img" src="../assets/icon/board_icon_respo.svg"
+          alt="board_respo_icon">
+        <p class="responsive_menu_text">Board</p>
+      </a>
+      <a href="./contacts.html" class="responsive_menu_button">
+        <img class="responsive_menu_img responsive_menu_contacts_img" src="../assets/icon/contacts_respo.svg"
+          alt="contacts_respo_icon">
+        <p class="responsive_menu_text">Contacts</p>
+      </a>
+    </footer>
   </section>
+
+
 
   <script src="../script.js"></script>
   <script src="../js/summery.js"></script>

@@ -64,6 +64,11 @@
   color: #000000;
 }
 
+.icons {
+  width: 40px;
+  height: 40px;
+}
+
 .urgent {
   width: 100%;
   height: 168px;
@@ -78,6 +83,11 @@
 .tasks {
   display: flex;
   gap: 24px;
+}
+
+.hr_mobile {
+  display: none;
+  rotate: 90deg;
 }
 
 #urgent_count {
@@ -109,13 +119,13 @@
   flex-direction: column;
   gap: 13px;
   color: #000000;
-} 
+}
 
 #deadline span {
   font-size: 16px;
   font-weight: 400;
   color: #000000;
-} 
+}
 
 .tasks_in_board,
 .tasks_in_progress,
@@ -160,3 +170,122 @@
   color: #29abe2;
 }
 
+@media(min-width: 320px) and (max-width:850px) {
+  .main_header {
+    position: static;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+    padding: 24px 16px;
+  }
+
+  .respo_header_text_size {
+    font-size: 20px;
+  }
+
+  .hr_desktop {
+    display: none;
+  }
+
+  .hr_mobile {
+    display: block;
+  }
+
+  #good_morning {
+    display: none;
+  }
+
+  .key_matix {
+    position: static;
+    align-items: center;
+    padding: 24px 16px;
+    width: 100%;
+    height: auto;
+  }
+
+  .todo_done {
+    gap: 36px;
+  }
+
+  .to_do,
+  .done {
+    width: 130px;
+    height: 110px;
+  }
+
+  #to_do_count,
+  #done_count {
+    font-size: 47px;
+  }
+
+  #to_do_count span,
+  #done_count span {
+    font-size: 16px;
+  }
+
+  .urgent {
+    width: auto;
+    height: 110px;
+    padding: 16px;
+    gap: 0;
+  }
+
+  #urgent_count {
+    font-size: 47px;
+  }
+
+  #urgent_count span {
+    font-size: 16px;
+  }
+
+  #deadline {
+    font-size: 16px;
+  }
+
+  #deadline span {
+    font-size: 16px;
+  }
+
+  .tasks {
+    gap: 8px;
+  }
+
+  .tasks_in_board {
+    height: 116px;
+    width: 96px;
+  }
+
+  #board_count {
+    font-size: 47px;
+  }
+
+  #board_count span {
+    font-size: 16px;
+  }
+
+  .tasks_in_progress {
+    height: 116px;
+    width: 96px;
+  }
+
+  #progress_count {
+    font-size: 47px;
+  }
+
+  #progress_count span {
+    font-size: 16px;
+  }
+
+  .awaiting_feedback {
+    height: 116px;
+    width: 96px;
+  }
+
+  #feedback_count {
+    font-size: 47px;
+  }
+
+  #feedback_count span {
+    font-size: 16px;
+  }
+}

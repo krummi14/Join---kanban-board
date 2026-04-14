@@ -1,6 +1,6 @@
 import { getData, putNewData, putEditData, deleteData } from "./firebase.js";
 import { createList } from "./list.js";
-import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate } from "./template/contacts_template.js";
+import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditTemplate } from "./template/contacts_template.js";
 
 async function initContacts() {
     const data = await getData("/contacts");
@@ -144,7 +144,9 @@ function openContactInformation(contactsIndex) {
     contentContactWrapper.classList.add('contact_wrapper_active');
     contentContactInformation.classList.remove("contact_information_deactive");
     contentContactInformation.classList.add("contact_information_animation");
+    contentContact.classList.remove('responsive_contactInformation_none');
     createContentInformation(contactsIndex);
+    createEditButtonResponsive(contactsIndex);
     activeContact = contactsIndex;
 }
 
@@ -240,12 +242,10 @@ function createAddNewContactDialog(contactsIndex) {
 function styleAddNewContactDialog(headerText, descriptionText, directionOfHeaderAndDescription, deleteButton, saveButton, cancelButton, createButton) {
     headerText.innerText = "Add contact";
     descriptionText.style.display = "block";
-    directionOfHeaderAndDescription.style = "gap: 16px";
     deleteButton.classList.add("display_none_button_or_img");
     saveButton.classList.add("display_none_button_or_img");
     cancelButton.classList.remove("display_none_button_or_img");
     createButton.classList.remove("display_none_button_or_img");
-    //createButton.style.width = "240px";
 }
 
 function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
@@ -273,6 +273,14 @@ function styleOfCreadedOrEditedSuccessfully() {
     }, 4000);
 }
 
+function closeContactInformationResponsive() {
+    contentContact.classList.add('responsive_contactInformation_none');
+}
+
+function createEditButtonResponsive(contactsIndex) {
+    contentEditButton.innerHTML = getContactDialogEditTemplate(contactsIndex);
+}
+
 window.initContacts = initContacts;
 window.openContactInformation = openContactInformation;
 window.openAddNewContactDialog = openAddNewContactDialog;
@@ -282,3 +290,5 @@ window.closeDialogOnBodyclick = closeDialogOnBodyclick;
 window.saveNewContact = saveNewContact;
 window.saveContact = saveContact;
 window.deleteContact = deleteContact;
+window.closeContactInformationResponsive = closeContactInformationResponsive;
+window.createEditButtonResponsive = createEditButtonResponsive;

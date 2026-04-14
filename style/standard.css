@@ -37,4 +37,11 @@ mark {
 
 a {
   text-decoration: none;
+  color: rgba(205, 205, 205, 1);
+}
+
+@media(min-width: 320px) and (max-width:850px) {
+  h1 {
+    font-size: 47px;
+  }
 }

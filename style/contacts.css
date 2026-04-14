@@ -145,6 +145,13 @@
     color: rgba(42, 54, 71, 1);
 }
 
+.slogan_mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
 /* contact_information*/
 .contact_information_deactive {
     display: none;
@@ -301,6 +308,10 @@
     margin-top: 24px;
 }
 
+.contact_dialog_close_button_direction_responsive {
+    display: none;
+}
+
 .contact_dialog_initial_and_assets {
     display: flex;
     flex-direction: row;
@@ -393,4 +404,193 @@
 
 .contact_createdSuccesfully_deactive_animation {
     animation: slideLeft 2s forwards;
+}
+
+@media(min-width: 320px) and (max-width:850px) {
+
+    /* contact_content*/
+    .background_add_contact_button {
+        display: none;
+    }
+
+    .contact_list {
+        width: 100%;
+        padding: 0;
+    }
+
+    .contact_list_scrollmethode {
+        width: 100%;
+        padding: 0 16px;
+        max-height: 100%;
+    }
+
+    .contact_content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        padding: 120px 0;
+        padding-bottom: 0;
+        background-color: rgba(246, 247, 248, 1);
+    }
+
+    .contact_content_header_and_slogan {
+        flex-direction: column;
+        align-items: start;
+        gap: 8px;
+        margin-bottom: 48px;
+        padding: 0 16px;
+    }
+
+    .contact_headline_h2 {
+        font-size: 47px;
+    }
+
+    .contact_slogan {
+        font-size: 20px;
+    }
+
+    .slogan_mobile {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: start;
+        gap: 16px;
+    }
+
+    .vertical_divider {
+        display: none;
+    }
+
+    .horizontal_divider_slogan {
+        background-color: rgba(41, 171, 226, 1);
+        height: 3px;
+        width: 90px;
+        border-radius: 24px;
+    }
+
+    /* contact_information*/
+    .contact_information_animation {
+        padding: 0 16px;
+    }
+
+    @keyframes slideRight {
+        from {
+            transform: translateX(0px);
+        }
+
+        to {
+            transform: translateX(0px);
+        }
+    }
+
+    .contact_information_header {
+        gap: 8px;
+    }
+
+    .contact_initials_size {
+        line-height: 80px;
+        height: 80px;
+        width: 80px;
+        font-size: 27px;
+    }
+
+    .contact_information_header_gap {
+        gap: 0;
+    }
+
+    .contact_name_font_size {
+        font-size: 36px;
+        font-weight: 700;
+    }
+
+    .contact_information_headline {
+        margin: 24px 0;
+    }
+
+    .responsive_contactInformation_none {
+        display: none;
+    }
+
+    /*contact_dialog*/
+    .contact_dialog_content {
+        height: 100%;
+        width: 100%;
+        transform: translate(-50%, -50%) translateY(500px);
+        transition: all 250ms ease-in;
+    }
+
+    .contact_dialog_content.dialog_opend {
+        transform: translate(-50%, -50%) translateY(0);
+        transition: all 250ms ease-in;
+    }
+
+    .contact_dialog_content.dialog_closed {
+        transform: translate(-50%, -50%) translateY(500px);
+        transition: all 250ms ease-in;
+    }
+
+    .contact_dialog_direction {
+        flex-direction: column;
+    }
+
+    .contact_dialog_header {
+        justify-content: flex-start;
+        width: 100%;
+        height: 50%;
+        gap: 64px;
+        padding-top: 16px;
+        padding-left: 16px;
+    }
+
+    .contact_dialog_header_direction {
+        gap: 8px;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .contact_description_text {
+        font-size: 20px;
+    }
+
+    .contact_dialog_main {
+        height: 50%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .contact_dialog_close_button_direction {
+        display: none;
+    }
+
+    .contact_dialog_close_button_direction_responsive {
+        display: flex;
+        justify-content: end;
+        padding-right: 16px;
+    }
+
+    .contact_dialog_initial_and_assets {
+        flex-direction: column;
+        padding-top: 56px;
+    }
+
+    .contact_dialog_initial_responsive_position {
+        position: absolute;
+        top: 43%;
+        z-index: 2;
+    }
+
+    .contact_dialog_input_and_button_direction {
+        align-items: center;
+        width: 100%;
+        padding: 0 16px;
+    }
+
+    .contact_dialog_input_direction {
+        height: 100%;
+        width: 100%;
+    }
 }
