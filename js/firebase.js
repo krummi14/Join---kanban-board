@@ -41,7 +41,7 @@ export async function deleteData(path = "") {
 
 export async function putUserData(path = "", data = {}) {
     await fetch(BASE_URL + path + ".json", {
-        method: "PUT",
+        method: "PATCH", //PUT BEDEUTET „Ersetze ALLES an diesem Pfad komplett“
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
     });

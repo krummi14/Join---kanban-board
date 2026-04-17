@@ -1,0 +1,18 @@
+a {
+  color: black;
+}
+
+ul.index {
+  list-style: disc !important;
+  padding-left: 24px !important;
+}
+
+.index li::before {
+  content: "• ";
+  margin-right: 8px;
+}
+
+
+.index-link:hover {
+  color: #555555;
+}

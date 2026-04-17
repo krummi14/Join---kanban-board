@@ -40,8 +40,17 @@ a {
   color: rgba(205, 205, 205, 1);
 }
 
-@media(min-width: 320px) and (max-width:850px) {
+label {
+  font-size: 20px;
+  color: #2a3647;
+}
+
+@media(min-width: 320px) and (max-width:980px) {
   h1 {
     font-size: 47px;
+  }
+
+  label {
+    font-size: 16px;
   }
 }

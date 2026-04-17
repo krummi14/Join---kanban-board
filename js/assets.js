@@ -24,3 +24,20 @@ export function editCurrentContactData(contactsIndex) {
     };
 }
 
+
+
+export function normalizeStatus(status) {
+  return String(status || "")
+    .toLowerCase()
+    .replaceAll("_", " ")
+    .replaceAll("-", " ")
+    .trim();
+}
+
+// 🔧 CATEGORY NORMALIZER
+export function normalizeCategory(category) {
+  return String(category || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
+}

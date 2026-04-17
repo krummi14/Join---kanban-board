@@ -1,242 +1,308 @@
 .button_basic_characteristics {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    height: 48px;
-    background-color: rgba(42, 54, 71, 1);
-    color: white;
-    border-radius: 10px;
-    border: none;
-    font-size: 21px;
-    font-weight: 700;
-    padding: 10px 18px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  height: 48px;
+  background-color: rgba(42, 54, 71, 1);
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 21px;
+  font-weight: 700;
+  padding: 10px 18px;
 }
 
 .button_basic_characteristics:hover {
-    background-color: rgba(41, 171, 226, 1);
+  background-color: rgba(41, 171, 226, 1);
 }
 
 .basic-btn-secondary {
-    background-color: white;
-    color: rgba(42, 54, 71, 1);
-    border: 1px solid rgba(42, 54, 71, 1);
-    border-radius: 10px;
-    font-size: 21px;
-    font-weight: 700;
-    padding: 10px 20px;
+  background-color: white;
+  color: rgba(42, 54, 71, 1);
+  border: 1px solid rgba(42, 54, 71, 1);
+  border-radius: 10px;
+  font-size: 21px;
+  font-weight: 700;
+  padding: 10px 20px;
 }
 
 .basic-btn-secondary:hover {
-    border: 1px solid rgba(41, 171, 226, 1);
-    color: rgba(41, 171, 226, 1);
-    background-color: white;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(41, 171, 226, 1);
+  color: rgba(41, 171, 226, 1);
+  background-color: white;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 .input-wrapper {
-    position: relative;
-    width: 100%;
-    margin-bottom: 15px;
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .input-wrapper input {
-    width: 100%;
-    padding: 12px 40px 12px 16px;
-    border: 1px solid rgba(128, 128, 128, 0.3);
-    border-radius: 10px;
-    box-sizing: border-box;
-    font-size: 20px;
-    font-weight: 400;
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 400;
 }
 
 .input-icon {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    width: 24px;
-    height: 24px;
-    transform: translateY(-50%);
-    object-fit: contain;
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+  object-fit: contain;
+}
+
+input {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+textarea {
+  width: 440px;
+  height: 120px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+textarea::placeholder {
+  color: rgba(128, 128, 128, 0.3);
 }
 
 input::placeholder {
-    color: rgba(128, 128, 128, 0.3);
+  color: rgba(128, 128, 128, 0.3);
 }
 
 input:focus {
-    outline: none;
-    border-color: rgba(41, 171, 226, 1);
+  outline: none;
+  border-color: rgba(41, 171, 226, 1);
 }
 
 .error {
-    color: red;
-    font-size: 12px;
-    margin: 0;
+  color: red;
+  font-size: 12px;
+  margin: 0;
 }
 
 .close_button {
-    height: 32px;
-    width: 32px;
-    font-size: 20px;
-    border: none;
-    background-color: white;
-    border-radius: 100%;
-    color: rgba(42, 54, 71, 1);
+  height: 32px;
+  width: 32px;
+  font-size: 20px;
+  border: none;
+  background-color: white;
+  border-radius: 100%;
+  color: rgba(42, 54, 71, 1);
 }
 
 .close_button_responsive {
-    height: 24px;
-    width: 24px;
-    font-size: 16px;
-    border: none;
-    background-color: rgba(42, 54, 71, 1);
-    border-radius: 100%;
-    color: white;
+  height: 24px;
+  width: 24px;
+  font-size: 16px;
+  border: none;
+  background-color: rgba(42, 54, 71, 1);
+  border-radius: 100%;
+  color: white;
 }
 
 .close_button_responsive:hover {
-    background-color: rgba(41, 171, 226, 1);
+  background-color: rgba(41, 171, 226, 1);
 }
 
 .close_button:hover {
-    background-color: rgba(128, 128, 128, 0.3);
+  background-color: rgba(128, 128, 128, 0.3);
 }
 
 /*contacts*/
 .back_button_contactInformation_mobile {
-    display: none;
+  display: none;
 }
 
 .add_contact_button {
-    width: 100%;
-    height: 56px;
+  width: 100%;
+  height: 56px;
 }
 
 .edit_and_delete_button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    color: rgba(42, 54, 71, 1);
-    background-color: #f6f7f8;
-    border: none;
-    font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  color: rgba(42, 54, 71, 1);
+  background-color: #f6f7f8;
+  border: none;
+  font-weight: 400;
 }
 
 .edit_and_delete_button:hover {
-    color: rgba(41, 171, 226, 1);
-    font-weight: bold;
+  color: rgba(41, 171, 226, 1);
+  font-weight: bold;
 }
 
 .contact_dialog_button_delete {
-    font-size: 20px;
-    font-weight: 400;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  font-size: 20px;
+  font-weight: 400;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 .contact_dialog_button_save {
-    width: 112px;
-    height: 56px;
+  width: 112px;
+  height: 56px;
 }
 
 .contact_dialog_button_creat {
-    width: 240px;
-    height: 56px;
+  width: 240px;
+  height: 56px;
 }
 
 .display_none_button_or_img {
-    display: none;
+  display: none;
 }
 
 /*board*/
 .search_icon_size {
-    width: 32px;
-    height: 32px;
+  width: 32px;
+  height: 32px;
 }
 
 .add_task_button {
-    width: 160px;
+  width: 160px;
 }
 
 .input-wrapper_size {
-    width: 320px;
+  width: 320px;
 }
 
 .input-wrapper input {
-    border: 1px solid rgba(168, 168, 168, 1);
+  border: 1px solid rgba(168, 168, 168, 1);
 }
 
 input:focus {
-    outline: none;
-    border-color: rgba(41, 171, 226, 1);
+  outline: none;
+  border-color: rgba(41, 171, 226, 1);
 }
 
 .plus_add_task_button {
-    height: 24px;
-    width: 24px;
-    background-color: #f6f7f8;
-    color: rgba(42, 54, 71, 1);
-    border: 2px solid rgba(42, 54, 71, 1);
-    border-radius: 8px;
-    font-size: 20px;
-    font-weight: 700;
+  height: 24px;
+  width: 24px;
+  background-color: #f6f7f8;
+  color: rgba(42, 54, 71, 1);
+  border: 2px solid rgba(42, 54, 71, 1);
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .plus_add_task_button:hover {
-    border-color: rgba(41, 171, 226, 1);
-    color: rgba(41, 171, 226, 1);
+  border-color: rgba(41, 171, 226, 1);
+  color: rgba(41, 171, 226, 1);
 }
 
 .edit_and_add_button_responsive {
-    display: none;
+  display: none;
 }
 
-@media(min-width: 320px) and (max-width:850px) {
+/* add_tasks */
+.clear_btn {
+  background-color: transparent;
+  color: #2a3647;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
 
-    /*contacts*/
-    .back_button_contactInformation_mobile {
-        position: fixed;
-        top: 120px;
-        right: 16px;
-        display: block;
-        font-size: 24px;
-        width: 32px;
-        height: 32px;
-        border: none;
-        color: rgba(41, 171, 226, 1);
-        background-color: rgba(246, 247, 248, 1);
-    }
+.clear_btn:hover {
+  background-color: transparent;
+  border: 1px solid rgba(41, 171, 226, 1);
+  color: rgba(41, 171, 226, 1);
+  box-shadow: #2a364750 0 5px 2px -2px;
+}
 
-    .edit_and_add_button_responsive {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        bottom: 120px;
-        right: 16px;
-        border: none;
-        border-radius: 100%;
-        background-color: rgba(42, 54, 71, 1);
-        height: 56px;
-        width: 56px;
-    }
+.create_btn:hover {
+  box-shadow: #2a364750 0 5px 2px -2px;
+}
 
-    .edit_and_add_button_responsive:hover {
-        background-color: rgba(41, 171, 226, 1);
-    }
+@media(min-width: 320px) and (max-width:980px) {
 
-    .edit_and_delete_button {
-        display: none;
-    }
+  .button_basic_characteristics {
+    font-size: 18px;
+  }
 
-    .contact_dialog_cancel_button_responsive {
-        display: none;
-    }
+  input {
+    font-size: 16px;
+  }
 
-    .contact_dialog_button_creat {
-        width: auto;
-        padding: 8px 12px;
-    }
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  /*contacts*/
+  .back_button_contactInformation_mobile {
+    position: fixed;
+    top: 120px;
+    right: 16px;
+    display: block;
+    font-size: 24px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    color: rgba(41, 171, 226, 1);
+    background-color: rgba(246, 247, 248, 1);
+  }
+
+  .edit_and_add_button_responsive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 120px;
+    right: 16px;
+    border: none;
+    border-radius: 100%;
+    background-color: rgba(42, 54, 71, 1);
+    height: 56px;
+    width: 56px;
+  }
+
+  .edit_and_add_button_responsive:hover {
+    background-color: rgba(41, 171, 226, 1);
+  }
+
+  .edit_and_delete_button {
+    display: none;
+  }
+
+  .contact_dialog_cancel_button_responsive {
+    display: none;
+  }
+
+  .contact_dialog_button_creat {
+    width: auto;
+    padding: 8px 12px;
+  }
+
+  /* add_tasks */
+  .clear_btn {
+    width: 112px;
+  }
+
+  .create_btn {
+    width: 180px;
+  }
 }

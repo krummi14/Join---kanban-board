@@ -141,12 +141,21 @@
   background: #f6f7f8;
 }
 
+.main_header {
+  position: absolute;
+  top: 206px;
+  left: 328px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* footer */
 .responsive_menu {
   display: none;
 }
 
-@media(min-width: 320px) and (max-width:850px) {
+@media(min-width: 320px) and (max-width:980px) {
   .content {
     display: flex;
     flex-direction: column;
@@ -156,6 +165,14 @@
     overflow-y: auto;
     max-height: 100%;
     height: calc(100vh - 176px);
+  }
+
+  .main_header {
+    position: static;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+    padding: 24px 16px;
   }
 
   .sidebar {

@@ -406,7 +406,7 @@
     animation: slideLeft 2s forwards;
 }
 
-@media(min-width: 320px) and (max-width:850px) {
+@media(min-width: 320px) and (max-width:980px) {
 
     /* contact_content*/
     .background_add_contact_button {
@@ -515,7 +515,7 @@
 
     /*contact_dialog*/
     .contact_dialog_content {
-        height: 100%;
+        height: 680px;
         width: 100%;
         transform: translate(-50%, -50%) translateY(500px);
         transition: all 250ms ease-in;
@@ -579,7 +579,7 @@
 
     .contact_dialog_initial_responsive_position {
         position: absolute;
-        top: 43%;
+        top: 40%;
         z-index: 2;
     }
 

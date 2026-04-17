@@ -3,29 +3,24 @@ import { createAddTaskForm } from "./addTaskForm.js";
 let addTaskFormController = null;
 
 async function initAddTask() {
-  const userName = localStorage.getItem("userName");
   const taskForm = document.getElementById("taskForm");
-
-  if (!taskForm) {
-    return null;
-  }
-
-  if (userName !== "Guest" && typeof getInitials === "function") {
-    const initials = getInitials(userName);
-    const refUser = document.getElementById("user");
-    if (refUser) {
-      refUser.innerHTML = initials;
-    }
-  }
-
-  if (addTaskFormController) {
-    addTaskFormController.destroy();
-  }
-
-  addTaskFormController = createAddTaskForm(taskForm);
+  if (!taskForm) return null;
+  updateUserBadge();
+  addTaskFormController?.destroy();
+  addTaskFormController = createAddTaskForm(taskForm, getCreateTaskStatus());
   return addTaskFormController;
 }
 
-Object.assign(window, {
-  initAddTask,
-});
+function getCreateTaskStatus() {
+  return document.getElementById("createTask")?.value || "to_do";
+}
+
+function updateUserBadge() {
+  const userName = localStorage.getItem("userName");
+  const userBadge = document.getElementById("user");
+  if (!userBadge || userName === "Guest") return;
+  if (typeof getInitials !== "function") return;
+  userBadge.textContent = getInitials(userName);
+}
+
+Object.assign(window, { initAddTask });

@@ -1,67 +1,67 @@
 .board_main {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .main_header {
-    /*position: absolute;
+  /*position: absolute;
     top: 206px;
     left: 328px;*/
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    /*gap: 8px;*/
-    padding: 80px 64px;
-    padding-bottom: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  /*gap: 8px;*/
+  padding: 80px 64px;
+  padding-bottom: 48px;
 }
 
 .input_wrapper_direction {
-    display: flex;
-    flex-direction: row;
-    gap: 32px;
-    width: 520px;
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  width: 520px;
 }
 
 .input_icon_border_left {
-    border-left: 1px solid rgba(209, 209, 209, 1);
-    justify-content: end;
-    display: flex;
-    align-items: center;
-    width: 48px;
+  border-left: 1px solid rgba(209, 209, 209, 1);
+  justify-content: end;
+  display: flex;
+  align-items: center;
+  width: 48px;
 }
 
 .main_drag_and_drop {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    height: 100%;
-    padding: 0 64px;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  height: 100%;
+  padding: 0 64px;
 }
 
 .drag_content_gap {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .drag_area_header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .drag_area {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 300px;
-    height: 100%;
-    border-radius: 10px;
-    margin-bottom: 50px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 300px;
+  height: 100%;
+  border-radius: 10px;
+  margin-bottom: 50px;
 }
 
 /** Hintergrund Farbe wenn die Elemente über den DivContainer liegen 
@@ -70,59 +70,212 @@
 }**/
 
 .no_task_text {
-    text-align: center;
-    width: 100%;
-    font-size: 16px;
-    font-weight: 400;
-    background-color: rgba(231, 231, 231, 1);
-    border: 1px dashed rgba(168, 168, 168, 1);
-    border-radius: 10px;
-    color: rgba(168, 168, 168, 1);
-    padding: 24px;
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  background-color: rgba(231, 231, 231, 1);
+  border: 1px dashed rgba(168, 168, 168, 1);
+  border-radius: 10px;
+  color: rgba(168, 168, 168, 1);
+  padding: 24px;
 }
 
 .task {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 1);
-    border-radius: 24px;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
-    padding: 16px;
-    margin-bottom: 16px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  padding: 16px;
+  margin-bottom: 16px;
+  cursor: pointer;
 }
 
 .task_category {
-    font-size: 16px;
-    font-weight: 400;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    background-color: rgba(0, 56, 255, 1);
-    padding: 4px 16px;
-    margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  background-color: rgba(0, 56, 255, 1);
+  padding: 4px 16px;
+  margin-bottom: 24px;
 }
 
 .task_titel {
-    font-size: 16px;
-    font-weight: 700;
-    color: rgba(42, 54, 71, 1);
-    margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(42, 54, 71, 1);
+  margin-bottom: 8px;
 }
 
 .task_description {
-    font-size: 16px;
-    font-weight: 400;
-    color: rgba(168, 168, 168, 1);
-    margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(168, 168, 168, 1);
+  margin-bottom: 24px;
 }
 
 .direction_priority_and_contacts {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.task_title {
+  font-weight: 700;
+}
+.avatar {
+  border-radius: 50%;
+}
+
+.task_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.task_progress_wrapper {
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.avatar_group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 1;
+}
+
+.priority_icon {
+  display: flex;
+  align-items: center;
+}
+
+.priority_icon img {
+  width: 18px;
+  height: 18px;
+}
+
+.progressbar {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0; /* <- DAS ist der sichtbare Grundbalken */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressbar_fill {
+  height: 100%;
+  background: #29abe2;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/*overlay*/
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden; /* Hintergrund NICHT scrollbar */
+}
+
+.hidden {
+  display: none;
+}
+
+.task_overlay {
+  background: white;
+  width: 420px;
+  max-width: 90%;
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+}
+
+.task_overlay > * {
+  margin-bottom: 20px;
+}
+
+.overlay_category {
+  background: #2a3647;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.overlay_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.overlay_header button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.task_overlay h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.assignee_row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.task_assignees_overlay {
+  margin-top: 8px;
+}
+
+.subtask_item {
+  display: flex;
+  align-items: center;
+  justify-self: flex-start;
+  margin-bottom: 8px;
+}
+
+.task_subtasks {
+  margin-top: 12px;
+}
+
+.task_priority_overlay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
