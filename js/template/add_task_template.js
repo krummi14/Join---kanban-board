@@ -1,16 +1,58 @@
 function createSubtaskItem(st, index) {     
+  if (st.isEditing) return createEditableSubtaskItem(st, index);
+
   return `
     <section class="subtask_item">
       <span class="subtask_item_text">${st.title}</span>
-      <button type="button"
-        class="subtask_remove_button"
-        data-remove-subtask="${index}">
-        ×
-      </button>
+      <div class="subtask_item_actions">
+        <button type="button"
+          class="subtask_item_action_button"
+          data-edit-subtask="${index}"
+          aria-label="Edit subtask">
+          <img src="../assets/icon/subtask_edit.svg" alt="Edit subtask">
+        </button>
+        <button type="button"
+          class="subtask_item_action_button"
+          data-remove-subtask="${index}"
+          aria-label="Delete subtask">
+          <img src="../assets/icon/subtask_del.svg" alt="Delete subtask">
+        </button>
+      </div>
     </section>
   `;
 }
-//Geändert ! 
+
+function createEditableSubtaskItem(st, index) {
+  return `
+    <section class="subtask_item editing">
+      <div class="subtask_edit_input_wrapper">
+        <input type="text" class="subtask_edit_input" data-edit-subtask-input="${index}" value="${escapeHtmlAttribute(st.title)}" aria-label="Edit subtask">
+        <div class="subtask_item_actions">
+          <button type="button"
+            class="subtask_item_action_button"
+            data-cancel-subtask-edit="${index}"
+            aria-label="Cancel subtask edit">
+            <img src="../assets/icon/subtask_del.svg" alt="Cancel subtask edit">
+          </button>
+          <button type="button"
+            class="subtask_item_action_button"
+            data-save-subtask-edit="${index}"
+            aria-label="Save subtask edit">
+            <img src="../assets/icon/subtask_check.svg" alt="Save subtask edit">
+          </button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 function createAssigneeOption(contact) {
   return `
@@ -102,9 +144,14 @@ function createAddTaskFormTemplate(path) {
             <label for="subtask">Subtasks</label>
             <section class="subtask_input_wrapper">
               <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
-              <button type="button" id="addSubtaskButton" class="subtask_add_button" aria-label="Add subtask">
-                <img src="../assets/icon/done.svg" alt="Add subtask">
-              </button>
+              <div class="subtask_action_buttons">
+                <button type="button" id="clearSubtaskButton" class="subtask_action_button" aria-label="Clear subtask input">
+                  <img src="../assets/icon/subtask_close.svg" alt="Clear subtask input">
+                </button>
+                <button type="button" id="addSubtaskButton" class="subtask_action_button" aria-label="Add subtask">
+                  <img src="../assets/icon/subtask_check.svg" alt="Add subtask">
+                </button>
+              </div>
             </section>
             <section id="subtaskList" class="subtask_list"></section>
           </section>

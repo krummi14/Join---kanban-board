@@ -30,7 +30,7 @@ function createContext(taskForm, createTaskPath) {
 }
 
 function createState() {
-  return { assigneeContacts: [], selectedAssignees: [], selectedCategory: "", subtasks: [], selectedPriority: "" };
+  return { assigneeContacts: [], selectedAssignees: [], selectedCategory: "", subtasks: [], selectedPriority: "", editingSubtaskIndex: null };
 }
 
 function createElements(taskForm) {
@@ -50,6 +50,7 @@ function getInputElements(taskForm) {
     dueDate: byId(taskForm, "dueDate"),
     category: byId(taskForm, "category"),
     subtaskInput: byId(taskForm, "subtask"),
+    clearSubtaskButton: byId(taskForm, "clearSubtaskButton"),
     addSubtaskButton: byId(taskForm, "addSubtaskButton"),
     subtaskList: byId(taskForm, "subtaskList"),
   };
@@ -77,8 +78,10 @@ function createHandlers(context) {
     formSubmit: (event) => handleTaskSubmit(context, event),
     formClick: (event) => delegateFormClick(context, event),
     formChange: (event) => handleAssigneeChange(context, event),
+    formKeydown: (event) => handleFormKeydown(context, event),
     subtaskInput: () => updateSubtaskButtonState(context),
     subtaskKeydown: (event) => handleSubtaskKeydown(context, event),
+    clearSubtaskClick: () => clearSubtaskInput(context),
     addSubtaskClick: () => addSubtask(context),
   };
 }
@@ -99,6 +102,7 @@ function registerEvents(context) {
   context.taskForm.addEventListener("submit", context.handlers.formSubmit);
   context.taskForm.addEventListener("click", context.handlers.formClick);
   context.taskForm.addEventListener("change", context.handlers.formChange);
+  context.taskForm.addEventListener("keydown", context.handlers.formKeydown);
 }
 
 function unregisterEvents(context) {
@@ -107,6 +111,7 @@ function unregisterEvents(context) {
   context.taskForm.removeEventListener("submit", context.handlers.formSubmit);
   context.taskForm.removeEventListener("click", context.handlers.formClick);
   context.taskForm.removeEventListener("change", context.handlers.formChange);
+  context.taskForm.removeEventListener("keydown", context.handlers.formKeydown);
 }
 
 function setupSubtaskControls(context) {
@@ -114,12 +119,14 @@ function setupSubtaskControls(context) {
   renderSubtasks(context);
   context.elements.subtaskInput?.addEventListener("input", context.handlers.subtaskInput);
   context.elements.subtaskInput?.addEventListener("keydown", context.handlers.subtaskKeydown);
+  context.elements.clearSubtaskButton?.addEventListener("click", context.handlers.clearSubtaskClick);
   context.elements.addSubtaskButton?.addEventListener("click", context.handlers.addSubtaskClick);
 }
 
 function teardownSubtaskControls(context) {
   context.elements.subtaskInput?.removeEventListener("input", context.handlers.subtaskInput);
   context.elements.subtaskInput?.removeEventListener("keydown", context.handlers.subtaskKeydown);
+  context.elements.clearSubtaskButton?.removeEventListener("click", context.handlers.clearSubtaskClick);
   context.elements.addSubtaskButton?.removeEventListener("click", context.handlers.addSubtaskClick);
 }
 
@@ -134,7 +141,24 @@ function delegateFormClick(context, event) {
   if (handleToggleClick(context, event.target, "[data-assignee-toggle]", toggleAssigneeDropdown)) return;
   if (handleToggleClick(context, event.target, "[data-category-toggle]", toggleCategoryDropdown)) return;
   if (handleCategoryOptionClick(context, event.target)) return;
+  if (handleEditSubtaskClick(context, event.target)) return;
+  if (handleSaveSubtaskEditClick(context, event.target)) return;
+  if (handleCancelSubtaskEditClick(context, event.target)) return;
   handleRemoveSubtaskClick(context, event.target);
+}
+
+function handleFormKeydown(context, event) {
+  const input = getScopedMatch(context, event.target, "[data-edit-subtask-input]");
+  if (!input) return;
+  if (event.key === "Enter") {
+    event.preventDefault();
+    saveSubtaskEdit(context, Number(input.dataset.editSubtaskInput));
+    return;
+  }
+  if (event.key === "Escape") {
+    event.preventDefault();
+    cancelSubtaskEdit(context);
+  }
 }
 
 function handlePriorityClick(context, target) {
@@ -162,6 +186,27 @@ function handleRemoveSubtaskClick(context, target) {
   const button = getScopedMatch(context, target, "[data-remove-subtask]");
   if (!button) return false;
   removeSubtask(context, Number(button.dataset.removeSubtask));
+  return true;
+}
+
+function handleEditSubtaskClick(context, target) {
+  const button = getScopedMatch(context, target, "[data-edit-subtask]");
+  if (!button) return false;
+  startSubtaskEdit(context, Number(button.dataset.editSubtask));
+  return true;
+}
+
+function handleSaveSubtaskEditClick(context, target) {
+  const button = getScopedMatch(context, target, "[data-save-subtask-edit]");
+  if (!button) return false;
+  saveSubtaskEdit(context, Number(button.dataset.saveSubtaskEdit));
+  return true;
+}
+
+function handleCancelSubtaskEditClick(context, target) {
+  const button = getScopedMatch(context, target, "[data-cancel-subtask-edit]");
+  if (!button) return false;
+  cancelSubtaskEdit(context);
   return true;
 }
 
@@ -319,21 +364,67 @@ function addSubtask(context) {
   updateSubtaskButtonState(context);
 }
 
+function startSubtaskEdit(context, index) {
+  if (!Number.isInteger(index) || index < 0 || index >= context.state.subtasks.length) return;
+  context.state.editingSubtaskIndex = index;
+  renderSubtasks(context);
+  focusSubtaskEditInput(context, index);
+}
+
+function saveSubtaskEdit(context, index) {
+  const input = context.taskForm.querySelector(`[data-edit-subtask-input="${index}"]`);
+  const title = input?.value.trim();
+  if (!title) {
+    input?.focus();
+    return;
+  }
+  if (!context.state.subtasks[index]) return;
+  context.state.subtasks[index].title = title;
+  context.state.editingSubtaskIndex = null;
+  renderSubtasks(context);
+}
+
+function cancelSubtaskEdit(context) {
+  if (context.state.editingSubtaskIndex === null) return;
+  context.state.editingSubtaskIndex = null;
+  renderSubtasks(context);
+}
+
+function focusSubtaskEditInput(context, index) {
+  const input = context.taskForm.querySelector(`[data-edit-subtask-input="${index}"]`);
+  if (!input) return;
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+}
+
+function clearSubtaskInput(context) {
+  const input = context.elements.subtaskInput;
+  if (!input) return;
+  input.value = "";
+  updateSubtaskButtonState(context);
+  input.focus();
+}
+
 function renderSubtasks(context) {
   if (!context.elements.subtaskList) return;
-  context.elements.subtaskList.innerHTML = context.state.subtasks.map(createSubtaskItem).join("");
+  context.elements.subtaskList.innerHTML = context.state.subtasks
+    .map((subtask, index) => createSubtaskItem({ ...subtask, isEditing: context.state.editingSubtaskIndex === index }, index))
+    .join("");
 }
 
 function removeSubtask(context, index) {
   context.state.subtasks.splice(index, 1);
+  if (context.state.editingSubtaskIndex === index) context.state.editingSubtaskIndex = null;
+  else if (context.state.editingSubtaskIndex !== null && context.state.editingSubtaskIndex > index) context.state.editingSubtaskIndex -= 1;
   renderSubtasks(context);
 }
 
 function updateSubtaskButtonState(context) {
-  const { subtaskInput, addSubtaskButton, subtaskInputWrapper } = context.elements;
-  if (!subtaskInput || !addSubtaskButton || !subtaskInputWrapper) return;
+  const { subtaskInput, addSubtaskButton, clearSubtaskButton, subtaskInputWrapper } = context.elements;
+  if (!subtaskInput || !addSubtaskButton || !clearSubtaskButton || !subtaskInputWrapper) return;
   const hasInput = subtaskInput.value.trim().length > 0;
   addSubtaskButton.disabled = !hasInput;
+  clearSubtaskButton.disabled = !hasInput;
   subtaskInputWrapper.classList.toggle("has-value", hasInput);
 }
 
@@ -378,6 +469,7 @@ function resetState(state) {
   state.selectedAssignees = [];
   state.selectedCategory = "";
   state.subtasks = [];
+  state.editingSubtaskIndex = null;
 }
 
 function destroy(context) {

@@ -324,35 +324,41 @@ hr {
 }
 
 .subtask_input_wrapper input {
-  padding-right: 56px;
+  padding-right: 92px;
 }
 
-.subtask_add_button {
+.subtask_action_buttons {
   position: absolute;
   top: 50%;
   right: 8px;
   transform: translateY(-50%);
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.subtask_action_button {
   width: 32px;
   height: 32px;
-  display: none;
   align-items: center;
   justify-content: center;
   border: none;
   border-radius: 50%;
   background: transparent;
   cursor: pointer;
-}
-
-.subtask_input_wrapper.has-value .subtask_add_button {
   display: flex;
 }
 
-.subtask_add_button img {
+.subtask_input_wrapper.has-value .subtask_action_buttons {
+  display: flex;
+}
+
+.subtask_action_button img {
   width: 20px;
   height: 20px;
 }
 
-.subtask_add_button:disabled {
+.subtask_action_button:disabled {
   opacity: 0.4;
   cursor: default;
 }
@@ -367,10 +373,17 @@ hr {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px 0 0;
   gap: 12px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background-color: #f6f7f8;
+}
+
+.subtask_item.editing {
+  padding-right: 0;
+}
+
+.subtask_edit_input_wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .subtask_item_text {
@@ -380,6 +393,7 @@ hr {
   color: #2a3647;
   font-size: 16px;
   word-break: break-word;
+  flex: 1;
 }
 
 .subtask_item_text::before {
@@ -387,18 +401,53 @@ hr {
   flex-shrink: 0;
 }
 
-.subtask_remove_button {
+.subtask_item_actions {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.subtask_item:hover .subtask_item_actions,
+.subtask_item.editing .subtask_item_actions,
+.subtask_item:focus-within .subtask_item_actions {
+  display: flex;
+  gap: 12px;
+}
+
+.subtask_edit_input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #29abe2;
+  border-radius: 0;
+  color: #2a3647;
+  font-size: 16px;
+  padding: 4px 56px 4px 12px;
+  outline: none;
+}
+
+.subtask_item.editing .subtask_item_actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  gap: 8px;
+}
+
+.subtask_item_action_button {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: transparent;
-  color: #2a3647;
-  font-size: 20px;
-  line-height: 1;
+  padding: 0;
   cursor: pointer;
 }
 
-.subtask_remove_button:hover,
-.subtask_add_button:not(:disabled):hover {
-  background-color: rgba(41, 171, 226, 0.12);
+.subtask_item_action_button img {
+  width: 16px;
+  height: 16px;
 }
 
 .clear_btn {
