@@ -1,5 +1,5 @@
 import { getData, putUserData } from "./firebase.js";
-import { normalizeStatus} from "./assets.js";
+import { normalizeStatus } from "./assets.js";
 
 const formControllers = new WeakMap();
 const PRIORITIES = ["urgent", "medium", "low"];
@@ -11,7 +11,7 @@ export function createAddTaskForm(taskForm, createTaskPath) {
   if (!taskForm) return null;
   const existing = formControllers.get(taskForm);
   if (existing) return existing;
-const context = createContext(taskForm, createTaskPath); // Create a context object to hold state and elements
+  const context = createContext(taskForm, createTaskPath); // Create a context object to hold state and elements
   initializeForm(context);
   const controller = createController(context);
   formControllers.set(taskForm, controller);
@@ -19,11 +19,11 @@ const context = createContext(taskForm, createTaskPath); // Create a context obj
 }
 
 function createContext(taskForm, createTaskPath) {
-  const context = { 
-    taskForm, 
+  const context = {
+    taskForm,
     createTaskPath, // Store the create task path in the context for later use
-    state: createState(), 
-    elements: createElements(taskForm) 
+    state: createState(),
+    elements: createElements(taskForm)
   };
   context.handlers = createHandlers(context);
   return context;
@@ -45,23 +45,23 @@ function createElements(taskForm) {
 
 function getInputElements(taskForm) {
   return {
-    title: byId(taskForm, "title"), 
-    description: byId(taskForm, "description"), 
+    title: byId(taskForm, "title"),
+    description: byId(taskForm, "description"),
     dueDate: byId(taskForm, "dueDate"),
-    category: byId(taskForm, "category"), 
+    category: byId(taskForm, "category"),
     subtaskInput: byId(taskForm, "subtask"),
-    addSubtaskButton: byId(taskForm, "addSubtaskButton"), 
+    addSubtaskButton: byId(taskForm, "addSubtaskButton"),
     subtaskList: byId(taskForm, "subtaskList"),
   };
 }
 
 function getDropdownElements(taskForm) {
   return {
-    assigneeToggle: byId(taskForm, "assignee"), 
+    assigneeToggle: byId(taskForm, "assignee"),
     assigneeMenu: byId(taskForm, "assigneeDropdownMenu"),
-    selectedContacts: byId(taskForm, "selectedContacts"), 
+    selectedContacts: byId(taskForm, "selectedContacts"),
     categoryToggle: byId(taskForm, "categoryToggle"),
-    categoryMenu: byId(taskForm, "categoryDropdownMenu"), 
+    categoryMenu: byId(taskForm, "categoryDropdownMenu"),
     categoryLabel: byId(taskForm, "categoryLabel"),
   };
 }
@@ -72,13 +72,13 @@ function byId(taskForm, id) {
 
 function createHandlers(context) {
   return {
-    documentClick: (event) => closeDropdownsOnOutsideClick(context, event), 
+    documentClick: (event) => closeDropdownsOnOutsideClick(context, event),
     formReset: () => resetTaskFormState(context),
-    formSubmit: (event) => handleTaskSubmit(context, event), 
+    formSubmit: (event) => handleTaskSubmit(context, event),
     formClick: (event) => delegateFormClick(context, event),
-    formChange: (event) => handleAssigneeChange(context, event), 
+    formChange: (event) => handleAssigneeChange(context, event),
     subtaskInput: () => updateSubtaskButtonState(context),
-    subtaskKeydown: (event) => handleSubtaskKeydown(context, event), 
+    subtaskKeydown: (event) => handleSubtaskKeydown(context, event),
     addSubtaskClick: () => addSubtask(context),
   };
 }
@@ -282,59 +282,38 @@ function toggleAssigneeSelection(context, contactId) {
 
 function syncAssigneeCheckboxes(context) {
   context.taskForm.querySelectorAll("[data-assignee-id]").forEach((checkbox) => {
-    checkbox.checked = context.state.selectedAssignees.includes(checkbox.dataset.assigneeId);
+    const isSelected = context.state.selectedAssignees.includes(checkbox.dataset.assigneeId);
+    checkbox.checked = isSelected;
+    checkbox.closest(".assignee_option")?.classList.toggle("selected", isSelected);
   });
 }
 
 function updateAssigneeLabel(context) {
   const label = context.elements.selectedContacts;
   if (!label) return;
-  label.textContent = getSelectedNames(context).map(getContactInitials).join(" ");
+  label.innerHTML = getSelectedContacts(context).map(createSelectedAssigneeAvatar).join("");
 }
 
-function getSelectedNames(context) {
-  return context.state.assigneeContacts.filter((contact) => context.state.selectedAssignees.includes(contact.id)).map((contact) => contact.name);
+function getSelectedContacts(context) {
+  return context.state.assigneeContacts.filter((contact) => context.state.selectedAssignees.includes(contact.id));
 }
 
-/*
+function createSelectedAssigneeAvatar(contact) {
+  return `<div class="avatar selected_assignee_avatar" title="${contact.name}" style="background:${getContactColor(contact.name)}">${getContactInitials(contact.name)}</div>`;
+}
+
+function getContactColor(name) {
+  return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][String(name || "").length % 6];
+}
+
 function addSubtask(context) {
-  const title = context.elements.subtaskInput?.value.trim();
-  if (!title) return updateSubtaskButtonState(context);
-
-  context.state.subtasks.push({   // GEÄNDERT WEIL SUBTASK ERSCHEINT NICHT, Du speicherst KEINE Subtasks beim Erstellen der Task
-    title: title,
-    done: false
-  });
-
-  context.elements.subtaskInput.value = "";
-  renderSubtasks(context);
-  updateSubtaskButtonState(context);
-}
-
-*/
-function addSubtask(context) {
-console.log("🔥 ADD SUBTASK FUNCTION RUNNING");
-
-  console.log("INPUT ELEMENT:", context.elements.subtaskInput);
-
- const input = context.elements.subtaskInput;
-
-  console.log("INPUT VALUE:", input?.value);
+  const input = context.elements.subtaskInput;
   const title = input?.value.trim();
 
   if (!title) return updateSubtaskButtonState(context);
+  if (!Array.isArray(context.state.subtasks)) context.state.subtasks = [];
 
-  if (!Array.isArray(context.state.subtasks)) {
-    context.state.subtasks = [];
-  }
-
-  context.state.subtasks.push({
-    title,
-    done: false
-  });
-
-  console.log("SUBTASK STATE NOW:", context.state.subtasks);
-
+  context.state.subtasks.push({title, done: false});
   input.value = "";
   renderSubtasks(context);
   updateSubtaskButtonState(context);
@@ -371,9 +350,6 @@ async function handleTaskSubmit(context, event) {
 // This function simulates saving the task to a backend. Replace with actual API call as needed.
 function saveTask(context) {
   const task = buildTaskPayload(context);
-
-  console.log("🔥 SAVING TO FIREBASE:", task);
-
   return putUserData(`${context.createTaskPath}/${task.id}`, task);
 }
 
@@ -411,9 +387,6 @@ function destroy(context) {
 }
 
 function buildTaskPayload(context) {
-
-  console.log("🧠 STATE SUBTASKS (BEFORE SAVE):", context.state.subtasks);
-
   const task = {
     id: Date.now().toString(),
     title: context.elements.title?.value.trim() || "",
@@ -425,9 +398,6 @@ function buildTaskPayload(context) {
     assignees: getAssignedContacts(context),
     subtasks: createSubtaskPayload(context.state.subtasks),
   };
-
-  console.log("💾 FINAL TASK OBJECT:", task);
-
   return task;
 }
 
