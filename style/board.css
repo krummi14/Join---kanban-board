@@ -279,3 +279,251 @@
   align-items: center;
   gap: 10px;
 }
+
+/*EDIT*/
+
+/*
+.edit_overlay {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  width: 500px;
+}
+
+.edit_form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.priority_buttons button {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.edit_actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+*/
+
+/* =========================
+   EDIT TASK OVERLAY (NEW)
+   ========================= */
+.d_none {
+  display: none !important;
+}
+
+.edit_overlay {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  width: min(90%, 520px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px 3px #00000014;
+  overflow: hidden;
+}
+
+/* Scrollbereich wie in Gruppe */
+.scroll-area {
+  overflow-y: auto;
+  padding: 24px;
+  flex: 1;
+}
+
+/* CLOSE BUTTON */
+.close_button {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 16px 0 0;
+}
+
+.close_icon_wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.close_icon_wrapper:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.close_icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* TITLES / SECTIONS */
+.edit_title,
+.edit_description,
+.edit_duedate,
+.edit_priority,
+.edit_assigned_to,
+.edit_subtasks,
+.edit_category {
+  margin-bottom: 20px;
+}
+
+.bold_font {
+  font-weight: 700;
+  font-size: 20px;
+  color: #2A3647;
+}
+
+/* INPUT STYLE (dein System übernommen + vereinheitlicht) */
+.input_style {
+  width: 100%;
+  border: 1px solid #D1D1D1;
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: "Inter";
+  padding: 10px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.input_style:focus {
+  border-color: #29ABE2;
+}
+
+/* PRIORITY */
+.priority_buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.priority_buttons button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.priority_buttons button:hover {
+  border-color: #29ABE2;
+}
+
+/* ASSIGNEES */
+.assignee_dropdown,
+.category_dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#assignee,
+#categoryToggle {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+
+/* DROPDOWN LIST */
+.dropdown_menu {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* SUBTASKS */
+.subtask_input_wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.subtask_input_wrapper input {
+  flex: 1;
+}
+
+#addSubtaskButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: #2A3647;
+  color: white;
+  cursor: pointer;
+}
+
+/* ACTION BUTTON */
+.edit_actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0;
+}
+
+.edit_actions button {
+  background: #2A3647;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.edit_actions button:hover {
+  background: #29ABE2;
+}
+
+/* RED STAR */
+.red_star {
+  color: red;
+}
+
+.avatar_row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+}
+
+.subtask_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.subtask_actions {
+  display: none;
+  gap: 8px;
+}
+
+.subtask_item:hover .subtask_actions {
+  display: flex;
+}
+
+.subtask_actions img {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

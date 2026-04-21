@@ -1,348 +1,84 @@
-import { deleteData, getData, putUserData } from "./firebase.js";
-import { normalizeCategory } from "./assets.js";
 
 
-let tasks = [];
-let currentDraggedElement;
+// 📦 Task Service (Daten / Firebase)
+import {
+  loadTasks,
+  deleteTask as deleteTaskService,
 
+} from "./board_taskService.js";
 
+// 🎨 View Layer (Rendering)
+import {
+  updateHTML,
 
+} from "./board_taskView.js";
+
+// 🪟 Overlay / Form
+import {
+  openOverlay,
+  closeOverlay,
+  handleOverlayClick
+} from "./board_overlayController.js";
+
+// 🖱️ Drag & Drop Controller
+import {
+  initDragDrop,
+  startDragging,
+  allowDrop,
+  moveTo,
+  highlight,
+  removeHighlight
+} from "./board_dragDropController.js";
+
+// 📊 Board config
 const BOARD_COLUMNS = [
   { path: "to_do", label: "to do", containerId: "to_do" },
   { path: "in_progress", label: "in progress", containerId: "in_progress" },
   { path: "await_feedback", label: "await feedback", containerId: "await_feedback" },
   { path: "done", label: "done", containerId: "done" },
 ];
-
+window.BOARD_COLUMNS = BOARD_COLUMNS;
 // 🚀 INIT
-function initBoard() {
+async function initBoard() {
   if (typeof window.userInitials === "function") {
     window.userInitials();
   }
 
-  loadTasks();
+  await loadTasks(BOARD_COLUMNS);
 
-  // 🔥 Overlay Click Listener einmal setzen
+  updateHTML(BOARD_COLUMNS);
+
+  initDragDrop(BOARD_COLUMNS);
+
+  // Overlay click close
   const overlay = document.getElementById("overlay");
   if (overlay) {
     overlay.addEventListener("click", handleOverlayClick);
   }
 }
 
-// 📥 LOAD FROM FIREBASE
-async function loadTasks() {
-  const columnData = await Promise.all(
-    BOARD_COLUMNS.map((column) => getData(column.path))
-  );
+// 🔁 SUBTASK (global bridge)
 
-  tasks = BOARD_COLUMNS.flatMap((column, index) => {
-    const data = columnData[index];
 
-    if (!data) {
-      return [];
-    }
+// 🗑️ DELETE TASK
+async function deleteTask(taskId) {
+  await deleteTaskService(taskId);
 
-    return Object.entries(data).map(([id, task]) => ({
-      id,
-      ...prepareTask(task),
-      status: column.path,
-      sourcePath: column.path,
-      priorityIcon: getPriorityIcon(task.priority),
-    }));
-  });
-
-  updateHTML();
+  closeOverlay();
+  updateHTML(BOARD_COLUMNS);
 }
 
-function getBoardColumn(category) {
-  return BOARD_COLUMNS.find((column) => normalizeCategory(column.path) === normalizeCategory(category));
-}
-
-function getTasksForColumn(category) {
-  const column = getBoardColumn(category);
-  if (!column) {
-    return [];
-  }
-
-  return tasks.filter((task) =>
-    normalizeCategory(task.sourcePath || task.status) === normalizeCategory(column.path)
-  );
-}
-
-// 🔍 FILTER + RENDER
-function renderColumn(category) {
-  const column = getBoardColumn(category);
-  if (!column) return;
-
-  const workflowArray = getTasksForColumn(column.path);
-
-  const container = document.getElementById(column.containerId);
-  if (!container) return;
-
-  if (workflowArray.length === 0) {
-    container.innerHTML = `<p class="no_task_text">No tasks ${column.label}</p>`;
-    return;
-  }
-
-  container.innerHTML = workflowArray.map((task) => generateTaskHTML(task)).join("");
-}
-
-function updateColumns(categories) {
-  categories.forEach((category) => renderColumn(category));
-}
-
-// 🔄 UPDATE BOARD
-function updateHTML() {
-  updateColumns(BOARD_COLUMNS.map((column) => column.path));
-}
-
-
-// ✍️ INITIALS HELPER
-function getContactInitials(name) {
-    const parts = String(name || "")
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean);
-
-    if (parts.length === 0) return "";
-    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
-
-// ⚡ PRIORITY ICON
-function getPriorityIcon(priority) {
-  if (priority === "urgent") return "../assets/img/urgent_icon.svg";
-  if (priority === "medium") return "../assets/img/medium_icon.svg";
-  if (priority === "low") return "../assets/img/low_icon.svg";
-  return "";
-}
-
-
-// 🖱️ DRAG START
-function startDragging(id) {
-    currentDraggedElement = id;
-}
-
-// 🧱 ALLOW DROP
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-// 🔄 MOVE + FIREBASE SYNC
-async function moveTo(category) {
-  const task = tasks.find(t => t.id == currentDraggedElement);
-  const targetColumn = getBoardColumn(category);
-
-  if (!task || !targetColumn) {
-    return;
-  }
-
-  if ((task.sourcePath || task.status) === targetColumn.path) {
-    renderColumn(targetColumn.path);
-    return;
-  }
-
-  const previousPath = task.sourcePath || task.status;
-  const previousStatus = task.status;
-  const previousSourcePath = task.sourcePath;
-
-  task.status = targetColumn.path;
-  task.sourcePath = targetColumn.path;
-
-  updateColumns([previousPath, targetColumn.path]);
-
-  try {
-    const updatedTask = getTaskForStorage(task, targetColumn.path);
-
-    await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
-    await deleteData(`${previousPath}/${task.id}`);
-    currentDraggedElement = null;
-  } catch (error) {
-    task.status = previousStatus;
-    task.sourcePath = previousSourcePath;
-    updateColumns([previousPath, targetColumn.path]);
-    throw error;
-  }
-}
-
-// ✨ HIGHLIGHT
-function highlight(id) {
-    document.getElementById(id).classList.add('drag-area-highlight');
-}
-
-// ❌ REMOVE HIGHLIGHT
-function removeHighlight(id) {
-    document.getElementById(id).classList.remove('drag-area-highlight');
-}
-
-function generateAvatarHTML(assignees) {
-  let visible = assignees.slice(0, 3);
-  let rest = assignees.length - 3;
-
-  let html = "";
-
-  for (let i = 0; i < visible.length; i++) {
-    html += generateSingleAvatar(visible[i]);
-  }
-
-  if (rest > 0) {
-    html += generateExtraAvatar(rest);
-  }
-
-  return html;
-}
-
-function getAvatarHTML(task) {
-  const hasAssignees = task.assignees && task.assignees.length > 0;
-
-  if (!hasAssignees) {
-    return getNoAssigneesCardTemplate();
-  }
-
-  return generateAvatarHTML(task.assignees);
-}
-
-function prepareTask(task) {
-  return {
-    ...task,
-
-    doneSubtasks: task.subtasks?.filter(st => st.done).length || 0,
-    totalSubtasks: task.subtasks?.length || 0,
-
-    progress: task.subtasks?.length
-      ? (task.subtasks.filter(st => st.done).length / task.subtasks.length) * 100
-      : 0,
-
-    avatarHTML: getAvatarHTML(task), // 🔥 sauber!
-
-    priorityIcon: getPriorityIcon(task.priority)
-  };
-}
-
-
-function getTaskForStorage(task, status) {
-  const { doneSubtasks, totalSubtasks, progress, avatarHTML, priorityIcon, sourcePath, ...taskData } = task;
-  return {
-    ...taskData,
-    status,
-  };
-}
-
-// overlay
-function openOverlay(taskId) {
-  const task = tasks.find(t => t.id === taskId);
-
-  if (!task) return; // 🔥 wichtig
-
-  const overlay = document.getElementById("overlay");
-
-  overlay.innerHTML = generateTaskOverlay(task);
-  overlay.classList.remove("hidden");
-}
-
-function closeOverlay() {
-  document.getElementById("overlay").classList.add("hidden");
-}
-
-function handleOverlayClick(event) {
-  if (event.target.id === "overlay") {
-    closeOverlay();
-  }
-}
-
-
-function getCurrentUserName() {
-  return localStorage.getItem("userName") || "";
-}
-
-
-function generateAssigneesContent(task) {
-  if (!task.assignees || task.assignees.length === 0) {
-    return getNoAssigneesTemplate(); // 🔥 TEMPLATE
-  }
-
-  let html = "";
-  const currentUser = getCurrentUserName();
-
-  for (let i = 0; i < task.assignees.length; i++) {
-    const a = task.assignees[i];
-    const isYou = a.name === currentUser;
-
-    html += getAssigneeTemplate(a, isYou); // 🔥 TEMPLATE
-  }
-
-  return html;
-}
-
-function generateSubtasksContent(task) {
-  if (!task.subtasks || task.subtasks.length === 0) {
-    return getNoSubtasksTemplate(); // 
-  }
-
-  let html = "";
-
-  for (let i = 0; i < task.subtasks.length; i++) {
-    html += generateSubtask(task, task.subtasks[i], i);
-  }
-
-  return html;
-}
-
-window.toggleSubtask = async function(taskId, index) {
-  const task = tasks.find(t => t.id === taskId);
-  if (!task) return;
-
-  task.subtasks[index].done = !task.subtasks[index].done;
-
-  task.doneSubtasks = task.subtasks.filter(st => st.done).length;
-  task.totalSubtasks = task.subtasks.length;
-
-  task.progress = task.totalSubtasks
-    ? (task.doneSubtasks / task.totalSubtasks) * 100
-    : 0;
-
-  const taskPath = task.sourcePath || task.status;
-
-  await putUserData(`${taskPath}/${task.id}`, getTaskForStorage(task, taskPath));
-
-  updateHTML();
-};
-
-function formatDate(dateString) {
-  if (!dateString) return "";
-
-  // falls schon richtig formatiert (15/02/2026)
-  if (dateString.includes("/")) return dateString;
-
-  const date = new Date(dateString);
-
-  if (isNaN(date)) return dateString; // fallback
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
-}
-
-
-
-
-
-
-// 🌍 GLOBAL EXPORTS
+// 🌍 GLOBAL EXPORTS (HTML onclick / drag handlers)
 window.initBoard = initBoard;
+
 window.startDragging = startDragging;
 window.allowDrop = allowDrop;
 window.moveTo = moveTo;
 window.highlight = highlight;
 window.removeHighlight = removeHighlight;
-window.getContactInitials = getContactInitials;
-
 
 window.openOverlay = openOverlay;
 window.closeOverlay = closeOverlay;
-window.generateAssigneesContent = generateAssigneesContent;
-window.generateSubtasksContent = generateSubtasksContent;
-window.formatDate = formatDate;
+
+window.deleteTask = deleteTask;
+window.updateHTML = updateHTML;

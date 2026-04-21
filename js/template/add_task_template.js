@@ -1,5 +1,6 @@
-function createSubtaskItem(st, index) {     
-  if (st.isEditing) return createEditableSubtaskItem(st, index);
+
+
+export function createSubtaskItem(st, index) {     
 
   return `
     <section class="subtask_item">
@@ -22,7 +23,7 @@ function createSubtaskItem(st, index) {
   `;
 }
 
-function createEditableSubtaskItem(st, index) {
+export function createEditableSubtaskItem(st, index) {
   return `
     <section class="subtask_item editing">
       <div class="subtask_edit_input_wrapper">
@@ -54,7 +55,7 @@ function escapeHtmlAttribute(value) {
     .replace(/>/g, "&gt;");
 }
 
-function createAssigneeOption(contact) {
+export function createAssigneeOption(contact) {
   return `
     <label class="assignee_option" for="assignee_${contact.id}">
       <div class="assignee_option_text">
@@ -70,6 +71,7 @@ function createAssigneeOption(contact) {
   `;
 }
 
+
 function getAssigneeInitials(name) {
   const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return "";
@@ -81,7 +83,9 @@ function getAssigneeColor(name) {
   return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][String(name || "").length % 6];
 }
 
-function createAddTaskFormTemplate(path) {
+
+export function createAddTaskFormTemplate(path) {
+
   return`
         <form id="taskForm">
         <section class="left_form">
@@ -164,3 +168,27 @@ function createAddTaskFormTemplate(path) {
       </form>
   `
 };
+
+//Board overlay edit 
+export function getAssigneeOptionTemplate(contact) {
+  return `
+    <label class="assignee_option">
+      <input type="checkbox" data-assignee-id="${contact.id}">
+      <span>${contact.name}</span>
+    </label>
+  `;
+}
+
+
+
+function getCategoryOptionTemplate(category) {
+  return `
+    <div class="dropdown_item" data-category-value="${category}">
+      ${category}
+    </div>
+  `;
+}
+
+window.getCategoryOptionTemplate = getCategoryOptionTemplate;
+
+window.createAddTaskFormTemplate = createAddTaskFormTemplate;

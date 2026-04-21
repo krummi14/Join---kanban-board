@@ -1,5 +1,11 @@
 import { getData, putUserData } from "./firebase.js";
-import { normalizeStatus } from "./assets.js";
+
+
+
+import { normalizeStatus} from "./assets.js";
+import { getAssigneeOptionTemplate } from "./template/add_task_template.js"; //Für Board overlay edit...
+import { createSubtaskItem } from "./template/add_task_template.js";
+
 
 const formControllers = new WeakMap();
 const PRIORITIES = ["urgent", "medium", "low"];
@@ -7,25 +13,42 @@ const DEFAULT_CATEGORY_LABEL = "Select task category";
 
 
 
-export function createAddTaskForm(taskForm, createTaskPath) {
+
+
+export function createAddTaskForm(taskForm, createTaskPath, options = {}) { //Board overaly edit 
   if (!taskForm) return null;
+
   const existing = formControllers.get(taskForm);
   if (existing) return existing;
-  const context = createContext(taskForm, createTaskPath); // Create a context object to hold state and elements
+
+
+  const context = createContext(taskForm, createTaskPath, options); // Create a context object to hold state and elements
+
+
   initializeForm(context);
+
   const controller = createController(context);
+
   formControllers.set(taskForm, controller);
+
   return controller;
 }
 
-function createContext(taskForm, createTaskPath) {
-  const context = {
-    taskForm,
-    createTaskPath, // Store the create task path in the context for later use
-    state: createState(),
-    elements: createElements(taskForm)
+
+
+
+function createContext(taskForm, createTaskPath, options) { //Board overaly edit 
+  const context = { 
+    taskForm, 
+    createTaskPath,// Store the create task path in the context for later use
+    options, // 🔥 NEU (WICHTIG!)
+    state: createState(), 
+    elements: createElements(taskForm) 
+
   };
+
   context.handlers = createHandlers(context);
+
   return context;
 }
 
@@ -89,11 +112,17 @@ function createHandlers(context) {
 function initializeForm(context) {
   setupSubtaskControls(context);
   renderAssigneeContacts(context);
+
+  renderCategoryOptions(context); // 👈 HIER
+
   registerEvents(context);
 }
-
 function createController(context) {
-  return { reset: () => resetTaskFormState(context), destroy: () => destroy(context) };
+  return { 
+    reset: () => resetTaskFormState(context),
+    destroy: () => destroy(context),
+    context // 🔥 BOARD OVERLAY EDIT 
+  };
 }
 
 function registerEvents(context) {
@@ -294,10 +323,22 @@ function createPriorityMarkup(priority, state) {
 
 async function renderAssigneeContacts(context) {
   const menu = context.elements.assigneeMenu;
-  try { context.state.assigneeContacts = await fetchContacts(); }
-  catch (error) { return showContactLoadError(menu, error); }
-  if (!context.state.assigneeContacts.length) return showEmptyContacts(context, menu);
-  menu.innerHTML = context.state.assigneeContacts.map(createAssigneeOption).join("");
+console.log("🔍 assigneeMenu:", context.elements.assigneeMenu);
+console.log("🔍 context.elements:", context.elements);
+  try {
+    context.state.assigneeContacts = await fetchContacts();
+  } catch (error) {
+    return showContactLoadError(menu, error);
+  }
+
+  if (!context.state.assigneeContacts.length) {
+    return showEmptyContacts(context, menu);
+  }
+
+  menu.innerHTML = context.state.assigneeContacts
+    .map(getAssigneeOptionTemplate)
+    .join(""); //NEU wegen Board Overlay edit 
+
   syncAssigneeCheckboxes(context);
   updateAssigneeLabel(context);
 }
@@ -428,14 +469,44 @@ function updateSubtaskButtonState(context) {
   subtaskInputWrapper.classList.toggle("has-value", hasInput);
 }
 
-async function handleTaskSubmit(context, event) {
+async function handleTaskSubmit(context, event) { //Board overlay edit
   event.preventDefault();
-  if (!validateCategorySelection(context)) return;
-  const button = event.submitter;
-  setSubmitterDisabled(button, true);
-  try { await saveTask(context); context.taskForm.reset(); }
-  catch (error) { console.error("Failed to create task.", error); }
-  finally { setSubmitterDisabled(button, false); }
+
+  const form = context.taskForm;
+  const editId = form.dataset.editId;
+
+  try {
+    if (editId) {
+      await updateExistingTask(context, editId);
+    } else {
+      await saveTask(context);
+    }
+
+    console.log("✅ SAVE DONE");
+
+  } catch (error) {
+    console.error("❌ SAVE FAILED", error);
+  }
+}
+
+
+
+
+async function updateExistingTask(context, taskId) {//Board overlay edit
+  const updatedTask = buildTaskPayload(context);
+
+  updatedTask.id = taskId;
+
+  const path = context.createTaskPath;
+
+  await putUserData(`${path}/${taskId}`, updatedTask);
+
+  console.log("✏️ TASK UPDATED");
+
+  // 🔥 NUR CALLBACK!
+  if (context.options?.onSave) {
+    context.options.onSave(taskId);
+  }
 }
 
 // This function simulates saving the task to a backend. Replace with actual API call as needed.
@@ -480,7 +551,7 @@ function destroy(context) {
 
 function buildTaskPayload(context) {
   const task = {
-    id: Date.now().toString(),
+   id: context.taskForm.dataset.editId || Date.now().toString(),
     title: context.elements.title?.value.trim() || "",
     description: context.elements.description?.value.trim() || "",
     dueDate: context.elements.dueDate?.value || "",
@@ -511,7 +582,7 @@ function resetCategorySelection(context) {
   if (context.elements.categoryLabel) context.elements.categoryLabel.textContent = DEFAULT_CATEGORY_LABEL;
 }
 
-function validateCategorySelection(context) {
+export function validateCategorySelection(context) {
   if (context.state.selectedCategory) return true;
   context.elements.categoryToggle?.focus();
   return false;
@@ -521,9 +592,22 @@ function capitalize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-function getContactInitials(name) {
+export function getContactInitials(name) {
   const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return "";
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+//board overlay edit 
+
+function renderCategoryOptions(context) {
+  const menu = context.elements.categoryMenu;
+  if (!menu) return;
+
+  const categories = ["Technical Task", "User Story"];
+
+  menu.innerHTML = categories
+    .map(window.getCategoryOptionTemplate)
+    .join("");
 }
