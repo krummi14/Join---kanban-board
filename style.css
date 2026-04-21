@@ -93,6 +93,7 @@
   font-size: 24px;
   font-weight: 600;
   color: #29abe2;
+  cursor: pointer;
 }
 
 /* logout menu */
@@ -112,18 +113,47 @@
   gap: 26px;
 }
 
+.logout_menu.open {
+  display: flex;
+  animation: slideRight 125ms forwards;
+}
+
+.logout_menu.close {
+  animation: slideLeft 125ms forwards;
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(250px);
+  }
+
+  to {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(0px);
+  }
+
+  to {
+    transform: translateX(250px);
+  }
+}
+
 .help_logout_menu {
   display: none;
 }
 
-/* Show logout menu on user_name hover or when hovering logout_menu itself */
+/* Show logout menu on user_name hover or when hovering logout_menu itself 
 #user:hover+.logout_menu,
 .logout_menu:hover {
   display: flex;
-}
+}*/
 
 .logout_menu a {
-  color: #fff;
+  color: rgba(205, 205, 205, 1);
   text-decoration: none;
   font-size: 16px;
   font-weight: 500;
@@ -207,6 +237,9 @@
   }
 
   .logout_menu {
+    position: absolute;
+    top: 72px;
+    right: 16px;
     z-index: 3;
     height: 208px;
   }
@@ -226,44 +259,6 @@
     background-color: rgba(42, 54, 71, 1);
     padding: 16px 16px;
     z-index: 3;
-  }
-
-  .responsive_menu_button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    border-radius: 16px;
-    height: 100%;
-    width: 80px;
-    cursor: pointer;
-  }
-
-  .responsive_menu_button:hover {
-    background-color: rgba(9, 25, 49, 1);
-    color: white;
-  }
-
-  .responsive_menu_img {
-    width: 20px;
-    height: 20px;
-  }
-
-  .responsive_menu_button:hover .responsive_menu_summary_img {
-    content: url("../assets/icon/summary_respo_white.svg");
-  }
-
-  .responsive_menu_button:hover .responsive_menu_add_task_img {
-    content: url("../assets/icon/add_task_respo_white.svg");
-  }
-
-  .responsive_menu_button:hover .responsive_menu_board_img {
-    content: url("../assets/icon/board_respo_white.svg");
-  }
-
-  .responsive_menu_button:hover .responsive_menu_contacts_img {
-    content: url("../assets/icon/contacts_respo_white.svg");
   }
 
   .responsive_menu_text {

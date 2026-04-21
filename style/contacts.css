@@ -515,7 +515,7 @@
 
     /*contact_dialog*/
     .contact_dialog_content {
-        height: 680px;
+        height: 640px;
         width: 100%;
         transform: translate(-50%, -50%) translateY(500px);
         transition: all 250ms ease-in;
@@ -538,8 +538,8 @@
     .contact_dialog_header {
         justify-content: flex-start;
         width: 100%;
-        height: 50%;
-        gap: 64px;
+        height: 40%;
+        gap: 24px;
         padding-top: 16px;
         padding-left: 16px;
     }
@@ -579,7 +579,7 @@
 
     .contact_dialog_initial_responsive_position {
         position: absolute;
-        top: 40%;
+        top: 34%;
         z-index: 2;
     }
 

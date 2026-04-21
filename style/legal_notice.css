@@ -24,3 +24,16 @@
     list-style-type: disc;
     margin-left: 32px;
 }
+
+@media(min-width: 320px) and (max-width:980px) {
+    .legalnotice_content {
+        padding-top: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 24px;
+    }
+
+    .legalnotice_content_gap {
+        padding-right: 24px;
+    }
+}

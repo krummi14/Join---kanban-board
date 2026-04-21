@@ -34,15 +34,15 @@
     </ul>
   </section>
 
-  <section class="content">
+  <section class="content" id="content">
     <header class="header_framework">
       <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
       <p class="join_header_text">Kanban Project Management Tool</p>
       <div>
         <img class="help_icon" src="../assets/icon/help_off.svg" alt="help icon">
         <!-- id for user name -->
-        <div id="user">G</div>
-        <section class="logout_menu">
+        <div id="user" onclick="addMenu()">G</div>
+        <section id="logout_menu" class="logout_menu">
           <a class="help_logout_menu" href="./help.html">Help</a>
           <a href="./legal_notice.html">Legal Notice</a>
           <a href="./privacy_policy.html">Privacy Policy</a>
@@ -61,6 +61,15 @@
       </section>
 
     </main>
+
+    <section>
+      <section class="form_buttons form_buttons_none">
+        <button class="button_basic_characteristics clear_btn button_basic_characteristics_weight" type="reset">Clear
+          &#x78;</button>
+        <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${path}">Create
+          Task &#x2713;</button>
+      </section>
+    </section>
     <footer id="responsive_menu" class="responsive_menu">
       <a href="./summary.html" class="responsive_menu_button">
         <img class="responsive_menu_img responsive_menu_summary_img" src="../assets/icon/summary_respo.svg"

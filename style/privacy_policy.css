@@ -1,17 +1,12 @@
-a {
-  color: black;
-}
-
 ul.index {
-  list-style: disc !important;
-  padding-left: 24px !important;
+  list-style-type: disc;
+  list-style-position: outside;
+  padding-left: 24px ;
 }
 
-.index li::before {
-  content: "• ";
-  margin-right: 8px;
+.index-link {
+  color: rgba(41, 171, 226, 1);
 }
-
 
 .index-link:hover {
   color: #555555;

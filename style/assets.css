@@ -238,9 +238,56 @@ input:focus {
 }
 
 @media(min-width: 320px) and (max-width:980px) {
+  .responsive_menu_button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px;
+    height: 80px;
+    width: 80px;
+    cursor: pointer;
+  }
+
+  .responsive_menu_button_onClick {
+    background-color: rgba(9, 25, 49, 1);
+    color: white;
+  }
+
+  .responsive_menu_button:hover {
+    background-color: rgba(9, 25, 49, 1);
+    color: white;
+  }
+
+  .responsive_menu_img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .responsive_menu_button:hover .responsive_menu_summary_img {
+    content: url("../assets/icon/summary_respo_white.svg");
+  }
+
+  .responsive_menu_button:hover .responsive_menu_add_task_img {
+    content: url("../assets/icon/add_task_respo_white.svg");
+  }
+
+  .responsive_menu_button:hover .responsive_menu_board_img {
+    content: url("../assets/icon/board_respo_white.svg");
+  }
+
+  .responsive_menu_button:hover .responsive_menu_contacts_img {
+    content: url("../assets/icon/contacts_respo_white.svg");
+  }
 
   .button_basic_characteristics {
     font-size: 18px;
+    padding: 10px 0;
+  }
+
+  .button_basic_characteristics_weight {
+    font-weight: 400;
   }
 
   input {
@@ -254,16 +301,30 @@ input:focus {
 
   /*contacts*/
   .back_button_contactInformation_mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 120px;
-    right: 16px;
-    display: block;
+    right: 24px;
     font-size: 24px;
     width: 32px;
     height: 32px;
     border: none;
     color: rgba(41, 171, 226, 1);
     background-color: rgba(246, 247, 248, 1);
+    border-radius: 100%;
+    background-color: transparent;
+  }
+
+  .back_button_contactInformation_mobile:hover {
+    background-color: rgb(240, 235, 235);
+  }
+
+  .back_butto_link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .edit_and_add_button_responsive {
@@ -272,7 +333,7 @@ input:focus {
     justify-content: center;
     position: fixed;
     bottom: 120px;
-    right: 16px;
+    right: 24px;
     border: none;
     border-radius: 100%;
     background-color: rgba(42, 54, 71, 1);
@@ -299,7 +360,7 @@ input:focus {
 
   /* add_tasks */
   .clear_btn {
-    width: 112px;
+    width: 96px;
   }
 
   .create_btn {

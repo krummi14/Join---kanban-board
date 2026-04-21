@@ -17,6 +17,11 @@ let contentDialogOfEditContact = document.getElementById("contact_dialog_content
 let contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
 let contentContact = document.getElementById("contact_content");
 let contentEditButton = document.getElementById("contact_dialog_edit_button_content");
+let contentMobileSummary = document.getElementById("responsive_menu_button_summary");
+let contentMobileAddTask = document.getElementById("responsive_menu_button_addTask");
+let logoutMenu = document.getElementById('logout_menu');
+let contentSection = document.getElementById('content');
+let menuStatus = 'on';
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {
@@ -51,5 +56,21 @@ function showError(errorId, message) {
 // global function to get the add task form template and render it in the container
 // the status of the task and the firebase path ("to_do", "in_progress", "await feedback")
 function getAddTaskFormTemplate(path) {
-  document.getElementById("addTaskContainer").innerHTML = createAddTaskFormTemplate(path);
+    document.getElementById("addTaskContainer").innerHTML = createAddTaskFormTemplate(path);
+}
+
+function addMenu() {
+    if (menuStatus == 'on') {
+        contentSection.style.overflow = "hidden";
+        logoutMenu.classList.remove('close');
+        logoutMenu.classList.add('open');
+        menuStatus = 'off';
+    } else if (menuStatus == 'off') {
+        logoutMenu.classList.add('close');
+        menuStatus = 'on';
+        setTimeout(() => {
+            contentSection.style.overflow = "";
+            logoutMenu.classList.remove('open');
+        }, 125);
+    }
 }
