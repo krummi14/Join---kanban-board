@@ -171,6 +171,51 @@
     animation: slideRight 125ms forwards;
 }
 
+.edit_and_delete_mobile_menu {
+    display: none;
+    position: absolute;
+    bottom: 112px;
+    right: 16px;
+    height: 72px;
+    width: 104px;
+    background: white;
+    border-radius: 10px 10px 0px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edit_and_delete_mobile_menu.open {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    padding: 8px 16px;
+    animation: slideRight 125ms forwards;
+}
+
+.edit_and_delete_mobile_menu.close {
+    animation: slideLeft 125ms forwards;
+}
+
+@keyframes slideRight {
+    from {
+        transform: translateX(250px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(250px);
+    }
+}
+
 .contact_information_header {
     display: flex;
     flex-direction: row;
@@ -398,8 +443,18 @@
     }
 }
 
+@keyframes slideRigth {
+    from {
+        transform: translateX(250px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
 .contact_createdSuccesfully_animation {
-    animation: slideRight 2s forwards;
+    animation: slideRigth 2s forwards;
 }
 
 .contact_createdSuccesfully_deactive_animation {
@@ -513,6 +568,8 @@
         display: none;
     }
 
+
+
     /*contact_dialog*/
     .contact_dialog_content {
         height: 640px;
@@ -592,5 +649,34 @@
     .contact_dialog_input_direction {
         height: 100%;
         width: 100%;
+    }
+
+    /* contact_created_successfully */
+    @keyframes slideUp {
+        from {
+            transform: translateY(0px);
+        }
+
+        to {
+            transform: translateY(300px);
+        }
+    }
+
+    @keyframes slideDown {
+        from {
+            transform: translateY(300px);
+        }
+
+        to {
+            transform: translateY(0px);
+        }
+    }
+
+    .contact_createdSuccesfully_animation {
+        animation: slideDown 2s forwards;
+    }
+
+    .contact_createdSuccesfully_deactive_animation {
+        animation: slideUp 2s forwards;
     }
 }

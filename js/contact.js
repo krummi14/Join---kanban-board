@@ -1,6 +1,6 @@
 import { getData, putNewData, putEditData, deleteData } from "./firebase.js";
 import { createList } from "./list.js";
-import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditTemplate } from "./template/contacts_template.js";
+import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditandDeleteMobileTemplate } from "./template/contacts_template.js";
 
 async function initContacts() {
     const data = await getData("/contacts");
@@ -69,7 +69,7 @@ async function addNewContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
-async function deleteContact(openDialog, contactsIndex) {
+async function deleteContact(openDialog, openContactResponsive, contactsIndex) {
     let deleteIndex = (contactsList[contactsIndex].id) - 1;
     await deleteData("/contacts/" + deleteIndex);
     contactsList = contactsList.filter(contact => contact.id !== deleteIndex + 1);
@@ -77,6 +77,9 @@ async function deleteContact(openDialog, contactsIndex) {
     closeContactInformation(contactsIndex);
     if (openDialog) {
         closeContactDialog(contactsIndex);
+    }
+    if (openContactResponsive) {
+        closeContactInformationResponsive();
     }
 }
 
@@ -278,7 +281,26 @@ function closeContactInformationResponsive() {
 }
 
 function createEditButtonResponsive(contactsIndex) {
-    contentEditButton.innerHTML = getContactDialogEditTemplate(contactsIndex);
+    contentEditButton.innerHTML = getContactDialogEditandDeleteMobileTemplate(contactsIndex);
+    //    getContactDialogEditTemplate(contactsIndex);
+}
+
+function addEditAndDeleteResponisve(event) {
+    if (event) event.stopPropagation();
+    let editAndDeleteMenu = document.getElementById('edit_and_delete_mobile_menu');
+    if (menuStatus == 'on') {
+        contentContact.style.overflow = "hidden";
+        editAndDeleteMenu.classList.remove('close');
+        editAndDeleteMenu.classList.add('open');
+        menuStatus = 'off';
+    } else if (!editAndDeleteMenu || menuStatus == 'off') {
+        editAndDeleteMenu.classList.add('close');
+        menuStatus = 'on';
+        setTimeout(() => {
+            contentContact.style.overflow = "";
+            editAndDeleteMenu.classList.remove('open');
+        }, 125);
+    }
 }
 
 window.initContacts = initContacts;
@@ -291,4 +313,5 @@ window.saveNewContact = saveNewContact;
 window.saveContact = saveContact;
 window.deleteContact = deleteContact;
 window.closeContactInformationResponsive = closeContactInformationResponsive;
+window.addEditAndDeleteResponisve = addEditAndDeleteResponisve;
 window.createEditButtonResponsive = createEditButtonResponsive;

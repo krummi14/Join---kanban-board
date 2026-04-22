@@ -345,8 +345,12 @@ input:focus {
     background-color: rgba(41, 171, 226, 1);
   }
 
-  .edit_and_delete_button {
+  .edit_and_delete_button_none {
     display: none;
+  }
+
+  .edit_and_delete_button {
+    background-color: white;
   }
 
   .contact_dialog_cancel_button_responsive {

@@ -33,8 +33,8 @@ export function getContactsInformationTemplate(contactsIndex) {
                 <span class="contact_information_header_gap">
                     <p class="contact_name contact_name_font_size">${contactsList[contactsIndex].name}</p>
                     <div class="edit_and_delete_button_direction">
-                        <button class="edit_and_delete_button" onclick="openEditContactDialog(${contactsIndex}, event)"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
-                        <button class="edit_and_delete_button" onclick="deleteContact(false, ${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
+                        <button class="edit_and_delete_button edit_and_delete_button_none" onclick="openEditContactDialog(${contactsIndex}, event)"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
+                        <button class="edit_and_delete_button edit_and_delete_button_none" onclick="deleteContact(false, false, ${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
                     </div>
             </div>
             <h4 class="contact_information_headline">Contact Information</h4>
@@ -97,7 +97,7 @@ export function getContactDialogTemplate(contactsIndex) {
                                         <div id="phone_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>
                                     </div>
                                     <div class="contact_dialog_button_direction">
-                                        <button type="button" id="contact_dialog_button_delete_${contactsIndex}" class="basic-btn-secondary contact_dialog_button_delete" onclick="deleteContact(true, ${contactsIndex})">Delete</button>
+                                        <button type="button" id="contact_dialog_button_delete_${contactsIndex}" class="basic-btn-secondary contact_dialog_button_delete" onclick="deleteContact(true, false, ${contactsIndex})">Delete</button>
                                         <button type="button" id="contact_dialog_button_save_${contactsIndex}" class="button_basic_characteristics contact_dialog_button_save" onclick="saveContact('editContact', ${contactsIndex})">Save &#x2714</button>
                                         <button type="button" id="contact_dialog_button_cancel_${contactsIndex}" class="basic-btn-secondary display_none_button_or_img contact_dialog_button_delete contact_dialog_cancel_button_responsive" onclick="closeContactDialog(${contactsIndex})">Cancel  X</button>
                                         <button type="button" id="contact_dialog_button_create_${contactsIndex}" class="button_basic_characteristics display_none_button_or_img contact_dialog_button_creat" onclick="saveNewContact('addNewContact', ${contactsIndex})">Create contact &#x2714</button>
@@ -110,8 +110,9 @@ export function getContactDialogTemplate(contactsIndex) {
     `;
 }
 
-export function getContactDialogEditTemplate(contactsIndex) {
-    return `<button class="edit_and_add_button_responsive" onclick="openEditContactDialog(${contactsIndex}, event)">
-              <img src="../assets/icon/more_vert.svg" alt="edit contact button">
-            </button>`;
+export function getContactDialogEditandDeleteMobileTemplate(contactsIndex) {
+    return `<nav id="edit_and_delete_mobile_menu" class="edit_and_delete_mobile_menu" onclick="closeDialogOnBodyclick(event)">
+                <button class="edit_and_delete_button" onclick="openEditContactDialog(${contactsIndex}, event)"><p class="edit_and_delete_icon">&#128393</p> <p class="edit_and_delete_text">Edit</p></button>
+                <button class="edit_and_delete_button" onclick="deleteContact(false, true, ${contactsIndex})"><p class="edit_and_delete_icon">&#128465</p> <p class="edit_and_delete_text">Delete</p></button>
+            </nav>`;
 }

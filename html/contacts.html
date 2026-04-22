@@ -76,9 +76,14 @@
             </div>
           </section>
 
-          <section id="contact_content" class="contact_content responsive_contactInformation_none">
+          <section id="contact_content" class="contact_content responsive_contactInformation_none" onclick="addEditAndDeleteResponisve(event)">
             <button class="back_button_contactInformation_mobile" onclick="closeContactInformationResponsive()">
               <img src="../assets/icon/vector.svg" alt="back button"></button>
+
+            <button class="edit_and_add_button_responsive" onclick="addEditAndDeleteResponisve(event)">
+              <img src="../assets/icon/more_vert.svg" alt="edit contact button">
+            </button>
+
             <span class="contact_content_header_and_slogan">
               <h2 class="contact_headline_h2">Contacts</h2>
               <div class="slogan_mobile">
@@ -99,7 +104,6 @@
           <div id="contact_dialog_content">
 
           </div>
-
 
           <button class="edit_and_add_button_responsive" onclick="openAddNewContactDialog(null, event)">
             <img src="../assets/icon/person_add.svg" alt="add contact button">
