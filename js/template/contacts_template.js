@@ -47,11 +47,12 @@ export function getContactsInformationTemplate(contactsIndex) {
                     <h5 class="email_and_phone_headline">Phone</h5>
                     <p class="contact_phone">${contactsList[contactsIndex].phone}</p>
                 </span>
-            <span>
-            <div id="contact_createdSuccesfully" class="contact_createdSuccesfully contact_createdSuccesfully_deactive">
-                <p id="contact_created_text">Contact successfully created</p>
-                <p id="contact_etited_text" class="contact_etited_text_deactive">Contact successfully edited</p>   
-            </div>
+            <span class="contact_createdSuccesfully_span">
+                <div id="contact_createdSuccesfully" class="contact_createdSuccesfully contact_createdSuccesfully_deactive">
+                    <p id="contact_created_text">Contact successfully created</p>
+                    <p id="contact_etited_text" class="contact_etited_text_deactive">Contact successfully edited</p>   
+                </div>
+            </span
             `;
 }
 

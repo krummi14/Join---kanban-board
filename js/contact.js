@@ -144,6 +144,7 @@ function openContactInformation(contactsIndex) {
         closeContactInformation(activeContact);
     }
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
+    contentContactMain.style.overflow = "hidden";
     contentContactWrapper.classList.add('contact_wrapper_active');
     contentContactInformation.classList.remove("contact_information_deactive");
     contentContactInformation.classList.add("contact_information_animation");
@@ -155,6 +156,7 @@ function openContactInformation(contactsIndex) {
 
 function closeContactInformation(contactsIndex) {
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
+    contentContactMain.style.overflow = "";
     contentContactWrapper.classList.remove('contact_wrapper_active');
     contentContactInformation.classList.add("contact_information_deactive");
     activeContact = null;
@@ -282,7 +284,6 @@ function closeContactInformationResponsive() {
 
 function createEditButtonResponsive(contactsIndex) {
     contentEditButton.innerHTML = getContactDialogEditandDeleteMobileTemplate(contactsIndex);
-    //    getContactDialogEditTemplate(contactsIndex);
 }
 
 function addEditAndDeleteResponisve(event) {

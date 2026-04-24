@@ -1,0 +1,48 @@
+.help_content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 100%;
+    padding-top: 96px;
+    padding-left: 64px;
+    padding-right: 64px;
+}
+
+.help_content_gap {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 40px;
+}
+
+li::marker {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.pad_left_ol {
+    padding-left: 32px;
+}
+
+.pad_bot_ol {
+    padding-bottom: 16px;
+}
+
+@media(min-width: 320px) and (max-width:980px) {
+    .help_content {
+        padding-top: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 24px;
+    }
+
+    .help_content_gap {
+        padding-right: 24px;
+    }
+
+    .pad_left_ol {
+        padding-left: 16px;
+    }
+}

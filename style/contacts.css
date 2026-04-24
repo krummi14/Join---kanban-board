@@ -157,7 +157,7 @@
     display: none;
 }
 
-@keyframes slideRight {
+@keyframes slideRightInformation {
     from {
         transform: translateX(250px);
     }
@@ -168,52 +168,7 @@
 }
 
 .contact_information_animation {
-    animation: slideRight 125ms forwards;
-}
-
-.edit_and_delete_mobile_menu {
-    display: none;
-    position: absolute;
-    bottom: 112px;
-    right: 16px;
-    height: 72px;
-    width: 104px;
-    background: white;
-    border-radius: 10px 10px 0px 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.edit_and_delete_mobile_menu.open {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: space-between;
-    padding: 8px 16px;
-    animation: slideRight 125ms forwards;
-}
-
-.edit_and_delete_mobile_menu.close {
-    animation: slideLeft 125ms forwards;
-}
-
-@keyframes slideRight {
-    from {
-        transform: translateX(250px);
-    }
-
-    to {
-        transform: translateX(0px);
-    }
-}
-
-@keyframes slideLeft {
-    from {
-        transform: translateX(0px);
-    }
-
-    to {
-        transform: translateX(250px);
-    }
+    animation: slideRightInformation 125ms forwards;
 }
 
 .contact_information_header {
@@ -254,6 +209,51 @@
 .edit_and_delete_icon {
     font-size: 18px;
     font-weight: 700;
+}
+
+.edit_and_delete_mobile_menu {
+    display: none;
+    position: absolute;
+    bottom: 112px;
+    right: 16px;
+    height: 72px;
+    width: 104px;
+    background: white;
+    border-radius: 10px 10px 0px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edit_and_delete_mobile_menu.open {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    padding: 8px 16px;
+    animation: slideRightMobile 125ms forwards;
+}
+
+.edit_and_delete_mobile_menu.close {
+    animation: slideLeftMobile 125ms forwards;
+}
+
+@keyframes slideRightMobile {
+    from {
+        transform: translateX(250px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes slideLeftMobile {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(250px);
+    }
 }
 
 .contact_information_headline {
@@ -422,7 +422,6 @@
     background-color: rgba(42, 54, 71, 1);
     border-radius: 20px;
     padding: 16px;
-    margin-top: 56px;
 }
 
 .contact_etited_text_deactive {
@@ -433,7 +432,7 @@
     display: none;
 }
 
-@keyframes slideLeft {
+@keyframes slideLeftCreated {
     from {
         transform: translateX(0px);
     }
@@ -443,7 +442,7 @@
     }
 }
 
-@keyframes slideRigth {
+@keyframes slideRigthCreated {
     from {
         transform: translateX(250px);
     }
@@ -454,11 +453,17 @@
 }
 
 .contact_createdSuccesfully_animation {
-    animation: slideRigth 2s forwards;
+    animation: slideRigthCreated 2s forwards;
 }
 
 .contact_createdSuccesfully_deactive_animation {
-    animation: slideLeft 2s forwards;
+    animation: slideLeftCreated 2s forwards;
+}
+
+@media (min-width: 981px) {
+    .edit_and_delete_mobile_menu {
+        display: none !important;
+    }
 }
 
 @media(min-width: 320px) and (max-width:980px) {
@@ -530,7 +535,7 @@
         padding: 0 16px;
     }
 
-    @keyframes slideRight {
+    @keyframes slideRightInformation {
         from {
             transform: translateX(0px);
         }
@@ -567,8 +572,6 @@
     .responsive_contactInformation_none {
         display: none;
     }
-
-
 
     /*contact_dialog*/
     .contact_dialog_content {
@@ -652,7 +655,14 @@
     }
 
     /* contact_created_successfully */
-    @keyframes slideUp {
+    .contact_createdSuccesfully_span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    @keyframes slideUpSuccesfully {
         from {
             transform: translateY(0px);
         }
@@ -662,7 +672,7 @@
         }
     }
 
-    @keyframes slideDown {
+    @keyframes slideDownSuccesfully {
         from {
             transform: translateY(300px);
         }
@@ -673,10 +683,10 @@
     }
 
     .contact_createdSuccesfully_animation {
-        animation: slideDown 2s forwards;
+        animation: slideDownSuccesfully 2s forwards;
     }
 
     .contact_createdSuccesfully_deactive_animation {
-        animation: slideUp 2s forwards;
+        animation: slideUpSuccesfully 2s forwards;
     }
 }

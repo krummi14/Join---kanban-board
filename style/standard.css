@@ -10,6 +10,10 @@ ul {
   list-style-type: none;
 }
 
+ol {
+  padding-left: 32px;
+}
+
 body {
   display: flex;
 }
@@ -26,6 +30,11 @@ h1 {
 h2 {
   font-size: 47px;
   font-weight: 500;
+}
+
+h3 {
+  font-size: 27px;
+  font-weight: 700;
 }
 
 h4 {

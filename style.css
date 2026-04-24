@@ -115,14 +115,14 @@
 
 .logout_menu.open {
   display: flex;
-  animation: slideRight 125ms forwards;
+  animation: slideRightLogoutmenu 125ms forwards;
 }
 
 .logout_menu.close {
-  animation: slideLeft 125ms forwards;
+  animation: slideLeftLogoutmenu 125ms forwards;
 }
 
-@keyframes slideRight {
+@keyframes slideRightLogoutmenu {
   from {
     transform: translateX(250px);
   }
@@ -132,7 +132,7 @@
   }
 }
 
-@keyframes slideLeft {
+@keyframes slideLeftLogoutmenu {
   from {
     transform: translateX(0px);
   }

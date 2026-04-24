@@ -13,6 +13,7 @@ let contentContactsListHeader = document.getElementById('list_content');
 let contentContactInformation = document.getElementById("contact_information");
 let prenameInitialsList = [];
 let activeContact = null;
+let contentContactMain = document.getElementById("contact_main");
 let contentDialogOfEditContact = document.getElementById("contact_dialog_content");
 let contentDialogOfAddNewContact = document.getElementById("addNew_contact_dialog_content");
 let contentContact = document.getElementById("contact_content");
