@@ -1,19 +1,12 @@
 import { getData, putUserData } from "./firebase.js";
-
-
-
 import { normalizeStatus} from "./assets.js";
 import { createAssigneeOption } from "./template/add_task_template.js";
 import { createSubtaskItem } from "./template/add_task_template.js";
 
-
 const formControllers = new WeakMap();
 const PRIORITIES = ["urgent", "medium", "low"];
+const DEFAULT_PRIORITY = "medium";
 const DEFAULT_CATEGORY_LABEL = "Select task category";
-
-
-
-
 
 export function createAddTaskForm(taskForm, createTaskPath, options = {}) { //Board overaly edit 
   if (!taskForm) return null;
@@ -114,6 +107,7 @@ function initializeForm(context) {
   renderAssigneeContacts(context);
 
   renderCategoryOptions(context); // 👈 HIER
+  applyDefaultPriority(context);
 
   registerEvents(context);
 }
@@ -324,8 +318,6 @@ function createPriorityMarkup(priority, state) {
 
 async function renderAssigneeContacts(context) {
   const menu = context.elements.assigneeMenu;
-console.log("🔍 assigneeMenu:", context.elements.assigneeMenu);
-console.log("🔍 context.elements:", context.elements);
   try {
     context.state.assigneeContacts = await fetchContacts();
   } catch (error) {
@@ -482,9 +474,6 @@ async function handleTaskSubmit(context, event) { //Board overlay edit
     } else {
       await saveTask(context);
     }
-
-    console.log("✅ SAVE DONE");
-
   } catch (error) {
     console.error("❌ SAVE FAILED", error);
   }
@@ -502,9 +491,6 @@ async function updateExistingTask(context, taskId) {//Board overlay edit
 
   await putUserData(`${path}/${taskId}`, updatedTask);
 
-  console.log("✏️ TASK UPDATED");
-
-  // 🔥 NUR CALLBACK!
   if (context.options?.onSave) {
     context.options.onSave(taskId);
   }
@@ -529,6 +515,7 @@ function refreshFormState(context) {
   closeCategoryDropdown(context);
   closeAssigneeDropdown(context);
   resetPriorityButtons(context);
+  applyDefaultPriority(context);
   resetCategorySelection(context);
   renderAssigneeContacts(context);
   updateAssigneeLabel(context);
@@ -542,6 +529,10 @@ function resetState(state) {
   state.selectedCategory = "";
   state.subtasks = [];
   state.editingSubtaskIndex = null;
+}
+
+function applyDefaultPriority(context) {
+  setPriority(context, DEFAULT_PRIORITY);
 }
 
 function destroy(context) {

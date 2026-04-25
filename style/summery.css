@@ -36,6 +36,12 @@
   justify-content: space-between;
 }
 
+.summary_card_link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .to_do,
 .done {
   width: 264px;
@@ -46,6 +52,74 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+}
+
+.to_do,
+.done,
+.urgent,
+.tasks_in_board,
+.tasks_in_progress,
+.awaiting_feedback {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary_icon_swap {
+  position: relative;
+  width: 69px;
+  height: 69px;
+  flex-shrink: 0;
+}
+
+.summary_icon_swap img {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.2s ease;
+}
+
+.summary_icon_hover {
+  opacity: 0;
+}
+
+.to_do:hover .summary_icon_default,
+.done:hover .summary_icon_default {
+  opacity: 0;
+}
+
+.to_do:hover .summary_icon_hover,
+.done:hover .summary_icon_hover {
+  opacity: 1;
+}
+
+.to_do:hover,
+.done:hover,
+.urgent:hover,
+.tasks_in_board:hover,
+.tasks_in_progress:hover,
+.awaiting_feedback:hover {
+  background: #2a3647;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(42, 54, 71, 0.12);
+}
+
+.to_do:hover #to_do_count,
+.done:hover #done_count,
+.urgent:hover #urgent_count,
+.urgent:hover #deadline,
+.tasks_in_board:hover #board_count,
+.tasks_in_progress:hover #progress_count,
+.awaiting_feedback:hover #feedback_count,
+.to_do:hover #to_do_count span,
+.done:hover #done_count span,
+.urgent:hover #urgent_count span,
+.urgent:hover #deadline span,
+.tasks_in_board:hover #board_count span,
+.tasks_in_progress:hover #progress_count span,
+.awaiting_feedback:hover #feedback_count span {
+  color: #ffffff;
+}
+
+.urgent:hover hr {
+  border-top-color: #ffffff;
 }
 
 #to_do_count,

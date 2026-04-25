@@ -57,39 +57,45 @@
       <section class="key_matix">
 
         <section class="todo_done">
-          <div class="to_do">
-            <img src="../assets/icon/to_do.svg" alt="to do icon">
+          <a class="to_do summary_card_link" href="./board.html" aria-label="Open board from to-do metrics">
+            <span class="summary_icon_swap summary_icon_swap_todo" aria-hidden="true">
+              <img class="summary_icon_default" src="../assets/icon/to_do.svg" alt="">
+              <img class="summary_icon_hover" src="../assets/icon/to_do_negative.svg" alt="">
+            </span>
             <!-- id for count template -->
             <div id="to_do_count">0<br><span>To-do</span></div>
-          </div>
-          <div class="done">
-            <img src="../assets/icon/done.svg" alt="done icon">
+          </a>
+          <a class="done summary_card_link" href="./board.html" aria-label="Open board from done metrics">
+            <span class="summary_icon_swap summary_icon_swap_done" aria-hidden="true">
+              <img class="summary_icon_default" src="../assets/icon/done.svg" alt="">
+              <img class="summary_icon_hover" src="../assets/icon/done_negative.svg" alt="">
+            </span>
             <!-- id for count template -->
             <div id="done_count">0<br><span>Done</span></div>
-          </div>
+          </a>
         </section>
 
-        <div class="urgent">
+        <a class="urgent summary_card_link" href="./board.html" aria-label="Open board from urgent metrics">
           <img src="../assets/icon/urgent.svg" alt="urgent icon">
           <!-- id for count template -->
           <div id="urgent_count">0<br><span>Urgent</span></div>
           <hr>
           <!-- id for deadline template -->
           <div id="deadline">November 11, 2026<br><span>Upcoming Deadline</span></div>
-        </div>
+        </a>
 
         <div class="tasks">
-          <div class="tasks_in_board">
+          <a class="tasks_in_board summary_card_link" href="./board.html" aria-label="Open board from tasks in board metrics">
             <div id="board_count">0<br><span>Tasks in <br> Board</span></div>
-          </div>
+          </a>
 
-          <div class="tasks_in_progress">
+          <a class="tasks_in_progress summary_card_link" href="./board.html" aria-label="Open board from tasks in progress metrics">
             <div id="progress_count">0<br><span>Tasks in <br> Progress</span></div>
-          </div>
+          </a>
 
-          <div class="awaiting_feedback">
+          <a class="awaiting_feedback summary_card_link" href="./board.html" aria-label="Open board from awaiting feedback metrics">
             <div id="feedback_count">0<br><span>Awaiting <br> Feedback</span></div>
-          </div>
+          </a>
         </div>
 
       </section>
