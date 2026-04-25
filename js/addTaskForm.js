@@ -3,7 +3,7 @@ import { getData, putUserData } from "./firebase.js";
 
 
 import { normalizeStatus} from "./assets.js";
-import { getAssigneeOptionTemplate } from "./template/add_task_template.js"; //Für Board overlay edit...
+import { createAssigneeOption } from "./template/add_task_template.js";
 import { createSubtaskItem } from "./template/add_task_template.js";
 
 
@@ -274,6 +274,7 @@ function closeAssigneeDropdown(context) {
 function setDropdownState(toggle, menu, wrapper, isOpen) {
   if (!toggle || !menu) return;
   menu.classList.toggle("open", isOpen);
+  menu.classList.toggle("d_none", !isOpen);
   wrapper?.classList.toggle("open", isOpen);
   toggle.setAttribute("aria-expanded", String(isOpen));
 }
@@ -336,7 +337,7 @@ console.log("🔍 context.elements:", context.elements);
   }
 
   menu.innerHTML = context.state.assigneeContacts
-    .map(getAssigneeOptionTemplate)
+    .map(createAssigneeOption)
     .join(""); //NEU wegen Board Overlay edit 
 
   syncAssigneeCheckboxes(context);
@@ -608,6 +609,6 @@ function renderCategoryOptions(context) {
   const categories = ["Technical Task", "User Story"];
 
   menu.innerHTML = categories
-    .map(window.getCategoryOptionTemplate)
+    .map((category) => `<button type="button" class="category_option" data-category-value="${category}">${category}</button>`)
     .join("");
 }
