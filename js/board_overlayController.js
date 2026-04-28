@@ -1,5 +1,5 @@
 import { createAddTaskForm } from "./addTaskForm.js";
-import { createAddTaskFormTemplate,  createSubtaskItem } from "./template/add_task_template.js";
+import { createAddTaskFormTemplate } from "./template/add_task_template.js";
 import { getTasks, deleteTask, toggleSubtask } from "./board_taskService.js";
 import {
   generateTaskOverlay,
@@ -202,8 +202,6 @@ function initEditController(form, task) {
 }
     }
   );
-
-  form.dataset.editId = task.id;
 }
 
 // ======================
@@ -221,70 +219,7 @@ function setupEditUI() {
 // PREFILL
 // ======================
 function initEditPrefill(task, form) {
-  setTimeout(() => {
-    fillBasicFields(task);
-    fillCategory(task);
-    fillPriority(task);
-    fillSubtasks(task);
-    fillAssignees(task, form);
-
-    form.dataset.editId = task.id;
-  }, 0);
-}
-
-// ======================
-// PREFILL FIELDS
-// ======================
-function fillBasicFields(task) {
-  document.getElementById("title").value = task.title || "";
-  document.getElementById("description").value = task.description || "";
-  document.getElementById("dueDate").value = task.dueDate || "";
-}
-
-function fillCategory(task) {
-  const label = document.getElementById("categoryLabel");
-  const input = document.getElementById("category");
-
-  if (!label || !input) return;
-
-  label.textContent = task.type || "Select task category";
-  input.value = task.type || "";
-}
-
-function fillPriority(task) {
-  if (!task.priority) return;
-
-  const btn = document.querySelector(`[data-priority="${task.priority}"]`);
-  btn?.click();
-}
-
-function fillSubtasks(task) {
-  if (!task.subtasks?.length) return;
-
-  const ctx = addTaskFormController.context;
-
-  ctx.state.subtasks = [...task.subtasks];
-
-  ctx.elements.subtaskList.innerHTML =
-    task.subtasks.map((st, i) => createSubtaskItem(st, i)).join("");
-}
-
-function fillAssignees(task, form) {
-  if (!task.assignees?.length) return;
-
-  const ctx = addTaskFormController.context;
-  const ids = task.assignees.map(a => a.id);
-
-  ctx.state.selectedAssignees = ids;
-
-  // ✅ CHECKBOXEN setzen (wie bisher)
-  setTimeout(() => {
-    form.querySelectorAll("[data-assignee-id]").forEach(cb => {
-      cb.checked = ids.includes(cb.dataset.assigneeId);
-    });
-  }, 50);
-
-
+  addTaskFormController?.prefillTask(task);
 }
 
 
