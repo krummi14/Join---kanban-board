@@ -219,6 +219,14 @@ input:focus {
   display: none;
 }
 
+.find_task_button {
+  background-image: url(/assets/icon/search.svg);
+}
+
+.add_task_button_mobile {
+  display: none;
+}
+
 /* add_tasks */
 .clear_btn {
   background-color: transparent;
@@ -369,5 +377,36 @@ input:focus {
 
   .create_btn {
     width: 180px;
+  }
+
+  /* board */
+  .mobile_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .add_task_button {
+    display: none;
+  }
+
+  .add_task_button_mobile {
+    display: block;
+    height: 40px;
+    width: 40px;
+  }
+
+  .input-wrapper_size {
+    width: 100%;
+  }
+
+  .plus_add_task_button {
+    font-weight: 400;
+  }
+
+  .button_mobile_none {
+    display: none;
   }
 }

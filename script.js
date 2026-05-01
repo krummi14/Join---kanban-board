@@ -40,10 +40,8 @@ function logout() {
 
 // Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)
 function userInitials() {
-    const userName = localStorage.getItem("userName");
     if (userName !== 'Guest') {
         let initials = getInitials(userName);
-        const refUser = document.getElementById("user");
         refUser.innerHTML = initials;
     }
 }

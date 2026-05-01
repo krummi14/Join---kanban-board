@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../style/standard.css">
   <link rel="stylesheet" href="../style/add_task.css">
 
-  <script src="../js/template/add_task_template.js"></script>
+  <script type="module" src="../js/template/add_task_template.js"></script>
 </head>
 
 <body onload="getAddTaskFormTemplate('to_do'); initAddTask();">
@@ -39,7 +39,9 @@
       <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
       <p class="join_header_text">Kanban Project Management Tool</p>
       <div>
-        <img class="help_icon" src="../assets/icon/help_off.svg" alt="help icon">
+        <a class="help_link" href="./help.html" aria-label="Open help page">
+          <img src="../assets/icon/help_off.svg" alt="help icon">
+        </a>
         <!-- id for user name -->
         <div id="user" onclick="addMenu()">G</div>
         <section id="logout_menu" class="logout_menu">

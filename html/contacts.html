@@ -44,7 +44,9 @@
       <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
       <p class="join_header_text">Kanban Project Management Tool</p>
       <div>
-        <img class="help_icon" src="../assets/icon/help_off.svg" alt="help icon">
+        <a class="help_link" href="./help.html" aria-label="Open help page">
+          <img src="../assets/icon/help_off.svg" alt="help icon">
+        </a>
         <!-- id for user name -->
         <div id="user" onclick="addMenu()">G</div>
         <section id="logout_menu" class="logout_menu">
@@ -76,7 +78,8 @@
             </div>
           </section>
 
-          <section id="contact_content" class="contact_content responsive_contactInformation_none" onclick="addEditAndDeleteResponisve(event)">
+          <section id="contact_content" class="contact_content responsive_contactInformation_none"
+            onclick="addEditAndDeleteResponisve(event)">
             <button class="back_button_contactInformation_mobile" onclick="closeContactInformationResponsive()">
               <img src="../assets/icon/vector.svg" alt="back button"></button>
 

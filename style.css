@@ -76,8 +76,25 @@
   gap: 16px;
 }
 
+.help_link {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .join_logo_respo {
   display: none;
+}
+
+.header_framework div a img:hover {
+  scale: 1.1;
+}
+
+.help_content h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2a3647;
 }
 
 #user {
@@ -101,8 +118,8 @@
   width: 150px;
   height: 158px;
   position: absolute;
-  top: 50px;
-  right: 50px;
+  top: 96px;
+  right: 16px;
   background: #2a3647;
   border-radius: 10px 0px 10px 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -115,6 +132,7 @@
 
 .logout_menu.open {
   display: flex;
+  align-items: start;
   animation: slideRightLogoutmenu 125ms forwards;
 }
 
@@ -172,12 +190,13 @@
 }
 
 .main_header {
-  position: absolute;
-  top: 206px;
-  left: 328px;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
   align-items: center;
-  gap: 8px;
+  padding: 80px 64px;
+  padding-bottom: 48px;
 }
 
 /* splash screen */
@@ -256,7 +275,7 @@
     z-index: 3;
   }
 
-  .help_icon {
+  .help_link {
     display: none;
   }
 
@@ -283,6 +302,7 @@
     right: 16px;
     z-index: 3;
     height: 208px;
+    width: 140px;
   }
 
   .help_logout_menu {

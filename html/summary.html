@@ -39,7 +39,9 @@
       <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
       <p class="join_header_text">Kanban Project Management Tool</p>
       <div>
-        <img class="help_icon" src="../assets/icon/help_off.svg" alt="help icon">
+        <a class="help_link" href="./help.html" aria-label="Open help page">
+          <img src="../assets/icon/help_off.svg" alt="help icon">
+        </a>
         <!-- id for user name -->
         <div id="user" onclick="addMenu()">G</div>
         <section id="logout_menu" class="logout_menu">
@@ -51,80 +53,91 @@
       </div>
     </header>
 
-    <main id="main_framework" class="main_framework">
-      <section class="main_header">
-        <h1>Join 360</h1>
-        <hr class="hr_desktop">
-        <p class="respo_header_text_size">Key Metrics at a Glance</p>
-        <hr class="hr_mobile">
-      </section>
-
-      <section class="key_matix">
-
-        <section class="todo_done">
-          <div class="to_do">
-            <img class="icons" src="../assets/icon/to_do.svg" alt="to do icon">
-            <!-- id for count template -->
-            <div id="to_do_count">0<br><span>To-do</span></div>
-          </div>
-          <div class="done">
-            <img class="icons" src="../assets/icon/done.svg" alt="done icon">
-            <!-- id for count template -->
-            <div id="done_count">0<br><span>Done</span></div>
-          </div>
+    <div>
+      <main id="main_framework" class="main_framework">
+        <section class="main_header">
+          <h1>Join 360</h1>
+          <hr class="hr_desktop">
+          <p class="respo_header_text_size">Key Metrics at a Glance</p>
+          <hr class="hr_mobile">
         </section>
 
-        <div class="urgent">
-          <img class="icons" src="../assets/icon/urgent.svg" alt="urgent icon">
-          <!-- id for count template -->
-          <div id="urgent_count">0<br><span>Urgent</span></div>
-          <hr>
-          <!-- id for deadline template -->
-          <div id="deadline">November 11, 2026<br><span>Upcoming Deadline</span></div>
-        </div>
+        <section class="key_matix">
 
-        <div class="tasks">
-          <div class="tasks_in_board">
-            <div id="board_count">0<br><span>Tasks in <br> Board</span></div>
+          <section class="todo_done">
+            <a class="to_do summary_card_link" href="./board.html" aria-label="Open board from to-do metrics">
+              <span class="summary_icon_swap summary_icon_swap_todo" aria-hidden="true">
+                <img class="summary_icon_default" src="../assets/icon/to_do.svg" alt="">
+                <img class="summary_icon_hover" src="../assets/icon/to_do_negative.svg" alt="">
+              </span>
+              <!-- id for count template -->
+              <div id="to_do_count">0<br><span>To-do</span></div>
+            </a>
+            <a class="done summary_card_link" href="./board.html" aria-label="Open board from done metrics">
+              <span class="summary_icon_swap summary_icon_swap_done" aria-hidden="true">
+                <img class="summary_icon_default" src="../assets/icon/done.svg" alt="">
+                <img class="summary_icon_hover" src="../assets/icon/done_negative.svg" alt="">
+              </span>
+              <!-- id for count template -->
+              <div id="done_count">0<br><span>Done</span></div>
+            </a>
+          </section>
+
+          <a class="urgent summary_card_link" href="./board.html" aria-label="Open board from urgent metrics">
+            <img src="../assets/icon/urgent.svg" alt="urgent icon">
+            <!-- id for count template -->
+            <div id="urgent_count">0<br><span>Urgent</span></div>
+            <hr>
+            <!-- id for deadline template -->
+            <div id="deadline">November 11, 2026<br><span>Upcoming Deadline</span></div>
+          </a>
+
+          <div class="tasks">
+            <a class="tasks_in_board summary_card_link" href="./board.html"
+              aria-label="Open board from tasks in board metrics">
+              <div id="board_count">0<br><span>Tasks in <br> Board</span></div>
+            </a>
+
+            <a class="tasks_in_progress summary_card_link" href="./board.html"
+              aria-label="Open board from tasks in progress metrics">
+              <div id="progress_count">0<br><span>Tasks in <br> Progress</span></div>
+            </a>
+
+            <a class="awaiting_feedback summary_card_link" href="./board.html"
+              aria-label="Open board from awaiting feedback metrics">
+              <div id="feedback_count">0<br><span>Awaiting <br> Feedback</span></div>
+            </a>
           </div>
 
-          <div class="tasks_in_progress">
-            <div id="progress_count">0<br><span>Tasks in <br> Progress</span></div>
-          </div>
+        </section>
 
-          <div class="awaiting_feedback">
-            <div id="feedback_count">0<br><span>Awaiting <br> Feedback</span></div>
-          </div>
-        </div>
-
-      </section>
-
-      <section id="good_morning">
-        <!--<h2 class="good_morning splash_logo">Good Morning!</h2>-->
-      </section>
-    </main>
-    <footer id="responsive_menu" class="responsive_menu">
-      <a href="./summary.html" class="responsive_menu_button">
-        <img class="responsive_menu_img responsive_menu_summary_img" src="../assets/icon/summary_respo.svg"
-          alt="summary_respo_icon">
-        <p class="responsive_menu_text">Summary</p>
-      </a>
-      <a href="./add_task.html" class="responsive_menu_button">
-        <img class="responsive_menu_img responsive_menu_add_task_img" src="../assets/icon/add_task_respo.svg"
-          alt="add_task_respo_icon">
-        <p class="responsive_menu_text">Add Task</p>
-      </a>
-      <a href="./board.html" class="responsive_menu_button">
-        <img class="responsive_menu_img responsive_menu_board_img" src="../assets/icon/board_icon_respo.svg"
-          alt="board_respo_icon">
-        <p class="responsive_menu_text">Board</p>
-      </a>
-      <a href="./contacts.html" class="responsive_menu_button">
-        <img class="responsive_menu_img responsive_menu_contacts_img" src="../assets/icon/contacts_respo.svg"
-          alt="contacts_respo_icon">
-        <p class="responsive_menu_text">Contacts</p>
-      </a>
-    </footer>
+        <section id="good_morning">
+          <!--<h2 class="good_morning splash_logo">Good Morning!</h2>-->
+        </section>
+      </main>
+      <footer id="responsive_menu" class="responsive_menu">
+        <a href="./summary.html" class="responsive_menu_button">
+          <img class="responsive_menu_img responsive_menu_summary_img" src="../assets/icon/summary_respo.svg"
+            alt="summary_respo_icon">
+          <p class="responsive_menu_text">Summary</p>
+        </a>
+        <a href="./add_task.html" class="responsive_menu_button">
+          <img class="responsive_menu_img responsive_menu_add_task_img" src="../assets/icon/add_task_respo.svg"
+            alt="add_task_respo_icon">
+          <p class="responsive_menu_text">Add Task</p>
+        </a>
+        <a href="./board.html" class="responsive_menu_button">
+          <img class="responsive_menu_img responsive_menu_board_img" src="../assets/icon/board_icon_respo.svg"
+            alt="board_respo_icon">
+          <p class="responsive_menu_text">Board</p>
+        </a>
+        <a href="./contacts.html" class="responsive_menu_button">
+          <img class="responsive_menu_img responsive_menu_contacts_img" src="../assets/icon/contacts_respo.svg"
+            alt="contacts_respo_icon">
+          <p class="responsive_menu_text">Contacts</p>
+        </a>
+      </footer>
+    </div>
   </section>
 
 

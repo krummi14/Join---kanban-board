@@ -1,27 +1,91 @@
-function createSubtaskItem(st, index) {     
+
+
+export function createSubtaskItem(st, index) {     
+
   return `
     <section class="subtask_item">
       <span class="subtask_item_text">${st.title}</span>
-      <button type="button"
-        class="subtask_remove_button"
-        data-remove-subtask="${index}">
-        ×
-      </button>
+      <div class="subtask_item_actions">
+        <button type="button"
+          class="subtask_item_action_button"
+          data-edit-subtask="${index}"
+          aria-label="Edit subtask">
+          <img src="../assets/icon/subtask_edit.svg" alt="Edit subtask">
+        </button>
+        <button type="button"
+          class="subtask_item_action_button"
+          data-remove-subtask="${index}"
+          aria-label="Delete subtask">
+          <img src="../assets/icon/subtask_del.svg" alt="Delete subtask">
+        </button>
+      </div>
     </section>
   `;
 }
-//Geändert ! 
 
-function createAssigneeOption(contact) {
+export function createEditableSubtaskItem(st, index) {
+  return `
+    <section class="subtask_item editing">
+      <div class="subtask_edit_input_wrapper">
+        <input type="text" class="subtask_edit_input" data-edit-subtask-input="${index}" value="${escapeHtmlAttribute(st.title)}" aria-label="Edit subtask">
+        <div class="subtask_item_actions">
+          <button type="button"
+            class="subtask_item_action_button"
+            data-cancel-subtask-edit="${index}"
+            aria-label="Cancel subtask edit">
+            <img src="../assets/icon/subtask_del.svg" alt="Cancel subtask edit">
+          </button>
+          <button type="button"
+            class="subtask_item_action_button"
+            data-save-subtask-edit="${index}"
+            aria-label="Save subtask edit">
+            <img src="../assets/icon/subtask_check.svg" alt="Save subtask edit">
+          </button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+export function createAssigneeOption(contact) {
   return `
     <label class="assignee_option" for="assignee_${contact.id}">
-      <span class="assignee_option_text"><span class="assignee_option_name">${contact.name}</span></span>
-      <input type="checkbox" id="assignee_${contact.id}" value="${contact.id}" data-assignee-id="${contact.id}">
+      <div class="assignee_option_text">
+        <div class="avatar assignee_option_avatar" style="background:${getAssigneeColor(contact.name)}">${getAssigneeInitials(contact.name)}</div>
+        <div class="assignee_option_name">${contact.name}</div>
+      </div>
+      <span class="assignee_option_checkbox">
+        <input type="checkbox" id="assignee_${contact.id}" value="${contact.id}" data-assignee-id="${contact.id}">
+        <img class="assignee_option_checkbox_icon assignee_option_checkbox_icon_unchecked" src="../assets/icon/assignee_unchecked.svg" alt="">
+        <img class="assignee_option_checkbox_icon assignee_option_checkbox_icon_checked" src="../assets/icon/assignee_checked.svg" alt="">
+      </span>
     </label>
   `;
 }
 
-function createAddTaskFormTemplate(path) {
+
+function getAssigneeInitials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function getAssigneeColor(name) {
+  return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][String(name || "").length % 6];
+}
+
+
+export function createAddTaskFormTemplate(path) {
+
   return`
         <form id="taskForm">
         <section class="left_form">
@@ -84,9 +148,14 @@ function createAddTaskFormTemplate(path) {
             <label for="subtask">Subtasks</label>
             <section class="subtask_input_wrapper">
               <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
-              <button type="button" id="addSubtaskButton" class="subtask_add_button" aria-label="Add subtask">
-                <img src="../assets/icon/done.svg" alt="Add subtask">
-              </button>
+              <div class="subtask_action_buttons">
+                <button type="button" id="clearSubtaskButton" class="subtask_action_button" aria-label="Clear subtask input">
+                  <img src="../assets/icon/subtask_close.svg" alt="Clear subtask input">
+                </button>
+                <button type="button" id="addSubtaskButton" class="subtask_action_button" aria-label="Add subtask">
+                  <img src="../assets/icon/subtask_check.svg" alt="Add subtask">
+                </button>
+              </div>
             </section>
             <section id="subtaskList" class="subtask_list"></section>
           </section>
@@ -99,3 +168,27 @@ function createAddTaskFormTemplate(path) {
       </form>
   `
 };
+
+//Board overlay edit 
+export function getAssigneeOptionTemplate(contact) {
+  return `
+    <label class="assignee_option">
+      <input type="checkbox" data-assignee-id="${contact.id}">
+      <span>${contact.name}</span>
+    </label>
+  `;
+}
+
+
+
+function getCategoryOptionTemplate(category) {
+  return `
+    <div class="dropdown_item" data-category-value="${category}">
+      ${category}
+    </div>
+  `;
+}
+
+window.getCategoryOptionTemplate = getCategoryOptionTemplate;
+
+window.createAddTaskFormTemplate = createAddTaskFormTemplate;

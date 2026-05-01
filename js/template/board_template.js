@@ -1,8 +1,8 @@
-
+import { getContactInitials } from "../addTaskForm.js";
 // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
 // Div Container draggable="true" setzen, damit sie verschoben werden können
 // Div Container die ondragstart Methode hinzufügen (wie onclick) hier: startDragging()
-function generateTaskHTML(task) {
+export function generateTaskHTML(task) {
   return `
        <div class="task" onclick="openOverlay('${task.id}')" draggable="true" ondragstart="startDragging('${task.id}')">
         
@@ -75,7 +75,7 @@ function generateAvatars(task) {
   `;
 }
 
-function generateSingleAvatar(assignee) {
+export function generateSingleAvatar(assignee) {
   return `
     <div class="avatar" style="background:${getColorFromName(assignee.name)}">
       ${getContactInitials(assignee.name)}
@@ -83,7 +83,7 @@ function generateSingleAvatar(assignee) {
   `;
 }
 
-function generateExtraAvatar(rest) {
+export function generateExtraAvatar(rest) {
   return `
     <div class="avatar" style="background:#2a3647">
       +${rest}
@@ -95,13 +95,13 @@ function getColorFromName(name) {
   return ["#ff7a00","#9327ff","#00c4cc","#1fd7c1","#ff5eb3","#6e52ff"][name.length % 6];
 }
 
-function getNoAssigneesCardTemplate() {
+export function getNoAssigneesCardTemplate() {
   return `<span class="no_assignees">No Users assigned</span>`;
 }
 
 /*overlay*/ 
 
-function generateTaskOverlay(task) {
+export function generateTaskOverlay(task) {
   return `
     <div class="task_overlay">
 
@@ -113,6 +113,24 @@ function generateTaskOverlay(task) {
       ${generateOverlayPriority(task)}
       ${generateOverlayAssignees(task)}
       ${generateSubtasksWrapper(generateSubtasksContent(task))}
+
+      ${generateOverlayActions(task)} 
+
+    </div>
+  `;
+}
+
+function generateOverlayActions(task) {
+  return `
+    <div class="overlay_actions">
+
+      <button onclick="editTask('${task.id}')">
+        <img src="assets/icon/edit.svg">
+      </button>
+
+      <button onclick="deleteTask('${task.id}')">
+        <img src="assets/icon/delete.svg">
+      </button>
 
     </div>
   `;
@@ -165,7 +183,7 @@ function generateOverlayAssignees(task) {
   `;
 }
 
-function generateAssignee(a) {
+export function generateAssignee(a) {
   return `
     <div class="assignee_row">
 
@@ -192,7 +210,7 @@ function generateSubtasksWrapper(content) {
 
 
 
-function generateSubtask(task, st, i) {
+export function generateSubtask(task, st, i) {
   return `
     <label class="subtask_item">
 
@@ -207,17 +225,17 @@ function generateSubtask(task, st, i) {
 }
 
 
-function getNoSubtasksTemplate() {
+export function getNoSubtasksTemplate() {
   return `<p>No subtasks yet</p>`;
 }
 
 
-function getNoAssigneesTemplate() {
+export function getNoAssigneesTemplate() {
   return `<p>No Users assigned</p>`;
 }
 
 
-function getAssigneeTemplate(a, isYou) {
+export function getAssigneeTemplate(a, isYou) {
   return `
     <div class="assignee_row">
 
@@ -232,3 +250,200 @@ function getAssigneeTemplate(a, isYou) {
   `;
 }
 
+
+/*
+export function createEditTaskTemplate() {
+return ` <div class="edit_overlay">
+  <div class="edit_header">
+    <h2>Edit Task</h2>
+    <button type="button" onclick="closeOverlay()">✕</button>
+  </div>
+
+  <form id="taskForm" class="edit_form">
+
+    <!-- TITLE -->
+    <label>Title*</label>
+    <input id="title" type="text" required>
+
+    <!-- DESCRIPTION -->
+    <label>Description</label>
+    <textarea id="description"></textarea>
+
+    <!-- DUE DATE -->
+    <label>Due Date*</label>
+    <input id="dueDate" type="date" required>
+
+    <!-- PRIORITY -->
+    <label>Priority</label>
+    <div class="priority_buttons">
+      <button type="button" id="prio_urgent" data-priority="urgent">Urgent</button>
+      <button type="button" id="prio_medium" data-priority="medium">Medium</button>
+      <button type="button" id="prio_low" data-priority="low">Low</button>
+    </div>
+
+    <!-- ASSIGNEES -->
+    <label>Assigned to</label>
+    <div class="assignee_dropdown">
+      <button type="button" id="assignee" data-assignee-toggle>Select contacts</button>
+      <div id="assigneeDropdownMenu" class="dropdown_menu"></div>
+    </div>
+
+    <div id="selectedContacts"></div>
+
+    <!-- CATEGORY -->
+    <label>Category</label>
+    <div class="category_dropdown">
+      <button type="button" id="categoryToggle" data-category-toggle>
+        <span id="categoryLabel">Select task category</span>
+      </button>
+      <div id="categoryDropdownMenu" class="dropdown_menu"></div>
+    </div>
+
+    <!-- hidden input für save -->
+    <input type="hidden" id="category">
+
+    <!-- SUBTASKS -->
+    <label>Subtasks</label>
+    <div class="subtask_input_wrapper">
+      <input id="subtask" type="text" placeholder="Add new subtask">
+      <button type="button" id="addSubtaskButton">+</button>
+    </div>
+
+    <div id="subtaskList"></div>
+
+    <!-- ACTION -->
+    <div class="edit_actions">
+      <button type="submit">Ok ✓</button>
+    </div>
+
+  </form>
+</div>
+
+
+`;
+}
+
+*/
+
+export function createEditTaskTemplate() {
+  return `
+  <div class="edit_overlay">
+
+    <!-- CLOSE -->
+    <div class="close_button">
+      <div class="close_icon_wrapper close_icon_margin">
+        <img src="assets/img/close.svg"
+             class="close_icon"
+             onclick="closeOverlay()">
+      </div>
+    </div>
+
+    <div class="scroll-area">
+
+      <form id="taskForm" class="edit_form">
+
+        <!-- TITLE -->
+        <div class="edit_title">
+          <label>Title<span class="red_star">*</span></label>
+          <input id="title" type="text" required class="input_style">
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="edit_description">
+          <label>Description</label>
+          <textarea id="description" class="input_style"></textarea>
+        </div>
+
+        <!-- DUE DATE -->
+        <div class="edit_duedate">
+          <label>Due Date<span class="red_star">*</span></label>
+          <input id="dueDate" type="date" required class="input_style">
+        </div>
+
+        <!-- PRIORITY -->
+        <div class="edit_priority">
+          <p class="bold_font">Priority</p>
+          <div class="priority_buttons">
+
+            <button type="button" id="prio_urgent" data-priority="urgent">Urgent</button>
+            <button type="button" id="prio_medium" data-priority="medium">Medium</button>
+            <button type="button" id="prio_low" data-priority="low">Low</button>
+
+          </div>
+        </div>
+
+        <!-- ASSIGNEES (TOGGLE FIX) -->
+        <div class="edit_assigned_to">
+          <label>Assigned to</label>
+
+          <div class="assignee_dropdown">
+
+            <button type="button"
+                    id="assignee"
+                    data-assignee-toggle
+                    onclick="toggleAssigneeDropdown(event)">
+              Select contacts
+            </button>
+
+            <div id="assigneeDropdownMenu"
+                 class="dropdown_menu d_none"
+                 onclick="event.stopPropagation()">
+            </div>
+
+          </div>
+
+          <!-- Avatare wie Board -->
+          <div id="selectedContacts" class="avatar_row"></div>
+        </div>
+
+        <!-- CATEGORY (TOGGLE FIX) -->
+        <div class="edit_category">
+          <label>Category</label>
+
+          <div class="category_dropdown">
+
+            <button type="button"
+                    id="categoryToggle"
+                    data-category-toggle
+                    onclick="toggleCategoryDropdown(event)">
+              <span id="categoryLabel">Select task category</span>
+            </button>
+
+            <div id="categoryDropdownMenu"
+                 class="dropdown_menu d_none"
+                 onclick="event.stopPropagation()">
+            </div>
+
+          </div>
+
+          <input type="hidden" id="category">
+        </div>
+
+        <!-- SUBTASKS (HOVER STYLE FIX) -->
+        <div class="edit_subtasks">
+          <label>Subtasks</label>
+
+          <div class="subtask_input_wrapper">
+
+            <input id="subtask"
+                   type="text"
+                   placeholder="Add new subtask">
+
+            <button type="button" id="addSubtaskButton">+</button>
+
+          </div>
+
+          <div id="subtaskList"></div>
+        </div>
+
+        <!-- ACTION -->
+        <div class="edit_actions">
+          <button type="submit">Ok ✓</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+  `;
+}
