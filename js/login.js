@@ -56,7 +56,7 @@ async function loginUser(email, password) {
 
   let userName = await getData(`users/${id}/name`);
   localStorage.setItem("userName", userName);
-
+  localStorage.setItem("greetingShown", "false");
   location.href = "../html/summary.html";
 }
 
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   // GUEST LOGIN (richtig) Jeder User wird automatisch als "Guest" gespeichert auch wenn er sich normal einloggt ❌
-  
+
   document.querySelector(".guest-btn")?.addEventListener("click", () => {
     localStorage.setItem("user", "guest");
     localStorage.setItem("userName", "Guest");

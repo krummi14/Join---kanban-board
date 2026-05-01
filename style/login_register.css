@@ -195,6 +195,10 @@
     text-align: center;
 }
 
+.privacy a {
+    color: #29abe2;
+}
+
 .privacy label {
     text-align: center;
 }
@@ -278,7 +282,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 980px) {
     .splash_screen {
         background-color: #2a3647;
     }
@@ -295,7 +299,18 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 980px) {
+    .privacy {
+        margin-top: 32px;
+    }
+
+
+    #signup-btn {
+        width: 176px;
+        font-size: 16px;
+        margin-top: 32px;
+    }
+
     .desktop-only {
         display: none;
     }
@@ -311,12 +326,6 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 20px 20px;
-    }
-
-    .login-container {
-        width: 100%;
-        max-width: 89vw;
-        margin: 20px auto;
     }
 
     .register-container h1 {
@@ -355,9 +364,9 @@
     #login-btn,
     .guest-btn {
         font-size: 16px;
-        width: 140px;
-        min-width: 140px;
-        max-width: 140px;
+        width: 176px;
+        min-width: 176px;
+        max-width: 176px;
     }
 
     .signup-section {
@@ -370,6 +379,7 @@
     }
 
     .signup-btn {
+        font-size: 16px;
         margin: 0;
         padding: 8px 16px;
     }
@@ -380,9 +390,9 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 980px) {
     .login-container h1 {
-        font-size: 45px;
+        font-size: 47px;
         margin: 0;
         padding-bottom: 20px;
     }
@@ -391,7 +401,7 @@
         position: relative;
         max-width: 400px;
         width: 90%;
-        padding: 40px 16px;
+        padding: 24px 16px;
         background: white;
         border-radius: 30px;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -400,19 +410,18 @@
     }
 
     .register-container h1 {
-        font-size: 43px;
+        font-size: 47px;
         margin: 0;
-        padding-bottom: 20px;
+        padding-bottom: 8px;
     }
 
     .register-container {
-        padding: 76px 26px;
+        padding: 24px 16px;
         max-width: 400px;
         width: 90%;
     }
 
     .register-container input {
-        font-size: 14px;
         padding: 10px 36px 10px 12px;
     }
 

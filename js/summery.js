@@ -1,11 +1,25 @@
 async function initSummery() {
-  const userName = localStorage.getItem("userName");
-
-  if (userName !== 'Guest') {
-    const refSummeryUser = document.getElementById("good_morning");
-    refSummeryUser.innerHTML = `<h2>Good Morning,<br><span class="user_name">${userName}!</span></h2>`;
+  if (greetingShown == "true") {
+    if (isMobile) {
+      refSummeryUser.style.display = "none";
+    }
+    return;
+  }
+  if (userName !== "Guest") {
+    refSummeryUser.innerHTML = `
+      <h2 class="good_morning">Good Morning,<br><span class="user_name">${userName}</span></h2>`;
     let initials = getInitials(userName);
-    const refUser = document.getElementById("user");
     refUser.innerHTML = initials;
+  } else {
+    refSummeryUser.innerHTML = `<h2 class="good_morning">Good Morning!</h2>`;
+  }
+  if (isMobile) {
+    setTimeout(() => {
+      refSummeryUser.classList.add("fadeOut");
+      setTimeout(() => {
+        refSummeryUser.style.display = "none";
+        localStorage.setItem("greetingShown", "true");
+      }, 800);
+    }, 1500);
   }
 }

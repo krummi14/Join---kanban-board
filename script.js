@@ -23,10 +23,17 @@ let contentMobileAddTask = document.getElementById("responsive_menu_button_addTa
 let logoutMenu = document.getElementById('logout_menu');
 let contentSection = document.getElementById('content');
 let menuStatus = 'on';
+const userName = localStorage.getItem("userName");
+const greetingShown = localStorage.getItem("greetingShown");
+const refSummeryUser = document.getElementById("good_morning");
+const main = document.getElementById("main_framework");
+const isMobile = window.innerWidth < 980;
+const refUser = document.getElementById("user");
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem("greetingShown");
     sessionStorage.removeItem('user');
     window.location.href = '../index.html';
 }
