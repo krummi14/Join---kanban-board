@@ -270,6 +270,28 @@
   gap: 10px;
 }
 
+
+#taskForm button[data-priority] {
+  width: 136px;
+  height: 56px;
+  border-radius: 10px;
+}
+
+#taskForm button[data-priority].active[data-priority="urgent"] {
+  background-color: #ff3b30;
+  color: white;
+}
+
+#taskForm button[data-priority].active[data-priority="medium"] {
+  background-color: #ffa800;
+  color: white;
+}
+
+#taskForm button[data-priority].active[data-priority="low"] {
+  background-color: #7ae229;
+  color: white;
+}
+
 /*EDIT*/
 
 /*
