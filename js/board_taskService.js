@@ -197,8 +197,8 @@ function getTaskForStorage(task, status) {
 }
 
 function getPriorityIcon(priority) {
-  if (priority === "urgent") return "../assets/img/urgent_icon.svg";
-  if (priority === "medium") return "../assets/img/medium_icon.svg";
-  if (priority === "low") return "../assets/img/low_icon.svg";
+  if (priority === "urgent") return "../assets/icon/btn_urgent_off.svg";
+  if (priority === "medium") return "../assets/icon/btn_medium_off.svg";
+  if (priority === "low") return "../assets/icon/btn_low_off.svg";
   return "";
 }

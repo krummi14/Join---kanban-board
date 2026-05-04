@@ -125,11 +125,11 @@ function generateOverlayActions(task) {
     <div class="overlay_actions">
 
       <button onclick="editTask('${task.id}')">
-        <img src="assets/icon/edit.svg">
+        <img src="/assets/icon/subtask_edit.svg">
       </button>
 
       <button onclick="deleteTask('${task.id}')">
-        <img src="assets/icon/delete.svg">
+        <img src="/assets/icon/subtask_del.svg">
       </button>
 
     </div>
@@ -396,28 +396,7 @@ export function createEditTaskTemplate() {
           <div id="selectedContacts" class="avatar_row"></div>
         </div>
 
-        <!-- CATEGORY (TOGGLE FIX) -->
-        <div class="edit_category">
-          <label>Category</label>
-
-          <div class="category_dropdown">
-
-            <button type="button"
-                    id="categoryToggle"
-                    data-category-toggle
-                    onclick="toggleCategoryDropdown(event)">
-              <span id="categoryLabel">Select task category</span>
-            </button>
-
-            <div id="categoryDropdownMenu"
-                 class="dropdown_menu d_none"
-                 onclick="event.stopPropagation()">
-            </div>
-
-          </div>
-
-          <input type="hidden" id="category">
-        </div>
+     
 
         <!-- SUBTASKS (HOVER STYLE FIX) -->
         <div class="edit_subtasks">

@@ -11,6 +11,9 @@ import {
 import { loadTasks } from "./board_taskService.js";
 import { updateHTML } from "./board_taskView.js";
 import { createEditTaskTemplate } from "./template/board_template.js";
+import { setPriority } from "./addTaskForm.js";
+
+
 
 let addTaskFormController = null;
 
@@ -158,6 +161,7 @@ window.deleteTask = async function(taskId) {
 // EDIT (UNVERÄNDERT STRUKTUR)
 // ======================
 async function editTask(taskId) {
+    console.log("EDIT TASK CALLED", taskId);
   const tasks = getTasks();
   const task = tasks.find(t => t.id === taskId);
   if (!task) return;
@@ -184,26 +188,26 @@ function renderEditForm(task) {
 // INIT CONTROLLER
 // ======================
 function initEditController(form, task) {
-  addTaskFormController?.destroy();
+  console.log("INIT CONTROLLER START");
 
-  addTaskFormController = createAddTaskForm(
+  if (window.addTaskFormController) {
+    window.addTaskFormController.destroy();
+  }
+
+  window.addTaskFormController = createAddTaskForm(
     form,
     task.sourcePath || task.status,
     {
       onSave: async (taskId) => {
-  console.log("SAVE TRIGGERED");
-  console.log(window.BOARD_COLUMNS);
-
-  await loadTasks(window.BOARD_COLUMNS);
-  updateHTML(window.BOARD_COLUMNS);
-
-  closeOverlay();
-  openOverlay(taskId);
-}
+        await loadTasks(window.BOARD_COLUMNS);
+        updateHTML(window.BOARD_COLUMNS);
+        closeOverlay();
+        openOverlay(taskId);
+      },
+      mode: "edit" // 🔥 WICHTIG
     }
   );
 }
-
 // ======================
 // UI EDIT
 // ======================
@@ -219,8 +223,51 @@ function setupEditUI() {
 // PREFILL
 // ======================
 function initEditPrefill(task, form) {
-  addTaskFormController?.prefillTask(task);
+
+  console.log("🧪 TASK DATA:", task);
+  console.log("INIT PREFILL CALLED");
+
+  const controller = window.addTaskFormController;
+  if (!controller) return;
+
+  const ctx = controller.context;
+
+  const waitForContacts = setInterval(() => {
+    if (!ctx.state.assigneeContacts.length) return;
+
+    clearInterval(waitForContacts);
+
+    console.log("✅ CONTACTS LOADED -> PREFILL START");
+
+    // BASIC
+    fillBasicFields(task);
+
+    // 🔥 PRIORITY (einzige richtige Methode)
+    setPriority(ctx, task.priority);
+
+    // 🔥 ASSIGNEES
+    controller.setAssigneesFromTask(task);
+
+    // 🔥 SUBTASKS
+    ctx.state.subtasks = [...(task.subtasks || [])];
+    ctx.elements.subtaskList.innerHTML =
+      ctx.state.subtasks.map((st, i) => createSubtaskItem(st, i)).join("");
+
+    console.log("🔥 PREFILL DONE", ctx.state);
+  }, 50);
 }
+// ======================
+// PREFILL FIELDS
+// ======================
+function fillBasicFields(task) {
+  document.getElementById("title").value = task.title || "";
+  document.getElementById("description").value = task.description || "";
+  document.getElementById("dueDate").value = task.dueDate || "";
+}
+
+
+
+
 
 
 window.openOverlay = openOverlay;
