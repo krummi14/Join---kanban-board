@@ -460,13 +460,42 @@
     animation: slideLeftCreated 2s forwards;
 }
 
-@media (min-width: 981px) {
+@media (min-width: 1116px) {
     .edit_and_delete_mobile_menu {
         display: none !important;
     }
 }
 
-@media(min-width: 320px) and (max-width:980px) {
+@media(min-width: 1160px) and (max-width:1250px) {
+    .main_drag_and_drop {
+        padding: 0 40px;
+    }
+
+    .contact_list {
+        width: 360px;
+    }
+
+    .contact_list_scrollmethode {
+        width: 100%;
+    }
+
+    .contact_content_header_and_slogan {
+        gap: 8px;
+    }
+}
+
+@media(min-width: 1116px) and (max-width:1159px) {
+    .contact_list {
+        width: 320px;
+    }
+
+    .contact_list_scrollmethode {
+        width: 100%;
+        padding: 0 16px;
+    }
+}
+
+@media(min-width: 320px) and (max-width:1115px) {
 
     /* contact_content*/
     .background_add_contact_button {

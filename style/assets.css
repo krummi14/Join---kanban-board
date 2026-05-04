@@ -245,7 +245,29 @@ input:focus {
   box-shadow: #2a364750 0 5px 2px -2px;
 }
 
-@media(min-width: 320px) and (max-width:980px) {
+.button_disply_none {
+  display: none;
+}
+
+.button_mobile {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+@media(min-width: 1160px) and (max-width:1250px) {
+  textarea {
+    width: auto;
+  }
+}
+
+@media(min-width: 1116px) and (max-width:1159px) {
+  textarea {
+    width: auto;
+  }
+}
+
+@media(min-width: 320px) and (max-width:1115px) {
   .responsive_menu_button {
     display: flex;
     flex-direction: column;
@@ -408,5 +430,11 @@ input:focus {
 
   .button_mobile_none {
     display: none;
+  }
+
+  .button_mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

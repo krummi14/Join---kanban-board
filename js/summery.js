@@ -1,4 +1,22 @@
+mq.addEventListener("change", (e) => {
+  let greetingShown = localStorage.getItem("greetingShown");
+  if (e.matches) {
+    if (greetingShown === "true") {
+      refSummeryUser.style.display = "none";
+    } else {
+      refSummeryUser.style.display = "none";
+    }
+  } else {
+    refSummeryUser.style.display = "flex";
+  }
+});
+
+function isMobileMode() {
+  return window.matchMedia("(max-width: 1115px)").matches;
+}
+
 async function initSummery() {
+  let greetingShown = localStorage.getItem("greetingShown");
   if (greetingShown == "true") {
     if (isMobile) {
       refSummeryUser.style.display = "none";
@@ -6,6 +24,8 @@ async function initSummery() {
     userInitials();
     await renderSummaryMetrics();
     return;
+  } else {
+    refSummeryUser.style.display = "flex";
   }
   if (userName !== "Guest") {
     refSummeryUser.innerHTML = `

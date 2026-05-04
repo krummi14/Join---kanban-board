@@ -57,7 +57,7 @@ label {
   color: #2a3647;
 }
 
-@media(min-width: 320px) and (max-width:980px) {
+@media(min-width: 320px) and (max-width:1115px) {
   h1 {
     font-size: 47px;
   }

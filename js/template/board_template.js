@@ -140,7 +140,7 @@ function generateOverlayHeader(task) {
   return `
     <div class="overlay_header">
       <span class="task_category">${task.type || "User Story"}</span>
-      <button onclick="closeOverlay()">✕</button>
+      <button class="close_button" onclick="closeOverlay()">✕</button>
     </div>
   `;
 }

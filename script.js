@@ -24,11 +24,12 @@ let logoutMenu = document.getElementById('logout_menu');
 let contentSection = document.getElementById('content');
 let menuStatus = 'on';
 const userName = localStorage.getItem("userName");
-const greetingShown = localStorage.getItem("greetingShown");
 const refSummeryUser = document.getElementById("good_morning");
 const main = document.getElementById("main_framework");
 const isMobile = window.innerWidth < 980;
 const refUser = document.getElementById("user");
+const mq = window.matchMedia("(max-width: 1115px)");
+let contentBody = document.getElementById("body");
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {
@@ -68,6 +69,7 @@ function getAddTaskFormTemplate(path) {
 function addMenu() {
     if (menuStatus == 'on') {
         contentSection.style.overflow = "hidden";
+        contentBody.style.overflow = "hidden"
         logoutMenu.classList.remove('close');
         logoutMenu.classList.add('open');
         menuStatus = 'off';
@@ -76,6 +78,7 @@ function addMenu() {
         menuStatus = 'on';
         setTimeout(() => {
             contentSection.style.overflow = "";
+            contentBody.style.overflow = "";
             logoutMenu.classList.remove('open');
         }, 125);
     }

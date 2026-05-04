@@ -6,20 +6,32 @@
   border-radius: 2px;
 }
 
+.main_header_summary {
+  width: 800px;
+}
+
 .main_header p {
   font-size: 27px;
   color: #2a3647;
 }
 
 .key_matix {
-  position: absolute;
+  /*position: absolute;
   top: 335px;
-  left: 328px;
+  left: 328px;*/
   width: 560px;
   height: 562px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.summery_and_good_morning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 80px;
+  padding: 0 80px;
 }
 
 .todo_done {
@@ -222,11 +234,11 @@
   color: #000000;
 }
 
-#good_morning {
+/*#good_morning {
   position: absolute;
   top: 547.5px;
   left: 968px;
-}
+}*/
 
 .user_name {
   font-size: 64px;
@@ -235,12 +247,36 @@
 }
 
 .good_morning {
-  font-size: 36px;
-  font-weight: 400;
+  font-size: 47px;
+  font-weight: 500;
   color: rgba(42, 54, 71, 1);
 }
 
-@media(min-width: 320px) and (max-width:980px) {
+@media(min-width: 1160px) and (max-width:1250px) {
+  .main_header_summary {
+    width: 700px;
+  }
+
+  .summery_and_good_morning {
+    padding: 0 40px;
+  }
+}
+
+@media(min-width: 1116px) and (max-width:1159px) {
+
+  .main_header_summary {
+    width: 640px;
+  }
+
+  .summery_and_good_morning {
+    padding: 0 16px;
+  }
+}
+
+@media(min-width: 320px) and (max-width:1115px) {
+  .main_header_summary {
+    width: auto;
+  }
 
   .respo_header_text_size {
     font-size: 20px;
@@ -349,18 +385,21 @@
   }
 
   #good_morning {
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 90%;
-    height: 90%;
+    width: 95%;
+    height: 95%;
     top: 0;
     left: 0;
     background-color: #f6f7f8;
   }
 
   .good_morning {
+    font-size: 36px;
+    font-weight: 400;
     text-align: center;
   }
 

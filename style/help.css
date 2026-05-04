@@ -30,7 +30,7 @@ li::marker {
     padding-bottom: 16px;
 }
 
-@media(min-width: 320px) and (max-width:980px) {
+@media(min-width: 320px) and (max-width:1115px) {
     .help_content {
         padding-top: 24px;
         padding-left: 16px;

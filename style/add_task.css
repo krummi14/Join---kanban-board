@@ -1,10 +1,11 @@
 #taskForm {
-  position: absolute;
+  /*position: absolute;
   top: 335px;
-  left: 328px;
-  height: 562px;
+  left: 328px;*/
   display: flex;
+  height: 562px;
   gap: 24px;
+  padding: 0 80px;
 }
 
 .left_form,
@@ -440,7 +441,39 @@ hr {
   height: 16px;
 }
 
-@media(min-width: 320px) and (max-width:980px) {
+@media(min-width: 1160px) and (max-width:1250px) {
+  #taskForm {
+    padding: 0 40px;
+  }
+
+  .main_header {
+    padding: 64px 40px;
+  }
+
+  .left_form {
+    width: 464px;
+  }
+}
+
+@media(min-width: 1116px) and (max-width:1159px) {
+  #taskForm {
+    padding: 0 16px;
+  }
+
+  .main_drag_and_drop {
+    padding: 0 16px;
+  }
+
+  .main_header {
+    padding: 40px 40px;
+  }
+
+  .left_form {
+    width: 320px;
+  }
+}
+
+@media(min-width: 320px) and (max-width:1115px) {
 
   #taskForm {
     flex-direction: column;
