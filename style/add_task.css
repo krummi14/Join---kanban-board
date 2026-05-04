@@ -486,7 +486,6 @@ hr {
     gap: 0;
   }
 
-<<<<<<< HEAD
   .left_form {
     width: 100%;
     padding: 0;
@@ -550,7 +549,6 @@ hr {
     padding: 8px 32px;
     background-color: #f6f7f8;
   }
-=======
 .create_btn:hover {
   box-shadow: #2a364750 0 5px 2px -2px;
 }
@@ -587,5 +585,4 @@ hr {
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
->>>>>>> 4e90058 (Zwischenstand)
 }
