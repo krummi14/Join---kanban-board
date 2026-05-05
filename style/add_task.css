@@ -1,9 +1,5 @@
 #taskForm {
-  /*position: absolute;
-  top: 335px;
-  left: 328px;*/
   display: flex;
-  height: 562px;
   gap: 24px;
   padding: 0 80px;
 }
@@ -32,8 +28,8 @@
 }
 
 .right_form {
-  justify-content: space-between;
   padding: 24px;
+  gap: 20px;
 }
 
 .priority,
@@ -47,6 +43,9 @@
   display: flex;
   justify-content: flex-end;
   gap: 16px;
+  position: fixed;
+  bottom: 40px;
+  left: 990px;
 }
 
 .form_buttons_none {
@@ -358,6 +357,9 @@ hr {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .subtask_item {
@@ -439,6 +441,17 @@ hr {
 .subtask_item_action_button img {
   width: 16px;
   height: 16px;
+}
+
+.requiredNotice {
+  font-size: 20px;
+  color: #000000;
+}
+
+.requiredNotice span {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ff0000;
 }
 
 @media(min-width: 1160px) and (max-width:1250px) {
@@ -549,40 +562,8 @@ hr {
     padding: 8px 32px;
     background-color: #f6f7f8;
   }
+}
+
 .create_btn:hover {
   box-shadow: #2a364750 0 5px 2px -2px;
-}
-
-
-/*ASSINGEE CHECKBOX */
-
-.assignee_option_checkbox input {
-  display: none;
-}
-
-.assignee_option_checkbox .checkmark {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #999;
-  border-radius: 4px;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-}
-
-.assignee_option_checkbox input:checked + .checkmark {
-  background-color: #2a3647;
-  border-color: #2a3647;
-}
-
-.assignee_option_checkbox input:checked + .checkmark::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 1px;
-  width: 4px;
-  height: 9px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
 }

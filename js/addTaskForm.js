@@ -2,6 +2,7 @@
 import { getData, putUserData } from "./firebase.js";
 import { normalizeStatus} from "./assets.js";
 import { createAssigneeOption } from "./template/add_task_template.js";
+import { createEditableSubtaskItem } from "./template/add_task_template.js";
 import { createSubtaskItem } from "./template/add_task_template.js";
 
 const formControllers = new WeakMap();
@@ -416,6 +417,7 @@ function syncAssigneeCheckboxes(context) {
   context.taskForm.querySelectorAll("[data-assignee-id]").forEach((checkbox) => {
     const isSelected = context.state.selectedAssignees.includes(checkbox.dataset.assigneeId);
     checkbox.checked = isSelected;
+    checkbox.closest(".assignee_option")?.classList.toggle("selected", isSelected);
   });
 }
 
@@ -447,6 +449,7 @@ function addSubtask(context) {
   context.state.subtasks.push({title, done: false});
   input.value = "";
   renderSubtasks(context);
+  scrollToLatestSubtask(context);
   updateSubtaskButtonState(context);
 }
 
@@ -494,8 +497,17 @@ function clearSubtaskInput(context) {
 function renderSubtasks(context) {
   if (!context.elements.subtaskList) return;
   context.elements.subtaskList.innerHTML = context.state.subtasks
-    .map((subtask, index) => createSubtaskItem({ ...subtask, isEditing: context.state.editingSubtaskIndex === index }, index))
+    .map((subtask, index) => {
+      const item = { ...subtask, isEditing: context.state.editingSubtaskIndex === index };
+      return item.isEditing ? createEditableSubtaskItem(item, index) : createSubtaskItem(item, index);
+    })
     .join("");
+}
+
+function scrollToLatestSubtask(context) {
+  const list = context.elements.subtaskList;
+  if (!list || !list.lastElementChild) return;
+  list.lastElementChild.scrollIntoView({ block: "nearest" });
 }
 
 function removeSubtask(context, index) {

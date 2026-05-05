@@ -1,6 +1,6 @@
 
 
-export function createSubtaskItem(st, index) {     
+export function createSubtaskItem(st, index) {
 
   return `
     <section class="subtask_item">
@@ -58,24 +58,17 @@ function escapeHtmlAttribute(value) {
 export function createAssigneeOption(contact) {
   return `
     <label class="assignee_option" for="assignee_${contact.id}">
-    
       <div class="assignee_option_text">
         <div class="avatar assignee_option_avatar" style="background:${getAssigneeColor(contact.name)}">
           ${getAssigneeInitials(contact.name)}
         </div>
         <div class="assignee_option_name">${contact.name}</div>
       </div>
-
       <span class="assignee_option_checkbox">
-        <input 
-          type="checkbox" 
-          id="assignee_${contact.id}" 
-          value="${contact.id}" 
-          data-assignee-id="${contact.id}">
-          
-        <span class="checkmark"></span>
+        <input type="checkbox" id="assignee_${contact.id}" value="${contact.id}" data-assignee-id="${contact.id}">
+        <img class="assignee_option_checkbox_icon assignee_option_checkbox_icon_unchecked" src="../assets/icon/assignee_unchecked.svg" alt="">
+        <img class="assignee_option_checkbox_icon assignee_option_checkbox_icon_checked" src="../assets/icon/assignee_checked.svg" alt="">
       </span>
-
     </label>
   `;
 }
@@ -92,11 +85,9 @@ function getAssigneeColor(name) {
   return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][String(name || "").length % 6];
 }
 
-
 export function createAddTaskFormTemplate(path) {
-
-  return`
-        <form id="taskForm">
+  return `
+      <form id="taskForm">
         <section class="left_form">
           <section class="title">
             <label for="title">Title<span>*</span></label>
@@ -112,9 +103,13 @@ export function createAddTaskFormTemplate(path) {
             <label for="dueDate">Due Date<span>*</span></label>
             <input type="date" id="dueDate" name="dueDate" required>
           </section>
+          
+          <p class="requiredNotice"><span>*</span>This field is required</p>
+          
         </section>
 
-        <hr class="hr_add_task_none">
+
+      <hr class="hr_add_task_none">
 
         <section class="right_form">
           <section class="priority">
