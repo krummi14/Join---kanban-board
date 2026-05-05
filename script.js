@@ -48,9 +48,9 @@ function userInitials() {
 }
 
 function getInitials(fullName) {
-    // Namen in einzelne Wörter aufteilen
-    const names = fullName.trim().split(' ');
-    // Anfangsbuchstaben der ersten beiden Namen holen und zusammenfügen
+    const names = String(fullName || '').trim().split(' ').filter(Boolean);
+    if (!names.length) return 'G';
+    if (names.length === 1) return names[0].slice(0, 2).toUpperCase();
     return names[0][0].toUpperCase() + names[1][0].toUpperCase();
 }
 

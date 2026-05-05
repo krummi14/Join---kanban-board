@@ -18,7 +18,7 @@ function getCreateTaskStatus() {
 function updateUserBadge() {
   const userName = localStorage.getItem("userName");
   const userBadge = document.getElementById("user");
-  if (!userBadge || userName === "Guest") return;
+  if (!userBadge || !userName || userName === "Guest") return;
   if (typeof getInitials !== "function") return;
   userBadge.textContent = getInitials(userName);
 }

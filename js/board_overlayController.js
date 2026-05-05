@@ -11,7 +11,6 @@ import {
 import { loadTasks } from "./board_taskService.js";
 import { updateHTML } from "./board_taskView.js";
 import { createEditTaskTemplate } from "./template/board_template.js";
-import { setPriority } from "./addTaskForm.js";
 
 
 
@@ -223,46 +222,9 @@ function setupEditUI() {
 // PREFILL
 // ======================
 function initEditPrefill(task, form) {
-
-  console.log("🧪 TASK DATA:", task);
-  console.log("INIT PREFILL CALLED");
-
   const controller = window.addTaskFormController;
   if (!controller) return;
-
-  const ctx = controller.context;
-
-  const waitForContacts = setInterval(() => {
-    if (!ctx.state.assigneeContacts.length) return;
-
-    clearInterval(waitForContacts);
-
-    console.log("✅ CONTACTS LOADED -> PREFILL START");
-
-    // BASIC
-    fillBasicFields(task);
-
-    // 🔥 PRIORITY (einzige richtige Methode)
-    setPriority(ctx, task.priority);
-
-    // 🔥 ASSIGNEES
-    controller.setAssigneesFromTask(task);
-
-    // 🔥 SUBTASKS
-    ctx.state.subtasks = [...(task.subtasks || [])];
-    ctx.elements.subtaskList.innerHTML =
-      ctx.state.subtasks.map((st, i) => createSubtaskItem(st, i)).join("");
-
-    console.log("🔥 PREFILL DONE", ctx.state);
-  }, 50);
-}
-// ======================
-// PREFILL FIELDS
-// ======================
-function fillBasicFields(task) {
-  document.getElementById("title").value = task.title || "";
-  document.getElementById("description").value = task.description || "";
-  document.getElementById("dueDate").value = task.dueDate || "";
+  controller.prefillTask(task);
 }
 
 
