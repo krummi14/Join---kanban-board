@@ -16,8 +16,15 @@ export function renderColumn(category, BOARD_COLUMNS) {
   }
 
   container.innerHTML = tasks
-    .map((task) => generateTaskHTML(task))
+    .map((task) => generateTaskHTML(prepareTask(task)))
     .join("");
+}
+
+export function prepareTask(task) {
+  return {
+    ...task,
+    categoryClass: task.type === "Technical Task" ? "technical" : "user"
+  };
 }
 
 export function updateColumns(categories, BOARD_COLUMNS) {
@@ -32,3 +39,4 @@ export function updateHTML(BOARD_COLUMNS) {
     BOARD_COLUMNS
   );
 }
+

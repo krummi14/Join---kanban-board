@@ -244,7 +244,7 @@ window.createAddTaskFormTemplate = createAddTaskFormTemplate;
 
 
 window.toggleAssigneeDropdown = function (event) {
-  if (event) event.stopPropagation();
+  event.stopPropagation(); // 🔥 wichtig
 
   const menu = document.getElementById("assigneeDropdownMenu");
   if (!menu) return;
