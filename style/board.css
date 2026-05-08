@@ -2,8 +2,13 @@
    BOARD LAYOUT
    ========================= */
 
-   .hidden {
+.hidden {
   display: none !important;
+}
+
+.board_main_header {
+  padding: 64px 96px;
+  padding-bottom: 40px;
 }
 
 .board_main {
@@ -34,10 +39,10 @@
 .main_drag_and_drop {
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  gap: 32px;
   overflow-y: auto;
-  max-height: 554px;
-  padding: 0 80px;
+  max-height: calc(100vh - 288px);
+  padding: 0 96px;
 }
 
 .drag_content_gap {
@@ -45,7 +50,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  gap: 32px;
+  gap: 24px;
 }
 
 .drag_area_header {
@@ -60,13 +65,7 @@
   flex-direction: column;
   width: 100%;
   border-radius: 10px;
-}
-
-.drag_area_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  gap: 16px;
 }
 
 /* =========================
@@ -97,7 +96,7 @@
   border-radius: 24px;
   padding: 16px;
 
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
 
 }
 
@@ -129,7 +128,8 @@
 /* RECHTE SEITE (ICON SPALTE) */
 .task_right {
   display: flex;
-  align-items: center;   /* 🔥 vertikal mittig */
+  align-items: center;
+  /* 🔥 vertikal mittig */
   justify-content: center;
   width: 24px;
 }
@@ -192,15 +192,18 @@
 
 .task_progress_wrapper {
   display: flex;
-  justify-content:space-between ;
-  align-items: center; /* 🔥 DAS ist der Fix */
+  justify-content: space-between;
+  align-items: center;
+  /* 🔥 DAS ist der Fix */
   gap: 8px;
 }
 
 .task_progress_wrapper p {
-  margin: 0;            /* ❗ wichtig */
+  margin: 0;
+  /* ❗ wichtig */
   font-size: 12px;
-  line-height: 1;       /* ❗ verhindert "Absacken" */
+  line-height: 1;
+  /* ❗ verhindert "Absacken" */
   display: flex;
   align-items: center;
 }
@@ -260,15 +263,19 @@
 
 .priority_icon {
   display: flex;
-  align-items: center;   /* 🔥 wichtig */
-  height: 100%;          /* optional */
+  align-items: center;
+  /* 🔥 wichtig */
+  height: 100%;
+  /* optional */
 }
 
 .priority_icon img {
   width: 18px;
   height: 18px;
-  display: block;        /* ❗ verhindert baseline shift */
+  display: block;
+  /* ❗ verhindert baseline shift */
 }
+
 /* =========================
    OVERLAY (DETAIL VIEW)
    ========================= */
@@ -291,7 +298,8 @@
 
   display: flex;
   flex-direction: column;
-  gap: 16px; /* 🔥 */
+  gap: 16px;
+  /* 🔥 */
 }
 
 .overlay_header {
@@ -309,7 +317,7 @@
 
 .task_overlay h2 {
   font-size: 40px;
-    font-weight: 700;
+  font-weight: 700;
   margin-bottom: 16px;
 }
 
@@ -394,7 +402,7 @@
   margin-top: 6px;
   border-radius: 10px;
   background: white;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* ACTION BUTTON */
@@ -462,15 +470,94 @@
   cursor: pointer;
 }
 
+/* ADD TASK DIALOG */
+.addTask_dialog_content {
+  border-radius: 30px;
+  border: none;
+  top: 50%;
+  left: 50%;
+  height: 1200px;
+  width: 960px;
+  padding: 0;
+  transform: translate(-50%, -50%) translateX(500px);
+  transition: all 125ms ease-in;
+}
+
+.addTask_dialog_direction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.addTask_dialog_content.dialog_opend {
+  transform: translate(-50%, -50%) translateX(0);
+  transition: all 125ms ease-in;
+}
+
+.addTask_dialog_content::backdrop {
+  background-color: rgb(184, 185, 186);
+  opacity: 0;
+  transition: all 125ms ease-in;
+}
+
+.addTask_dialog_content.dialog_opend::backdrop {
+  opacity: 0.3;
+}
+
+.addTask_dialog_content.dialog_closed {
+  transform: translate(-50%, -50%) translateX(500px);
+  transition: all 125ms ease-in;
+}
+
+.addTask_dialog_content.dialog_closed::backdrop {
+  opacity: 0;
+}
+
+.main_addTask_dialog_header {
+  display: flex;
+  align-items: start;
+  padding: 48px 48px;
+  padding-bottom: 16px;
+}
+
+.taskForm_dialog {
+  display: flex;
+  height: 100%;
+  gap: 24px;
+  padding: 0 48px;
+  padding-bottom: 24px;
+}
+
 @media(min-width: 1160px) and (max-width:1250px) {
   .main_drag_and_drop {
-    padding: 0 40px;
+    padding: 0 48px;
   }
+
+  .addTask_dialog_content {
+    width: 800px;
+  }
+
+  .board_main_header {
+    padding: 64px 48px;
+    padding-bottom: 40px;
+  }
+
 }
 
 @media(min-width: 1116px) and (max-width:1159px) {
+  .addTask_dialog_content {
+    width: 800px;
+  }
+
   .main_drag_and_drop {
     padding: 0 16px;
+  }
+
+  .board_main_header {
+    padding: 40px 16px;
+    padding-bottom: 16px;
   }
 }
 
@@ -478,6 +565,10 @@
 
   .board_main {
     height: auto;
+  }
+
+  .board_main_header {
+    padding: 24px 16px;
   }
 
   .main_header_gap_mobile {

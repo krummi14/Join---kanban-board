@@ -30,6 +30,7 @@ const isMobile = window.innerWidth < 980;
 const refUser = document.getElementById("user");
 const mq = window.matchMedia("(max-width: 1115px)");
 let contentBody = document.getElementById("body");
+let contentDialogOfAddTask = document.getElementById("add_task_dialog_content");
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {

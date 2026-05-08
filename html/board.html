@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../style/assets.css">
   <link rel="stylesheet" href="../style/standard.css">
+  <link rel="stylesheet" href="../style/add_task.css">
   <link rel="stylesheet" href="../style/board.css">
+
 
   <script type="module" src="../js/board.js"></script>
   <script type="module" src="../js/template/board_template.js"></script>
@@ -58,71 +60,72 @@
     <main class="main_framework">
       <!--<div class="board_main">-->
 
-        <section class="main_header main_header_gap_mobile">
-          <div class="mobile_header">
-            <h1>Board</h1>
-            <a href="./add_task.html">
-              <button class="button_basic_characteristics add_task_button_mobile">
-                <img class="add_contact_icon" src="../assets/icon/add.svg" alt="Add icon">
-              </button>
-            </a>
-          </div>
-          <div class="input_wrapper_direction">
-            <div class="input-wrapper input-wrapper_size">
-              <input id="" class="input_size" type="text" placeholder="Find Task">
-              <div class="input-icon input_icon_border_left">
-                <button class="close_button find_task_button"></button>
-              </div>
-            </div>
-            <button class="button_basic_characteristics add_task_button" onclick="openAddNewtaskDialog()">
-              <p class="add_task_none">Add task</p>
+      <section class="main_header main_header_gap_mobile board_main_header">
+        <div class="mobile_header">
+          <h1>Board</h1>
+          <a href="./add_task.html">
+            <button class="button_basic_characteristics add_task_button_mobile">
               <img class="add_contact_icon" src="../assets/icon/add.svg" alt="Add icon">
             </button>
+          </a>
+        </div>
+        <div class="input_wrapper_direction">
+          <div class="input-wrapper input-wrapper_size">
+            <input id="" class="input_size" type="text" placeholder="Find Task">
+            <div class="input-icon input_icon_border_left">
+              <button class="close_button find_task_button"></button>
+            </div>
           </div>
-        </section>
+          <button class="button_basic_characteristics add_task_button" onclick="openAddNewtaskDialog()">
+            <p class="add_task_none">Add task</p>
+            <img class="add_contact_icon" src="../assets/icon/add.svg" alt="Add icon">
+          </button>
+        </div>
+      </section>
 
-        <section class="main_drag_and_drop">
-          <div class="drag_content_gap">
-            <div class="drag_area_header">
-              <h4>To do</h4>
-              <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
-              <button class="plus_add_task_button button_mobile_none">+</button>
-            </div>
-            <div class="drag_area" id="to_do" ondrop="moveTo('to_do')" ondragleave="removeHighlight('to_do')"
-              ondragover="allowDrop(event); highlight('to_do')"></div>
+      <section class="main_drag_and_drop">
+        <div class="drag_content_gap">
+          <div class="drag_area_header">
+            <h4>To do</h4>
+            <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
+            <button class="plus_add_task_button button_mobile_none">+</button>
           </div>
-          <div class="drag_content_gap">
-            <div class="drag_area_header">
-              <h4>In progress</h4>
-              <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
-              <button class="plus_add_task_button button_mobile_none">+</button>
-            </div>
-            <div class="drag_area" id="in_progress" ondrop="moveTo('in_progress')"
-              ondragleave="removeHighlight('in_progress')" ondragover="allowDrop(event); highlight('in_progress')">
-            </div>
+          <div class="drag_area" id="to_do" ondrop="moveTo('to_do')" ondragleave="removeHighlight('to_do')"
+            ondragover="allowDrop(event); highlight('to_do')"></div>
+        </div>
+        <div class="drag_content_gap">
+          <div class="drag_area_header">
+            <h4>In progress</h4>
+            <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
+            <button class="plus_add_task_button button_mobile_none">+</button>
           </div>
-          <div class="drag_content_gap">
-            <div class="drag_area_header">
-              <h4>Await feedback</h4>
-              <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
-              <button class="plus_add_task_button  button_mobile_none">+</button>
-            </div>
-            <div class="drag_area" id="await_feedback" ondrop="moveTo('await_feedback')"
-              ondragleave="removeHighlight('await_feedback')"
-              ondragover="allowDrop(event); highlight('await_feedback')">
-            </div>
+          <div class="drag_area" id="in_progress" ondrop="moveTo('in_progress')"
+            ondragleave="removeHighlight('in_progress')" ondragover="allowDrop(event); highlight('in_progress')">
           </div>
-          <div class="drag_content_gap">
-            <div class="drag_area_header">
-              <h4>Done</h4>
-            </div>
-            <div class="drag_area" id="done" ondrop="moveTo('done')" ondragleave="removeHighlight('done')"
-              ondragover="allowDrop(event); highlight('done')">
-            </div>
+        </div>
+        <div class="drag_content_gap">
+          <div class="drag_area_header">
+            <h4>Await feedback</h4>
+            <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
+            <button class="plus_add_task_button  button_mobile_none">+</button>
           </div>
+          <div class="drag_area" id="await_feedback" ondrop="moveTo('await_feedback')"
+            ondragleave="removeHighlight('await_feedback')" ondragover="allowDrop(event); highlight('await_feedback')">
+          </div>
+        </div>
+        <div class="drag_content_gap">
+          <div class="drag_area_header">
+            <h4>Done</h4>
+          </div>
+          <div class="drag_area" id="done" ondrop="moveTo('done')" ondragleave="removeHighlight('done')"
+            ondragover="allowDrop(event); highlight('done')">
+          </div>
+        </div>
 
-        </section>
+      </section>
+      <div id="add_task_dialog_content">
 
+      </div>
       <!--</div>-->
     </main>
     <footer id="responsive_menu" class="responsive_menu">
