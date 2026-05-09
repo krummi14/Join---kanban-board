@@ -88,8 +88,6 @@ function getAssigneeColor(name) {
 export function createAddTaskFormTemplate(path) {
   return `
       <form id="taskForm">
-      <div class="taskForm_maxHeight">
-      <div class="left_side_gap">
         <section class="left_form">
           <section class="title">
             <label for="title">Title<span>*</span></label>
@@ -105,15 +103,14 @@ export function createAddTaskFormTemplate(path) {
             <label for="dueDate">Due Date<span>*</span></label>
             <input type="date" id="dueDate" name="dueDate" required>
           </section>
-                   
+          
+          <p class="requiredNotice"><span>*</span>This field is required</p>
+          
         </section>
 
-        <p class="requiredNotice"><span>*</span>This field is required</p>
-      </div>
 
-      <div class="hr_add_task"></div>
-        
-      <div class="rigth_side_gap">
+      <hr class="hr_add_task_none">
+
         <section class="right_form">
           <section class="priority">
             <label for="priority">Priority</label>
@@ -167,18 +164,12 @@ export function createAddTaskFormTemplate(path) {
             <section id="subtaskList" class="subtask_list"></section>
           </section>
 
-          <p class="requiredNotice_mobile"><span>*</span>This field is required</p>
-
-        </section>
-        <section class="form_buttons">
+          <section class="form_buttons">
             <button class="button_basic_characteristics clear_btn" type="reset">Clear &#x78;</button>
             <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${path}">Create Task &#x2713;</button>
           </section>
-        </div>
-         
-      </div>
-        </form>
-      
+        </section>
+      </form>
   `
 };
 
