@@ -104,7 +104,7 @@ export function createAddTaskFormTemplate(path) {
             <input type="date" id="dueDate" name="dueDate" required>
           </section>
           
-          <p class="requiredNotice"><span>*</span>This field is required</p>
+          <p class="required_notice"><span>*</span>This field is required</p>
           
         </section>
 
