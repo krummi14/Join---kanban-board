@@ -87,6 +87,10 @@
     color: white;
 }
 
+.contact_main_framework {
+    height: calc(100vh - 96px);
+}
+
 .contact_initials_bg {
     display: inline-block;
     line-height: 42px;
@@ -535,6 +539,10 @@
 
     .contact_headline_h2 {
         font-size: 47px;
+    }
+
+    .contact_main_framework {
+        height: calc(100vh - 176px);
     }
 
     .contact_slogan {

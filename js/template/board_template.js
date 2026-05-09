@@ -4,21 +4,33 @@ import { getContactInitials } from "../addTaskForm.js";
 // Div Container die ondragstart Methode hinzufügen (wie onclick) hier: startDragging()
 export function generateTaskHTML(task) {
   return `
-       <div class="task" onclick="openOverlay('${task.id}')" draggable="true" ondragstart="startDragging('${task.id}')">
-        
-        ${generateCategory(task)}
-        ${generateTitle(task)}
-        ${generateDescription(task)}
-        ${generateProgress(task)}
-        ${generateFooter(task)}
+    <div class="task" onclick="openOverlay('${task.id}')" draggable="true" ondragstart="startDragging('${task.id}')">
+
+      ${generateCategory(task)}
+      ${generateTitle(task)}
+      ${generateDescription(task)}
+
+      <div class="task_bottom">
+
+        <div class="task_left">
+          ${generateProgress(task)}
+          ${generateFooter(task)}
+        </div>
+
+        <div class="task_right">
+   
+        </div>
+
+      </div>
 
     </div>
   `;
 }
 
+
 function generateCategory(task) {
   return `
-    <span class="task_category">
+    <span class="task_category ${task.categoryClass}">
       ${task.type || "User Story"}
     </span>
   `;
@@ -92,14 +104,14 @@ export function generateExtraAvatar(rest) {
 }
 
 function getColorFromName(name) {
-  return ["#ff7a00","#9327ff","#00c4cc","#1fd7c1","#ff5eb3","#6e52ff"][name.length % 6];
+  return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][name.length % 6];
 }
 
 export function getNoAssigneesCardTemplate() {
   return `<span class="no_assignees">No Users assigned</span>`;
 }
 
-/*overlay*/ 
+/*overlay*/
 
 export function generateTaskOverlay(task) {
   return `
@@ -206,6 +218,103 @@ function generateSubtasksWrapper(content) {
       ${content}
     </div>
   `;
+}
+
+//Form id="taskForm"
+export function getDialogAddTaskTemplate(path) {
+  return `
+        <dialog onclick="closeAddNewTaskDialog()" id="addTask_dialog" class="addTask_dialog_content dialog_closed">
+          <div class="addTask_dialog_direction" onclick="closeDialogOnBodyclick(event)">
+            <section class="main_header main_addTask_dialog_header">
+              <h1>Add Task</h1>
+              <div class="contact_dialog_close_button_direction">
+                <button class="close_button" onclick="closeAddNewTaskDialog()">X</button>
+              </div>
+            </section>
+            <form  class="taskForm_dialog">
+              <div class="taskForm_maxHeight">
+                <div class="left_side_gap">
+                  <section class="left_form">
+                    <section class="title">
+                      <label for="title">Title<span>*</span></label>
+                      <input type="text" id="title" name="title" placeholder="Enter a title" required>
+                    </section>
+                    <section class="description">
+                      <label for="description">Description</label>
+                      <textarea id="description" name="description" placeholder="Enter a description"></textarea>
+                    </section>
+                    <section class="due_date">
+                      <label for="dueDate">Due Date<span>*</span></label>
+                      <input type="date" id="dueDate" name="dueDate" required>
+                    </section>
+                  </section>
+                  <p class="requiredNotice"><span>*</span>This field is required</p>
+                </div>
+                <div class="hr_add_task"></div>
+                <div class="rigth_side_gap">
+                  <section class="right_form">
+                    <section class="priority">
+                      <label for="priority">Priority</label>
+                      <section id="priority">
+                        <button type="button" id="prio_urgent" data-priority="urgent">Urgent <img src="../assets/icon/btn_urgent_off.svg" alt="Button Urgent"></button>
+                        <button type="button" id="prio_medium" data-priority="medium">Medium <img src="../assets/icon/btn_medium_off.svg" alt="Button Medium"></button>
+                        <button type="button" id="prio_low" data-priority="low">Low <img src="../assets/icon/btn_low_off.svg" alt="Button Low"></button>
+                      </section>
+                    </section>
+                    <section class="assignee">
+                      <label for="assignee">Assignee</label>
+                      <section class="assignee_dropdown">
+                        <button type="button" id="assignee" class="assignee_toggle" data-assignee-toggle="true" aria-expanded="false" aria-controls="assigneeDropdownMenu">
+                          <span id="assigneeLabel">Select contacts to assign</span>
+                          <span class="assignee_arrow"><img src="../assets/icon/drop_down_arrow.svg" alt="Dropdown Arrow"></span>
+                        </button>
+                        <section id="assigneeDropdownMenu" class="assignee_menu"></section>
+                        <section id="selectedContacts"></section>
+                      </section>
+                    </section>
+                  <section class="category">
+                    <label for="category">Category<span>*</span></label>
+                    <section class="category_dropdown">
+                      <input type="hidden" name="category" id="category" value="">
+                      <button type="button" id="categoryToggle" class="category_toggle" data-category-toggle="true" aria-expanded="false" aria-controls="categoryDropdownMenu">
+                        <span id="categoryLabel">Select task category</span>
+                        <span class="category_arrow"><img src="../assets/icon/drop_down_arrow.svg" alt="Dropdown Arrow"></span>
+                      </button>
+                      <section id="categoryDropdownMenu" class="category_menu">
+                        <button type="button" class="category_option" data-category-value="Technical Task">Technical Task</button>
+                        <button type="button" class="category_option" data-category-value="User Story">User Story</button>
+                      </section>
+                    </section>
+                  </section>
+                  <section class="subtask">
+                    <label for="subtask">Subtasks</label>
+                    <section class="subtask_input_wrapper">
+                      <input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
+                      <div class="subtask_action_buttons">
+                        <button type="button" id="clearSubtaskButton" class="subtask_action_button" aria-label="Clear subtask input">
+                          <img src="../assets/icon/subtask_close.svg" alt="Clear subtask input">
+                        </button>
+                        <button type="button" id="addSubtaskButton" class="subtask_action_button" aria-label="Add subtask">
+                          <img src="../assets/icon/subtask_check.svg" alt="Add subtask">
+                        </button>
+                      </div>
+                    </section>
+                    <section id="subtaskList" class="subtask_list"></section>
+                  </section>
+
+                  <p class="requiredNotice_mobile"><span>*</span>This field is required</p>
+
+                </section>
+                <section class="form_buttons">
+                  <button class="button_basic_characteristics clear_btn" type="reset">Clear &#x78;</button>
+                  <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${path}">Create Task &#x2713;</button>
+                </section>
+              </div>
+            </div>
+          </form>
+        </div>
+      </dialog>
+      `
 }
 
 

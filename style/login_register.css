@@ -7,7 +7,7 @@
 .header-login-content {
     width: 100%;
     max-width: 1200px;
-    padding: 40px 80px;
+    padding: 16px 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,7 +15,7 @@
 
 .footer-login {
     text-align: center;
-    padding: 20px 0;
+    padding: 16px 80px;
 }
 
 .footer-login a {
@@ -28,47 +28,6 @@
 }
 
 /*Login*/
-.splash_screen {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-
-    animation: fadeOut 1s ease 1s forwards;
-}
-
-.splash_logo {
-    width: 150px;
-    animation: zoomIn 1s ease;
-    will-change: transform;
-}
-
-.splash_logo_mobile {
-    display: none;
-}
-
-@keyframes zoomIn {
-    from {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
-}
-
 .login_body {
     margin: 0;
     min-height: 100vh;
@@ -98,7 +57,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 40px 20px 20px 20px;
+    padding: 16px 80px;
     box-sizing: border-box;
 }
 
@@ -146,6 +105,7 @@
 /*Registration*/
 .main-register {
     flex: 1;
+    padding: 16px 80px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

@@ -30,6 +30,10 @@ import {
   removeHighlight
 } from "./board_dragDropController.js";
 
+import {
+  getDialogAddTaskTemplate
+} from "./template/board_template.js";
+
 // 📊 Board config
 const BOARD_COLUMNS = [
   { path: "to_do", label: "to do", containerId: "to_do" },
@@ -68,6 +72,28 @@ async function deleteTask(taskId) {
   updateHTML(BOARD_COLUMNS);
 }
 
+function openAddNewtaskDialog() {
+  if (event) event.stopPropagation();
+  contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate();
+  let contentDialogAddTask = document.getElementById("addTask_dialog");
+  contentDialogAddTask.showModal();
+  contentDialogAddTask.classList.add("dialog_opend");
+  contentDialogAddTask.classList.remove("dialog_closed");
+}
+
+function closeAddNewTaskDialog() {
+  let contentDialogAddTask = document.getElementById("addTask_dialog");
+  contentDialogAddTask.classList.remove("dialog_opend");
+  contentDialogAddTask.classList.add("dialog_closed");
+  setTimeout(function () {
+    contentDialogAddTask.close();
+  }, 125);
+}
+
+function closeDialogOnBodyclick(event) {
+  event.stopPropagation()
+}
+
 // 🌍 GLOBAL EXPORTS (HTML onclick / drag handlers)
 window.initBoard = initBoard;
 
@@ -82,3 +108,6 @@ window.closeOverlay = closeOverlay;
 
 window.deleteTask = deleteTask;
 window.updateHTML = updateHTML;
+window.openAddNewtaskDialog = openAddNewtaskDialog;
+window.closeAddNewTaskDialog = closeAddNewTaskDialog;
+window.closeDialogOnBodyclick = closeDialogOnBodyclick;
