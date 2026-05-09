@@ -1,41 +1,45 @@
-mq.addEventListener("change", (e) => {
-  let greetingShown = localStorage.getItem("greetingShown");
-  if (e.matches) {
-    if (greetingShown === "true") {
-      refSummeryUser.style.display = "none";
-    } else {
-      refSummeryUser.style.display = "none";
-    }
-  } else {
-    refSummeryUser.style.display = "flex";
-  }
-});
-
 function isMobileMode() {
   return window.matchMedia("(max-width: 1115px)").matches;
 }
 
-async function initSummery() {
-  let greetingShown = localStorage.getItem("greetingShown");
-  if (greetingShown == "true") {
-    if (isMobile) {
-      refSummeryUser.style.display = "none";
-    }
-    userInitials();
-    await renderSummaryMetrics();
-    return;
-  } else {
-    refSummeryUser.style.display = "flex";
-  }
+function renderGreeting() {
   if (userName !== "Guest") {
     refSummeryUser.innerHTML = `
       <h2 class="good_morning">Good Morning,<br><span class="user_name">${userName}</span></h2>`;
     let initials = getInitials(userName);
     refUser.innerHTML = initials;
-  } else {
-    refSummeryUser.innerHTML = `<h2 class="good_morning">Good Morning!</h2>`;
+    return;
   }
-  if (isMobile) {
+
+  refSummeryUser.innerHTML = `<h2 class="good_morning">Good Morning!</h2>`;
+}
+
+function syncGreetingVisibility() {
+  if (isMobileMode()) {
+    refSummeryUser.style.display = "none";
+    return;
+  }
+
+  refSummeryUser.classList.remove("fadeOut");
+  refSummeryUser.style.display = "flex";
+  renderGreeting();
+}
+
+mq.addEventListener("change", syncGreetingVisibility);
+
+async function initSummery() {
+  let greetingShown = localStorage.getItem("greetingShown");
+  if (greetingShown == "true" && isMobileMode()) {
+    refSummeryUser.style.display = "none";
+    userInitials();
+    await renderSummaryMetrics();
+    return;
+  }
+
+  refSummeryUser.style.display = "flex";
+  renderGreeting();
+
+  if (isMobileMode()) {
     setTimeout(() => {
       refSummeryUser.classList.add("fadeOut");
       setTimeout(() => {
