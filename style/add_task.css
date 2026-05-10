@@ -1,41 +1,41 @@
-#taskForm {
+#addTaskContainer #taskForm {
   display: flex;
   gap: 24px;
   padding: 0 80px;
 }
 
-.left_form,
-.right_form,
-.priority,
-.assignee,
-.category,
-.subtask,
-.priority_assignee {
+:is(#addTaskContainer, .taskForm_dialog) .left_form,
+:is(#addTaskContainer, .taskForm_dialog) .right_form,
+:is(#addTaskContainer, .taskForm_dialog) .priority,
+:is(#addTaskContainer, .taskForm_dialog) .assignee,
+:is(#addTaskContainer, .taskForm_dialog) .category,
+:is(#addTaskContainer, .taskForm_dialog) .subtask,
+:is(#addTaskContainer, .taskForm_dialog) .priority_assignee {
   display: flex;
   flex-direction: column;
 }
 
-.left_form {
+:is(#addTaskContainer, .taskForm_dialog) .left_form {
   padding: 24px;
   gap: 8px;
 }
 
-.left_form section {
+:is(#addTaskContainer, .taskForm_dialog) .left_form section {
   display: flex;
   flex-direction: column;
   padding: 8px 0;
   gap: 8px;
 }
 
-.right_form {
+:is(#addTaskContainer, .taskForm_dialog) .right_form {
   padding: 24px;
   gap: 20px;
 }
 
-.priority,
-.assignee,
-.category,
-.subtask {
+:is(#addTaskContainer, .taskForm_dialog) .priority,
+:is(#addTaskContainer, .taskForm_dialog) .assignee,
+:is(#addTaskContainer, .taskForm_dialog) .category,
+:is(#addTaskContainer, .taskForm_dialog) .subtask {
   gap: 8px;
 }
 
@@ -50,26 +50,26 @@ margin-top: 80px;
   display: none;
 }
 
-label span {
+:is(#addTaskContainer, .taskForm_dialog) label span {
   color: #ff0000;
 }
 
-#dueDate {
+:is(#addTaskContainer, .taskForm_dialog) #dueDate {
   color: rgba(128, 128, 128, 0.3);
 }
 
-#dueDate:valid {
+:is(#addTaskContainer, .taskForm_dialog) #dueDate:valid {
   color: #000000;
 }
 
-hr {
+#addTaskContainer hr {
   height: 424px;
   border-top: 1px solid #d1d1d1;
 }
 
-#prio_urgent,
-#prio_medium,
-#prio_low {
+:is(#addTaskContainer, .taskForm_dialog) #prio_urgent,
+:is(#addTaskContainer, .taskForm_dialog) #prio_medium,
+:is(#addTaskContainer, .taskForm_dialog) #prio_low {
   width: 136px;
   height: 56px;
   font-size: 20px;
@@ -80,36 +80,36 @@ hr {
   box-sizing: border-box;
 }
 
-#prio_urgent:hover,
-#prio_medium:hover,
-#prio_low:hover {
+:is(#addTaskContainer, .taskForm_dialog) #prio_urgent:hover,
+:is(#addTaskContainer, .taskForm_dialog) #prio_medium:hover,
+:is(#addTaskContainer, .taskForm_dialog) #prio_low:hover {
   box-shadow: #53535350 0 4px 2px -2px;
 }
 
-#prio_urgent.active {
+:is(#addTaskContainer, .taskForm_dialog) #prio_urgent.active {
   background-color: #ff3b30;
   color: #fff;
 }
 
-#prio_medium.active {
+:is(#addTaskContainer, .taskForm_dialog) #prio_medium.active {
   background-color: #ffa800;
   color: #fff;
 }
 
-#prio_low.active {
+:is(#addTaskContainer, .taskForm_dialog) #prio_low.active {
   background-color: #7ae229;
   color: #fff;
 }
 
-.assignee_dropdown,
-.category_dropdown,
-.subtask_input_wrapper {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_dropdown,
+:is(#addTaskContainer, .taskForm_dialog) .category_dropdown,
+:is(#addTaskContainer, .taskForm_dialog) .subtask_input_wrapper {
   position: relative;
   width: 100%;
 }
 
-.assignee_toggle,
-.category_toggle {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_toggle,
+:is(#addTaskContainer, .taskForm_dialog) .category_toggle {
   width: 100%;
   min-height: 48px;
   padding: 12px 16px;
@@ -126,22 +126,22 @@ hr {
   cursor: pointer;
 }
 
-.category_toggle {
+:is(#addTaskContainer, .taskForm_dialog) .category_toggle {
   padding-right: 48px;
 }
 
-.assignee_toggle:hover,
-.category_toggle:hover {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_toggle:hover,
+:is(#addTaskContainer, .taskForm_dialog) .category_toggle:hover {
   border-color: rgba(41, 171, 226, 1);
 }
 
-.assignee_arrow,
-.category_arrow {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_arrow,
+:is(#addTaskContainer, .taskForm_dialog) .category_arrow {
   color: #2a3647;
   font-size: 14px;
 }
 
-.category_arrow {
+:is(#addTaskContainer, .taskForm_dialog) .category_arrow {
   position: absolute;
   top: 50%;
   right: 16px;
@@ -152,19 +152,19 @@ hr {
   pointer-events: none;
 }
 
-.assignee_arrow img,
-.category_arrow img {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_arrow img,
+:is(#addTaskContainer, .taskForm_dialog) .category_arrow img {
   display: block;
   transition: transform 0.2s ease;
 }
 
-.assignee_toggle[aria-expanded="true"] .assignee_arrow img,
-.category_dropdown.open .category_arrow img {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_toggle[aria-expanded="true"] .assignee_arrow img,
+:is(#addTaskContainer, .taskForm_dialog) .category_dropdown.open .category_arrow img {
   transform: rotate(180deg);
 }
 
-.assignee_menu,
-.category_menu {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_menu,
+:is(#addTaskContainer, .taskForm_dialog) .category_menu {
   position: absolute;
   left: 0;
   right: 0;
@@ -178,25 +178,25 @@ hr {
   gap: 2px;
 }
 
-.assignee_menu {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_menu {
   max-height: 220px;
   overflow-y: auto;
 }
 
-.assignee_menu.open,
-.category_menu.open {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_menu.open,
+:is(#addTaskContainer, .taskForm_dialog) .category_menu.open {
   display: flex;
 }
 
-.assignee_option,
-.category_option {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option,
+:is(#addTaskContainer, .taskForm_dialog) .category_option {
   width: 100%;
   padding: 10px 8px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-.assignee_option {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -204,7 +204,7 @@ hr {
   gap: 12px;
 }
 
-.category_option {
+:is(#addTaskContainer, .taskForm_dialog) .category_option {
   border: none;
   background: transparent;
   color: #2a3647;
@@ -212,14 +212,14 @@ hr {
   text-align: left;
 }
 
-.assignee_option_checkbox {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option_checkbox {
   position: relative;
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
-.assignee_option input {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option input {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -229,49 +229,49 @@ hr {
   cursor: pointer;
 }
 
-.assignee_option_checkbox_icon {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option_checkbox_icon {
   width: 16px;
   height: 16px;
   display: block;
   pointer-events: none;
 }
 
-.assignee_option_checkbox_icon_checked {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option_checkbox_icon_checked {
   display: none;
 }
 
-.assignee_option:hover,
-.category_option:hover {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option:hover,
+:is(#addTaskContainer, .taskForm_dialog) .category_option:hover {
   background-color: #f6f7f8;
 }
 
-.assignee_option.selected {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected {
   background-color: #2a3647;
 }
 
-.assignee_option.selected .assignee_option_name {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected .assignee_option_name {
   color: #ffffff;
 }
 
-.assignee_option.selected .assignee_option_checkbox_icon_unchecked {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected .assignee_option_checkbox_icon_unchecked {
   display: none;
 }
 
-.assignee_option.selected .assignee_option_checkbox_icon_checked {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected .assignee_option_checkbox_icon_checked {
   display: block;
 }
 
-.assignee_option_text {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option_text {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.assignee_option_name {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_option_name {
   color: #2a3647;
 }
 
-.avatar.assignee_option_avatar {
+:is(#addTaskContainer, .taskForm_dialog) .avatar.assignee_option_avatar {
   width: 32px;
   height: 32px;
   display: flex;
@@ -285,7 +285,7 @@ hr {
   border: 2px solid #ffffff;
 }
 
-#selectedContacts {
+:is(#addTaskContainer, .taskForm_dialog) #selectedContacts {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -293,7 +293,7 @@ hr {
   margin-top: 12px;
 }
 
-.avatar.selected_assignee_avatar {
+:is(#addTaskContainer, .taskForm_dialog) .avatar.selected_assignee_avatar {
   width: 32px;
   height: 32px;
   display: flex;
@@ -306,16 +306,16 @@ hr {
   border: 2px solid #ffffff;
 }
 
-.assignee_status {
+:is(#addTaskContainer, .taskForm_dialog) .assignee_status {
   padding: 10px 8px;
   color: #647188;
 }
 
-.subtask_input_wrapper input {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_input_wrapper input {
   padding-right: 92px;
 }
 
-.subtask_action_buttons {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_action_buttons {
   position: absolute;
   top: 50%;
   right: 8px;
@@ -325,7 +325,7 @@ hr {
   gap: 4px;
 }
 
-.subtask_action_button {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_action_button {
   width: 32px;
   height: 32px;
   align-items: center;
@@ -337,21 +337,21 @@ hr {
   display: flex;
 }
 
-.subtask_input_wrapper.has-value .subtask_action_buttons {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_input_wrapper.has-value .subtask_action_buttons {
   display: flex;
 }
 
-.subtask_action_button img {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_action_button img {
   width: 20px;
   height: 20px;
 }
 
-.subtask_action_button:disabled {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_action_button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-.subtask_list {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_list {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -360,7 +360,7 @@ hr {
   overflow-x: hidden;
 }
 
-.subtask_item {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -368,16 +368,16 @@ hr {
   gap: 12px;
 }
 
-.subtask_item.editing {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item.editing {
   padding-right: 0;
 }
 
-.subtask_edit_input_wrapper {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_edit_input_wrapper {
   position: relative;
   width: 100%;
 }
 
-.subtask_item_text {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item_text {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -387,25 +387,25 @@ hr {
   flex: 1;
 }
 
-.subtask_item_text::before {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item_text::before {
   content: "•";
   flex-shrink: 0;
 }
 
-.subtask_item_actions {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item_actions {
   display: none;
   align-items: center;
   gap: 4px;
 }
 
-.subtask_item:hover .subtask_item_actions,
-.subtask_item.editing .subtask_item_actions,
-.subtask_item:focus-within .subtask_item_actions {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item:hover .subtask_item_actions,
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item.editing .subtask_item_actions,
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item:focus-within .subtask_item_actions {
   display: flex;
   gap: 12px;
 }
 
-.subtask_edit_input {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_edit_input {
   width: 100%;
   border: none;
   border-bottom: 1px solid #29abe2;
@@ -416,7 +416,7 @@ hr {
   outline: none;
 }
 
-.subtask_item.editing .subtask_item_actions {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item.editing .subtask_item_actions {
   position: absolute;
   top: 50%;
   right: 12px;
@@ -424,7 +424,7 @@ hr {
   gap: 8px;
 }
 
-.subtask_item_action_button {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item_action_button {
   width: 16px;
   height: 16px;
   display: flex;
@@ -436,25 +436,25 @@ hr {
   cursor: pointer;
 }
 
-.subtask_item_action_button img {
+:is(#addTaskContainer, .taskForm_dialog) .subtask_item_action_button img {
   width: 16px;
   height: 16px;
 }
 
-.requiredNotice {
+:is(#addTaskContainer, .taskForm_dialog) .requiredNotice {
   margin-top: 160px;
   font-size: 20px;
   color: #000000;
 }
 
-.requiredNotice span {
+:is(#addTaskContainer, .taskForm_dialog) .requiredNotice span {
   font-size: 20px;
   font-weight: 600;
   color: #ff0000;
 }
 
 @media(min-width: 1160px) and (max-width:1250px) {
-  #taskForm {
+  #addTaskContainer #taskForm {
     padding: 0 40px;
   }
 
@@ -462,13 +462,13 @@ hr {
     padding: 64px 40px;
   }
 
-  .left_form {
+  :is(#addTaskContainer, .taskForm_dialog) .left_form {
     width: 464px;
   }
 }
 
 @media(min-width: 1116px) and (max-width:1159px) {
-  #taskForm {
+  #addTaskContainer #taskForm {
     padding: 0 16px;
   }
 
@@ -480,14 +480,14 @@ hr {
     padding: 40px 40px;
   }
 
-  .left_form {
+  :is(#addTaskContainer, .taskForm_dialog) .left_form {
     width: 320px;
   }
 }
 
 @media(min-width: 320px) and (max-width:1115px) {
 
-  #taskForm {
+  #addTaskContainer #taskForm {
     flex-direction: column;
     align-items: start;
     justify-content: center;
@@ -498,34 +498,34 @@ hr {
     gap: 0;
   }
 
-  .left_form {
+  :is(#addTaskContainer, .taskForm_dialog) .left_form {
     width: 100%;
     padding: 0;
     gap: 0;
   }
 
-  .hr_add_task_none {
+  #addTaskContainer .hr_add_task_none {
     display: none;
   }
 
-  .right_form {
+  :is(#addTaskContainer, .taskForm_dialog) .right_form {
     width: 100%;
     padding: 0;
     justify-content: start;
   }
 
-  .priority {
+  :is(#addTaskContainer, .taskForm_dialog) .priority {
     width: 100%;
   }
 
-  #priority {
+  :is(#addTaskContainer, .taskForm_dialog) #priority {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 8px 0;
   }
 
-  #priority button {
+  :is(#addTaskContainer, .taskForm_dialog) #priority button {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -536,23 +536,23 @@ hr {
     height: 40px;
   }
 
-  #priority img {
+  :is(#addTaskContainer, .taskForm_dialog) #priority img {
     width: 12px;
   }
 
-  .assignee_toggle {
+  :is(#addTaskContainer, .taskForm_dialog) .assignee_toggle {
     font-size: 16px;
   }
 
-  .category {
+  :is(#addTaskContainer, .taskForm_dialog) .category {
     padding: 8px 0;
   }
 
-  .category_toggle {
+  :is(#addTaskContainer, .taskForm_dialog) .category_toggle {
     font-size: 16px;
   }
 
-  .form_buttons {
+  :is(#addTaskContainer, .taskForm_dialog) .form_buttons {
     display: none;
   }
 
