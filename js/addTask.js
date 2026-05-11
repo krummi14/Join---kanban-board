@@ -11,7 +11,6 @@ async function initAddTask() {
   const taskForm = document.getElementById("taskForm");
   if (!taskForm) return null;
   updateUserBadge();
-  setDueDateMin(taskForm);
   addTaskFormController?.destroy();
   addTaskFormController = createAddTaskForm(taskForm, getCreateTaskStatus(), {
     onCreate: handleTaskCreated,
@@ -29,20 +28,6 @@ function updateUserBadge() {
   if (!userBadge || !userName || userName === "Guest") return;
   if (typeof getInitials !== "function") return;
   userBadge.textContent = getInitials(userName);
-}
-
-function setDueDateMin(taskForm) {
-  const dueDateInput = taskForm?.querySelector("#dueDate");
-  if (!dueDateInput) return;
-  dueDateInput.min = getTodayDateString();
-}
-
-function getTodayDateString() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
 }
 
 async function handleTaskCreated() {

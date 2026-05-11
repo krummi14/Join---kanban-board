@@ -16,6 +16,7 @@ export function createElements(taskForm) {
     subtaskInputWrapper: taskForm.querySelector(".subtask_input_wrapper"),
     assigneeDropdown: taskForm.querySelector(".assignee_dropdown"),
     categoryDropdown: taskForm.querySelector(".category_dropdown"),
+    dueDatePicker: taskForm.querySelector("[data-due-date-picker]"),
   };
 }
 
@@ -40,6 +41,9 @@ function getDropdownElements(taskForm) {
     categoryToggle: byId(taskForm, "categoryToggle"),
     categoryMenu: byId(taskForm, "categoryDropdownMenu"),
     categoryLabel: byId(taskForm, "categoryLabel"),
+    dueDateMenu: byId(taskForm, "dueDateMenu"),
+    dueDateMonthLabel: byId(taskForm, "dueDateMonthLabel"),
+    dueDateDays: byId(taskForm, "dueDateDays"),
   };
 }
 

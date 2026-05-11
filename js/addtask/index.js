@@ -33,6 +33,15 @@ import {
   startSubtaskEdit,
   updateSubtaskButtonState,
 } from "./subtasks.js";
+import {
+  closeDueDatePicker,
+  closeDueDatePickerOnOutsideClick,
+  handleDueDateClick,
+  handleDueDateKeydown,
+  initializeDueDatePicker,
+  resetDueDatePicker,
+  setDueDateValue,
+} from "./dueDate.js";
 import { handleTaskSubmit } from "./persistence.js";
 
 const formControllers = new WeakMap();
@@ -78,6 +87,7 @@ function createHandlers(context) {
 }
 
 function initializeForm(context) {
+  initializeDueDatePicker(context);
   setupSubtaskControls(context);
   renderAssigneeContacts(context);
   renderCategoryOptions(context);
@@ -132,6 +142,7 @@ function teardownSubtaskControls(context) {
 }
 
 function delegateFormClick(context, event) {
+  if (handleDueDateClick(context, event.target)) return;
   if (handlePriorityClick(context, event.target)) return;
   if (handleToggleClick(context, event.target, "[data-assignee-toggle]", toggleAssigneeDropdown)) return;
   if (handleToggleClick(context, event.target, "[data-category-toggle]", toggleCategoryDropdown)) return;
@@ -143,6 +154,7 @@ function delegateFormClick(context, event) {
 }
 
 function handleFormKeydown(context, event) {
+  if (handleDueDateKeydown(context, event)) return;
   const input = getScopedMatch(context, event.target, "[data-edit-subtask-input]");
   if (!input) return;
   if (event.key === "Enter") {
@@ -217,6 +229,7 @@ function getScopedMatch(context, target, selector) {
 }
 
 function closeDropdownsOnOutsideClick(context, event) {
+  closeDueDatePickerOnOutsideClick(context, event);
   closeOutside(event, context.elements.assigneeDropdown, () => closeAssigneeDropdown(context));
   closeOutside(event, context.elements.categoryDropdown, () => closeCategoryDropdown(context));
 }
@@ -227,6 +240,8 @@ function resetTaskFormState(context) {
 
 function refreshFormState(context) {
   resetState(context.state);
+  resetDueDatePicker(context);
+  closeDueDatePicker(context);
   closeCategoryDropdown(context);
   closeAssigneeDropdown(context);
   resetPriorityButtons(context);
@@ -259,7 +274,7 @@ function prefillTask(context, task = {}) {
 function setBasicFields(context, task) {
   if (context.elements.title) context.elements.title.value = task.title || "";
   if (context.elements.description) context.elements.description.value = task.description || "";
-  if (context.elements.dueDate) context.elements.dueDate.value = task.dueDate || "";
+  setDueDateValue(context, task.dueDate || "");
 }
 
 function destroy(context) {
