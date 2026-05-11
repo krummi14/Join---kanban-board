@@ -22,6 +22,8 @@ export function allowDrop(ev) {
 export async function moveTo(category) {
   if (!draggedId) return;
 
+  removeHighlight(category);
+
   const result = await moveTask(
     draggedId,
     category,
