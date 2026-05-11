@@ -453,6 +453,45 @@ margin-top: 80px;
   color: #ff0000;
 }
 
+.task_added_feedback {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1200;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, calc(100vh - 50%));
+}
+
+.task_added_feedback img {
+  display: block;
+  width: min(326px, calc(100vw - 32px));
+  height: auto;
+}
+
+.task_added_feedback_visible {
+  visibility: visible;
+  animation: taskAddedFlyIn 1.4s ease forwards;
+}
+
+@keyframes taskAddedFlyIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, calc(100vh - 50%));
+  }
+
+  16.666% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
 @media(min-width: 1160px) and (max-width:1250px) {
   #addTaskContainer #taskForm {
     padding: 0 40px;
@@ -561,6 +600,7 @@ margin-top: 80px;
     padding: 8px 32px;
     background-color: #f6f7f8;
   }
+
 }
 
 .create_btn:hover {

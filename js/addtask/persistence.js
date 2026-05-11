@@ -28,9 +28,13 @@ export async function updateExistingTask(context, taskId) {
   }
 }
 
-export function saveTask(context) {
+export async function saveTask(context) {
   const task = buildTaskPayload(context);
-  return putUserData(`${context.createTaskPath}/${task.id}`, task);
+  await putUserData(`${context.createTaskPath}/${task.id}`, task);
+  if (context.options?.onCreate) {
+    await context.options.onCreate(task.id);
+  }
+  return task;
 }
 
 export function buildTaskPayload(context) {
