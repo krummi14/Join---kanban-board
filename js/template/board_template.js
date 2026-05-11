@@ -1,4 +1,4 @@
-import { getContactInitials } from "../addTaskForm.js";
+import { getContactInitials } from "../addtask/addTaskForm.js";
 // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
 // Div Container draggable="true" setzen, damit sie verschoben werden können
 // Div Container die ondragstart Methode hinzufügen (wie onclick) hier: startDragging()

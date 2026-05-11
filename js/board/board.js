@@ -32,7 +32,7 @@ import {
 
 import {
   getDialogAddTaskTemplate
-} from "./template/board_template.js";
+} from "../template/board_template.js";
 
 // 📊 Board config
 const BOARD_COLUMNS = [

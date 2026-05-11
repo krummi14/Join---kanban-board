@@ -1,6 +1,6 @@
-import { deleteData, getData, putUserData } from "./firebase.js";
-import { normalizeCategory } from "./assets.js";
-import { generateSingleAvatar, generateExtraAvatar, getNoAssigneesCardTemplate } from "./template/board_template.js";
+import { deleteData, getData, putUserData } from "../firebase.js";
+import { normalizeCategory } from "../assets.js";
+import { generateSingleAvatar, generateExtraAvatar, getNoAssigneesCardTemplate } from "../template/board_template.js";
 
 let tasks = [];
 
@@ -123,7 +123,6 @@ export async function deleteTask(taskId) {
   tasks = tasks.filter((t) => t.id !== taskId);
 }
  
-
 
 
 // 🔁 SUBTASK

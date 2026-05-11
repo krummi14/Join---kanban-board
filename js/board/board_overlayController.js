@@ -1,5 +1,5 @@
-import { createAddTaskForm } from "./addTaskForm.js";
-import { createAddTaskFormTemplate } from "./template/add_task_template.js";
+import { createAddTaskForm } from "../addtask/addTaskForm.js";
+import { createAddTaskFormTemplate } from "../template/add_task_template.js";
 import { getTasks, deleteTask, toggleSubtask } from "./board_taskService.js";
 import {
   generateTaskOverlay,
@@ -7,10 +7,10 @@ import {
   getNoAssigneesTemplate,
   getNoSubtasksTemplate,
   generateSubtask,
-} from "./template/board_template.js";
+} from "../template/board_template.js";
 import { loadTasks } from "./board_taskService.js";
 import { updateHTML } from "./board_taskView.js";
-import { createEditTaskTemplate } from "./template/board_template.js";
+import { createEditTaskTemplate } from "../template/board_template.js";
 
 
 
