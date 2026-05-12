@@ -1,4 +1,4 @@
-import { getContactInitials } from "../addTaskForm.js";
+import { getContactInitials } from "../addtask/addTaskForm.js";
 // generate Template generateTaskHTML: dynamisches HTML wird in eine Template generiert!
 // Div Container draggable="true" setzen, damit sie verschoben werden können
 // Div Container die ondragstart Methode hinzufügen (wie onclick) hier: startDragging()
@@ -243,9 +243,39 @@ export function getDialogAddTaskTemplate(path) {
                       <label for="description">Description</label>
                       <textarea id="description" name="description" placeholder="Enter a description"></textarea>
                     </section>
-                    <section class="due_date">
+                    <section class="due_date due_date_picker" data-due-date-picker>
                       <label for="dueDate">Due Date<span>*</span></label>
-                      <input type="date" id="dueDate" name="dueDate" required>
+                      <div class="due_date_picker_field">
+                        <input type="text" id="dueDate" name="dueDate" class="due_date_input" placeholder="dd/mm/yyyy" inputmode="numeric" autocomplete="off" required aria-haspopup="dialog" aria-expanded="false" aria-controls="dueDateMenu">
+                        <button type="button" class="due_date_icon" data-due-date-toggle="true" aria-label="Open due date calendar">
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3.5" y="5.5" width="17" height="15" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M7 3.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M17 3.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M3.5 9H20.5" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 13H8.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 13H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M16 13H16.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                        <section id="dueDateMenu" class="due_date_menu d_none" aria-label="Due date calendar">
+                          <div class="due_date_menu_header">
+                            <button type="button" class="due_date_nav_button" data-due-date-nav="-1" aria-label="Show previous month">&#8249;</button>
+                            <span id="dueDateMonthLabel" class="due_date_month_label"></span>
+                            <button type="button" class="due_date_nav_button" data-due-date-nav="1" aria-label="Show next month">&#8250;</button>
+                          </div>
+                          <div class="due_date_weekdays">
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                            <span>Sun</span>
+                          </div>
+                          <div id="dueDateDays" class="due_date_days"></div>
+                        </section>
+                      </div>
                     </section>
                   </section>
                   <p class="requiredNotice"><span>*</span>This field is required</p>

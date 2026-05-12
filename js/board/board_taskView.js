@@ -1,5 +1,5 @@
 import { getTasksForColumn } from "./board_taskService.js";
-import { generateTaskHTML } from "./template/board_template.js";
+import { generateTaskHTML } from "../template/board_template.js";
 
 export function renderColumn(category, BOARD_COLUMNS) {
   const column = BOARD_COLUMNS.find((c) => c.path === category);
@@ -39,4 +39,3 @@ export function updateHTML(BOARD_COLUMNS) {
     BOARD_COLUMNS
   );
 }
-

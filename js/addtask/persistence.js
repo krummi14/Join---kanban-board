@@ -1,6 +1,7 @@
 import { putUserData } from "../firebase.js";
 import { normalizeStatus } from "../assets.js";
 import { getAssignedContacts } from "./assignees.js";
+import { getDueDateStorageValue } from "./dueDate.js";
 
 export async function handleTaskSubmit(context, event) {
   event.preventDefault();
@@ -28,9 +29,13 @@ export async function updateExistingTask(context, taskId) {
   }
 }
 
-export function saveTask(context) {
+export async function saveTask(context) {
   const task = buildTaskPayload(context);
-  return putUserData(`${context.createTaskPath}/${task.id}`, task);
+  await putUserData(`${context.createTaskPath}/${task.id}`, task);
+  if (context.options?.onCreate) {
+    await context.options.onCreate(task.id);
+  }
+  return task;
 }
 
 export function buildTaskPayload(context) {
@@ -38,7 +43,7 @@ export function buildTaskPayload(context) {
     id: context.taskForm.dataset.editId || Date.now().toString(),
     title: context.elements.title?.value.trim() || "",
     description: context.elements.description?.value.trim() || "",
-    dueDate: context.elements.dueDate?.value || "",
+    dueDate: getDueDateStorageValue(context),
     status: normalizeStatus(context.createTaskPath),
     type: context.state.selectedCategory,
     priority: context.state.selectedPriority,
