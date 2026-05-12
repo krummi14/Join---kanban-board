@@ -202,6 +202,9 @@ input:focus {
 .plus_add_task_button {
   height: 24px;
   width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #f6f7f8;
   color: rgba(42, 54, 71, 1);
   border: 2px solid rgba(42, 54, 71, 1);

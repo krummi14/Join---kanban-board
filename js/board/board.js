@@ -35,6 +35,8 @@ import {
 } from "../template/board_template.js";
 import { createAddTaskFormTemplate } from "../template/add_task_template.js";
 
+import { initAddTask } from "../addtask/addTask.js";
+
 // 📊 Board config
 // Julian const BOARD_COLUMNS = [
 let BOARD_COLUMNS = [
@@ -86,10 +88,16 @@ async function deleteTask(taskId) {
   updateHTML(BOARD_COLUMNS);
 }
 
-function openAddNewtaskDialog() {
+function openAddNewtaskDialog(path) {
   if (event) event.stopPropagation();
+<<<<<<< HEAD
   contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate()
   //contentDialogOfAddTask.innerHTML = createAddTaskFormTemplate();
+=======
+  contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate();
+  window.getAddTaskFormTemplate?.(`${path}`);
+  initAddTask();
+>>>>>>> a926d3ef93722a3b484a3cefd0f3c5e9ae0cce45
   let contentDialogAddTask = document.getElementById("addTask_dialog");
   contentDialogAddTask.showModal();
   contentDialogAddTask.classList.add("dialog_opend");
