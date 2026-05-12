@@ -30,6 +30,7 @@
 :is(#addTaskContainer, .taskForm_dialog) .right_form {
   padding: 24px;
   gap: 20px;
+  width: 464px;
 }
 
 :is(#addTaskContainer, .taskForm_dialog) .priority,
@@ -685,6 +686,10 @@ margin-top: 80px;
   :is(#addTaskContainer, .taskForm_dialog) .left_form {
     width: 464px;
   }
+
+  :is(#addTaskContainer, .taskForm_dialog) .right_form {
+    width: 464px;
+  }
 }
 
 @media(min-width: 1116px) and (max-width:1159px) {
@@ -701,6 +706,10 @@ margin-top: 80px;
   }
 
   :is(#addTaskContainer, .taskForm_dialog) .left_form {
+    width: 320px;
+  }
+
+  :is(#addTaskContainer, .taskForm_dialog) .right_form {
     width: 320px;
   }
 }
@@ -790,4 +799,8 @@ margin-top: 80px;
 
 .create_btn:hover {
   box-shadow: #2a364750 0 5px 2px -2px;
+}
+
+#priority {
+  display: flex;
 }

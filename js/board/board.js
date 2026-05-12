@@ -34,6 +34,8 @@ import {
   getDialogAddTaskTemplate
 } from "../template/board_template.js";
 
+import { initAddTask } from "../addtask/addTask.js";
+
 // 📊 Board config
 const BOARD_COLUMNS = [
   { path: "to_do", label: "to do", containerId: "to_do" },
@@ -72,9 +74,11 @@ async function deleteTask(taskId) {
   updateHTML(BOARD_COLUMNS);
 }
 
-function openAddNewtaskDialog() {
+function openAddNewtaskDialog(path) {
   if (event) event.stopPropagation();
   contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate();
+  window.getAddTaskFormTemplate?.(`${path}`);
+  initAddTask();
   let contentDialogAddTask = document.getElementById("addTask_dialog");
   contentDialogAddTask.showModal();
   contentDialogAddTask.classList.add("dialog_opend");

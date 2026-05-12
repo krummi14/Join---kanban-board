@@ -476,9 +476,8 @@
   border: none;
   top: 50%;
   left: 50%;
-  height: 1200px;
-  width: 960px;
   padding: 0;
+  overflow: hidden;
   transform: translate(-50%, -50%) translateX(500px);
   transition: all 125ms ease-in;
 }
@@ -520,6 +519,18 @@
   align-items: start;
   padding: 48px 48px;
   padding-bottom: 16px;
+}
+
+.addTask_dialog_content #addTaskContainer #taskForm {
+  padding: 0 48px 24px;
+}
+
+.addTask_dialog_content .requiredNotice {
+  margin-top: 56px;
+}
+
+.addTask_dialog_content .form_buttons {
+  margin-top: 32px;
 }
 
 .taskForm_dialog {

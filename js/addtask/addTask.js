@@ -7,7 +7,7 @@ const TASK_ADDED_FLY_IN_MS = 400;
 const TASK_ADDED_HOLD_MS = 1500;
 const TASK_ADDED_TOTAL_MS = TASK_ADDED_FLY_IN_MS + TASK_ADDED_HOLD_MS;
 
-async function initAddTask() {
+export async function initAddTask() {
   const taskForm = document.getElementById("taskForm");
   if (!taskForm) return null;
   updateUserBadge();
