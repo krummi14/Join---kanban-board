@@ -30,6 +30,10 @@ const refUser = document.getElementById("user");
 const mq = window.matchMedia("(max-width: 1115px)");
 let contentBody = document.getElementById("body");
 let contentDialogOfAddTask = document.getElementById("add_task_dialog_content");
+let contentSearchInput = document.getElementById("search_input_value");
+let currentTasks = [];
+let isFiltering = false;
+let filteredColumns = null;
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {

@@ -41,13 +41,14 @@ export async function loadTasks(BOARD_COLUMNS) {
       sourcePath: column.path,
       priorityIcon: getPriorityIcon(task.priority),
 
-  // ✅ DAS IST DER FIX:
-  avatarHTML: generateAvatarHTML(task.assignees),
+      // ✅ DAS IST DER FIX:
+      avatarHTML: generateAvatarHTML(task.assignees),
     }));
   });
 
   return tasks;
 }
+
 
 
 
@@ -78,13 +79,22 @@ export function getTasksForColumn(category, BOARD_COLUMNS) {
     (c) => normalizeCategory(c.path) === normalizeCategory(category)
   );
   if (!column) return [];
-
-  return tasks.filter(
-    (task) =>
-      normalizeCategory(task.sourcePath || task.status) ===
-      normalizeCategory(column.path)
-  );
+  return column.tasks || [];
 }
+
+// Julian 📊 FILTER
+//export function getTasksForColumn(category, BOARD_COLUMNS) {
+//  const column = BOARD_COLUMNS.find(
+//    (c) => normalizeCategory(c.path) === normalizeCategory(category)
+//  );
+//  if (!column) return [];
+//
+//  return tasks.filter(
+//    (task) =>
+//      normalizeCategory(task.sourcePath || task.status) ===
+//      normalizeCategory(column.path)
+//  );
+//}
 
 // 🔄 MOVE
 export async function moveTask(taskId, targetCategory, BOARD_COLUMNS) {
@@ -122,7 +132,7 @@ export async function deleteTask(taskId) {
   await deleteData(`${path}/${task.id}`);
   tasks = tasks.filter((t) => t.id !== taskId);
 }
- 
+
 
 
 // 🔁 SUBTASK
@@ -139,7 +149,7 @@ export async function toggleSubtask(taskId, index) {
     getTaskForStorage(task, taskPath)
   );
 }
- 
+
 
 export async function updateTask(taskId, updatedData) {
   const task = tasks.find(t => t.id === taskId);
@@ -172,8 +182,8 @@ function prepareTask(task) {
     totalSubtasks: task.subtasks?.length || 0,
     progress: task.subtasks?.length
       ? (task.subtasks.filter((st) => st.done).length /
-          task.subtasks.length) *
-        100
+        task.subtasks.length) *
+      100
       : 0,
     priorityIcon: getPriorityIcon(task.priority),
   };

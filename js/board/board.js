@@ -33,28 +33,42 @@ import {
 import {
   getDialogAddTaskTemplate
 } from "../template/board_template.js";
+import { createAddTaskFormTemplate } from "../template/add_task_template.js";
 
 // 📊 Board config
-const BOARD_COLUMNS = [
+// Julian const BOARD_COLUMNS = [
+let BOARD_COLUMNS = [
   { path: "to_do", label: "to do", containerId: "to_do" },
   { path: "in_progress", label: "in progress", containerId: "in_progress" },
   { path: "await_feedback", label: "await feedback", containerId: "await_feedback" },
   { path: "done", label: "done", containerId: "done" },
 ];
+
 window.BOARD_COLUMNS = BOARD_COLUMNS;
-// 🚀 INIT
+
+////Julian 🚀 INIT
+//async function initBoard() {
+//  if (typeof window.userInitials === "function") {
+//    window.userInitials();
+//  }
+//  await loadTasks(BOARD_COLUMNS);
+//  updateHTML(BOARD_COLUMNS);
+//  initDragDrop(BOARD_COLUMNS);
+//// Overlay click close
+//  const overlay = document.getElementById("overlay");
+//if (overlay) {
+//  overlay.addEventListener("click", handleOverlayClick);
+//}
+//}
+
 async function initBoard() {
   if (typeof window.userInitials === "function") {
     window.userInitials();
   }
-
-  await loadTasks(BOARD_COLUMNS);
-
+  const tasks = await loadTasks(BOARD_COLUMNS);
+  BOARD_COLUMNS = buildFilteredColumns(tasks, BOARD_COLUMNS);
   updateHTML(BOARD_COLUMNS);
-
   initDragDrop(BOARD_COLUMNS);
-
-  // Overlay click close
   const overlay = document.getElementById("overlay");
   if (overlay) {
     overlay.addEventListener("click", handleOverlayClick);
@@ -74,7 +88,8 @@ async function deleteTask(taskId) {
 
 function openAddNewtaskDialog() {
   if (event) event.stopPropagation();
-  contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate();
+  contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate()
+  //contentDialogOfAddTask.innerHTML = createAddTaskFormTemplate();
   let contentDialogAddTask = document.getElementById("addTask_dialog");
   contentDialogAddTask.showModal();
   contentDialogAddTask.classList.add("dialog_opend");
@@ -94,6 +109,28 @@ function closeDialogOnBodyclick(event) {
   event.stopPropagation()
 }
 
+function buildFilteredColumns(tasks, BOARD_COLUMNS) {
+  return BOARD_COLUMNS.map(col => ({
+    ...col,
+    tasks: tasks.filter(t => t.status === col.path)
+  }));
+}
+
+async function filterAndShowTask() {
+  let filterWord = contentSearchInput.value;
+  let tasks = await loadTasks(BOARD_COLUMNS);
+  if (filterWord.length < 3) {
+    isFiltering = false;
+    filteredColumns = null;
+    updateHTML(BOARD_COLUMNS);
+    return;
+  }
+  isFiltering = true;
+  currentTasks = tasks.filter(task => task.title.toLowerCase().includes(filterWord.toLowerCase()));
+  filteredColumns = buildFilteredColumns(currentTasks, BOARD_COLUMNS);
+  updateHTML(BOARD_COLUMNS);
+}
+
 // 🌍 GLOBAL EXPORTS (HTML onclick / drag handlers)
 window.initBoard = initBoard;
 
@@ -111,3 +148,4 @@ window.updateHTML = updateHTML;
 window.openAddNewtaskDialog = openAddNewtaskDialog;
 window.closeAddNewTaskDialog = closeAddNewTaskDialog;
 window.closeDialogOnBodyclick = closeDialogOnBodyclick;
+window.filterAndShowTask = filterAndShowTask;

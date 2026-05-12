@@ -33,9 +33,24 @@ export function updateColumns(categories, BOARD_COLUMNS) {
   );
 }
 
+// Julian
+// export function updateHTML(BOARD_COLUMNS) {
+//  updateColumns(
+//    BOARD_COLUMNS.map((column) => column.path),
+//    BOARD_COLUMNS
+//  );
+//}
+
 export function updateHTML(BOARD_COLUMNS) {
-  updateColumns(
-    BOARD_COLUMNS.map((column) => column.path),
-    BOARD_COLUMNS
-  );
+  if (isFiltering && filteredColumns) {
+    updateColumns(
+      filteredColumns.map(col => col.path),
+      filteredColumns
+    );
+  } else {
+    updateColumns(
+      BOARD_COLUMNS.map(col => col.path),
+      BOARD_COLUMNS
+    );
+  }
 }

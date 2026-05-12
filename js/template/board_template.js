@@ -217,7 +217,7 @@ function generateSubtasksWrapper(content) {
       <h3>Subtasks</h3>
       ${content}
     </div>
-  `;
+  `
 }
 
 //Form id="taskForm"
