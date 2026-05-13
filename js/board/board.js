@@ -24,6 +24,7 @@ import {
 import {
   initDragDrop,
   startDragging,
+  endDragging,
   allowDrop,
   moveTo,
   highlight,
@@ -146,6 +147,7 @@ async function filterAndShowTask() {
 window.initBoard = initBoard;
 
 window.startDragging = startDragging;
+window.endDragging = endDragging;
 window.allowDrop = allowDrop;
 window.moveTo = moveTo;
 window.highlight = highlight;

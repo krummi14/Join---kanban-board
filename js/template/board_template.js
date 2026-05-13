@@ -4,7 +4,7 @@ import { getContactInitials } from "../addtask/addTaskForm.js";
 // Div Container die ondragstart Methode hinzufügen (wie onclick) hier: startDragging()
 export function generateTaskHTML(task) {
   return `
-    <div class="task" onclick="openOverlay('${task.id}')" draggable="true" ondragstart="startDragging('${task.id}')">
+    <div class="task" onclick="openOverlay('${task.id}')" draggable="true" ondragstart="startDragging(event, '${task.id}')" ondragend="endDragging()">
 
       ${generateCategory(task)}
       ${generateTitle(task)}
