@@ -3,6 +3,8 @@ import { normalizeStatus } from "../assets.js";
 import { getAssignedContacts } from "./assignees.js";
 import { getDueDateStorageValue } from "./dueDate.js";
 
+const TASKS_STORAGE_PATH = "tasks";
+
 export async function handleTaskSubmit(context, event) {
   event.preventDefault();
 
@@ -31,7 +33,7 @@ export async function updateExistingTask(context, taskId) {
 
 export async function saveTask(context) {
   const task = buildTaskPayload(context);
-  await putUserData(`${context.createTaskPath}/${task.id}`, task);
+  await putUserData(`${TASKS_STORAGE_PATH}/${task.id}`, task);
   if (context.options?.onCreate) {
     await context.options.onCreate(task.id);
   }
@@ -44,12 +46,20 @@ export function buildTaskPayload(context) {
     title: context.elements.title?.value.trim() || "",
     description: context.elements.description?.value.trim() || "",
     dueDate: getDueDateStorageValue(context),
-    status: normalizeStatus(context.createTaskPath),
+    status: resolveTaskStatus(context),
     type: context.state.selectedCategory,
     priority: context.state.selectedPriority,
     assignees: getAssignedContacts(context),
     subtasks: createSubtaskPayload(context.state.subtasks),
   };
+}
+
+function resolveTaskStatus(context) {
+  if (context.taskForm.dataset.editId) {
+    return context.taskForm.dataset.status || normalizeStatus(context.createTaskPath);
+  }
+
+  return normalizeStatus(context.createTaskPath);
 }
 
 function createSubtaskPayload(subtasks) {

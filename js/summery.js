@@ -3,7 +3,7 @@ function isMobileMode() {
 }
 
 function renderGreeting() {
-  if (userName !== "Guest") {
+  if (userName && userName !== "Guest") {
     refSummeryUser.innerHTML = `
       <h2 class="good_morning">Good Morning,<br><span class="user_name">${userName}</span></h2>`;
     let initials = getInitials(userName);
@@ -52,19 +52,11 @@ async function initSummery() {
 }
 
 async function renderSummaryMetrics() {
-  const columns = ["to_do", "done", "in_progress", "await_feedback"];
-
   try {
-    const columnEntries = await Promise.all(
-      columns.map(async (column) => {
-        const response = await fetch(`${BASE_URL}${column}.json`);
-        const data = await response.json();
-        return [column, normalizeTasks(data)];
-      })
-    );
-
-    const tasksByColumn = Object.fromEntries(columnEntries);
-    const allTasks = columns.flatMap((column) => tasksByColumn[column]);
+    const response = await fetch(`${BASE_URL}tasks.json`);
+    const data = await response.json();
+    const allTasks = normalizeTasks(data);
+    const tasksByColumn = groupTasksByColumn(allTasks);
 
     updateMetricCount("to_do_count", tasksByColumn.to_do.length, "To-do");
     updateMetricCount("done_count", tasksByColumn.done.length, "Done");
@@ -82,6 +74,33 @@ async function renderSummaryMetrics() {
 
 function normalizeTasks(data) {
   return Object.values(data || {}).filter((task) => task && typeof task === "object");
+}
+
+function groupTasksByColumn(tasks) {
+  const grouped = {
+    to_do: [],
+    in_progress: [],
+    await_feedback: [],
+    done: [],
+  };
+
+  tasks.forEach((task) => {
+    const key = normalizeStatusKey(task.status);
+    if (grouped[key]) {
+      grouped[key].push(task);
+    }
+  });
+
+  return grouped;
+}
+
+function normalizeStatusKey(status) {
+  return String(status || "")
+    .toLowerCase()
+    .replaceAll("_", " ")
+    .replaceAll("-", " ")
+    .trim()
+    .replace(/\s+/g, "_");
 }
 
 function updateMetricCount(elementId, count, label) {

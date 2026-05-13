@@ -263,6 +263,7 @@ function resetState(state) {
 function prefillTask(context, task = {}) {
   setBasicFields(context, task);
   context.taskForm.dataset.editId = task.id || "";
+  context.taskForm.dataset.status = task.status || "";
   setCategory(context, task.type || "");
   resetPriorityButtons(context);
   if (task.priority) setPriority(context, task.priority);
