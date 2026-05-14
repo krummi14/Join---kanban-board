@@ -28,7 +28,6 @@ function generateTaskBottom(task) {
   `;
 }
 
-
 function generateCategory(task) {
   return `
     <span class="task_category ${task.categoryClass}">
@@ -52,7 +51,6 @@ function generateDescription(task) {
     </span>
   `;
 }
-
 
 function generateProgress(task) {
   return `
@@ -105,7 +103,9 @@ export function generateExtraAvatar(rest) {
 }
 
 function getColorFromName(name) {
-  return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][name.length % 6];
+  return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][
+    name.length % 6
+  ];
 }
 
 export function getNoAssigneesCardTemplate() {
@@ -165,7 +165,6 @@ function generateOverlayTitle(task) {
   return `<h2>${task.title}</h2>`;
 }
 
-
 function generateOverlayDescription(task) {
   return `
     <div class="task_description_card">
@@ -188,7 +187,6 @@ function generateOverlayPriority(task) {
     </div>
   `;
 }
-
 
 function generateOverlayAssignees(task) {
   return `
@@ -213,7 +211,6 @@ export function generateAssignee(a) {
     </div>
   `;
 }
-
 
 function generateSubtasksWrapper(content) {
   return `
@@ -278,11 +275,9 @@ export function getNoSubtasksTemplate() {
   return `<p>No subtasks yet</p>`;
 }
 
-
 export function getNoAssigneesTemplate() {
   return `<p>No Users assigned</p>`;
 }
-
 
 export function getAssigneeTemplate(a, isYou) {
   return `
@@ -298,3 +293,288 @@ export function getAssigneeTemplate(a, isYou) {
     </div>
   `;
 }
+
+
+
+export function createEditTaskTemplate() {
+  return `
+  <div class="edit_overlay">
+
+    <!-- CLOSE -->
+    <div class="close_button">
+      <div class="close_icon_wrapper close_icon_margin">
+        <img src="../assets/img/close.svg"
+             class="close_icon"
+             onclick="closeOverlay()">
+      </div>
+    </div>
+
+    <div class="scroll-area">
+
+      <form id="taskForm" class="edit_form">
+
+        <!-- TITLE -->
+        <div class="edit_title">
+          <label>Title<span class="red_star">*</span></label>
+          <input id="title" type="text" required class="input_style">
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="edit_description">
+          <label>Description</label>
+          <textarea id="description" class="input_style"></textarea>
+        </div>
+
+        <!-- DUE DATE -->
+<div
+  class="edit_duedate due_date due_date_picker"
+  data-due-date-picker
+>
+  <label for="dueDate">
+    Due Date<span class="red_star">*</span>
+  </label>
+
+  <div class="due_date_picker_field">
+
+    <!-- INPUT -->
+    <input
+      type="text"
+      id="dueDate"
+      name="dueDate"
+      class="due_date_input input_style"
+      placeholder="dd/mm/yyyy"
+      inputmode="numeric"
+      autocomplete="off"
+      required
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      aria-controls="dueDateMenu"
+    >
+
+    <!-- CALENDAR BUTTON -->
+    <button
+      type="button"
+      class="due_date_icon"
+      data-due-date-toggle="true"
+      aria-label="Open due date calendar"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <rect
+          x="3.5"
+          y="5.5"
+          width="17"
+          height="15"
+          rx="2.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+
+        <path
+          d="M7 3.5V7"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M17 3.5V7"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M3.5 9H20.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+
+        <path
+          d="M8 13H8.01"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M12 13H12.01"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M16 13H16.01"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <!-- DATE PICKER MENU -->
+    <section
+      id="dueDateMenu"
+      class="due_date_menu d_none"
+      aria-label="Due date calendar"
+    >
+
+      <!-- HEADER -->
+      <div class="due_date_menu_header">
+
+        <button
+          type="button"
+          class="due_date_nav_button"
+          data-due-date-nav="-1"
+        >
+          &#8249;
+        </button>
+
+        <span
+          id="dueDateMonthLabel"
+          class="due_date_month_label"
+        ></span>
+
+        <button
+          type="button"
+          class="due_date_nav_button"
+          data-due-date-nav="1"
+        >
+          &#8250;
+        </button>
+
+      </div>
+
+      <!-- WEEKDAYS -->
+      <div class="due_date_weekdays">
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+        <span>Sat</span>
+        <span>Sun</span>
+      </div>
+
+      <!-- DAYS -->
+      <div
+        id="dueDateDays"
+        class="due_date_days"
+      ></div>
+
+    </section>
+
+  </div>
+</div>
+
+        <!-- PRIORITY -->
+        <div class="edit_priority">
+          <p class="bold_font">Priority</p>
+
+          <div class="priority_buttons">
+            <button type="button" id="prio_urgent" data-priority="urgent">
+              Urgent
+            </button>
+
+            <button type="button" id="prio_medium" data-priority="medium">
+              Medium
+            </button>
+
+            <button type="button" id="prio_low" data-priority="low">
+              Low
+            </button>
+          </div>
+        </div>
+
+        <!-- ASSIGNEES -->
+        <div class="edit_assigned_to">
+          <label>Assigned to</label>
+
+          <div class="assignee_dropdown">
+
+            <button
+              type="button"
+              id="assigneeToggle"
+              class="assignee_toggle"
+              onclick="toggleAssigneeDropdown(event)">
+              Select contacts
+            </button>
+
+            <div
+              id="assigneeDropdownMenu"
+              class="assignee_menu d_none"
+              onclick="event.stopPropagation()">
+            </div>
+
+          </div>
+
+          <!-- SELECTED AVATARS -->
+          <div id="selectedContacts" class="avatar_row"></div>
+        </div>
+
+<!-- SUBTASKS -->
+<section class="subtask">
+  <label for="subtask">Subtasks</label>
+
+  <section class="subtask_input_wrapper">
+
+    <input
+      type="text"
+      id="subtask"
+      name="subtask"
+      placeholder="Add new subtask">
+
+    <div class="subtask_action_buttons">
+
+      <button
+        type="button"
+        id="clearSubtaskButton"
+        class="subtask_action_button"
+        aria-label="Clear subtask input">
+
+        <img
+          src="../assets/icon/subtask_close.svg"
+          alt="Clear subtask input">
+
+      </button>
+
+      <button
+        type="button"
+        id="addSubtaskButton"
+        class="subtask_action_button"
+        aria-label="Add subtask">
+
+        <img
+          src="../assets/icon/subtask_check.svg"
+          alt="Add subtask">
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <section
+    id="subtaskList"
+    class="subtask_list">
+  </section>
+
+</section>
+
+        <!-- ACTION -->
+        <div class="edit_actions">
+          <button type="submit">
+            Ok ✓
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+  `;
+}
+

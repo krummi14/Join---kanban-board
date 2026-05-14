@@ -12,6 +12,10 @@ import {
 import { loadTasks } from "./board_taskService.js";
 import { updateHTML } from "./board_taskView.js";
 
+import { createEditTaskTemplate } from "../template/board_edit_template.js";
+import { initializeDueDatePicker } from "../addtask/dueDate.js";
+
+
 let addTaskFormController = null;
 
 export function openOverlay(taskId) {
@@ -72,10 +76,36 @@ async function editTask(taskId) {
   initEditPrefill(task);
 }
 
-function renderEditForm() {
-  renderOverlay(createEditTaskTemplate());
-  return document.getElementById("taskForm");
+// ======================
+// RENDER EDIT FORM
+// ======================
+function renderEditForm(task) {
+  const overlay = document.getElementById("overlay");
+
+  overlay.innerHTML = createEditTaskTemplate();
+  overlay.classList.remove("hidden");
+
+  const form = document.getElementById("taskForm");
+
+  const context = {
+    taskForm: form,
+    elements: {
+      dueDate: form.querySelector("[data-due-date]"),
+      dueDatePicker: form.querySelector(".due_date_picker"),
+      dueDateMenu: form.querySelector(".due_date_menu"),
+      dueDateDays: form.querySelector(".due_date_days"),
+      dueDateMonthLabel: form.querySelector(".due_date_month_label"),
+    },
+    state: {},
+  };
+
+  initializeDueDatePicker(context);
+
+  return form;
 }
+// ======================
+// INIT CONTROLLER
+// ======================
 
 function initEditController(form, task) {
   destroyEditController();
