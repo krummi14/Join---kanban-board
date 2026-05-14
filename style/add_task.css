@@ -1,22 +1,18 @@
 #addTaskContainer #taskForm {
-  /* Julian
   display: flex;
-  gap: 24px;
-  padding: 0 80px;*/
-  display: flex;
-  height: 100%;
   gap: 24px;
   padding: 0 104px;
   padding-bottom: 24px;
+  height: 610px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .left_form,
-:is(#addTaskContainer, .taskForm_dialog) .right_form,
-:is(#addTaskContainer, .taskForm_dialog) .priority,
-:is(#addTaskContainer, .taskForm_dialog) .assignee,
-:is(#addTaskContainer, .taskForm_dialog) .category,
-:is(#addTaskContainer, .taskForm_dialog) .subtask,
-:is(#addTaskContainer, .taskForm_dialog) .priority_assignee {
+#addTaskContainer .left_form,
+#addTaskContainer .right_form,
+#addTaskContainer .priority,
+#addTaskContainer .assignee,
+#addTaskContainer .category,
+#addTaskContainer .subtask,
+#addTaskContainer .priority_assignee {
   display: flex;
   flex-direction: column;
 }
@@ -28,31 +24,32 @@
   width: 100%;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .left_form {
-  /*Julian
-  padding: 24px;*/
-  width: 100%;
+#addTaskContainer .left_form {
+  width: 464px;
   gap: 8px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .left_form section {
+#addTaskContainer .left_form section {
   display: flex;
   flex-direction: column;
   padding: 8px 0;
   gap: 8px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .right_form {
-  /*Julian
-  padding: 24px;*/
-  gap: 20px;
+#addTaskContainer #description {
   width: 464px;
+  max-width: 100%;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .priority,
-:is(#addTaskContainer, .taskForm_dialog) .assignee,
-:is(#addTaskContainer, .taskForm_dialog) .category,
-:is(#addTaskContainer, .taskForm_dialog) .subtask {
+#addTaskContainer .right_form {
+  width: 464px;
+  gap: 24px;
+}
+
+#addTaskContainer .priority,
+#addTaskContainer .assignee,
+#addTaskContainer .category,
+#addTaskContainer .subtask {
   gap: 8px;
 }
 
@@ -60,8 +57,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  /* Julian
-  margin-top: 80px;*/
+  margin-top: auto;
 }
 
 .form_buttons_none {
@@ -72,38 +68,38 @@
   display: none !important;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) label span {
+#addTaskContainer label span {
   color: #ff0000;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #dueDate {
+#addTaskContainer #dueDate {
   color: rgba(128, 128, 128, 0.3);
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #dueDate:valid {
+#addTaskContainer #dueDate:valid {
   color: #000000;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_picker {
+#addTaskContainer .due_date_picker {
   position: relative;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_picker_field {
+#addTaskContainer .due_date_picker_field {
   position: relative;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_input {
+#addTaskContainer .due_date_input {
   width: 100%;
   padding-right: 52px;
   cursor: text;
   background-color: #ffffff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_input::placeholder {
+#addTaskContainer .due_date_input::placeholder {
   color: rgba(128, 128, 128, 0.7);
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_icon {
+#addTaskContainer .due_date_icon {
   position: absolute;
   top: 50%;
   right: 16px;
@@ -120,12 +116,12 @@
   transform: translateY(-50%);
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_icon svg {
+#addTaskContainer .due_date_icon svg {
   width: 20px;
   height: 20px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_menu {
+#addTaskContainer .due_date_menu {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 0;
@@ -138,25 +134,25 @@
   z-index: 30;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_menu.open {
+#addTaskContainer .due_date_menu.open {
   display: block;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_menu_header,
-:is(#addTaskContainer, .taskForm_dialog) .due_date_weekdays,
-:is(#addTaskContainer, .taskForm_dialog) .due_date_days {
+#addTaskContainer .due_date_menu_header,
+#addTaskContainer .due_date_weekdays,
+#addTaskContainer .due_date_days {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 6px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_menu_header {
+#addTaskContainer .due_date_menu_header {
   grid-template-columns: 40px 1fr 40px;
   align-items: center;
   margin-bottom: 12px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_nav_button {
+#addTaskContainer .due_date_nav_button {
   width: 40px;
   height: 40px;
   border: none;
@@ -167,22 +163,22 @@
   cursor: pointer;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_nav_button:hover {
+#addTaskContainer .due_date_nav_button:hover {
   background: #e8f3ff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_month_label {
+#addTaskContainer .due_date_month_label {
   text-align: center;
   color: #2a3647;
   font-size: 18px;
   font-weight: 700;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_weekdays {
+#addTaskContainer .due_date_weekdays {
   margin-bottom: 8px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_weekdays span {
+#addTaskContainer .due_date_weekdays span {
   color: #647188;
   font-size: 12px;
   font-weight: 700;
@@ -190,12 +186,12 @@
   text-transform: uppercase;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_weekdays span:nth-child(6),
-:is(#addTaskContainer, .taskForm_dialog) .due_date_weekdays span:nth-child(7) {
+#addTaskContainer .due_date_weekdays span:nth-child(6),
+#addTaskContainer .due_date_weekdays span:nth-child(7) {
   color: #8b5e3c;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day {
+#addTaskContainer .due_date_day {
   position: relative;
   min-height: 40px;
   border: 1px solid transparent;
@@ -205,40 +201,40 @@
   cursor: pointer;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day:hover {
+#addTaskContainer .due_date_day:hover {
   border-color: #29abe2;
   background: #f5fbff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_empty {
+#addTaskContainer .due_date_day_empty {
   min-height: 40px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_disabled {
+#addTaskContainer .due_date_day_disabled {
   color: #b5beca;
   cursor: not-allowed;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_disabled:hover {
+#addTaskContainer .due_date_day_disabled:hover {
   border-color: #ff7a59;
   background: #fff3ef;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_selected {
+#addTaskContainer .due_date_day_selected {
   background: #2a3647;
   color: #ffffff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_today {
+#addTaskContainer .due_date_day_today {
   border-color: #29abe2;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_number {
+#addTaskContainer .due_date_day_number {
   font-size: 14px;
   font-weight: 600;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_hint {
+#addTaskContainer .due_date_day_hint {
   position: absolute;
   left: 50%;
   bottom: calc(100% + 8px);
@@ -256,8 +252,8 @@
   z-index: 2;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_disabled:hover .due_date_day_hint,
-:is(#addTaskContainer, .taskForm_dialog) .due_date_day_disabled:focus-visible .due_date_day_hint {
+#addTaskContainer .due_date_day_disabled:hover .due_date_day_hint,
+#addTaskContainer .due_date_day_disabled:focus-visible .due_date_day_hint {
   display: block;
 }
 
@@ -273,20 +269,11 @@
   border-top: 1px solid #d1d1d1;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #prio_urgent,
-:is(#addTaskContainer, .taskForm_dialog) #prio_medium,
-:is(#addTaskContainer, .taskForm_dialog) #prio_low {
-  /*Julian
+#addTaskContainer #prio_urgent,
+#addTaskContainer #prio_medium,
+#addTaskContainer #prio_low {
   width: 136px;
   height: 56px;
-  font-size: 20px;
-  font-weight: 400;
-  background-color: #ffffff;
-  border: 1px solid rgba(128, 128, 128, 0.3);
-  border-radius: 10px;
-  box-sizing: border-box;*/
-  width: 112px;
-  height: 48px;
   font-size: 20px;
   font-weight: 400;
   background-color: #ffffff;
@@ -295,36 +282,36 @@
   box-sizing: border-box;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #prio_urgent:hover,
-:is(#addTaskContainer, .taskForm_dialog) #prio_medium:hover,
-:is(#addTaskContainer, .taskForm_dialog) #prio_low:hover {
+#addTaskContainer #prio_urgent:hover,
+#addTaskContainer #prio_medium:hover,
+#addTaskContainer #prio_low:hover {
   box-shadow: #53535350 0 4px 2px -2px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #prio_urgent.active {
+#addTaskContainer #prio_urgent.active {
   background-color: #ff3b30;
   color: #fff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #prio_medium.active {
+#addTaskContainer #prio_medium.active {
   background-color: #ffa800;
   color: #fff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #prio_low.active {
+#addTaskContainer #prio_low.active {
   background-color: #7ae229;
   color: #fff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_dropdown,
-:is(#addTaskContainer, .taskForm_dialog) .category_dropdown,
-:is(#addTaskContainer, .taskForm_dialog) .subtask_input_wrapper {
+#addTaskContainer .assignee_dropdown,
+#addTaskContainer .category_dropdown,
+#addTaskContainer .subtask_input_wrapper {
   position: relative;
   width: 100%;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_toggle,
-:is(#addTaskContainer, .taskForm_dialog) .category_toggle {
+#addTaskContainer .assignee_toggle,
+#addTaskContainer .category_toggle {
   width: 100%;
   min-height: 48px;
   padding: 12px 16px;
@@ -341,22 +328,22 @@
   cursor: pointer;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .category_toggle {
+#addTaskContainer .category_toggle {
   padding-right: 48px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_toggle:hover,
-:is(#addTaskContainer, .taskForm_dialog) .category_toggle:hover {
+#addTaskContainer .assignee_toggle:hover,
+#addTaskContainer .category_toggle:hover {
   border-color: rgba(41, 171, 226, 1);
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_arrow,
-:is(#addTaskContainer, .taskForm_dialog) .category_arrow {
+#addTaskContainer .assignee_arrow,
+#addTaskContainer .category_arrow {
   color: #2a3647;
   font-size: 14px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .category_arrow {
+#addTaskContainer .category_arrow {
   position: absolute;
   top: 50%;
   right: 16px;
@@ -367,19 +354,19 @@
   pointer-events: none;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_arrow img,
-:is(#addTaskContainer, .taskForm_dialog) .category_arrow img {
+#addTaskContainer .assignee_arrow img,
+#addTaskContainer .category_arrow img {
   display: block;
   transition: transform 0.2s ease;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_toggle[aria-expanded="true"] .assignee_arrow img,
-:is(#addTaskContainer, .taskForm_dialog) .category_dropdown.open .category_arrow img {
+#addTaskContainer .assignee_toggle[aria-expanded="true"] .assignee_arrow img,
+#addTaskContainer .category_dropdown.open .category_arrow img {
   transform: rotate(180deg);
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_menu,
-:is(#addTaskContainer, .taskForm_dialog) .category_menu {
+#addTaskContainer .assignee_menu,
+#addTaskContainer .category_menu {
   position: absolute;
   left: 0;
   right: 0;
@@ -393,25 +380,25 @@
   gap: 2px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_menu {
+#addTaskContainer .assignee_menu {
   max-height: 220px;
   overflow-y: auto;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_menu.open,
-:is(#addTaskContainer, .taskForm_dialog) .category_menu.open {
+#addTaskContainer .assignee_menu.open,
+#addTaskContainer .category_menu.open {
   display: flex;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option,
-:is(#addTaskContainer, .taskForm_dialog) .category_option {
+#addTaskContainer .assignee_option,
+#addTaskContainer .category_option {
   width: 100%;
   padding: 10px 8px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option {
+#addTaskContainer .assignee_option {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -419,7 +406,7 @@
   gap: 12px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .category_option {
+#addTaskContainer .category_option {
   border: none;
   background: transparent;
   color: #2a3647;
@@ -427,14 +414,14 @@
   text-align: left;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option_checkbox {
+#addTaskContainer .assignee_option_checkbox {
   position: relative;
   width: 16px;
   height: 16px;
   flex-shrink: 0;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option input {
+#addTaskContainer .assignee_option input {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -444,49 +431,49 @@
   cursor: pointer;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option_checkbox_icon {
+#addTaskContainer .assignee_option_checkbox_icon {
   width: 16px;
   height: 16px;
   display: block;
   pointer-events: none;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option_checkbox_icon_checked {
+#addTaskContainer .assignee_option_checkbox_icon_checked {
   display: none;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option:hover,
-:is(#addTaskContainer, .taskForm_dialog) .category_option:hover {
+#addTaskContainer .assignee_option:hover,
+#addTaskContainer .category_option:hover {
   background-color: #f6f7f8;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected {
+#addTaskContainer .assignee_option.selected {
   background-color: #2a3647;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected .assignee_option_name {
+#addTaskContainer .assignee_option.selected .assignee_option_name {
   color: #ffffff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected .assignee_option_checkbox_icon_unchecked {
+#addTaskContainer .assignee_option.selected .assignee_option_checkbox_icon_unchecked {
   display: none;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option.selected .assignee_option_checkbox_icon_checked {
+#addTaskContainer .assignee_option.selected .assignee_option_checkbox_icon_checked {
   display: block;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option_text {
+#addTaskContainer .assignee_option_text {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_option_name {
+#addTaskContainer .assignee_option_name {
   color: #2a3647;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .avatar.assignee_option_avatar {
+#addTaskContainer .avatar.assignee_option_avatar {
   width: 32px;
   height: 32px;
   display: flex;
@@ -500,7 +487,7 @@
   border: 2px solid #ffffff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) #selectedContacts {
+#addTaskContainer #selectedContacts {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -508,7 +495,7 @@
   margin-top: 12px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .avatar.selected_assignee_avatar {
+#addTaskContainer .avatar.selected_assignee_avatar {
   width: 32px;
   height: 32px;
   display: flex;
@@ -521,16 +508,16 @@
   border: 2px solid #ffffff;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .assignee_status {
+#addTaskContainer .assignee_status {
   padding: 10px 8px;
   color: #647188;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_input_wrapper input {
+#addTaskContainer .subtask_input_wrapper input {
   padding-right: 92px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_action_buttons {
+#addTaskContainer .subtask_action_buttons {
   position: absolute;
   top: 50%;
   right: 8px;
@@ -540,7 +527,7 @@
   gap: 4px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_action_button {
+#addTaskContainer .subtask_action_button {
   width: 32px;
   height: 32px;
   align-items: center;
@@ -552,21 +539,21 @@
   display: flex;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_input_wrapper.has-value .subtask_action_buttons {
+#addTaskContainer .subtask_input_wrapper.has-value .subtask_action_buttons {
   display: flex;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_action_button img {
+#addTaskContainer .subtask_action_button img {
   width: 20px;
   height: 20px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_action_button:disabled {
+#addTaskContainer .subtask_action_button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_list {
+#addTaskContainer .subtask_list {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -575,7 +562,7 @@
   overflow-x: hidden;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item {
+#addTaskContainer .subtask_item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -583,16 +570,16 @@
   gap: 12px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item.editing {
+#addTaskContainer .subtask_item.editing {
   padding-right: 0;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_edit_input_wrapper {
+#addTaskContainer .subtask_edit_input_wrapper {
   position: relative;
   width: 100%;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item_text {
+#addTaskContainer .subtask_item_text {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -602,25 +589,25 @@
   flex: 1;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item_text::before {
+#addTaskContainer .subtask_item_text::before {
   content: "•";
   flex-shrink: 0;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item_actions {
+#addTaskContainer .subtask_item_actions {
   display: none;
   align-items: center;
   gap: 4px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item:hover .subtask_item_actions,
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item.editing .subtask_item_actions,
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item:focus-within .subtask_item_actions {
+#addTaskContainer .subtask_item:hover .subtask_item_actions,
+#addTaskContainer .subtask_item.editing .subtask_item_actions,
+#addTaskContainer .subtask_item:focus-within .subtask_item_actions {
   display: flex;
   gap: 12px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_edit_input {
+#addTaskContainer .subtask_edit_input {
   width: 100%;
   border: none;
   border-bottom: 1px solid #29abe2;
@@ -631,7 +618,7 @@
   outline: none;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item.editing .subtask_item_actions {
+#addTaskContainer .subtask_item.editing .subtask_item_actions {
   position: absolute;
   top: 50%;
   right: 12px;
@@ -639,7 +626,7 @@
   gap: 8px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item_action_button {
+#addTaskContainer .subtask_item_action_button {
   width: 16px;
   height: 16px;
   display: flex;
@@ -651,18 +638,18 @@
   cursor: pointer;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .subtask_item_action_button img {
+#addTaskContainer .subtask_item_action_button img {
   width: 16px;
   height: 16px;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .requiredNotice {
-  margin-top: 160px;
+#addTaskContainer .requiredNotice {
+  margin-top: auto;
   font-size: 20px;
   color: #000000;
 }
 
-:is(#addTaskContainer, .taskForm_dialog) .requiredNotice span {
+#addTaskContainer .requiredNotice span {
   font-size: 20px;
   font-weight: 600;
   color: #ff0000;
@@ -716,11 +703,11 @@
     padding: 64px 40px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .left_form {
+  #addTaskContainer .left_form {
     width: 464px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .right_form {
+  #addTaskContainer .right_form {
     width: 464px;
   }
 }
@@ -738,11 +725,11 @@
     padding: 40px 40px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .left_form {
+  #addTaskContainer .left_form {
     width: 320px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .right_form {
+  #addTaskContainer .right_form {
     width: 320px;
   }
 }
@@ -760,34 +747,39 @@
     gap: 0;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .left_form {
+  #addTaskContainer .left_form {
     width: 100%;
     padding: 0;
     gap: 0;
+  }
+
+  #addTaskContainer #description {
+    width: 100%;
+    max-width: none;
   }
 
   #addTaskContainer .hr_add_task_none {
     display: none;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .right_form {
+  #addTaskContainer .right_form {
     width: 100%;
     padding: 0;
     justify-content: start;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .priority {
+  #addTaskContainer .priority {
     width: 100%;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) #priority {
+  #addTaskContainer #priority {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 8px 0;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) #priority button {
+  #addTaskContainer #priority button {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -798,27 +790,27 @@
     height: 40px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) #priority img {
+  #addTaskContainer #priority img {
     width: 12px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .assignee_toggle {
+  #addTaskContainer .assignee_toggle {
     font-size: 16px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .category {
+  #addTaskContainer .category {
     padding: 8px 0;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .category_toggle {
+  #addTaskContainer .category_toggle {
     font-size: 16px;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .form_buttons {
+  #addTaskContainer .form_buttons {
     display: none;
   }
 
-  :is(#addTaskContainer, .taskForm_dialog) .due_date_menu {
+  #addTaskContainer .due_date_menu {
     width: 100%;
   }
 
@@ -832,8 +824,4 @@
 
 .create_btn:hover {
   box-shadow: #2a364750 0 5px 2px -2px;
-}
-
-#priority {
-  display: flex;
 }
