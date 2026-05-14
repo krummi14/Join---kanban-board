@@ -61,10 +61,12 @@ export function getTasksForColumn(category, BOARD_COLUMNS) {
     (c) => normalizeCategory(c.path) === normalizeCategory(category)
   );
   if (!column) return [];
-  if (Array.isArray(column.tasks)) return column.tasks;
+  if (Array.isArray(column.tasks)) return sortTasksByOrder(column.tasks);
 
-  return tasks.filter(
-    (task) => normalizeStatusValue(task.status) === normalizeStatusValue(column.path)
+  return sortTasksByOrder(
+    tasks.filter(
+      (task) => normalizeStatusValue(task.status) === normalizeStatusValue(column.path)
+    )
   );
 }
 
@@ -83,7 +85,7 @@ export function getTasksForColumn(category, BOARD_COLUMNS) {
 //}
 
 // 🔄 MOVE
-export async function moveTask(taskId, targetCategory, BOARD_COLUMNS) {
+export async function moveTask(taskId, targetCategory, BOARD_COLUMNS, targetIndex = null) {
   const task = tasks.find((t) => t.id == taskId);
   const targetColumn = BOARD_COLUMNS.find((c) => c.path === targetCategory);
 
@@ -91,6 +93,7 @@ export async function moveTask(taskId, targetCategory, BOARD_COLUMNS) {
 
   const previousPath = task.status;
   const storagePath = getStoragePath(task);
+  const previousSourcePath = task.sourcePath;
 
   task.status = targetColumn.path;
 
@@ -101,11 +104,16 @@ export async function moveTask(taskId, targetCategory, BOARD_COLUMNS) {
 
     if (task.sourcePath !== TASKS_ROOT_PATH) {
       task.sourcePath = targetColumn.path;
-      await deleteData(`${previousPath}/${task.id}`);
-      await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
+      if (previousSourcePath !== targetColumn.path) {
+        await deleteData(`${previousSourcePath}/${task.id}`);
+        await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
+      }
     }
 
-    syncColumnTasksAfterMove(task, previousPath, targetColumn.path, BOARD_COLUMNS);
+    syncColumnTasksAfterMove(task, previousPath, targetColumn.path, BOARD_COLUMNS, targetIndex);
+    persistTaskOrder(previousPath, targetColumn.path, BOARD_COLUMNS).catch((error) => {
+      console.error(error);
+    });
 
     return { previousPath, newPath: targetColumn.path };
   } catch (error) {
@@ -196,6 +204,10 @@ function getTaskForStorage(task, status) {
   };
 }
 
+export function sortTasksByOrder(taskList = []) {
+  return [...taskList].sort(compareTaskOrder);
+}
+
 function getPriorityIcon(priority) {
   if (priority === "urgent") return "../assets/icon/btn_urgent_off.svg";
   if (priority === "medium") return "../assets/icon/btn_medium_off.svg";
@@ -261,22 +273,60 @@ function getStoragePath(task) {
   return `${task.sourcePath || task.status}/${task.id}`;
 }
 
-function syncColumnTasksAfterMove(task, previousPath, nextPath, BOARD_COLUMNS) {
+function syncColumnTasksAfterMove(task, previousPath, nextPath, BOARD_COLUMNS, targetIndex) {
   const previousColumn = BOARD_COLUMNS.find((column) => column.path === previousPath);
   const nextColumn = BOARD_COLUMNS.find((column) => column.path === nextPath);
 
-  if (Array.isArray(previousColumn?.tasks)) {
+  if (previousPath !== nextPath && Array.isArray(previousColumn?.tasks)) {
     previousColumn.tasks = previousColumn.tasks.filter((columnTask) => columnTask.id !== task.id);
   }
 
   if (Array.isArray(nextColumn?.tasks)) {
-    const existingIndex = nextColumn.tasks.findIndex((columnTask) => columnTask.id === task.id);
-    if (existingIndex !== -1) {
-      nextColumn.tasks[existingIndex] = task;
-      return;
-    }
-    nextColumn.tasks.push(task);
+    const nextTasks = nextColumn.tasks.filter((columnTask) => columnTask.id !== task.id);
+    const insertIndex = normalizeTaskIndex(targetIndex, nextTasks.length);
+    nextTasks.splice(insertIndex, 0, task);
+    nextColumn.tasks = nextTasks;
   }
+}
+
+async function persistTaskOrder(previousPath, nextPath, BOARD_COLUMNS) {
+  const affectedColumns = BOARD_COLUMNS.filter(
+    (column) => column.path === previousPath || column.path === nextPath
+  );
+
+  const pendingWrites = [];
+
+  affectedColumns.forEach((column) => {
+    if (!Array.isArray(column.tasks)) return;
+
+    column.tasks.forEach((task, index) => {
+      if (task.order === index) return;
+
+      task.order = index;
+      pendingWrites.push(putUserData(getStoragePath(task), { order: index }));
+    });
+  });
+
+  await Promise.all(pendingWrites);
+}
+
+function compareTaskOrder(leftTask, rightTask) {
+  const leftOrder = Number.isFinite(leftTask?.order) ? leftTask.order : Number.POSITIVE_INFINITY;
+  const rightOrder = Number.isFinite(rightTask?.order) ? rightTask.order : Number.POSITIVE_INFINITY;
+
+  if (leftOrder !== rightOrder) {
+    return leftOrder - rightOrder;
+  }
+
+  return String(leftTask?.id ?? "").localeCompare(String(rightTask?.id ?? ""));
+}
+
+function normalizeTaskIndex(targetIndex, taskCount) {
+  if (!Number.isInteger(targetIndex)) {
+    return taskCount;
+  }
+
+  return Math.max(0, Math.min(targetIndex, taskCount));
 }
 
 function isPlainObject(value) {

@@ -12,6 +12,8 @@ let dragTrackingInitialized = false;
 let lastPointerX = null;
 let lastPointerY = null;
 let dragTilt = 0;
+let pendingDropPath = null;
+let pendingDropIndex = null;
 
 export function initDragDrop(BOARD_COLUMNS) {
   BOARD_COLUMNS_REF = BOARD_COLUMNS;
@@ -70,6 +72,7 @@ export function endDragging() {
   lastPointerX = null;
   lastPointerY = null;
   dragTilt = 0;
+  resetPendingDropTarget();
   draggedId = null;
 }
 
@@ -90,18 +93,21 @@ function cleanupDraggedCard() {
 export function allowDrop(ev) {
   ev.preventDefault();
   positionDragPreview(ev);
+  updatePendingDropTarget(ev);
 }
 
 // 🔄 DROP / MOVE
 export async function moveTo(category) {
   if (!draggedId) return;
 
+  const targetIndex = resolveDropIndex(category);
+
   removeHighlight(category);
-  const optimisticMove = applyOptimisticMove(draggedId, category);
+  const optimisticMove = applyOptimisticMove(draggedId, category, targetIndex);
 
   if (optimisticMove) {
     updateColumns(
-      [optimisticMove.previousPath, optimisticMove.newPath],
+      [...new Set([optimisticMove.previousPath, optimisticMove.newPath])],
       BOARD_COLUMNS_REF
     );
   }
@@ -112,7 +118,8 @@ export async function moveTo(category) {
   const result = await moveTask(
     draggedId,
     category,
-    BOARD_COLUMNS_REF
+    BOARD_COLUMNS_REF,
+    targetIndex
   );
 
   if (!result) {
@@ -120,28 +127,30 @@ export async function moveTo(category) {
 
     if (optimisticMove) {
       updateColumns(
-        [optimisticMove.previousPath, optimisticMove.newPath],
+        [...new Set([optimisticMove.previousPath, optimisticMove.newPath])],
         BOARD_COLUMNS_REF
       );
     }
 
+    resetPendingDropTarget();
     draggedId = null;
     return;
   }
 
   updateColumns(
-    [result.previousPath, result.newPath],
+    [...new Set([result.previousPath, result.newPath])],
     BOARD_COLUMNS_REF
   );
 
+  resetPendingDropTarget();
   draggedId = null;
 }
 
-function applyOptimisticMove(taskId, nextPath) {
+function applyOptimisticMove(taskId, nextPath, targetIndex) {
   const previousColumn = BOARD_COLUMNS_REF?.find((column) => Array.isArray(column.tasks) && column.tasks.some((task) => task.id == taskId));
   const nextColumn = BOARD_COLUMNS_REF?.find((column) => column.path === nextPath);
 
-  if (!previousColumn || !nextColumn || previousColumn.path === nextPath) {
+  if (!previousColumn || !nextColumn) {
     return null;
   }
 
@@ -149,8 +158,8 @@ function applyOptimisticMove(taskId, nextPath) {
   if (previousIndex === -1) return null;
 
   const [task] = previousColumn.tasks.splice(previousIndex, 1);
-  const nextIndex = nextColumn.tasks.length;
-  nextColumn.tasks.push(task);
+  const nextIndex = getNormalizedDropIndex(nextColumn.tasks, targetIndex);
+  nextColumn.tasks.splice(nextIndex, 0, task);
 
   return {
     previousPath: previousColumn.path,
@@ -173,6 +182,80 @@ function rollbackOptimisticMove(optimisticMove) {
   previousColumn.tasks.splice(optimisticMove.previousIndex, 0, optimisticMove.task);
 }
 
+function updatePendingDropTarget(ev) {
+  const dropZone = ev?.currentTarget;
+  const columnId = dropZone?.querySelector(".drag_area")?.id;
+  if (!columnId) return;
+
+  pendingDropPath = columnId;
+  pendingDropIndex = getDropIndexForColumn(columnId, ev.clientY);
+  updateDropIndicator(columnId, pendingDropIndex);
+}
+
+function getDropIndexForColumn(columnId, pointerY) {
+  const container = document.getElementById(columnId);
+  const taskCards = Array.from(
+    container?.querySelectorAll(".task:not(.task-dragging)") || []
+  );
+
+  if (!taskCards.length) return 0;
+
+  const nextTaskIndex = taskCards.findIndex((taskCard) => {
+    const bounds = taskCard.getBoundingClientRect();
+    return pointerY < bounds.top + bounds.height / 2;
+  });
+
+  return nextTaskIndex === -1 ? taskCards.length : nextTaskIndex;
+}
+
+function resolveDropIndex(category) {
+  if (pendingDropPath === category && Number.isInteger(pendingDropIndex)) {
+    return pendingDropIndex;
+  }
+
+  const targetColumn = BOARD_COLUMNS_REF?.find((column) => column.path === category);
+  return Array.isArray(targetColumn?.tasks) ? targetColumn.tasks.length : 0;
+}
+
+function getNormalizedDropIndex(tasks, targetIndex) {
+  if (!Number.isInteger(targetIndex)) {
+    return tasks.length;
+  }
+
+  return Math.max(0, Math.min(targetIndex, tasks.length));
+}
+
+function resetPendingDropTarget() {
+  clearDropIndicators();
+  pendingDropPath = null;
+  pendingDropIndex = null;
+}
+
+function updateDropIndicator(columnId, targetIndex) {
+  clearDropIndicators();
+
+  const container = document.getElementById(columnId);
+  const taskCards = Array.from(
+    container?.querySelectorAll(".task:not(.task-dragging)") || []
+  );
+
+  if (!taskCards.length) return;
+
+  const previousTask = taskCards[targetIndex - 1] || null;
+  const nextTask = taskCards[targetIndex] || null;
+
+  previousTask?.classList.add("task-drop-after");
+  nextTask?.classList.add("task-drop-before");
+}
+
+function clearDropIndicators() {
+  document
+    .querySelectorAll(".task-drop-before, .task-drop-after")
+    .forEach((taskCard) => {
+      taskCard.classList.remove("task-drop-before", "task-drop-after");
+    });
+}
+
 function positionDragPreview(ev) {
   if (!activeDragPreview || typeof ev?.clientX !== "number" || typeof ev?.clientY !== "number") {
     return;
@@ -185,7 +268,11 @@ function positionDragPreview(ev) {
   lastPointerX = ev.clientX;
   lastPointerY = ev.clientY;
 
-  activeDragPreview.style.transform = `translate(${ev.clientX - dragAnchorX}px, ${ev.clientY - dragAnchorY - 10}px) rotate(${dragTilt}deg) scale(1.06)`;
+  const previewX = Math.round(ev.clientX - dragAnchorX);
+  const previewY = Math.round(ev.clientY - dragAnchorY - 10);
+  const previewTilt = Math.round(dragTilt * 10) / 10;
+
+  activeDragPreview.style.transform = `translate3d(${previewX}px, ${previewY}px, 0) rotate(${previewTilt}deg) scale(1.06)`;
   activeDragPreview.style.boxShadow = `0 26px 44px rgba(0, 0, 0, 0.24), ${dragTilt * 1.8}px 16px 24px rgba(0, 0, 0, 0.18)`;
 }
 
@@ -214,4 +301,10 @@ export function highlight(id) {
 // ❌ REMOVE HIGHLIGHT
 export function removeHighlight(id) {
   document.getElementById(id)?.classList.remove("drag-area-highlight");
+
+  if (pendingDropPath === id) {
+    clearDropIndicators();
+    pendingDropPath = null;
+    pendingDropIndex = null;
+  }
 }
