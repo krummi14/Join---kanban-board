@@ -1,3 +1,7 @@
+import {
+  getContactColor,
+  getContactInitials
+} from "../addtask/contactUtils.js";
 
 
 export function createSubtaskItem(st, index) {
@@ -42,7 +46,7 @@ function escapeHtmlAttribute(value) {
     .replace(/>/g, "&gt;");
 }
 
-export function createAssigneeOption(contact) {
+export function createAssigneeOption(contact) {   //CHANGE 
   return `
     <label class="assignee_option" for="assignee_${contact.id}">
       ${createAssigneeOptionText(contact)}
@@ -71,8 +75,6 @@ function createAssigneeOptionCheckbox(contactId) {
     </span>
   `;
 }
-
-
 function getAssigneeInitials(name) {
   const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return "";
@@ -278,12 +280,36 @@ function createFormButtons(path) {
   `;
 }
 
-export function getAssigneeOptionTemplate(contact) {
+export function createSelectedAssigneeAvatar(
+  contact
+) {
   return `
-    <label class="assignee_option">
-      <input type="checkbox" data-assignee-id="${contact.id}">
-      <span>${contact.name}</span>
-    </label>
+    <div
+      class="avatar selected_assignee_avatar"
+      title="${contact.name}"
+      style="background:${getContactColor(contact.name)}">
+
+      ${getContactInitials(contact.name)}
+
+    </div>
+  `;
+}
+
+export function createAssigneeLoadError() {
+
+  return `
+    <div class="assignee_status">
+      Can not load contacts.
+    </div>
+  `;
+}
+
+export function createAssigneeEmptyState() {
+
+  return `
+    <div class="assignee_status">
+      No contacts available.
+    </div>
   `;
 }
 

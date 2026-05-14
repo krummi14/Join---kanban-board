@@ -83,7 +83,6 @@
   height: 424px;
   border-top: 1px solid #d1d1d1;
 }
-
 @media(min-width: 1160px) and (max-width:1250px) {
   #addTaskContainer #taskForm {
     padding: 0 40px;

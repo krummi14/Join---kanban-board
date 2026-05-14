@@ -26,11 +26,46 @@ export function addSubtask(context) {
   updateSubtaskButtonState(context);
 }
 
-export function startSubtaskEdit(context, index) {
-  if (!Number.isInteger(index) || index < 0 || index >= context.state.subtasks.length) return;
+export function startSubtaskEdit(context, index) { //CHANGE
+
+  console.log("START SUBTASK EDIT");
+
+  console.log("INDEX:", index);
+
+  console.log(
+    "SUBTASKS:",
+    context.state.subtasks
+  );
+
+  console.log(
+    "SUBTASK LIST:",
+    context.elements.subtaskList
+  );
+
+  if (
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= context.state.subtasks.length
+  ) {
+    console.log("INVALID INDEX");
+
+    return;
+  }
+
   context.state.editingSubtaskIndex = index;
+
+  console.log(
+    "EDIT INDEX SET:",
+    context.state.editingSubtaskIndex
+  );
+
   renderSubtasks(context);
+
+  console.log("RENDER FINISHED");
+
   focusSubtaskEditInput(context, index);
+
+  console.log("FOCUS FINISHED");
 }
 
 export function saveSubtaskEdit(context, index) {
@@ -62,14 +97,58 @@ export function clearSubtaskInput(context) {
   input.focus();
 }
 
-export function renderSubtasks(context) {
-  if (!context.elements.subtaskList) return;
-  context.elements.subtaskList.innerHTML = context.state.subtasks
-    .map((subtask, index) => {
-      const item = { ...subtask, isEditing: context.state.editingSubtaskIndex === index };
-      return item.isEditing ? createEditableSubtaskItem(item, index) : createSubtaskItem(item, index);
-    })
-    .join("");
+export function renderSubtasks(context) { //CHANGE
+
+  console.log("RENDER SUBTASKS CALLED");
+
+  console.log(
+    "SUBTASK LIST EXISTS:",
+    context.elements.subtaskList
+  );
+
+  console.log(
+    "EDIT INDEX:",
+    context.state.editingSubtaskIndex
+  );
+
+  console.log(
+    "SUBTASKS:",
+    context.state.subtasks
+  );
+
+  if (!context.elements.subtaskList) {
+
+    console.log("NO SUBTASK LIST");
+
+    return;
+  }
+
+  context.elements.subtaskList.innerHTML =
+    context.state.subtasks
+      .map((subtask, index) => {
+
+        const isEditing =
+          context.state.editingSubtaskIndex === index;
+
+        console.log(
+          "RENDER ITEM:",
+          index,
+          "EDITING:",
+          isEditing
+        );
+
+        const item = {
+          ...subtask,
+          isEditing
+        };
+
+        return isEditing
+          ? createEditableSubtaskItem(item, index)
+          : createSubtaskItem(item, index);
+      })
+      .join("");
+
+  console.log("INNER HTML UPDATED");
 }
 
 export function removeSubtask(context, index) {

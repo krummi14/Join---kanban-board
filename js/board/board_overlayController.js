@@ -87,6 +87,10 @@ function setupEditUI() {
   const clearBtn = document.querySelector(".clear_btn");
   if (submitBtn) submitBtn.textContent = "Save changes";
   if (clearBtn) clearBtn.style.display = "none";
+
+  // 🔥 FIX
+  const menu = document.getElementById("assigneeDropdownMenu");
+  menu?.classList.add("d_none");
 }
 
 function initEditPrefill(task) {

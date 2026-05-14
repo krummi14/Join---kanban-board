@@ -197,11 +197,41 @@ function handleRemoveSubtaskClick(context, target) {
 }
 
 function handleEditSubtaskClick(context, target) {
-  const button = getScopedMatch(context, target, "[data-edit-subtask]");
+  console.log("EDIT SUBTASK CLICK TARGET:", target);
+
+  const button = getScopedMatch(
+    context,
+    target,
+    "[data-edit-subtask]"
+  );
+
+  console.log("EDIT BUTTON:", button);
+
   if (!button) return false;
-  startSubtaskEdit(context, Number(button.dataset.editSubtask));
+
+  console.log(
+    "EDIT SUBTASK INDEX:",
+    button.dataset.editSubtask
+  );
+
+  console.log(
+    "SUBTASKS BEFORE EDIT:",
+    context.state.subtasks
+  );
+
+  startSubtaskEdit(
+    context,
+    Number(button.dataset.editSubtask)
+  );
+
+  console.log(
+    "EDITING INDEX NOW:",
+    context.state.editingSubtaskIndex
+  );
+
   return true;
 }
+
 
 function handleSaveSubtaskEditClick(context, target) {
   const button = getScopedMatch(context, target, "[data-save-subtask-edit]");
@@ -217,9 +247,13 @@ function handleCancelSubtaskEditClick(context, target) {
   return true;
 }
 
-function handleAssigneeChange(context, event) {
+function handleAssigneeChange(context, event) {   //CHANGE
+  console.log("CHANGE EVENT TARGET:", event.target);
+  console.log("ASSIGNEE ID:", event.target?.dataset?.assigneeId);
+
   const checkbox = getScopedMatch(context, event.target, "[data-assignee-id]");
   if (!checkbox) return;
+
   toggleAssigneeSelection(context, checkbox.dataset.assigneeId);
 }
 

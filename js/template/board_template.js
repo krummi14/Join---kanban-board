@@ -208,7 +208,7 @@ export function generateAssignee(a) {
         ${getContactInitials(a.name)}
       </div>
 
-      <span>${a.name}</span>
+      <span class="assignee_row_name">${a.name}</span>
 
     </div>
   `;
@@ -259,16 +259,20 @@ export function generateSubtask(task, st, i) {
   return `
     <label class="subtask_item">
 
-      <input type="checkbox"
-             ${st.done ? "checked" : ""}
-             onchange="toggleSubtask('${task.id}', ${i})">
-
-      <span>${st.title}</span>
-
+      ${buildSubtaskCheckbox(task.id, st.done, i)}
+      <span class="custom_checkbox"></span>
+      <span class="subtask_text">${st.title}</span>
     </label>
   `;
 }
 
+function buildSubtaskCheckbox(taskId, isDone, index) {
+  return `
+    <input type="checkbox"
+           ${isDone ? "checked" : ""}
+           onchange="toggleSubtask('${taskId}', ${index})">
+  `;
+}
 
 export function getNoSubtasksTemplate() {
   return `<p>No subtasks yet</p>`;
