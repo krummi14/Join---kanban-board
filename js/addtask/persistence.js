@@ -7,19 +7,18 @@ const TASKS_STORAGE_PATH = "tasks";
 
 export async function handleTaskSubmit(context, event) {
   event.preventDefault();
-
   const form = context.taskForm;
   const editId = form.dataset.editId;
-
   try {
-    if (editId) {
-      await updateExistingTask(context, editId);
-      return;
-    }
-    await saveTask(context);
+    await persistTaskSubmission(context, editId);
   } catch (error) {
     console.error("SAVE FAILED", error);
   }
+}
+
+async function persistTaskSubmission(context, editId) {
+  if (editId) return updateExistingTask(context, editId);
+  return saveTask(context);
 }
 
 export async function updateExistingTask(context, taskId) {

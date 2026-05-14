@@ -5,36 +5,21 @@ const FIREBASE_CACHE_PREFIX = "join-cache:";
 
 export async function getData(path = "") {
     const normalizedPath = normalizePath(path);
-
     try {
-        let response = await fetch(buildUrl(normalizedPath));
-        if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
-        let responseToJson = await response.json();
-        writeCachedData(normalizedPath, responseToJson);
-        return responseToJson;
+        return await fetchAndCacheData(normalizedPath);
     } catch (error) {
-        const cachedData = readCachedData(normalizedPath);
-        if (cachedData !== null) {
-            console.warn(`Using cached Firebase data for ${normalizedPath || "root"}.`, error);
-            return cachedData;
-        }
-        throw error;
+        return readCachedFallback(normalizedPath, error);
     }
 }
 
 export async function putNewData(path = "", contactsIndex) {
-    let newId = extractIDs(); // neue ID erzeugen
-    let newContact = insertNewContactData(contactsIndex); // Daten aus dem Dialog holen
+    let newId = extractIDs();
+    let newContact = insertNewContactData(contactsIndex);
     newContact.id = newId;
     const normalizedPath = normalizePath(path + (newId - 1));
-    await fetch(buildUrl(normalizedPath), {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newContact)
-    });
-    writeCachedData(normalizedPath, newContact);
-    mergeCachedParent(normalizedPath, newContact);
-    contactsList.push(newContact); // in Liste speichern
+    await putJson(normalizedPath, newContact);
+    syncCachedWrite(normalizedPath, newContact);
+    contactsList.push(newContact);
     return newId;
 }
 
@@ -80,6 +65,34 @@ export async function putUserData(path = "", data = {}) {
 
 function buildUrl(path = "") {
     return `${BASE_URL}${path}.json`;
+}
+
+async function fetchAndCacheData(normalizedPath) {
+    let response = await fetch(buildUrl(normalizedPath));
+    if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+    let responseToJson = await response.json();
+    writeCachedData(normalizedPath, responseToJson);
+    return responseToJson;
+}
+
+function readCachedFallback(normalizedPath, error) {
+    const cachedData = readCachedData(normalizedPath);
+    if (cachedData === null) throw error;
+    console.warn(`Using cached Firebase data for ${normalizedPath || "root"}.`, error);
+    return cachedData;
+}
+
+async function putJson(normalizedPath, data) {
+    await fetch(buildUrl(normalizedPath), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+}
+
+function syncCachedWrite(normalizedPath, data) {
+    writeCachedData(normalizedPath, data);
+    mergeCachedParent(normalizedPath, data);
 }
 
 function normalizePath(path = "") {

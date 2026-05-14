@@ -1,5 +1,6 @@
 import { createAddTaskForm } from "../addtask/addTaskForm.js";
 import { createAddTaskFormTemplate } from "../template/add_task_template.js";
+import { createEditTaskTemplate } from "../template/board_edit_template.js";
 import { getTasks, deleteTask, toggleSubtask } from "./board_taskService.js";
 import {
   generateTaskOverlay,
@@ -10,253 +11,160 @@ import {
 } from "../template/board_template.js";
 import { loadTasks } from "./board_taskService.js";
 import { updateHTML } from "./board_taskView.js";
-import { createEditTaskTemplate } from "../template/board_template.js";
-
-
 
 let addTaskFormController = null;
 
-// ======================
-// OVERLAY OPEN (VIEW)
-// ======================
 export function openOverlay(taskId) {
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === taskId);
-
+  const task = findTask(taskId);
   if (!task) return;
-
-  const overlay = document.getElementById("overlay");
-
-  overlay.innerHTML = generateTaskOverlay(task);
-  overlay.classList.remove("hidden");
+  renderOverlay(generateTaskOverlay(task));
 }
 
-// ======================
-// CLOSE + CLICK
-// ======================
 export function closeOverlay() {
-  document.getElementById("overlay")?.classList.add("hidden");
+  getOverlayElement()?.classList.add("hidden");
 }
 
 export function handleOverlayClick(event) {
-  if (event.target.id === "overlay") {
-    closeOverlay();
-  }
+  if (event.target.id !== "overlay") return;
+  closeOverlay();
 }
 
-// ======================
-// USER HELPERS
-// ======================
 function getCurrentUserName() {
   return localStorage.getItem("userName") || "";
 }
 
-
-function generateAvatarHTML(assignees) {
-  let visible = assignees.slice(0, 3);
-  let rest = assignees.length - 3;
-
-  let html = "";
-
-  for (let i = 0; i < visible.length; i++) {
-    html += generateSingleAvatar(visible[i]);
-  }
-
-  if (rest > 0) {
-    html += generateExtraAvatar(rest);
-  }
-
-  return html;
-}
-
-export function getAvatarHTML(task) {
-  const hasAssignees = task.assignees && task.assignees.length > 0;
-
-  if (!hasAssignees) {
-    return getNoAssigneesCardTemplate();
-  }
-
-  return generateAvatarHTML(task.assignees);
-}
-
-// ======================
-// ASSIGNEES RENDER
-// ======================
 function generateAssigneesContent(task) {
-  if (!task.assignees || task.assignees.length === 0) {
-    return getNoAssigneesTemplate();
-  }
-
-  let html = "";
   const currentUser = getCurrentUserName();
-
-  for (let i = 0; i < task.assignees.length; i++) {
-    const a = task.assignees[i];
-    const isYou = a.name === currentUser;
-
-    html += getAssigneeTemplate(a, isYou);
-  }
-
-  return html;
+  if (!task.assignees?.length) return getNoAssigneesTemplate();
+  return task.assignees.map((assignee) => createAssigneeMarkup(assignee, currentUser)).join("");
 }
 
-// ======================
-// SUBTASKS RENDER
-// ======================
 function generateSubtasksContent(task) {
-  if (!task.subtasks || task.subtasks.length === 0) {
-    return getNoSubtasksTemplate();
-  }
-
-  let html = "";
-
-  for (let i = 0; i < task.subtasks.length; i++) {
-    html += generateSubtask(task, task.subtasks[i], i);
-  }
-
-  return html;
+  if (!task.subtasks?.length) return getNoSubtasksTemplate();
+  return task.subtasks.map((subtask, index) => generateSubtask(task, subtask, index)).join("");
 }
 
-// ======================
-// SUBTASK TOGGLE
-// ======================
-window.toggleSubtask = async function(taskId, index) {
-  console.log("CLICK WORKS");
-
+window.toggleSubtask = async function (taskId, index) {
   await toggleSubtask(taskId, index);
-
-  await loadTasks(window.BOARD_COLUMNS);
-  window.updateHTML(window.BOARD_COLUMNS);
+  await refreshBoard();
 };
-// ======================
-// DATE FORMAT
-// ======================
+
 function formatDate(dateString) {
   if (!dateString) return "";
-
   if (dateString.includes("/")) return dateString;
-
   const date = new Date(dateString);
   if (isNaN(date)) return dateString;
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
+  return formatDateParts(date);
 }
 
-// ======================
-// DELETE
-// ======================
-window.deleteTask = async function(taskId) {
+window.deleteTask = async function (taskId) {
   await deleteTask(taskId);
-
   closeOverlay();
   updateHTML?.();
 };
 
-// ======================
-// EDIT (UNVERÄNDERT STRUKTUR)
-// ======================
 async function editTask(taskId) {
-    console.log("EDIT TASK CALLED", taskId);
-  const tasks = getTasks();
-  const task = tasks.find(t => t.id === taskId);
+  const task = findTask(taskId);
   if (!task) return;
-
-  const form = renderEditForm(task);
+  const form = renderEditForm();
   initEditController(form, task);
-  setupEditUI(form);
-  initEditPrefill(task, form);
+  setupEditUI();
+  initEditPrefill(task);
 }
 
-// ======================
-// RENDER EDIT FORM
-// ======================
-function renderEditForm(task) {
-  const overlay = document.getElementById("overlay");
-
-  overlay.innerHTML = createEditTaskTemplate(); // ✅ NEU
-  overlay.classList.remove("hidden");
-
+function renderEditForm() {
+  renderOverlay(createEditTaskTemplate());
   return document.getElementById("taskForm");
 }
 
-// ======================
-// INIT CONTROLLER
-// ======================
 function initEditController(form, task) {
-  console.log("INIT CONTROLLER START");
-
-  if (window.addTaskFormController) {
-    window.addTaskFormController.destroy();
-  }
-
-  window.addTaskFormController = createAddTaskForm(
-    form,
-    task.sourcePath || task.status,
-    {
-      onSave: async (taskId) => {
-        await loadTasks(window.BOARD_COLUMNS);
-        updateHTML(window.BOARD_COLUMNS);
-        closeOverlay();
-        openOverlay(taskId);
-      },
-      mode: "edit" // 🔥 WICHTIG
-    }
-  );
+  destroyEditController();
+  addTaskFormController = createAddTaskForm(form, getTaskSourcePath(task), getEditControllerConfig());
 }
-// ======================
-// UI EDIT
-// ======================
+
 function setupEditUI() {
   const submitBtn = document.getElementById("createTask");
   const clearBtn = document.querySelector(".clear_btn");
-
   if (submitBtn) submitBtn.textContent = "Save changes";
   if (clearBtn) clearBtn.style.display = "none";
 }
 
-// ======================
-// PREFILL
-// ======================
-function initEditPrefill(task, form) {
-  const controller = window.addTaskFormController;
-  if (!controller) return;
-  controller.prefillTask(task);
+function initEditPrefill(task) {
+  if (!addTaskFormController) return;
+  addTaskFormController.prefillTask(task);
 }
-
-
-
-
-
 
 window.openOverlay = openOverlay;
 window.closeOverlay = closeOverlay;
 window.generateAssigneesContent = generateAssigneesContent;
 window.generateSubtasksContent = generateSubtasksContent;
 window.formatDate = formatDate;
-
 window.deleteTask = deleteTask;
 window.editTask = editTask;
 window.createAddTaskFormTemplate = createAddTaskFormTemplate;
 
-
 window.toggleAssigneeDropdown = function (event) {
-  event.stopPropagation(); // 🔥 wichtig
-
-  const menu = document.getElementById("assigneeDropdownMenu");
-  if (!menu) return;
-
-  menu.classList.toggle("d_none");
+  event.stopPropagation();
+  toggleMenuVisibility("assigneeDropdownMenu");
 };
 
 window.toggleCategoryDropdown = function (event) {
   if (event) event.stopPropagation();
-
-  const menu = document.getElementById("categoryDropdownMenu");
-  if (!menu) return;
-
-  menu.classList.toggle("d_none");
+  toggleMenuVisibility("categoryDropdownMenu");
 };
+
+function findTask(taskId) {
+  return getTasks().find((task) => task.id === taskId);
+}
+
+function getOverlayElement() {
+  return document.getElementById("overlay");
+}
+
+function renderOverlay(markup) {
+  const overlay = getOverlayElement();
+  if (!overlay) return;
+  overlay.innerHTML = markup;
+  overlay.classList.remove("hidden");
+}
+
+function createAssigneeMarkup(assignee, currentUser) {
+  const isYou = assignee.name === currentUser;
+  return getAssigneeTemplate(assignee, isYou);
+}
+
+async function refreshBoard() {
+  await loadTasks(window.BOARD_COLUMNS);
+  window.updateHTML(window.BOARD_COLUMNS);
+}
+
+function formatDateParts(date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+function destroyEditController() {
+  addTaskFormController?.destroy();
+}
+
+function getTaskSourcePath(task) {
+  return task.sourcePath || task.status;
+}
+
+function getEditControllerConfig() {
+  return { onSave: handleEditSave, mode: "edit" };
+}
+
+async function handleEditSave(taskId) {
+  await refreshBoard();
+  closeOverlay();
+  openOverlay(taskId);
+}
+
+function toggleMenuVisibility(menuId) {
+  const menu = document.getElementById(menuId);
+  if (!menu) return;
+  menu.classList.toggle("d_none");
+}

@@ -22,42 +22,16 @@ export function closeDueDatePickerOnOutsideClick(context, event) {
 }
 
 export function handleDueDateClick(context, target) {
-  const navButton = getScopedDueDateMatch(context, target, "[data-due-date-nav]");
-  if (navButton) {
-    changeVisibleMonth(context, Number(navButton.dataset.dueDateNav));
-    return true;
-  }
-
-  const dayButton = getScopedDueDateMatch(context, target, "[data-due-date-value]");
-  if (dayButton) {
-    if (dayButton.dataset.dueDateDisabled === "true") return true;
-    selectDueDate(context, dayButton.dataset.dueDateValue);
-    return true;
-  }
-
-  const toggle = getScopedDueDateMatch(context, target, "[data-due-date-toggle]");
-  if (!toggle) return false;
-  toggleDueDatePicker(context);
-  return true;
+  if (handleDueDateNavClick(context, target)) return true;
+  if (handleDueDateDayClick(context, target)) return true;
+  return handleDueDateToggleClick(context, target);
 }
 
 export function handleDueDateKeydown(context, event) {
   const toggle = getScopedDueDateMatch(context, event.target, "[data-due-date-toggle]");
   if (!toggle) return false;
-
-  if (event.key === "Enter" || event.key === " ") {
-    event.preventDefault();
-    toggleDueDatePicker(context);
-    return true;
-  }
-
-  if (event.key === "Escape") {
-    event.preventDefault();
-    closeDueDatePicker(context);
-    return true;
-  }
-
-  return false;
+  if (handleDueDateToggleKey(context, event)) return true;
+  return handleDueDateEscapeKey(context, event);
 }
 
 export function resetDueDatePicker(context) {
@@ -122,44 +96,10 @@ function renderDueDatePicker(context) {
 }
 
 function buildDayGridMarkup(context, viewDate) {
-  const monthStart = getMonthStart(viewDate);
-  const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0);
-  const leadingEmptyDays = (monthStart.getDay() + 6) % 7;
-  const totalDays = monthEnd.getDate();
-  const todayValue = context.state.dueDateMin;
-  const selectedValue = context.elements.dueDate?.dataset.isoValue || "";
+  const monthData = getDueDateMonthData(context, viewDate);
   const cells = [];
-
-  for (let index = 0; index < leadingEmptyDays; index += 1) {
-    cells.push('<span class="due_date_day due_date_day_empty" aria-hidden="true"></span>');
-  }
-
-  for (let day = 1; day <= totalDays; day += 1) {
-    const cellDate = new Date(monthStart.getFullYear(), monthStart.getMonth(), day);
-    const cellValue = formatISODate(cellDate);
-    const isSelected = cellValue === selectedValue;
-    const isPast = cellValue < todayValue && !isSelected;
-    const isToday = cellValue === todayValue;
-    const classes = ["due_date_day"];
-
-    if (isPast) classes.push("due_date_day_disabled");
-    if (isSelected) classes.push("due_date_day_selected");
-    if (isToday) classes.push("due_date_day_today");
-
-    cells.push(`
-      <button
-        type="button"
-        class="${classes.join(" ")}"
-        data-due-date-value="${cellValue}"
-        data-due-date-disabled="${String(isPast)}"
-        aria-disabled="${String(isPast)}"
-        tabindex="${isPast ? "-1" : "0"}">
-        <span class="due_date_day_number">${day}</span>
-        ${isPast ? `<span class="due_date_day_hint">${INVALID_DATE_HINT}</span>` : ""}
-      </button>
-    `);
-  }
-
+  addLeadingEmptyCells(cells, monthData.leadingEmptyDays);
+  addDueDateDayCells(cells, monthData);
   return cells.join("");
 }
 
@@ -214,46 +154,147 @@ function registerDueDateInputEvents(context) {
 function handleManualDueDateInput(context) {
   const input = context.elements.dueDate;
   if (!input) return;
-
   clearDueDateValidation(input);
-  const normalizedValue = normalizeDisplayInput(input.value);
-  if (input.value !== normalizedValue) {
-    input.value = normalizedValue;
-  }
-
-  const isoValue = parseDisplayDate(normalizedValue);
-  input.dataset.isoValue = isoValue || "";
-  if (isoValue) {
-    const parsed = parseISODate(isoValue);
-    if (parsed) {
-      context.state.dueDateView = getMonthStart(parsed);
-      renderDueDatePicker(context);
-    }
-  }
+  const normalizedValue = syncNormalizedDueDateInput(input);
+  updateManualDueDateIsoValue(context, input, normalizedValue);
 }
 
 function finalizeManualDueDateInput(context) {
   const input = context.elements.dueDate;
   if (!input) return;
-
   clearDueDateValidation(input);
   const isoValue = parseDisplayDate(input.value);
-  if (!isoValue) {
-    input.value = input.value.trim() ? "" : input.value;
-    input.dataset.isoValue = "";
-    renderDueDatePicker(context);
-    return;
-  }
-
-  if (isoValue < context.state.dueDateMin) {
-    input.dataset.isoValue = "";
-    input.setCustomValidity(INVALID_DATE_HINT);
-    input.reportValidity();
-    renderDueDatePicker(context);
-    return;
-  }
-
+  if (!isoValue) return resetInvalidManualDueDateInput(context, input);
+  if (isPastDueDate(context, isoValue)) return reportPastDueDate(context, input);
   syncDueDateValue(context, isoValue);
+}
+
+function handleDueDateNavClick(context, target) {
+  const navButton = getScopedDueDateMatch(context, target, "[data-due-date-nav]");
+  if (!navButton) return false;
+  changeVisibleMonth(context, Number(navButton.dataset.dueDateNav));
+  return true;
+}
+
+function handleDueDateDayClick(context, target) {
+  const dayButton = getScopedDueDateMatch(context, target, "[data-due-date-value]");
+  if (!dayButton) return false;
+  if (dayButton.dataset.dueDateDisabled !== "true") {
+    selectDueDate(context, dayButton.dataset.dueDateValue);
+  }
+  return true;
+}
+
+function handleDueDateToggleClick(context, target) {
+  const toggle = getScopedDueDateMatch(context, target, "[data-due-date-toggle]");
+  if (!toggle) return false;
+  toggleDueDatePicker(context);
+  return true;
+}
+
+function handleDueDateToggleKey(context, event) {
+  if (event.key !== "Enter" && event.key !== " ") return false;
+  event.preventDefault();
+  toggleDueDatePicker(context);
+  return true;
+}
+
+function handleDueDateEscapeKey(context, event) {
+  if (event.key !== "Escape") return false;
+  event.preventDefault();
+  closeDueDatePicker(context);
+  return true;
+}
+
+function getDueDateMonthData(context, viewDate) {
+  const monthStart = getMonthStart(viewDate);
+  const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0);
+  return {
+    monthStart,
+    totalDays: monthEnd.getDate(),
+    leadingEmptyDays: (monthStart.getDay() + 6) % 7,
+    todayValue: context.state.dueDateMin,
+    selectedValue: context.elements.dueDate?.dataset.isoValue || "",
+  };
+}
+
+function addLeadingEmptyCells(cells, leadingEmptyDays) {
+  for (let index = 0; index < leadingEmptyDays; index += 1) {
+    cells.push('<span class="due_date_day due_date_day_empty" aria-hidden="true"></span>');
+  }
+}
+
+function addDueDateDayCells(cells, monthData) {
+  for (let day = 1; day <= monthData.totalDays; day += 1) {
+    cells.push(createDueDateDayCell(day, monthData));
+  }
+}
+
+function createDueDateDayCell(day, monthData) {
+  const cellState = getDueDateDayState(day, monthData);
+  const dayHint = getDueDateDayHint(cellState.isPast);
+  return `
+      <button type="button" class="${cellState.classes.join(" ")}" data-due-date-value="${cellState.value}" data-due-date-disabled="${String(cellState.isPast)}" aria-disabled="${String(cellState.isPast)}" tabindex="${cellState.isPast ? "-1" : "0"}">
+        <span class="due_date_day_number">${day}</span>${dayHint}
+      </button>
+    `;
+}
+
+function getDueDateDayHint(isPast) {
+  if (!isPast) return "";
+  return `<span class="due_date_day_hint">${INVALID_DATE_HINT}</span>`;
+}
+
+function getDueDateDayState(day, monthData) {
+  const cellValue = formatISODate(new Date(monthData.monthStart.getFullYear(), monthData.monthStart.getMonth(), day));
+  const isSelected = cellValue === monthData.selectedValue;
+  const isPast = cellValue < monthData.todayValue && !isSelected;
+  return {
+    value: cellValue,
+    isPast,
+    classes: getDueDateDayClasses(cellValue, monthData, isSelected, isPast),
+  };
+}
+
+function getDueDateDayClasses(cellValue, monthData, isSelected, isPast) {
+  const classes = ["due_date_day"];
+  if (isPast) classes.push("due_date_day_disabled");
+  if (isSelected) classes.push("due_date_day_selected");
+  if (cellValue === monthData.todayValue) classes.push("due_date_day_today");
+  return classes;
+}
+
+function syncNormalizedDueDateInput(input) {
+  const normalizedValue = normalizeDisplayInput(input.value);
+  if (input.value !== normalizedValue) input.value = normalizedValue;
+  return normalizedValue;
+}
+
+function updateManualDueDateIsoValue(context, input, normalizedValue) {
+  const isoValue = parseDisplayDate(normalizedValue);
+  input.dataset.isoValue = isoValue || "";
+  if (!isoValue) return;
+  const parsed = parseISODate(isoValue);
+  if (!parsed) return;
+  context.state.dueDateView = getMonthStart(parsed);
+  renderDueDatePicker(context);
+}
+
+function resetInvalidManualDueDateInput(context, input) {
+  input.value = input.value.trim() ? "" : input.value;
+  input.dataset.isoValue = "";
+  renderDueDatePicker(context);
+}
+
+function isPastDueDate(context, isoValue) {
+  return isoValue < context.state.dueDateMin;
+}
+
+function reportPastDueDate(context, input) {
+  input.dataset.isoValue = "";
+  input.setCustomValidity(INVALID_DATE_HINT);
+  input.reportValidity();
+  renderDueDatePicker(context);
 }
 
 function getStoredDueDate(context) {

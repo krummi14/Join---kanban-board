@@ -1,0 +1,291 @@
+/* contact dialog */
+.contact_dialog_content {
+    border-radius: 30px;
+    border: none;
+    top: 50%;
+    left: 50%;
+    height: 600px;
+    width: 1200px;
+    padding: 0;
+    transform: translate(-50%, -50%) translateX(500px);
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_direction {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.contact_dialog_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    background-color: rgba(42, 54, 71, 1);
+    height: 100%;
+    width: 640px;
+    color: white;
+    padding-left: 40px;
+}
+
+.contact_dialog_header_direction {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+}
+
+.logo_size_contact_dialog {
+    width: 56px;
+    height: 64px;
+}
+
+.header_dividingline {
+    height: 3px;
+    width: 90px;
+    background-color: rgba(41, 171, 226, 1);
+}
+
+.contact_dialog_main {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 48px;
+    height: 100%;
+    width: 100%;
+    padding-left: 64px;
+    padding-right: 56px;
+}
+
+.contact_dialog_close_button_direction {
+    display: flex;
+    justify-content: end;
+    margin-top: 24px;
+}
+
+.contact_dialog_close_button_direction_responsive {
+    display: none;
+}
+
+.contact_dialog_initial_and_assets {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 400px;
+    gap: 48px;
+}
+
+.contact_dialog_input_and_button_direction {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+}
+
+.contact_dialog_input_direction {
+    display: flex;
+    flex-direction: column;
+    height: 320px;
+}
+
+.contact_dialog_button_direction {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+
+.contact_dialog_content.dialog_opend {
+    transform: translate(-50%, -50%) translateX(0);
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_content::backdrop {
+    background-color: rgb(184, 185, 186);
+    opacity: 0;
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_content.dialog_opend::backdrop {
+    opacity: 0.3;
+}
+
+.contact_dialog_content.dialog_closed {
+    transform: translate(-50%, -50%) translateX(500px);
+    transition: all 125ms ease-in;
+}
+
+.contact_dialog_content.dialog_closed::backdrop {
+    opacity: 0;
+}
+
+.contact_description_text {
+    font-size: 27px;
+    font-weight: 400;
+}
+
+/* contact created succesfully */
+.contact_createdSuccesfully {
+    font-size: 20px;
+    font-weight: 400;
+    width: 320px;
+    text-align: center;
+    color: white;
+    background-color: rgba(42, 54, 71, 1);
+    border-radius: 20px;
+    padding: 16px;
+}
+
+.contact_etited_text_deactive {
+    display: none;
+}
+
+.contact_createdSuccesfully_deactive {
+    display: none;
+}
+
+@keyframes slideLeftCreated {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(250px);
+    }
+}
+
+@keyframes slideRigthCreated {
+    from {
+        transform: translateX(250px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
+.contact_createdSuccesfully_animation {
+    animation: slideRigthCreated 2s forwards;
+}
+
+.contact_createdSuccesfully_deactive_animation {
+    animation: slideLeftCreated 2s forwards;
+}
+
+@media(min-width: 320px) and (max-width:1115px) {
+    .contact_dialog_content {
+        height: 640px;
+        width: 100%;
+        transform: translate(-50%, -50%) translateY(500px);
+        transition: all 250ms ease-in;
+    }
+
+    .contact_dialog_content.dialog_opend {
+        transform: translate(-50%, -50%) translateY(0);
+        transition: all 250ms ease-in;
+    }
+
+    .contact_dialog_content.dialog_closed {
+        transform: translate(-50%, -50%) translateY(500px);
+        transition: all 250ms ease-in;
+    }
+
+    .contact_dialog_direction {
+        flex-direction: column;
+    }
+
+    .contact_dialog_header {
+        justify-content: flex-start;
+        width: 100%;
+        height: 40%;
+        gap: 24px;
+        padding-top: 16px;
+        padding-left: 16px;
+    }
+
+    .contact_dialog_header_direction {
+        gap: 8px;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .contact_description_text {
+        font-size: 20px;
+    }
+
+    .contact_dialog_main {
+        height: 50%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .contact_dialog_close_button_direction {
+        display: none;
+    }
+
+    .contact_dialog_close_button_direction_responsive {
+        display: flex;
+        justify-content: end;
+        padding-right: 16px;
+    }
+
+    .contact_dialog_initial_and_assets {
+        flex-direction: column;
+        padding-top: 56px;
+    }
+
+    .contact_dialog_initial_responsive_position {
+        position: absolute;
+        top: 34%;
+        z-index: 2;
+    }
+
+    .contact_dialog_input_and_button_direction {
+        align-items: center;
+        width: 100%;
+        padding: 0 16px;
+    }
+
+    .contact_dialog_input_direction {
+        height: 100%;
+        width: 100%;
+    }
+
+    .contact_createdSuccesfully_span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    @keyframes slideUpSuccesfully {
+        from {
+            transform: translateY(0px);
+        }
+
+        to {
+            transform: translateY(300px);
+        }
+    }
+
+    @keyframes slideDownSuccesfully {
+        from {
+            transform: translateY(300px);
+        }
+
+        to {
+            transform: translateY(0px);
+        }
+    }
+
+    .contact_createdSuccesfully_animation {
+        animation: slideDownSuccesfully 2s forwards;
+    }
+
+    .contact_createdSuccesfully_deactive_animation {
+        animation: slideUpSuccesfully 2s forwards;
+    }
+}

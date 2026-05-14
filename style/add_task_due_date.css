@@ -1,0 +1,190 @@
+#addTaskContainer #dueDate {
+  color: rgba(128, 128, 128, 0.3);
+}
+
+#addTaskContainer #dueDate:valid {
+  color: #000000;
+}
+
+#addTaskContainer .due_date_picker {
+  position: relative;
+}
+
+#addTaskContainer .due_date_picker_field {
+  position: relative;
+}
+
+#addTaskContainer .due_date_input {
+  width: 100%;
+  padding-right: 52px;
+  cursor: text;
+  background-color: #ffffff;
+}
+
+#addTaskContainer .due_date_input::placeholder {
+  color: rgba(128, 128, 128, 0.7);
+}
+
+#addTaskContainer .due_date_icon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #2a3647;
+  padding: 0;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+#addTaskContainer .due_date_icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+#addTaskContainer .due_date_menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: min(100%, 340px);
+  padding: 16px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 12px 32px rgba(42, 54, 71, 0.16);
+  z-index: 30;
+}
+
+#addTaskContainer .due_date_menu.open {
+  display: block;
+}
+
+#addTaskContainer .due_date_menu_header,
+#addTaskContainer .due_date_weekdays,
+#addTaskContainer .due_date_days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#addTaskContainer .due_date_menu_header {
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+#addTaskContainer .due_date_nav_button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 999px;
+  background: #f6f7f8;
+  color: #2a3647;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#addTaskContainer .due_date_nav_button:hover {
+  background: #e8f3ff;
+}
+
+#addTaskContainer .due_date_month_label {
+  text-align: center;
+  color: #2a3647;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#addTaskContainer .due_date_weekdays {
+  margin-bottom: 8px;
+}
+
+#addTaskContainer .due_date_weekdays span {
+  color: #647188;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#addTaskContainer .due_date_weekdays span:nth-child(6),
+#addTaskContainer .due_date_weekdays span:nth-child(7) {
+  color: #8b5e3c;
+}
+
+#addTaskContainer .due_date_day {
+  position: relative;
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: #2a3647;
+  cursor: pointer;
+}
+
+#addTaskContainer .due_date_day:hover {
+  border-color: #29abe2;
+  background: #f5fbff;
+}
+
+#addTaskContainer .due_date_day_empty {
+  min-height: 40px;
+}
+
+#addTaskContainer .due_date_day_disabled {
+  color: #b5beca;
+  cursor: not-allowed;
+}
+
+#addTaskContainer .due_date_day_disabled:hover {
+  border-color: #ff7a59;
+  background: #fff3ef;
+}
+
+#addTaskContainer .due_date_day_selected {
+  background: #2a3647;
+  color: #ffffff;
+}
+
+#addTaskContainer .due_date_day_today {
+  border-color: #29abe2;
+}
+
+#addTaskContainer .due_date_day_number {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#addTaskContainer .due_date_day_hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  width: 180px;
+  display: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #2a3647;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+  transform: translateX(-50%);
+  box-shadow: 0 12px 24px rgba(42, 54, 71, 0.18);
+  z-index: 2;
+}
+
+#addTaskContainer .due_date_day_disabled:hover .due_date_day_hint,
+#addTaskContainer .due_date_day_disabled:focus-visible .due_date_day_hint {
+  display: block;
+}
+
+@media(min-width: 320px) and (max-width:1115px) {
+  #addTaskContainer .due_date_menu {
+    width: 100%;
+  }
+}

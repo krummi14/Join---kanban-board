@@ -136,19 +136,9 @@ function contactColor(contactsIndex) {
 }
 
 function openContactInformation(contactsIndex) {
-    if (activeContact == contactsIndex) {
-        closeContactInformation(contactsIndex);
-        return;
-    }
-    if (activeContact !== null && activeContact !== contactsIndex) {
-        closeContactInformation(activeContact);
-    }
-    let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
-    contentContactMain.style.overflow = "hidden";
-    contentContactWrapper.classList.add('contact_wrapper_active');
-    contentContactInformation.classList.remove("contact_information_deactive");
-    contentContactInformation.classList.add("contact_information_animation");
-    contentContact.classList.remove('responsive_contactInformation_none');
+    if (isActiveContact(contactsIndex)) return closeCurrentContact(contactsIndex);
+    closePreviousContact(contactsIndex);
+    activateContactView(contactsIndex);
     createContentInformation(contactsIndex);
     createEditButtonResponsive(contactsIndex);
     activeContact = contactsIndex;
@@ -289,19 +279,46 @@ function createEditButtonResponsive(contactsIndex) {
 function addEditAndDeleteResponisve(event) {
     if (event) event.stopPropagation();
     let editAndDeleteMenu = document.getElementById('edit_and_delete_mobile_menu');
-    if (menuStatus == 'on') {
-        contentContact.style.overflow = "hidden";
-        editAndDeleteMenu.classList.remove('close');
-        editAndDeleteMenu.classList.add('open');
-        menuStatus = 'off';
-    } else if (!editAndDeleteMenu || menuStatus == 'off') {
-        editAndDeleteMenu.classList.add('close');
-        menuStatus = 'on';
-        setTimeout(() => {
-            contentContact.style.overflow = "";
-            editAndDeleteMenu.classList.remove('open');
-        }, 125);
-    }
+    if (menuStatus == 'on') return openResponsiveActionMenu(editAndDeleteMenu);
+    if (!editAndDeleteMenu || menuStatus == 'off') closeResponsiveActionMenu(editAndDeleteMenu);
+}
+
+function isActiveContact(contactsIndex) {
+    return activeContact == contactsIndex;
+}
+
+function closeCurrentContact(contactsIndex) {
+    closeContactInformation(contactsIndex);
+}
+
+function closePreviousContact(contactsIndex) {
+    if (activeContact === null || activeContact === contactsIndex) return;
+    closeContactInformation(activeContact);
+}
+
+function activateContactView(contactsIndex) {
+    let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
+    contentContactMain.style.overflow = "hidden";
+    contentContactWrapper.classList.add('contact_wrapper_active');
+    contentContactInformation.classList.remove("contact_information_deactive");
+    contentContactInformation.classList.add("contact_information_animation");
+    contentContact.classList.remove('responsive_contactInformation_none');
+}
+
+function openResponsiveActionMenu(editAndDeleteMenu) {
+    contentContact.style.overflow = "hidden";
+    editAndDeleteMenu.classList.remove('close');
+    editAndDeleteMenu.classList.add('open');
+    menuStatus = 'off';
+}
+
+function closeResponsiveActionMenu(editAndDeleteMenu) {
+    editAndDeleteMenu.classList.add('close');
+    menuStatus = 'on';
+    setTimeout(() => {
+        contentContact.style.overflow = "";
+        editAndDeleteMenu.classList.remove('open');
+    }, 125);
 }
 
 window.initContacts = initContacts;

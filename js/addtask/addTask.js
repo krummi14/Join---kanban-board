@@ -39,20 +39,31 @@ async function handleTaskCreated() {
 function showTaskAddedFeedback() {
   const feedback = document.getElementById("taskAddedFeedback");
   if (!feedback) return Promise.resolve();
+  restartTaskAddedFeedback(feedback);
+  clearTaskAddedFeedbackTimer();
+  return waitForTaskAddedFeedbackToFinish(feedback);
+}
+
+function restartTaskAddedFeedback(feedback) {
   feedback.classList.remove("task_added_feedback_visible");
   void feedback.offsetWidth;
   feedback.classList.add("task_added_feedback_visible");
+}
 
-  if (taskAddedFeedbackTimer) {
-    window.clearTimeout(taskAddedFeedbackTimer);
-  }
+function clearTaskAddedFeedbackTimer() {
+  if (!taskAddedFeedbackTimer) return;
+  window.clearTimeout(taskAddedFeedbackTimer);
+}
 
+function waitForTaskAddedFeedbackToFinish(feedback) {
   return new Promise((resolve) => {
-    taskAddedFeedbackTimer = window.setTimeout(() => {
-      feedback.classList.remove("task_added_feedback_visible");
-      resolve();
-    }, TASK_ADDED_TOTAL_MS);
+    taskAddedFeedbackTimer = window.setTimeout(() => finishTaskAddedFeedback(feedback, resolve), TASK_ADDED_TOTAL_MS);
   });
+}
+
+function finishTaskAddedFeedback(feedback, resolve) {
+  feedback.classList.remove("task_added_feedback_visible");
+  resolve();
 }
 
 Object.assign(window, { initAddTask });

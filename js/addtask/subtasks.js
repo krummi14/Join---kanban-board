@@ -18,15 +18,10 @@ export function setSubtasks(context, subtasks = []) {
 export function addSubtask(context) {
   const input = context.elements.subtaskInput;
   const title = input?.value.trim();
-
-  if (!title) {
-    updateSubtaskButtonState(context);
-    return;
-  }
-  if (!Array.isArray(context.state.subtasks)) context.state.subtasks = [];
-
+  if (!title) return handleEmptySubtaskInput(context);
+  ensureSubtaskArray(context);
   context.state.subtasks.push({ title, done: false });
-  if (input) input.value = "";
+  resetSubtaskInput(input);
   renderSubtasks(context);
   updateSubtaskButtonState(context);
 }
@@ -79,8 +74,7 @@ export function renderSubtasks(context) {
 
 export function removeSubtask(context, index) {
   context.state.subtasks.splice(index, 1);
-  if (context.state.editingSubtaskIndex === index) context.state.editingSubtaskIndex = null;
-  else if (context.state.editingSubtaskIndex !== null && context.state.editingSubtaskIndex > index) context.state.editingSubtaskIndex -= 1;
+  syncEditingSubtaskIndex(context, index);
   renderSubtasks(context);
 }
 
@@ -105,4 +99,24 @@ function clearSubtaskInteractionState(context) {
   if (!(activeElement instanceof HTMLElement)) return;
   if (!context.elements.subtaskList?.contains(activeElement)) return;
   activeElement.blur();
+}
+
+function handleEmptySubtaskInput(context) {
+  updateSubtaskButtonState(context);
+}
+
+function ensureSubtaskArray(context) {
+  if (Array.isArray(context.state.subtasks)) return;
+  context.state.subtasks = [];
+}
+
+function resetSubtaskInput(input) {
+  if (!input) return;
+  input.value = "";
+}
+
+function syncEditingSubtaskIndex(context, index) {
+  if (context.state.editingSubtaskIndex === index) return context.state.editingSubtaskIndex = null;
+  if (context.state.editingSubtaskIndex === null) return;
+  if (context.state.editingSubtaskIndex > index) context.state.editingSubtaskIndex -= 1;
 }

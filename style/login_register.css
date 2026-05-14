@@ -27,7 +27,6 @@
     color: rgba(41, 171, 226, 1);
 }
 
-/*Login*/
 .login_body {
     margin: 0;
     min-height: 100vh;
@@ -42,7 +41,6 @@
     align-items: center;
     gap: 10px;
 }
-
 .signup-link {
     color: white;
 }
@@ -82,7 +80,6 @@
 .mobile-only {
     display: none;
 }
-
 .h1-mrg-btm {
     margin-bottom: 32px;
 }
@@ -102,7 +99,6 @@
     margin-bottom: 25px;
 }
 
-/*Registration*/
 .main-register {
     flex: 1;
     padding: 16px 80px;
@@ -138,7 +134,6 @@
     text-align: center;
     margin-bottom: 25px;
 }
-
 .button-group {
     display: flex;
     justify-content: center;
@@ -166,7 +161,6 @@
 .privacy input {
     width: auto;
 }
-
 .title-row {
     position: relative;
     text-align: center;
@@ -188,7 +182,6 @@
     width: 24px;
     cursor: pointer;
 }
-
 .modal {
     position: fixed;
     inset: 0;
@@ -202,7 +195,6 @@
 .hidden {
     display: none;
 }
-
 .modal-content {
     background: white;
     padding: 40px;
@@ -258,12 +250,10 @@
         will-change: transform;
     }
 }
-
 @media (max-width: 1115px) {
     .privacy {
         margin-top: 32px;
     }
-
 
     #signup-btn {
         width: 176px;

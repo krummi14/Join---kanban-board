@@ -13,49 +13,21 @@ export function setTasks(newTasks) {
   tasks = newTasks;
 }
 
-// 📥 LOAD
 export async function loadTasks(BOARD_COLUMNS) {
-  const [tasksRootData, ...columnData] = await Promise.all([
-    getData(TASKS_ROOT_PATH),
-    ...BOARD_COLUMNS.map((column) => getData(column.path)),
-  ]);
-
+  const { tasksRootData, columnData } = await loadTaskSources(BOARD_COLUMNS);
   const unifiedTasks = mapUnifiedTasks(tasksRootData, BOARD_COLUMNS);
-  const legacyTasks = BOARD_COLUMNS.flatMap((column, index) =>
-    mapLegacyColumnTasks(column, columnData[index])
-  );
-
-  const unifiedIds = new Set(unifiedTasks.map((task) => task.id));
-  tasks = [...unifiedTasks, ...legacyTasks.filter((task) => !unifiedIds.has(task.id))];
-
+  const legacyTasks = mapLegacyTasks(BOARD_COLUMNS, columnData);
+  tasks = mergeTaskCollections(unifiedTasks, legacyTasks);
   return tasks;
 }
 
-
-
-
 function generateAvatarHTML(assignees) {
-  if (!assignees || assignees.length === 0) {
-    return getNoAssigneesCardTemplate();
-  }
-
-  let visible = assignees.slice(0, 3);
-  let rest = assignees.length - 3;
-
-  let html = "";
-
-  for (let i = 0; i < visible.length; i++) {
-    html += generateSingleAvatar(visible[i]);
-  }
-
-  if (rest > 0) {
-    html += generateExtraAvatar(rest);
-  }
-
-  return html;
+  if (!assignees?.length) return getNoAssigneesCardTemplate();
+  const visibleAssignees = assignees.slice(0, 3);
+  const extraAssigneeCount = assignees.length - visibleAssignees.length;
+  return buildAvatarMarkup(visibleAssignees, extraAssigneeCount);
 }
 
-// 📊 FILTER
 export function getTasksForColumn(category, BOARD_COLUMNS) {
   const column = BOARD_COLUMNS.find(
     (c) => normalizeCategory(c.path) === normalizeCategory(category)
@@ -70,110 +42,44 @@ export function getTasksForColumn(category, BOARD_COLUMNS) {
   );
 }
 
-// Julian 📊 FILTER
-//export function getTasksForColumn(category, BOARD_COLUMNS) {
-//  const column = BOARD_COLUMNS.find(
-//    (c) => normalizeCategory(c.path) === normalizeCategory(category)
-//  );
-//  if (!column) return [];
-//
-//  return tasks.filter(
-//    (task) =>
-//      normalizeCategory(task.sourcePath || task.status) ===
-//      normalizeCategory(column.path)
-//  );
-//}
-
-// 🔄 MOVE
 export async function moveTask(taskId, targetCategory, BOARD_COLUMNS, targetIndex = null) {
-  const task = tasks.find((t) => t.id == taskId);
-  const targetColumn = BOARD_COLUMNS.find((c) => c.path === targetCategory);
-
-  if (!task || !targetColumn) return null;
-
-  const previousPath = task.status;
-  const storagePath = getStoragePath(task);
-  const previousSourcePath = task.sourcePath;
-
-  task.status = targetColumn.path;
-
+  const moveContext = getMoveContext(taskId, targetCategory, BOARD_COLUMNS);
+  if (!moveContext) return null;
   try {
-    const updatedTask = getTaskForStorage(task, targetColumn.path);
-
-    await putUserData(storagePath, updatedTask);
-
-    if (task.sourcePath !== TASKS_ROOT_PATH) {
-      task.sourcePath = targetColumn.path;
-      if (previousSourcePath !== targetColumn.path) {
-        await deleteData(`${previousSourcePath}/${task.id}`);
-        await putUserData(`${targetColumn.path}/${task.id}`, updatedTask);
-      }
-    }
-
-    syncColumnTasksAfterMove(task, previousPath, targetColumn.path, BOARD_COLUMNS, targetIndex);
-    persistTaskOrder(previousPath, targetColumn.path, BOARD_COLUMNS).catch((error) => {
-      console.error(error);
-    });
-
-    return { previousPath, newPath: targetColumn.path };
+    await persistMovedTask(moveContext);
+    syncColumnTasksAfterMove(moveContext, BOARD_COLUMNS, targetIndex);
+    persistTaskOrder(moveContext.previousPath, moveContext.nextPath, BOARD_COLUMNS).catch(logTaskServiceError);
+    return { previousPath: moveContext.previousPath, newPath: moveContext.nextPath };
   } catch (error) {
-    console.error(error);
+    logTaskServiceError(error);
     return null;
   }
 }
 
-// 🗑️ DELETE
-
 export async function deleteTask(taskId) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
-
   const path = getStoragePath(task);
-
   await deleteData(path);
   tasks = tasks.filter((t) => t.id !== taskId);
 }
 
-
-
-// 🔁 SUBTASK
 export async function toggleSubtask(taskId, index) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
-
   task.subtasks[index].done = !task.subtasks[index].done;
-
-  await putUserData(
-    getStoragePath(task),
-    getTaskForStorage(task, task.status)
-  );
+  await putUserData(getStoragePath(task), getTaskForStorage(task, task.status));
 }
-
 
 export async function updateTask(taskId, updatedData) {
-  const task = tasks.find(t => t.id === taskId);
+  const task = tasks.find((entry) => entry.id === taskId);
   if (!task) return;
-
   const path = getStoragePath(task);
-
-  const cleanTask = getTaskForStorage(
-    { ...task, ...updatedData },
-    task.status
-  );
-
+  const cleanTask = getTaskForStorage({ ...task, ...updatedData }, task.status);
   await putUserData(path, cleanTask);
-
-  // lokal aktualisieren
-  const index = tasks.findIndex(t => t.id === taskId);
-  if (index !== -1) {
-    tasks[index] = {
-      ...tasks[index],
-      ...updatedData
-    };
-  }
+  syncLocalTaskUpdate(taskId, updatedData);
 }
 
-// 🧠 HELPERS
 function prepareTask(task) {
   return {
     ...task,
@@ -189,15 +95,7 @@ function prepareTask(task) {
 }
 
 function getTaskForStorage(task, status) {
-  const {
-    doneSubtasks,
-    totalSubtasks,
-    progress,
-    priorityIcon,
-    sourcePath,
-    ...taskData
-  } = task;
-
+  const { doneSubtasks, totalSubtasks, progress, priorityIcon, sourcePath, ...taskData } = task;
   return {
     ...taskData,
     status,
@@ -217,35 +115,16 @@ function getPriorityIcon(priority) {
 
 function mapUnifiedTasks(data, BOARD_COLUMNS) {
   if (!isPlainObject(data)) return [];
-
   return Object.entries(data)
-    .filter(([, task]) => isPlainObject(task))
-    .map(([id, task]) => {
-      const status = resolveColumnPath(task.status, BOARD_COLUMNS);
-      return {
-        id,
-        ...prepareTask(task),
-        status,
-        sourcePath: TASKS_ROOT_PATH,
-        priorityIcon: getPriorityIcon(task.priority),
-        avatarHTML: generateAvatarHTML(task.assignees),
-      };
-    });
+    .filter(([, task]) => isPlainTask(task))
+    .map(([id, task]) => createUnifiedTask(id, task, BOARD_COLUMNS));
 }
 
 function mapLegacyColumnTasks(column, data) {
   if (!isPlainObject(data)) return [];
-
   return Object.entries(data)
-    .filter(([, task]) => isPlainObject(task))
-    .map(([id, task]) => ({
-      id,
-      ...prepareTask(task),
-      status: column.path,
-      sourcePath: column.path,
-      priorityIcon: getPriorityIcon(task.priority),
-      avatarHTML: generateAvatarHTML(task.assignees),
-    }));
+    .filter(([, task]) => isPlainTask(task))
+    .map(([id, task]) => createLegacyTask(id, task, column.path));
 }
 
 function resolveColumnPath(status, BOARD_COLUMNS) {
@@ -269,44 +148,20 @@ function getStoragePath(task) {
   if (task.sourcePath === TASKS_ROOT_PATH) {
     return `${TASKS_ROOT_PATH}/${task.id}`;
   }
-
   return `${task.sourcePath || task.status}/${task.id}`;
 }
 
-function syncColumnTasksAfterMove(task, previousPath, nextPath, BOARD_COLUMNS, targetIndex) {
-  const previousColumn = BOARD_COLUMNS.find((column) => column.path === previousPath);
-  const nextColumn = BOARD_COLUMNS.find((column) => column.path === nextPath);
-
-  if (previousPath !== nextPath && Array.isArray(previousColumn?.tasks)) {
-    previousColumn.tasks = previousColumn.tasks.filter((columnTask) => columnTask.id !== task.id);
-  }
-
-  if (Array.isArray(nextColumn?.tasks)) {
-    const nextTasks = nextColumn.tasks.filter((columnTask) => columnTask.id !== task.id);
-    const insertIndex = normalizeTaskIndex(targetIndex, nextTasks.length);
-    nextTasks.splice(insertIndex, 0, task);
-    nextColumn.tasks = nextTasks;
-  }
+function syncColumnTasksAfterMove(moveContext, BOARD_COLUMNS, targetIndex) {
+  const previousColumn = findBoardColumn(BOARD_COLUMNS, moveContext.previousPath);
+  const nextColumn = findBoardColumn(BOARD_COLUMNS, moveContext.nextPath);
+  if (!nextColumn) return;
+  syncPreviousColumnTasks(previousColumn, moveContext);
+  syncNextColumnTasks(nextColumn, moveContext.task, targetIndex);
 }
 
 async function persistTaskOrder(previousPath, nextPath, BOARD_COLUMNS) {
-  const affectedColumns = BOARD_COLUMNS.filter(
-    (column) => column.path === previousPath || column.path === nextPath
-  );
-
-  const pendingWrites = [];
-
-  affectedColumns.forEach((column) => {
-    if (!Array.isArray(column.tasks)) return;
-
-    column.tasks.forEach((task, index) => {
-      if (task.order === index) return;
-
-      task.order = index;
-      pendingWrites.push(putUserData(getStoragePath(task), { order: index }));
-    });
-  });
-
+  const affectedColumns = getAffectedColumns(BOARD_COLUMNS, previousPath, nextPath);
+  const pendingWrites = affectedColumns.flatMap(createOrderWriteOperations);
   await Promise.all(pendingWrites);
 }
 
@@ -331,4 +186,122 @@ function normalizeTaskIndex(targetIndex, taskCount) {
 
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function loadTaskSources(boardColumns) {
+  return Promise.all([
+    getData(TASKS_ROOT_PATH),
+    ...boardColumns.map((column) => getData(column.path)),
+  ]).then(([tasksRootData, ...columnData]) => ({ tasksRootData, columnData }));
+}
+
+function mapLegacyTasks(boardColumns, columnData) {
+  return boardColumns.flatMap((column, index) => mapLegacyColumnTasks(column, columnData[index]));
+}
+
+function mergeTaskCollections(unifiedTasks, legacyTasks) {
+  const unifiedIds = new Set(unifiedTasks.map((task) => task.id));
+  return [...unifiedTasks, ...legacyTasks.filter((task) => !unifiedIds.has(task.id))];
+}
+
+function buildAvatarMarkup(visibleAssignees, extraAssigneeCount) {
+  const avatarMarkup = visibleAssignees.map(generateSingleAvatar).join("");
+  if (extraAssigneeCount <= 0) return avatarMarkup;
+  return `${avatarMarkup}${generateExtraAvatar(extraAssigneeCount)}`;
+}
+
+function getMoveContext(taskId, targetCategory, boardColumns) {
+  const task = tasks.find((entry) => entry.id == taskId);
+  const targetColumn = findBoardColumn(boardColumns, targetCategory);
+  if (!task || !targetColumn) return null;
+  return createMoveContext(task, targetColumn.path);
+}
+
+function createMoveContext(task, nextPath) {
+  const previousPath = task.status;
+  const storagePath = getStoragePath(task);
+  const previousSourcePath = task.sourcePath;
+  task.status = nextPath;
+  return { task, nextPath, previousPath, storagePath, previousSourcePath };
+}
+
+function persistMovedTask(moveContext) {
+  const updatedTask = getTaskForStorage(moveContext.task, moveContext.nextPath);
+  return persistTaskMove(moveContext, updatedTask);
+}
+
+async function persistTaskMove(moveContext, updatedTask) {
+  await putUserData(moveContext.storagePath, updatedTask);
+  await syncLegacyTaskStorage(moveContext, updatedTask);
+}
+
+async function syncLegacyTaskStorage(moveContext, updatedTask) {
+  if (moveContext.task.sourcePath === TASKS_ROOT_PATH) return;
+  moveContext.task.sourcePath = moveContext.nextPath;
+  if (moveContext.previousSourcePath === moveContext.nextPath) return;
+  await deleteData(`${moveContext.previousSourcePath}/${moveContext.task.id}`);
+  await putUserData(`${moveContext.nextPath}/${moveContext.task.id}`, updatedTask);
+}
+
+function logTaskServiceError(error) {
+  console.error(error);
+}
+
+function syncLocalTaskUpdate(taskId, updatedData) {
+  const index = tasks.findIndex((task) => task.id === taskId);
+  if (index === -1) return;
+  tasks[index] = { ...tasks[index], ...updatedData };
+}
+
+function isPlainTask(task) {
+  return isPlainObject(task);
+}
+
+function createUnifiedTask(id, task, boardColumns) {
+  const status = resolveColumnPath(task.status, boardColumns);
+  return buildTaskRecord(id, task, status, TASKS_ROOT_PATH);
+}
+
+function createLegacyTask(id, task, path) {
+  return buildTaskRecord(id, task, path, path);
+}
+
+function buildTaskRecord(id, task, status, sourcePath) {
+  return { id, ...prepareTask(task), status, sourcePath, priorityIcon: getPriorityIcon(task.priority), avatarHTML: generateAvatarHTML(task.assignees) };
+}
+
+function findBoardColumn(boardColumns, path) {
+  return boardColumns.find((column) => column.path === path);
+}
+
+function syncPreviousColumnTasks(previousColumn, moveContext) {
+  if (!shouldSyncPreviousColumn(previousColumn, moveContext)) return;
+  previousColumn.tasks = previousColumn.tasks.filter((task) => task.id !== moveContext.task.id);
+}
+
+function shouldSyncPreviousColumn(previousColumn, moveContext) {
+  return moveContext.previousPath !== moveContext.nextPath && Array.isArray(previousColumn?.tasks);
+}
+
+function syncNextColumnTasks(nextColumn, task, targetIndex) {
+  if (!Array.isArray(nextColumn.tasks)) return;
+  const nextTasks = nextColumn.tasks.filter((columnTask) => columnTask.id !== task.id);
+  const insertIndex = normalizeTaskIndex(targetIndex, nextTasks.length);
+  nextTasks.splice(insertIndex, 0, task);
+  nextColumn.tasks = nextTasks;
+}
+
+function getAffectedColumns(boardColumns, previousPath, nextPath) {
+  return boardColumns.filter((column) => column.path === previousPath || column.path === nextPath);
+}
+
+function createOrderWriteOperations(column) {
+  if (!Array.isArray(column.tasks)) return [];
+  return column.tasks.flatMap(createTaskOrderWrite);
+}
+
+function createTaskOrderWrite(task, index) {
+  if (task.order === index) return [];
+  task.order = index;
+  return [putUserData(getStoragePath(task), { order: index })];
 }

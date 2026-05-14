@@ -11,15 +11,8 @@ export async function renderAssigneeContacts(context) {
     showContactLoadError(menu, error);
     return;
   }
-
-  if (!context.state.assigneeContacts.length) {
-    showEmptyContacts(context, menu);
-    return;
-  }
-
-  menu.innerHTML = context.state.assigneeContacts.map(createAssigneeOption).join("");
-  syncAssigneeCheckboxes(context);
-  updateAssigneeLabel(context);
+  if (!hasAssigneeContacts(context)) return showEmptyContacts(context, menu);
+  renderAssigneeOptions(context, menu);
 }
 
 export function setSelectedAssignees(context, contactIds = []) {
@@ -60,6 +53,16 @@ function updateAssigneeLabel(context) {
   const label = context.elements.selectedContacts;
   if (!label) return;
   label.innerHTML = getSelectedContacts(context).map(createSelectedAssigneeAvatar).join("");
+}
+
+function hasAssigneeContacts(context) {
+  return context.state.assigneeContacts.length > 0;
+}
+
+function renderAssigneeOptions(context, menu) {
+  menu.innerHTML = context.state.assigneeContacts.map(createAssigneeOption).join("");
+  syncAssigneeCheckboxes(context);
+  updateAssigneeLabel(context);
 }
 
 function getSelectedContacts(context) {

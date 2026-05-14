@@ -1,23 +1,13 @@
 import { getTasksForColumn } from "./board_taskService.js";
 import { generateTaskHTML } from "../template/board_template.js";
 
-export function renderColumn(category, BOARD_COLUMNS) {
-  const column = BOARD_COLUMNS.find((c) => c.path === category);
+export function renderColumn(category, boardColumns) {
+  const column = findColumn(boardColumns, category);
   if (!column) return;
-
-  const container = document.getElementById(column.containerId);
+  const container = getColumnContainer(column);
   if (!container) return;
-
-  const tasks = getTasksForColumn(category, BOARD_COLUMNS);
-
-  if (!tasks.length) {
-    container.innerHTML = `<p class="no_task_text">No tasks ${column.label}</p>`;
-    return;
-  }
-
-  container.innerHTML = tasks
-    .map((task) => generateTaskHTML(prepareTask(task)))
-    .join("");
+  const tasks = getTasksForColumn(category, boardColumns);
+  container.innerHTML = tasks.length ? buildTaskMarkup(tasks) : buildEmptyColumnMarkup(column);
 }
 
 export function prepareTask(task) {
@@ -33,17 +23,25 @@ export function updateColumns(categories, BOARD_COLUMNS) {
   );
 }
 
-// Julian
-// export function updateHTML(BOARD_COLUMNS) {
-//  updateColumns(
-//    BOARD_COLUMNS.map((column) => column.path),
-//    BOARD_COLUMNS
-//  );
-//}
-
 export function updateHTML(BOARD_COLUMNS) {
   updateColumns(
     BOARD_COLUMNS.map((column) => column.path),
     BOARD_COLUMNS
   );
+}
+
+function findColumn(boardColumns, category) {
+  return boardColumns.find((column) => column.path === category);
+}
+
+function getColumnContainer(column) {
+  return document.getElementById(column.containerId);
+}
+
+function buildEmptyColumnMarkup(column) {
+  return `<p class="no_task_text">No tasks ${column.label}</p>`;
+}
+
+function buildTaskMarkup(tasks) {
+  return tasks.map((task) => generateTaskHTML(prepareTask(task))).join("");
 }

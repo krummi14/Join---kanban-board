@@ -42,21 +42,31 @@ async function checkUser(email, password) {
 }
 
 async function loginUser(email, password) {
-
   clearErrors();
-
   if (!validateLogin(email, password)) return;
-
   const id = await checkUser(email, password);
+  const id = await authenticateUser(email, password);
+  if (!id) return;
+  await persistLoginSession(id);
+  redirectToSummary();
+}
 
-  if (!id)
-    return showError("password-error", "Wrong email or password");
+async function authenticateUser(email, password) {
+  if (!validateLogin(email, password)) return null;
+  const id = await checkUser(email, password);
+  if (id) return id;
+  showError("password-error", "Wrong email or password");
+  return null;
+}
 
+async function persistLoginSession(id) {
   localStorage.setItem("user", id);
-
   let userName = await getData(`users/${id}/name`);
   localStorage.setItem("userName", userName);
   localStorage.setItem("greetingShown", "false");
+}
+
+function redirectToSummary() {
   location.href = "../html/summary.html";
 }
 

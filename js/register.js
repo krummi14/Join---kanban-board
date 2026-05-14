@@ -122,19 +122,18 @@ function finishSignup() {
 
 async function handleSignup() {
   clearErrors();
-
   const data = getFormData();
-
   if (!runValidation(data)) return;
-
-  if (await emailExists(data.email)) {
-    showError("email-error", "Email already exists");
-    return;
-  }
-
+  if (!await canRegisterUser(data)) return;
   await registerUser(data.name, data.email, data.password);
-
   finishSignup();
+}
+
+async function canRegisterUser(data) {
+  if (!runValidation(data)) return false;
+  if (!await emailExists(data.email)) return true;
+  showError("email-error", "Email already exists");
+  return false;
 }
 
 document.getElementById("signup-btn").addEventListener("click", handleSignup);
