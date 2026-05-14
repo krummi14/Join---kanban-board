@@ -216,6 +216,10 @@ function setupEditUI() {
 
   if (submitBtn) submitBtn.textContent = "Save changes";
   if (clearBtn) clearBtn.style.display = "none";
+
+  // 🔥 FIX
+  const menu = document.getElementById("assigneeDropdownMenu");
+  menu?.classList.add("d_none");
 }
 
 // ======================
@@ -244,12 +248,21 @@ window.createAddTaskFormTemplate = createAddTaskFormTemplate;
 
 
 window.toggleAssigneeDropdown = function (event) {
-  event.stopPropagation(); // 🔥 wichtig
+  event.stopPropagation();
 
   const menu = document.getElementById("assigneeDropdownMenu");
+
   if (!menu) return;
 
-  menu.classList.toggle("d_none");
+  const isHidden = menu.classList.contains("d_none");
+
+  if (isHidden) {
+    menu.classList.remove("d_none");
+  } else {
+    menu.classList.add("d_none");
+  }
+
+  console.log("TOGGLE:", menu.className);
 };
 
 window.toggleCategoryDropdown = function (event) {
@@ -260,3 +273,5 @@ window.toggleCategoryDropdown = function (event) {
 
   menu.classList.toggle("d_none");
 };
+
+

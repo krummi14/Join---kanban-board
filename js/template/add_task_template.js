@@ -1,3 +1,7 @@
+import {
+  getContactColor,
+  getContactInitials
+} from "../addtask/contactUtils.js";
 
 
 export function createSubtaskItem(st, index) {
@@ -55,24 +59,32 @@ function escapeHtmlAttribute(value) {
     .replace(/>/g, "&gt;");
 }
 
-export function createAssigneeOption(contact) {
+export function createAssigneeOption(contact) {   //CHANGE 
   return `
-    <label class="assignee_option" for="assignee_${contact.id}">
+    <div class="assignee_option" data-assignee-id="${contact.id}">
+
       <div class="assignee_option_text">
-        <div class="avatar assignee_option_avatar" style="background:${getAssigneeColor(contact.name)}">
+        <div class="avatar assignee_option_avatar"
+             style="background:${getAssigneeColor(contact.name)}">
           ${getAssigneeInitials(contact.name)}
         </div>
-        <div class="assignee_option_name">${contact.name}</div>
+
+        <div class="assignee_option_name">
+          ${contact.name}
+        </div>
       </div>
-      <span class="assignee_option_checkbox">
-        <input type="checkbox" id="assignee_${contact.id}" value="${contact.id}" data-assignee-id="${contact.id}">
-        <img class="assignee_option_checkbox_icon assignee_option_checkbox_icon_unchecked" src="../assets/icon/assignee_unchecked.svg" alt="">
-        <img class="assignee_option_checkbox_icon assignee_option_checkbox_icon_checked" src="../assets/icon/assignee_checked.svg" alt="">
-      </span>
-    </label>
+
+      <div class="assignee_option_checkbox">
+        <img class="assignee_option_checkbox_icon_unchecked"
+             src="../assets/icon/assignee_unchecked.svg">
+
+        <img class="assignee_option_checkbox_icon_checked"
+             src="../assets/icon/assignee_checked.svg">
+      </div>
+
+    </div>
   `;
 }
-
 
 function getAssigneeInitials(name) {
   const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
@@ -203,13 +215,39 @@ export function createAddTaskFormTemplate(path) {
   `
 };
 
-//Board overlay edit 
-export function getAssigneeOptionTemplate(contact) {
+//Board overlay edit NEU
+
+export function createSelectedAssigneeAvatar(
+  contact
+) {
+
   return `
-    <label class="assignee_option">
-      <input type="checkbox" data-assignee-id="${contact.id}">
-      <span>${contact.name}</span>
-    </label>
+    <div
+      class="avatar selected_assignee_avatar"
+      title="${contact.name}"
+      style="background:${getContactColor(contact.name)}">
+
+      ${getContactInitials(contact.name)}
+
+    </div>
+  `;
+}
+
+export function createAssigneeLoadError() {
+
+  return `
+    <div class="assignee_status">
+      Can not load contacts.
+    </div>
+  `;
+}
+
+export function createAssigneeEmptyState() {
+
+  return `
+    <div class="assignee_status">
+      No contacts available.
+    </div>
   `;
 }
 

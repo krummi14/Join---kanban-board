@@ -455,7 +455,8 @@
   color: #ffffff;
 }
 
-#addTaskContainer .assignee_option.selected .assignee_option_checkbox_icon_unchecked {
+#addTaskContainer .assignee_option.selected .assignee_option_checkbox_icon_unchecked,
+.assignee_option.selected .assignee_option_checkbox_icon_unchecked {
   display: none;
 }
 

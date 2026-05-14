@@ -204,7 +204,7 @@ export function generateAssignee(a) {
         ${getContactInitials(a.name)}
       </div>
 
-      <span>${a.name}</span>
+      <span class="assignee_row_name">${a.name}</span>
 
     </div>
   `;
@@ -250,12 +250,13 @@ export function generateSubtask(task, st, i) {
              ${st.done ? "checked" : ""}
              onchange="toggleSubtask('${task.id}', ${i})">
 
-      <span>${st.title}</span>
+      <span class="custom_checkbox"></span>
+
+      <span class="subtask_text">${st.title}</span>
 
     </label>
   `;
 }
-
 
 export function getNoSubtasksTemplate() {
   return `<p>No subtasks yet</p>`;
@@ -364,7 +365,7 @@ export function createEditTaskTemplate() {
     <!-- CLOSE -->
     <div class="close_button">
       <div class="close_icon_wrapper close_icon_margin">
-        <img src="assets/img/close.svg"
+        <img src="../assets/img/close.svg"
              class="close_icon"
              onclick="closeOverlay()">
       </div>
@@ -395,61 +396,102 @@ export function createEditTaskTemplate() {
         <!-- PRIORITY -->
         <div class="edit_priority">
           <p class="bold_font">Priority</p>
+
           <div class="priority_buttons">
+            <button type="button" id="prio_urgent" data-priority="urgent">
+              Urgent
+            </button>
 
-            <button type="button" id="prio_urgent" data-priority="urgent">Urgent</button>
-            <button type="button" id="prio_medium" data-priority="medium">Medium</button>
-            <button type="button" id="prio_low" data-priority="low">Low</button>
+            <button type="button" id="prio_medium" data-priority="medium">
+              Medium
+            </button>
 
+            <button type="button" id="prio_low" data-priority="low">
+              Low
+            </button>
           </div>
         </div>
 
-        <!-- ASSIGNEES (TOGGLE FIX) -->
+        <!-- ASSIGNEES -->
         <div class="edit_assigned_to">
           <label>Assigned to</label>
 
           <div class="assignee_dropdown">
 
-            <button type="button"
-                    id="assignee"
-                    data-assignee-toggle
-                    onclick="toggleAssigneeDropdown(event)">
+            <button
+              type="button"
+              id="assigneeToggle"
+              class="assignee_toggle"
+              onclick="toggleAssigneeDropdown(event)">
               Select contacts
             </button>
 
-            <div id="assigneeDropdownMenu"
-                 class="dropdown_menu d_none"
-                 onclick="event.stopPropagation()">
+            <div
+              id="assigneeDropdownMenu"
+              class="assignee_menu d_none"
+              onclick="event.stopPropagation()">
             </div>
 
           </div>
 
-          <!-- Avatare wie Board -->
+          <!-- SELECTED AVATARS -->
           <div id="selectedContacts" class="avatar_row"></div>
         </div>
 
-     
+<!-- SUBTASKS -->
+<section class="subtask">
+  <label for="subtask">Subtasks</label>
 
-        <!-- SUBTASKS (HOVER STYLE FIX) -->
-        <div class="edit_subtasks">
-          <label>Subtasks</label>
+  <section class="subtask_input_wrapper">
 
-          <div class="subtask_input_wrapper">
+    <input
+      type="text"
+      id="subtask"
+      name="subtask"
+      placeholder="Add new subtask">
 
-            <input id="subtask"
-                   type="text"
-                   placeholder="Add new subtask">
+    <div class="subtask_action_buttons">
 
-            <button type="button" id="addSubtaskButton">+</button>
+      <button
+        type="button"
+        id="clearSubtaskButton"
+        class="subtask_action_button"
+        aria-label="Clear subtask input">
 
-          </div>
+        <img
+          src="../assets/icon/subtask_close.svg"
+          alt="Clear subtask input">
 
-          <div id="subtaskList"></div>
-        </div>
+      </button>
+
+      <button
+        type="button"
+        id="addSubtaskButton"
+        class="subtask_action_button"
+        aria-label="Add subtask">
+
+        <img
+          src="../assets/icon/subtask_check.svg"
+          alt="Add subtask">
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <section
+    id="subtaskList"
+    class="subtask_list">
+  </section>
+
+</section>
 
         <!-- ACTION -->
         <div class="edit_actions">
-          <button type="submit">Ok ✓</button>
+          <button type="submit">
+            Ok ✓
+          </button>
         </div>
 
       </form>

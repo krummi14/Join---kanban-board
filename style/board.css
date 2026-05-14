@@ -7,6 +7,10 @@
    BOARD LAYOUT
    ========================= */
 
+.d_none {
+  display: none !important;
+}
+
 .hidden {
   display: none !important;
 }
@@ -151,8 +155,7 @@
 /* RECHTE SEITE (ICON SPALTE) */
 .task_right {
   display: flex;
-  align-items: center;
-  /* 🔥 vertikal mittig */
+  align-items: center; /* 🔥 vertikal mittig */
   justify-content: center;
   width: 24px;
 }
@@ -168,7 +171,6 @@
   margin: 6px 0 0 0;
   font-size: 12px;
 }
-
 
 /* CATEGORY */
 
@@ -216,17 +218,14 @@
 .task_progress_wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  /* 🔥 DAS ist der Fix */
+  align-items: center; /* 🔥 DAS ist der Fix */
   gap: 8px;
 }
 
 .task_progress_wrapper p {
-  margin: 0;
-  /* ❗ wichtig */
+  margin: 0; /* ❗ wichtig */
   font-size: 12px;
-  line-height: 1;
-  /* ❗ verhindert "Absacken" */
+  line-height: 1; /* ❗ verhindert "Absacken" */
   display: flex;
   align-items: center;
 }
@@ -240,14 +239,11 @@
   overflow: hidden;
 }
 
-
 .progressbar_fill {
   height: 100%;
   background: #4589ff;
   border-radius: 10px;
 }
-
-
 
 /* FOOTER */
 
@@ -281,22 +277,18 @@
   margin-left: 0;
 }
 
-
 /* PRIORITY ICON */
 
 .priority_icon {
   display: flex;
-  align-items: center;
-  /* 🔥 wichtig */
-  height: 100%;
-  /* optional */
+  align-items: center; /* 🔥 wichtig */
+  height: 100%; /* optional */
 }
 
 .priority_icon img {
   width: 18px;
   height: 18px;
-  display: block;
-  /* ❗ verhindert baseline shift */
+  display: block; /* ❗ verhindert baseline shift */
 }
 
 /* =========================
@@ -335,17 +327,18 @@
   padding: 0;
   justify-content: center;
   align-items: center;
-
 }
 
 .task_overlay h2 {
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin: 10px 0 12px 0;
 }
 
-.task_overlay p {
-  font-size: 16px;
+.task_overlay p,
+.task_overlay h3 {
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .task_priority_overlay {
@@ -353,6 +346,28 @@
   gap: 10px;
   align-items: center;
 }
+
+.assignee_row {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.assignee_row_name {
+  margin-left: 10px;
+
+}
+
+.overlay_actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+
 
 /* =========================
    EDIT OVERLAY
@@ -428,6 +443,167 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* =========================
+   ASSIGNEE DROPDOWN FIX
+   ========================= */
+
+.assignee_dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.assignee_toggle {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 12px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid #d1d1d1;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+}
+
+.assignee_menu {
+  position: absolute;
+
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  max-height: 240px;
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+
+  z-index: 999;
+}
+
+/* OPTION */
+
+.assignee_option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 16px;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.assignee_option:hover {
+  background: #f6f7f8;
+}
+
+/* SELECTED */
+
+.assignee_option.selected {
+  background: #2a3647;
+}
+
+.assignee_option.selected .assignee_option_name {
+  color: #ffffff;
+}
+
+/* LEFT SIDE */
+
+.assignee_option_text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.assignee_option_name {
+  color: #2a3647;
+  font-size: 16px;
+}
+
+/* AVATAR */
+
+.assignee_option_avatar {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  border: 2px solid #ffffff;
+
+  flex-shrink: 0;
+}
+
+/* CHECKBOX */
+
+.assignee_option_checkbox {
+  width: 18px;
+  height: 18px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+/* 🔥 WICHTIG */
+
+.assignee_option_checkbox img {
+  width: 18px;
+  height: 18px;
+
+  position: absolute;
+  inset: 0;
+
+  object-fit: contain;
+}
+
+/* DEFAULT */
+
+.assignee_option_checkbox_icon_checked,
+.assignee_option_checkbox_icon_unchecked {
+  display: none !important;
+}
+
+/* UNSELECTED */
+
+.assignee_option:not(.selected)
+.assignee_option_checkbox_icon_unchecked {
+  display: block !important;
+}
+
+/* SELECTED */
+
+.assignee_option.selected
+.assignee_option_checkbox_icon_checked {
+  display: block !important;
+}
+
+
 /* ACTION BUTTON */
 
 .edit_actions {
@@ -445,7 +621,7 @@
 }
 
 .edit_actions button:hover {
-  background: #29ABE2;
+  background: #29abe2;
 }
 
 /* RED STAR */
@@ -470,30 +646,146 @@
   font-size: 12px;
 }
 
-.subtask_item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px;
-  border-radius: 6px;
-}
 
-.subtask_actions {
-  display: none;
+/*SUBTASK BOARD OVERLAY EDIT CHANGE*/
+.subtask {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
-.subtask_item:hover .subtask_actions {
+.subtask_input_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.subtask_input_wrapper input {
+  width: 100%;
+  padding-right: 92px;
+}
+
+.subtask_action_buttons {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.subtask_input_wrapper.has-value .subtask_action_buttons {
   display: flex;
 }
 
-.subtask_actions img {
+.subtask_action_button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.subtask_action_button img {
+  width: 20px;
+  height: 20px;
+}
+
+.subtask_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.subtask_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 20px 0 0;
+}
+
+.subtask_item.editing {
+  padding-right: 0;
+}
+
+.subtask_edit_input_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.subtask_item_text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-size: 16px;
+  color: #2a3647;
+  word-break: break-word;
+}
+
+.subtask_item_text::before {
+  content: "•";
+  flex-shrink: 0;
+}
+
+.subtask_item_actions {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.subtask_item:hover .subtask_item_actions,
+.subtask_item.editing .subtask_item_actions,
+.subtask_item:focus-within .subtask_item_actions {
+  display: flex;
+}
+
+.subtask_edit_input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #29abe2;
+  border-radius: 0;
+  padding: 4px 56px 4px 12px;
+  font-size: 16px;
+  color: #2a3647;
+  outline: none;
+}
+
+.subtask_item.editing .subtask_item_actions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+}
+
+.subtask_item_action_button {
   width: 16px;
   height: 16px;
+  border: none;
+  background: transparent;
+  padding: 0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtask_item_action_button img {
+  width: 16px;
+  height: 16px;
 }
 
 /* ADD TASK DIALOG */
+
 .addTask_dialog_content {
   border-radius: 30px;
   border: none;
@@ -559,7 +851,7 @@
   width: 100%;
 }
 
-@media(min-width: 1160px) and (max-width:1250px) {
+@media (min-width: 1160px) and (max-width: 1250px) {
   .main_drag_and_drop {
     padding: 0 48px;
   }
@@ -572,10 +864,9 @@
     padding: 64px 48px;
     padding-bottom: 40px;
   }
-
 }
 
-@media(min-width: 1116px) and (max-width:1159px) {
+@media (min-width: 1116px) and (max-width: 1159px) {
   .addTask_dialog_content {
     width: 800px;
   }
@@ -590,8 +881,8 @@
   }
 }
 
-@media(min-width: 320px) and (max-width:1115px) {
 
+@media (min-width: 320px) and (max-width: 1115px) {
   .board_main {
     height: auto;
   }
@@ -638,5 +929,4 @@
   .task {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
   }
-
 }
