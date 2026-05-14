@@ -1,6 +1,6 @@
-import { getData, putNewData, putEditData, deleteData } from "./firebase.js";
-import { createList } from "./list.js";
-import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditandDeleteMobileTemplate } from "./template/contacts_template.js";
+import { getData, putNewData, putEditData, deleteData } from "../shared/firebase.js";
+import { createList } from "../shared/list.js";
+import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditandDeleteMobileTemplate } from "../template/contacts_template.js";
 
 async function initContacts() {
     const data = await getData("/contacts");

@@ -1,4 +1,4 @@
-import { getData } from "./firebase.js";
+import { getData } from "../shared/firebase.js";
 
 const clearErrors = () => {
   showError("email-error", "");

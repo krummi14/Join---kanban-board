@@ -1,5 +1,5 @@
-import { deleteData, getData, putUserData } from "../firebase.js";
-import { normalizeCategory } from "../assets.js";
+import { deleteData, getData, putUserData } from "../shared/firebase.js";
+import { normalizeCategory } from "../shared/assets.js";
 import { generateSingleAvatar, generateExtraAvatar, getNoAssigneesCardTemplate } from "../template/board_template.js";
 
 let tasks = [];

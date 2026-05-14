@@ -1,5 +1,5 @@
-import { putUserData } from "../firebase.js";
-import { normalizeStatus } from "../assets.js";
+import { putUserData } from "../shared/firebase.js";
+import { normalizeStatus } from "../shared/assets.js";
 import { getAssignedContacts } from "./assignees.js";
 import { getDueDateStorageValue } from "./dueDate.js";
 

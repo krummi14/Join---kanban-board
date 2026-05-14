@@ -1,4 +1,4 @@
-import { putUserData, getData } from "./firebase.js";
+import { putUserData, getData } from "../shared/firebase.js";
 
 const clearErrors = () => {
   showError("name-error", "");

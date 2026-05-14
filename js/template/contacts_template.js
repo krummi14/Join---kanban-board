@@ -1,4 +1,4 @@
-import { filterInitialsOfName } from "../contact.js";
+import { filterInitialsOfName } from "../contacts/contact.js";
 
 export function getContactsListHeaderTemplate(contactsIndex) {
     const initialLetter = getContactInitialLetter(contactsIndex);
