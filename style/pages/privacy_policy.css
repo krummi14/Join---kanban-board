@@ -4,6 +4,10 @@ ul.index {
   padding-left: 24px ;
 }
 
+.privacy_policy_main {
+  overflow-y: auto;
+}
+
 .index-link {
   color: rgba(41, 171, 226, 1);
 }

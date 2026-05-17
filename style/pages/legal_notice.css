@@ -11,6 +11,10 @@
   padding-right: 64px;
 }
 
+.legal_notice_main {
+  overflow-y: auto;
+}
+
 .legalnotice_content_gap,
 .help_content_gap {
   display: flex;
