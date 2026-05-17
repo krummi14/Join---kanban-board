@@ -11,8 +11,6 @@ import {
 } from "../template/board_template.js";
 import { loadTasks } from "./board_taskService.js";
 import { updateHTML } from "./board_taskView.js";
-
-import { createEditTaskTemplate } from "../template/board_edit_template.js";
 import { initializeDueDatePicker } from "../addtask/dueDate.js";
 
 

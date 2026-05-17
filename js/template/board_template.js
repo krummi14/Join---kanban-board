@@ -138,8 +138,9 @@ function buildTaskOverlayContent(task) {
 function generateOverlayActions(task) {
   return `
     <div class="overlay_actions">
-      ${createOverlayActionButton("editTask", task.id, "/assets/icon/subtask_edit.svg")}
-      ${createOverlayActionButton("deleteTask", task.id, "/assets/icon/subtask_del.svg")}
+      ${createOverlayActionButton("deleteTask", task.id, "/assets/icon/subtask_del.svg")}<span>Delete</span>
+      <hr>
+      ${createOverlayActionButton("editTask", task.id, "/assets/icon/subtask_edit.svg")}<span>Edit</span>
     </div>
   `;
 }
@@ -257,7 +258,16 @@ export function generateSubtask(task, st, i) {
     <label class="subtask_item">
 
       ${buildSubtaskCheckbox(task.id, st.done, i)}
-      <span class="custom_checkbox"></span>
+      <span class="custom_checkbox" aria-hidden="true">
+        <img
+          class="subtask_checkbox_icon subtask_checkbox_icon_unchecked"
+          src="../assets/icon/subtask_unchecked.svg"
+          alt="">
+        <img
+          class="subtask_checkbox_icon subtask_checkbox_icon_checked"
+          src="../assets/icon/subtask_checked.svg"
+          alt="">
+      </span>
       <span class="subtask_text">${st.title}</span>
     </label>
   `;

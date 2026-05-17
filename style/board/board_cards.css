@@ -29,6 +29,7 @@
 .task.task-drop-after {
   margin-bottom: 20px;
 }
+
 .task_category {
   font-size: 16px;
   font-weight: 400;
@@ -44,6 +45,7 @@
   justify-content: space-between;
   align-items: flex-start;
 }
+
 .task_left {
   display: flex;
   flex-direction: column;
@@ -57,14 +59,17 @@
   justify-content: center;
   width: 24px;
 }
+
 .task_right img {
   width: 18px;
   height: 18px;
 }
+
 .task_progress_wrapper p {
   margin: 6px 0 0 0;
   font-size: 12px;
 }
+
 .task_category {
   display: inline-flex;
   align-items: center;
@@ -76,23 +81,28 @@
   font-weight: 500;
   color: white;
 }
+
 .task_category.user {
   background: #0038ff;
 }
+
 .task_category.technical {
   background: #1fd7c1;
 }
+
 .task_title {
   font-size: 16px;
   font-weight: 700;
   color: #2a3647;
   margin-bottom: 6px;
 }
+
 .task_description {
   font-size: 14px;
   color: #a8a8a8;
   margin-bottom: 6px;
 }
+
 .task_progress_wrapper {
   display: flex;
   justify-content: space-between;
@@ -107,6 +117,7 @@
   display: flex;
   align-items: center;
 }
+
 .progressbar {
   width: 60%;
   height: 6px;
@@ -114,19 +125,23 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
 .progressbar_fill {
   height: 100%;
   background: #4589ff;
   border-radius: 10px;
 }
+
 .task_footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .avatar_group {
   display: flex;
 }
+
 .avatar {
   width: 28px;
   height: 28px;
@@ -140,19 +155,23 @@
   font-weight: 600;
   margin-left: -8px;
 }
+
 .avatar:first-child {
   margin-left: 0;
 }
+
 .priority_icon {
   display: flex;
   align-items: center;
   height: 100%;
 }
+
 .priority_icon img {
   width: 18px;
   height: 18px;
   display: block;
 }
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -161,6 +180,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .task_overlay {
   background: white;
   width: 500px;
@@ -170,29 +190,35 @@
   flex-direction: column;
   gap: 16px;
 }
+
 .overlay_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .overlay_header button {
   padding: 0;
   justify-content: center;
   align-items: center;
 }
+
 .task_overlay h2 {
   font-size: 40px;
   font-weight: 700;
   margin-bottom: 16px;
 }
+
 .task_overlay p {
   font-size: 16px;
 }
+
 .task_priority_overlay {
   display: flex;
   gap: 10px;
   align-items: center;
 }
+
 .edit_overlay {
   background: white;
   border-radius: 30px;
@@ -202,10 +228,12 @@
   flex-direction: column;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
 }
+
 .scroll-area {
   overflow-y: auto;
   padding: 24px;
 }
+
 .input_style {
   width: 100%;
   border: 1px solid #d1d1d1;
@@ -213,14 +241,17 @@
   padding: 12px;
   font-size: 16px;
 }
+
 .input_style:focus {
   border-color: #29abe2;
   outline: none;
 }
+
 .priority_buttons {
   display: flex;
   gap: 10px;
 }
+
 .priority_buttons button {
   flex: 1;
   padding: 12px;
@@ -229,29 +260,35 @@
   background: white;
   cursor: pointer;
 }
+
 #taskForm button.active[data-priority="urgent"] {
   background: #ff3d00;
   color: white;
 }
+
 #taskForm button.active[data-priority="medium"] {
   background: #ffa800;
   color: white;
 }
+
 #taskForm button.active[data-priority="low"] {
   background: #7ae229;
   color: white;
 }
+
 .dropdown_menu {
   margin-top: 6px;
   border-radius: 10px;
   background: white;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
 }
+
 .edit_actions {
   display: flex;
   justify-content: flex-end;
   padding: 16px 0;
 }
+
 .edit_actions button {
   background: #2a3647;
   color: white;
@@ -259,17 +296,21 @@
   border-radius: 10px;
   border: none;
 }
+
 .edit_actions button:hover {
   background: #29ABE2;
 }
+
 .red_star {
   color: red;
 }
+
 .avatar_row {
   display: flex;
   gap: 6px;
   margin-top: 8px;
 }
+
 .avatar {
   width: 32px;
   height: 32px;
@@ -280,25 +321,98 @@
   color: white;
   font-size: 12px;
 }
+
 .subtask_item {
+  width: fit-content;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   padding: 6px;
   border-radius: 6px;
 }
+
+.subtask_item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.custom_checkbox {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.subtask_checkbox_icon {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  inset: 0;
+  display: none;
+  object-fit: contain;
+}
+
+.subtask_item input[type="checkbox"] + .custom_checkbox .subtask_checkbox_icon_unchecked {
+  display: block;
+}
+
+.subtask_item input[type="checkbox"]:checked + .custom_checkbox .subtask_checkbox_icon_unchecked {
+  display: none;
+}
+
+.subtask_item input[type="checkbox"]:checked + .custom_checkbox .subtask_checkbox_icon_checked {
+  display: block;
+}
+
+.subtask_text {
+  white-space: nowrap;
+}
+
+.assignee_row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.overlay_actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.overlay_actions hr {
+  height: 16px;
+  border: none;
+  border-left: 1px solid #d1d1d1;
+}
+
+.overlay_actions button {
+  border: none;
+  background-color: transparent;
+}
+
 .subtask_actions {
   display: none;
   gap: 8px;
 }
+
 .subtask_item:hover .subtask_actions {
   display: flex;
 }
+
 .subtask_actions img {
   width: 16px;
   height: 16px;
   cursor: pointer;
 }
+
 .addTask_dialog_content {
   border-radius: 30px;
   border: none;
@@ -309,6 +423,7 @@
   transform: translate(-50%, -50%) translateX(500px);
   transition: all 125ms ease-in;
 }
+
 .addTask_dialog_direction {
   display: flex;
   flex-direction: column;
@@ -316,53 +431,65 @@
   width: 100%;
   height: 100%;
 }
+
 .addTask_dialog_content.dialog_opend {
   transform: translate(-50%, -50%) translateX(0);
   transition: all 125ms ease-in;
 }
+
 .addTask_dialog_content::backdrop {
   background-color: rgb(184, 185, 186);
   opacity: 0;
   transition: all 125ms ease-in;
 }
+
 .addTask_dialog_content.dialog_opend::backdrop {
   opacity: 0.3;
 }
+
 .addTask_dialog_content.dialog_closed {
   transform: translate(-50%, -50%) translateX(500px);
   transition: all 125ms ease-in;
 }
+
 .addTask_dialog_content.dialog_closed::backdrop {
   opacity: 0;
 }
+
 .main_addTask_dialog_header {
   display: flex;
   align-items: start;
   padding: 48px 48px;
   padding-bottom: 16px;
 }
+
 .addTask_dialog_content #addTaskContainer #taskForm {
   padding: 0 48px 24px;
 }
+
 .addTask_dialog_content .requiredNotice {
   margin-top: 56px;
 }
+
 .taskForm_maxHeight {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
+
 @media(min-width: 1160px) and (max-width:1250px) {
   .addTask_dialog_content {
     width: 800px;
   }
 }
+
 @media(min-width: 1116px) and (max-width:1159px) {
   .addTask_dialog_content {
     width: 800px;
   }
 }
+
 @media(min-width: 320px) and (max-width:1115px) {
   .task {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);

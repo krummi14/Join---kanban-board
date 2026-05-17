@@ -43,8 +43,6 @@ async function checkUser(email, password) {
 
 async function loginUser(email, password) {
   clearErrors();
-  if (!validateLogin(email, password)) return;
-  const id = await checkUser(email, password);
   const id = await authenticateUser(email, password);
   if (!id) return;
   await persistLoginSession(id);

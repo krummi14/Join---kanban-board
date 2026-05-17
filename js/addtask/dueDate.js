@@ -1,7 +1,6 @@
 import { closeOutside } from "./dropdowns.js";
 
 const INVALID_DATE_HINT = "Imagine you have zero cookies and want to share them with zero friends.";
-console.log("DEBUG INVALID_DATE_HINT:", INVALID_DATE_HINT);
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export function initializeDueDatePicker(context) {
