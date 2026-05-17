@@ -112,6 +112,11 @@ input:focus {
   color: rgba(42, 54, 71, 1);
 }
 
+.edit_overlay .close_button {
+  position: relative;
+  top: 12px;
+  left: 480px;
+} 
 .close_button_responsive {
   height: 24px;
   width: 24px;

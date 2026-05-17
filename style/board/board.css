@@ -85,6 +85,7 @@
   color: #a8a8a8;
   padding: 16px;
 }
+
 @media(min-width: 1160px) and (max-width:1250px) {
   .main_drag_and_drop {
     padding: 0 48px;
