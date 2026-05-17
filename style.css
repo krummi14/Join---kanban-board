@@ -114,6 +114,11 @@
   font-weight: 600;
   color: #29abe2;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#user:hover {
+  background-color: #f0f0f0;
 }
 
 /* logout menu */

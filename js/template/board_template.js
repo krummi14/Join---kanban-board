@@ -53,6 +53,7 @@ function generateDescription(task) {
 }
 
 function generateProgress(task) {
+  if (!task.totalSubtasks) return "";
   return `
     <div class="task_progress_wrapper">
 

@@ -110,6 +110,8 @@ function syncBoardColumns(tasks) {
   initDragDrop(BOARD_COLUMNS);
 }
 
+window.syncBoardColumns = syncBoardColumns;
+
 function bindOverlayClick() {
   const overlay = document.getElementById("overlay");
   if (!overlay) return;

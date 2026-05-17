@@ -166,8 +166,8 @@ function createAssigneeMarkup(assignee, currentUser) {
 }
 
 async function refreshBoard() {
-  await loadTasks(window.BOARD_COLUMNS);
-  window.updateHTML(window.BOARD_COLUMNS);
+  const tasks = await loadTasks(window.BOARD_COLUMNS);
+  window.syncBoardColumns?.(tasks);
 }
 
 function formatDateParts(date) {

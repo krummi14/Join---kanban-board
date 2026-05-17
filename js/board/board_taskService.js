@@ -68,6 +68,7 @@ export async function toggleSubtask(taskId, index) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   task.subtasks[index].done = !task.subtasks[index].done;
+  syncDerivedTaskFields(task);
   await putUserData(getStoragePath(task), getTaskForStorage(task, task.status));
 }
 
@@ -251,6 +252,11 @@ function syncLocalTaskUpdate(taskId, updatedData) {
   const index = tasks.findIndex((task) => task.id === taskId);
   if (index === -1) return;
   tasks[index] = { ...tasks[index], ...updatedData };
+  syncDerivedTaskFields(tasks[index]);
+}
+
+function syncDerivedTaskFields(task) {
+  Object.assign(task, prepareTask(task));
 }
 
 function isPlainTask(task) {

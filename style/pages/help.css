@@ -10,6 +10,10 @@
     padding-right: 64px;
 }
 
+.help_main {
+    overflow-y: auto;
+}
+
 .help_content_gap {
     display: flex;
     flex-direction: column;
