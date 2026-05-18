@@ -18,12 +18,19 @@ function updateGreetingText() {
 }
 
 function updateGreetingUser() {
+  const greetingText = document.getElementById("greeting_text");
   const userNameElement = document.getElementById("user_name");
 
-  if (!userNameElement) return;
+  if (!greetingText || !userNameElement) return;
 
-  userNameElement.textContent =
-    hasPersonalGreeting() ? userName : "";
+  if (hasPersonalGreeting()) {
+    greetingText.textContent = `${getGreetingByTime()},`;
+    userNameElement.textContent = userName;
+    return;
+  }
+
+  greetingText.textContent = `${getGreetingByTime()}!`;
+  userNameElement.textContent = "";
 }
 
 function getGreetingByTime() {
