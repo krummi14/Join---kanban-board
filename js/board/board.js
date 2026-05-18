@@ -57,7 +57,7 @@ async function initBoard() {
 async function deleteTask(taskId) {
   await deleteTaskService(taskId);
   closeOverlay();
-  updateHTML(BOARD_COLUMNS);
+  syncBoardColumns(await loadTasks(BOARD_COLUMNS));
 }
 
 function openAddNewtaskDialog(path = "to_do") {

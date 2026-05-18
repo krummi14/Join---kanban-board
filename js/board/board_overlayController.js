@@ -1,7 +1,7 @@
 import { createAddTaskForm } from "../addtask/addTaskForm.js";
 import { createAddTaskFormTemplate } from "../template/add_task_template.js";
 import { createEditTaskTemplate } from "../template/board_edit_template.js";
-import { getTasks, deleteTask, toggleSubtask } from "./board_taskService.js";
+import { getTasks, toggleSubtask } from "./board_taskService.js";
 import {
   generateTaskOverlay,
   getAssigneeTemplate,
@@ -10,7 +10,6 @@ import {
   generateSubtask,
 } from "../template/board_template.js";
 import { loadTasks } from "./board_taskService.js";
-import { updateHTML } from "./board_taskView.js";
 import { initializeDueDatePicker } from "../addtask/dueDate.js";
 
 
@@ -58,12 +57,6 @@ function formatDate(dateString) {
   if (isNaN(date)) return dateString;
   return formatDateParts(date);
 }
-
-window.deleteTask = async function (taskId) {
-  await deleteTask(taskId);
-  closeOverlay();
-  updateHTML?.();
-};
 
 async function editTask(taskId) {
   const task = findTask(taskId);
@@ -131,7 +124,6 @@ window.closeOverlay = closeOverlay;
 window.generateAssigneesContent = generateAssigneesContent;
 window.generateSubtasksContent = generateSubtasksContent;
 window.formatDate = formatDate;
-window.deleteTask = deleteTask;
 window.editTask = editTask;
 window.createAddTaskFormTemplate = createAddTaskFormTemplate;
 

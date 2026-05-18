@@ -546,8 +546,26 @@
 }
 
 .overlay_actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: 24px;
   border: none;
   background-color: transparent;
+}
+
+.overlay_actions img {
+  display: block;
+  height: 24px;
+}
+
+.overlay_actions > div:first-child button {
+  width: 83px;
+}
+
+.overlay_actions > div:last-child button {
+  width: 63px;
 }
 
 .subtask_actions {

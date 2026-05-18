@@ -139,18 +139,26 @@ function buildTaskOverlayContent(task) {
 function generateOverlayActions(task) {
   return `
     <div class="overlay_actions">
-      ${createOverlayActionButton("deleteTask", task.id, "/assets/icon/subtask_del.svg")}<span>Delete</span>
+      <div>
+        <button onclick="deleteTask('${task.id}')">
+          <img
+            class="del_icon_task_overlay"
+            src="../assets/img/del_img.svg"
+            onmouseover="this.src='../assets/img/del_img_hover.svg'"
+            onmouseout="this.src='../assets/img/del_img.svg'">
+        </button>
+      </div>
       <hr>
-      ${createOverlayActionButton("editTask", task.id, "/assets/icon/subtask_edit.svg")}<span>Edit</span>
+      <div>
+        <button onclick="editTask('${task.id}')">
+          <img
+            class="edit_icon_task_overlay"
+            src="../assets/img/edit_img.svg"
+            onmouseover="this.src='../assets/img/edit_img_hover.svg'"
+            onmouseout="this.src='../assets/img/edit_img.svg'">
+        </button>
+      </div>
     </div>
-  `;
-}
-
-function createOverlayActionButton(action, taskId, iconPath) {
-  return `
-    <button onclick="${action}('${taskId}')">
-      <img src="${iconPath}">
-    </button>
   `;
 }
 
