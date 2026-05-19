@@ -34,6 +34,9 @@ let contentSearchInput = document.getElementById("search_input_value");
 let currentTasks = [];
 let isFiltering = false;
 let filteredColumns = null;
+let contentSearchInformation = document.getElementById("search_information");
+let contentShowButton = document.getElementById('show_all_button');
+let boardIsFiltered = false;
 
 // Logout-Funktion: entfernt Login-Status und leitet zur Login-Seite weiter
 function logout() {

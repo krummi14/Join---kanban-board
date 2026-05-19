@@ -82,6 +82,65 @@ function closeDialogOnBodyclick(event) {
   event.stopPropagation();
 }
 
+async function filterAndShowTask() {
+  const filterWord = getFilterWord();
+  if (emptyInputField(filterWord)) return;
+  let tasks = await loadTasks(BOARD_COLUMNS);
+  if (toShortfilterWord(filterWord)) return;
+  const filteredTasks = filterTasksByTitle(tasks, filterWord);
+  if (wordDoesntExist(filteredTasks)) return;
+  boardIsFiltered = true;
+  updateHTML(buildFilteredColumns(filteredTasks, BOARD_COLUMNS));
+}
+
+function emptyInputField(filterWord) {
+  if (!filterWord || filterWord.trim() == "") {
+    if (boardIsFiltered) {
+      boardIsFiltered = false;
+      updateHTML(BOARD_COLUMNS);
+      return true;
+    } else {
+      showSearchInformation();
+      return true;
+    }
+  }
+  return false;
+}
+
+function toShortfilterWord(filterWord) {
+  if (isShortFilter(filterWord)) {
+    boardIsFiltered = false;
+    showSearchInformation();
+    updateHTML(BOARD_COLUMNS);
+    return true;
+  }
+  return false;
+}
+
+function wordDoesntExist(filteredTasks, boardIsFiltered) {
+  if (filteredTasks.length == 0) {
+    boardIsFiltered = false;
+    showSearchInformation();
+    updateHTML(BOARD_COLUMNS);
+    return true;
+  }
+  return false;
+}
+
+function getFilterWord() {
+  const searchInput = document.getElementById("search_input_value");
+  return searchInput ? searchInput.value : null;
+}
+
+function isShortFilter(filterWord) {
+  return filterWord.length < 3;
+}
+
+function filterTasksByTitle(tasks, filterWord) {
+  const normalizedFilter = filterWord.toLowerCase();
+  return tasks.filter((task) => task.title.toLowerCase().includes(normalizedFilter));
+}
+
 function buildFilteredColumns(tasks, boardColumns) {
   return boardColumns.map((column) => ({
     ...column,
@@ -89,13 +148,27 @@ function buildFilteredColumns(tasks, boardColumns) {
   }));
 }
 
-async function filterAndShowTask() {
-  const filterWord = getFilterWord();
-  if (filterWord === null) return;
-  let tasks = await loadTasks(BOARD_COLUMNS);
-  if (isShortFilter(filterWord)) return updateHTML(BOARD_COLUMNS);
-  const filteredTasks = filterTasksByTitle(tasks, filterWord);
-  updateHTML(buildFilteredColumns(filteredTasks, BOARD_COLUMNS));
+function showSearchInformation() {
+  openInfoToWriteAtLeastThreeLetters();
+  addSearchInformationAsOverlay();
+}
+
+function addSearchInformationAsOverlay() {
+  contentSearchInformation.classList.add('loading_screen_overlay');
+  document.body.classList.add('scroll_lock');
+}
+
+function openInfoToWriteAtLeastThreeLetters() {
+  contentSearchInformation.classList.remove("task_information_none");
+}
+
+function closeSearchInformation() {
+  contentSearchInformation.classList.add("task_information_none");
+  document.body.classList.remove('scroll_lock');
+}
+
+function removeShowButton() {
+  contentShowButton.classList.remove('load_button_none');
 }
 
 function initializeUserInitials() {
@@ -123,20 +196,6 @@ function stopWindowEvent() {
   event.stopPropagation();
 }
 
-function getFilterWord() {
-  const searchInput = document.getElementById("search_input_value");
-  return searchInput ? searchInput.value : null;
-}
-
-function isShortFilter(filterWord) {
-  return filterWord.length < 3;
-}
-
-function filterTasksByTitle(tasks, filterWord) {
-  const normalizedFilter = filterWord.toLowerCase();
-  return tasks.filter((task) => task.title.toLowerCase().includes(normalizedFilter));
-}
-
 // 🌍 GLOBAL EXPORTS (HTML onclick / drag handlers)
 window.initBoard = initBoard;
 
@@ -156,3 +215,4 @@ window.openAddNewtaskDialog = openAddNewtaskDialog;
 window.closeAddNewTaskDialog = closeAddNewTaskDialog;
 window.closeDialogOnBodyclick = closeDialogOnBodyclick;
 window.filterAndShowTask = filterAndShowTask;
+window.closeSearchInformation = closeSearchInformation;

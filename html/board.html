@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../style/add-task/add_task_subtasks.css">
   <link rel="stylesheet" href="../style/board/board.css">
   <link rel="stylesheet" href="../style/board/board_cards.css">
+  <link rel="stylesheet" href="../style/board/board_information.css">
 
 
   <script type="module" src="../js/board/board.js"></script>
@@ -24,6 +25,7 @@
 </head>
 
 <body id="body" onload="initBoard()">
+
   <section class="sidebar">
     <div class="logo_nav">
       <img class="logo" src="../assets/img/join_logo.svg" alt="Join Logo">
@@ -41,6 +43,16 @@
       <li><a href="./privacy_policy.html">Privacy Policy</a></li>
       <li><a href="./legal_notice.html">Legal Notice</a></li>
     </ul>
+  </section>
+
+  <section id="search_information" class="search_information_screen task_information_none">
+    <div class="search_information">
+      <button onclick="closeSearchInformation()" class="close_button">X</button>
+      <p class="search_information_text">Task doesn't exist</p>
+
+      <p class="search_information_text search_information_text_info">(Write at least three letters of task title.<br> If
+        you want to see all tasks, just press button again with empty input field)</p>
+    </div>
   </section>
 
   <section class="content" id="content">
@@ -75,12 +87,12 @@
           </a>
         </div>
         <div class="input_wrapper_direction">
-          <div class="input-wrapper input-wrapper_size">
+          <form class="input-wrapper input-wrapper_size" onsubmit="filterAndShowTask(); return false;">
             <input id="search_input_value" class="input_size" type="text" placeholder="Find Task">
             <div class="input-icon input_icon_border_left">
-              <button onclick="filterAndShowTask()" class="close_button find_task_button"></button>
+              <button type="submit" class="close_button find_task_button"></button>
             </div>
-          </div>
+          </form>
           <button class="button_basic_characteristics add_task_button" onclick="openAddNewtaskDialog()">
             <p class="add_task_none">Add task</p>
             <img class="add_contact_icon" src="../assets/icon/add.svg" alt="Add icon">
@@ -103,7 +115,8 @@
           <div class="drag_area_header">
             <h4>In progress</h4>
             <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
-            <button class="plus_add_task_button button_mobile_none" onclick="openAddNewtaskDialog('in_progress')">+</button>
+            <button class="plus_add_task_button button_mobile_none"
+              onclick="openAddNewtaskDialog('in_progress')">+</button>
           </div>
           <div class="drag_area" id="in_progress">
           </div>
@@ -113,7 +126,8 @@
           <div class="drag_area_header">
             <h4>Await feedback</h4>
             <a href="./add_task.html" class="plus_add_task_button button_mobile">+</a>
-            <button class="plus_add_task_button  button_mobile_none" onclick="openAddNewtaskDialog('await_feedback')">+</button>
+            <button class="plus_add_task_button  button_mobile_none"
+              onclick="openAddNewtaskDialog('await_feedback')">+</button>
           </div>
           <div class="drag_area" id="await_feedback">
           </div>
