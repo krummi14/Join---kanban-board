@@ -140,6 +140,14 @@
   color: #ff0000;
 }
 
+#addTaskContainer .requiredNotice_mobile {
+  display: none;
+}
+
+.form_buttons_mobile {
+  display: none;
+}
+
 .task_added_feedback {
   position: fixed;
   left: 50%;
@@ -180,17 +188,36 @@
 }
 
 @media(min-width: 320px) and (max-width:1115px) {
+  #addTaskContainer .requiredNotice {
+    display: none;
+  }
+
   #addTaskContainer .form_buttons {
     display: none;
   }
 
-  .form_buttons_none {
+  .form_buttons_mobile {
+    position: sticky;
+    bottom: 0;
+    right: 0;
+    background-color:#f6f7f8;
     display: flex;
-    padding: 8px 32px;
-    background-color: #f6f7f8;
+    justify-content: right;
+    gap: 8px;
+    padding: 32px 32px;
+    width: 100%;
   }
-}
 
-.create_btn:hover {
-  box-shadow: #2a364750 0 5px 2px -2px;
+  #addTaskContainer .requiredNotice_mobile {
+    display: block;
+    margin-top: auto;
+    font-size: 16px;
+    color: #000000;
+  }
+
+  #addTaskContainer .requiredNotice_mobile span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #ff0000;
+  }
 }

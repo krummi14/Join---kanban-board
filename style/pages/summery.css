@@ -8,7 +8,9 @@
 
 .main_header_summary {
   width: 800px;
+  padding-bottom: 64px;
 }
+
 .main_header p {
   font-size: 27px;
   color: #2a3647;
@@ -27,13 +29,14 @@
   flex-direction: row;
   align-items: center;
   gap: 80px;
-  padding: 0 80px;
+  padding: 0 104px;
 }
 
 .todo_done {
   display: flex;
   justify-content: space-between;
 }
+
 .summary_card_link {
   color: inherit;
   text-decoration: none;
@@ -73,9 +76,11 @@
   inset: 0;
   transition: opacity 0.2s ease;
 }
+
 .summary_icon_hover {
   opacity: 0;
 }
+
 .to_do:hover .summary_icon_default,
 .done:hover .summary_icon_default {
   opacity: 0;
@@ -232,32 +237,44 @@
   font-weight: 700;
   color: #29abe2;
 }
+
 .good_morning {
   font-size: 47px;
   font-weight: 500;
   color: rgba(42, 54, 71, 1);
 }
-@media(min-width: 1160px) and (max-width:1250px) {
+
+@media(min-width: 1251px) and (max-width:1300px) {
+  .summery_and_good_morning {
+    gap: 32px;
+  }
+}
+
+@media(min-width: 1122px) and (max-width:1250px) {
   .main_header_summary {
     width: 700px;
+    padding: 64px 40px;
   }
 
   .summery_and_good_morning {
     padding: 0 40px;
+    gap: 32px;
   }
 }
 
-@media(min-width: 1116px) and (max-width:1159px) {
+@media(min-width: 1115px) and (max-width:1121px) {
   .main_header_summary {
-    width: 640px;
+    width: 700px;
+    padding: 64px 40px;
   }
 
   .summery_and_good_morning {
-    padding: 0 16px;
+    padding: 0 40px;
+    gap: 24px;
   }
 }
 
-@media(min-width: 320px) and (max-width:1115px) {
+@media(min-width: 680px) and (max-width:1115px) {
   .main_header_summary {
     width: auto;
   }
@@ -273,6 +290,154 @@
   .hr_mobile {
     display: block;
   }
+
+  .key_matix {
+    position: static;
+    align-items: center;
+    padding: 24px 16px;
+    width: 100%;
+    height: auto;
+  }
+
+  .todo_done {
+    gap: 16px;
+  }
+
+  .to_do,
+  .done {
+    width: 280px;
+    height: 110px;
+  }
+
+  #to_do_count,
+  #done_count {
+    font-size: 47px;
+  }
+
+  #to_do_count span,
+  #done_count span {
+    font-size: 16px;
+  }
+
+  .urgent {
+    width: 576px;
+    height: 110px;
+    padding: 16px;
+    gap: 0;
+  }
+
+  #urgent_count {
+    font-size: 47px;
+  }
+
+  #urgent_count span {
+    font-size: 16px;
+  }
+
+  #deadline {
+    font-size: 16px;
+  }
+
+  #deadline span {
+    font-size: 16px;
+  }
+
+  .tasks {
+    gap: 16px;
+  }
+
+  .tasks_in_board {
+    height: 116px;
+    width: 180px;
+  }
+
+  #board_count {
+    font-size: 47px;
+  }
+
+  #board_count span {
+    font-size: 16px;
+  }
+
+  .tasks_in_progress {
+    height: 116px;
+    width: 180px;
+  }
+
+  #progress_count {
+    font-size: 47px;
+  }
+
+  #progress_count span {
+    font-size: 16px;
+  }
+
+  .awaiting_feedback {
+    height: 116px;
+    width: 180px;
+  }
+
+  #feedback_count {
+    font-size: 47px;
+  }
+
+  #feedback_count span {
+    font-size: 16px;
+  }
+
+  #good_morning {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 95%;
+    top: 0;
+    left: 0;
+    background-color: #f6f7f8;
+  }
+
+  .good_morning {
+    font-size: 36px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .fadeOut {
+    animation: splashOut 0.8s ease forwards;
+  }
+
+  @keyframes splashOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media(min-width: 320px) and (max-width:679px) {
+  .main_header_summary {
+    width: auto;
+  }
+
+  .respo_header_text_size {
+    font-size: 20px;
+  }
+
+  .hr_desktop {
+    display: none;
+  }
+
+  .hr_mobile {
+    display: block;
+  }
+
   .key_matix {
     position: static;
     align-items: center;
@@ -300,6 +465,7 @@
   #done_count span {
     font-size: 16px;
   }
+
   .urgent {
     width: 280px;
     height: 110px;
@@ -314,6 +480,7 @@
   #urgent_count span {
     font-size: 16px;
   }
+
   #deadline {
     font-size: 16px;
   }
@@ -330,6 +497,7 @@
     height: 116px;
     width: 80px;
   }
+
   #board_count {
     font-size: 47px;
   }
@@ -342,6 +510,7 @@
     height: 116px;
     width: 80px;
   }
+
   #progress_count {
     font-size: 47px;
   }
@@ -354,6 +523,7 @@
     height: 116px;
     width: 80px;
   }
+
   #feedback_count {
     font-size: 47px;
   }

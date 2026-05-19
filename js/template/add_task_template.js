@@ -92,6 +92,7 @@ export function createAddTaskFormTemplate(path) {
         ${createAddTaskLeftForm()}
         <hr class="hr_add_task_none">
         ${createAddTaskRightForm(path)}
+        ${createFormButtonsMobile(path)}
       </form>
   `;
 }
@@ -177,6 +178,7 @@ function createAddTaskRightForm(path) {
       ${createCategorySection()}
       ${createSubtaskSection()}
       ${createFormButtons(path)}
+      <p class="requiredNotice_mobile"><span>*</span>This field is required</p>
     </section>
   `;
 }
@@ -274,6 +276,15 @@ function createSubtaskButtons() {
 function createFormButtons(path) {
   return `
     <section class="form_buttons">
+      <button class="button_basic_characteristics clear_btn" type="reset">Clear &#x78;</button>
+      <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${path}">Create Task &#x2713;</button>
+    </section>
+  `;
+}
+
+function createFormButtonsMobile(path) {
+  return `
+    <section class="form_buttons_mobile">
       <button class="button_basic_characteristics clear_btn" type="reset">Clear &#x78;</button>
       <button id="createTask" class="button_basic_characteristics create_btn" type="submit" value="${path}">Create Task &#x2713;</button>
     </section>

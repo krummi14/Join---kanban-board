@@ -11,7 +11,7 @@
 }
 
 .board_main_header {
-  padding: 64px 96px;
+  padding: 80px 104px;
   padding-bottom: 40px;
 }
 
@@ -45,8 +45,8 @@
   flex-direction: row;
   gap: 32px;
   overflow: hidden;
-  height: calc(100vh - 288px);
-  padding: 0 96px;
+  height: calc(100vh - 304px);
+  padding: 0 104px;
 }
 
 .drag_content_gap {
@@ -91,27 +91,15 @@
   padding: 16px;
 }
 
-@media(min-width: 1160px) and (max-width:1250px) {
+@media(min-width: 1116px) and (max-width:1250px) {
   .main_drag_and_drop {
     padding: 0 48px;
   }
 
   .board_main_header {
-    padding: 64px 48px;
-    padding-bottom: 40px;
+    padding: 64px 40px;
   }
 }
-@media(min-width: 1116px) and (max-width:1159px) {
-  .main_drag_and_drop {
-    padding: 0 16px;
-  }
-
-  .board_main_header {
-    padding: 40px 16px;
-    padding-bottom: 16px;
-  }
-}
-
 
 @media (min-width: 320px) and (max-width: 1115px) {
   .board_main {
@@ -149,6 +137,7 @@
     gap: 16px;
     width: 100%;
     margin-bottom: 0;
+    padding: 16px 0;
   }
 
   .drag_area::-webkit-scrollbar {
@@ -156,6 +145,29 @@
   }
 
   .drag_content_gap {
+    height: auto;
     width: 100%;
+  }
+
+  .task {
+    height: 540px;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1115px) {
+  .task {
+    height: 360px;
+  }
+}
+
+@media (min-width: 781px) and (max-width: 999px) {
+  .task {
+    height: 440px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 780px) {    
+  .task {
+    height: 540px;
   }
 }
