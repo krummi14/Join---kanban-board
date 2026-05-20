@@ -4,7 +4,7 @@
   padding: 0 104px;
   padding-bottom: 24px;
   height: 610px;
-  width: 1016px;
+  /*width: 1016px;*/
 }
 
 #addTaskContainer .left_form,
@@ -87,7 +87,7 @@
 
 @media(min-width: 1160px) and (max-width:1250px) {
   #addTaskContainer #taskForm {
-    width: 888px;
+    /*width: 888px;*/
     height: 536px;
     padding: 0 40px;
   }
@@ -99,7 +99,7 @@
 
 @media(min-width: 1116px) and (max-width:1159px) {
   #addTaskContainer #taskForm {
-    width: 864px;
+    /*width: 864px;*/
     height: 576px;
     padding: 0 40px;
   }
