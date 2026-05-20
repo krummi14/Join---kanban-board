@@ -23,10 +23,8 @@ import {
   initDragDrop,
   startDragging,
   endDragging,
-  allowDrop,
+  handleTaskCardClick,
   moveTo,
-  highlight,
-  removeHighlight
 } from "./board_dragDropController.js";
 
 import {
@@ -201,10 +199,8 @@ window.initBoard = initBoard;
 
 window.startDragging = startDragging;
 window.endDragging = endDragging;
-window.allowDrop = allowDrop;
+window.handleTaskCardClick = handleTaskCardClick;
 window.moveTo = moveTo;
-window.highlight = highlight;
-window.removeHighlight = removeHighlight;
 
 window.openOverlay = openOverlay;
 window.closeOverlay = closeOverlay;

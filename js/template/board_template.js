@@ -1,7 +1,7 @@
 import { getContactInitials } from "../addtask/addTaskForm.js";
 export function generateTaskHTML(task) {
   return `
-    <div class="task" onclick="openOverlay('${task.id}')" draggable="true" ondragstart="startDragging(event, '${task.id}')" ondragend="endDragging()">
+    <div class="task" onclick="handleTaskCardClick(event, '${task.id}')" onmousedown="startDragging(event, '${task.id}')" ontouchstart="startDragging(event, '${task.id}')">
       ${buildTaskCardContent(task)}
     </div>
   `;
@@ -75,7 +75,7 @@ function generateFooter(task) {
         </div>
 
         <div class="priority_icon">
-            <img src="${task.priorityIcon}" alt="priority icon">
+            <img src="${task.priorityIcon}" alt="priority icon" draggable="false">
         </div>
     </div>
   `;

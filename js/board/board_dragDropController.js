@@ -7,46 +7,74 @@ let activeDragPreview = null;
 let activeDraggedCard = null;
 let dragAnchorX = 0;
 let dragAnchorY = 0;
-let transparentDragImage = null;
 let dragTrackingInitialized = false;
 let lastPointerX = null;
 let lastPointerY = null;
 let dragTilt = 0;
 let pendingDropPath = null;
 let pendingDropIndex = null;
+let suppressTaskClickUntil = 0;
+let pendingDragStart = null;
+
+const TASK_CLICK_SUPPRESSION_MS = 250;
+const DRAG_START_DISTANCE = 6;
 
 export function initDragDrop(boardColumns) {
   BOARD_COLUMNS_REF = boardColumns;
   if (dragTrackingInitialized) return;
-  document.addEventListener("dragover", handleGlobalDragOver);
-  document.addEventListener("drop", endDragging);
+  document.addEventListener("mousemove", handlePointerMove);
+  document.addEventListener("mouseup", handlePointerEnd);
+  document.addEventListener("touchmove", handlePointerMove, { passive: false });
+  document.addEventListener("touchend", handlePointerEnd);
+  document.addEventListener("touchcancel", handlePointerCancel);
   dragTrackingInitialized = true;
 }
 
 export function startDragging(ev, id) {
-  draggedId = id;
-  const dragContext = getDragContext(ev);
-  if (!dragContext) return;
+  if (!isValidDragStartEvent(ev)) return;
+  const point = getEventPoint(ev);
+  if (!point) return;
+  pendingDragStart = {
+    id,
+    taskCard: ev?.currentTarget,
+    startX: point.clientX,
+    startY: point.clientY,
+  };
+}
+
+function beginDragging(point) {
+  if (!pendingDragStart?.taskCard) {
+    pendingDragStart = null;
+    return;
+  }
+
+  draggedId = pendingDragStart.id;
+  suppressTaskClickUntil = Date.now() + TASK_CLICK_SUPPRESSION_MS;
   resetActiveDragState();
-  syncDragAnchor(dragContext.taskCard, ev);
-  createDragPreview(dragContext.taskCard);
-  hideDraggedCard(dragContext.taskCard);
-  positionDragPreview(ev);
-  setTransparentDragImage(dragContext.dragImage);
+  syncDragAnchor(pendingDragStart.taskCard, point);
+  createDragPreview(pendingDragStart.taskCard);
+  hideDraggedCard(pendingDragStart.taskCard);
+  positionDragPreview(point);
+  pendingDragStart = null;
+}
+
+export function handleTaskCardClick(ev, taskId) {
+  if (shouldSuppressTaskClick()) {
+    ev?.preventDefault();
+    ev?.stopPropagation();
+    return;
+  }
+
+  window.openOverlay?.(taskId);
 }
 
 export function endDragging() {
+  pendingDragStart = null;
   cleanupDragPreview();
   cleanupDraggedCard();
   resetDragMotion();
   resetPendingDropTarget();
   draggedId = null;
-}
-
-export function allowDrop(ev) {
-  ev.preventDefault();
-  positionDragPreview(ev);
-  updatePendingDropTarget(ev);
 }
 
 export async function moveTo(category) {
@@ -56,21 +84,8 @@ export async function moveTo(category) {
   handleMoveResult(result, moveState);
 }
 
-export function highlight(id) {
-  document.getElementById(id)?.classList.add("drag-area-highlight");
-}
-
-export function removeHighlight(id) {
-  document.getElementById(id)?.classList.remove("drag-area-highlight");
-  if (pendingDropPath !== id) return;
-  resetPendingDropTarget();
-}
-
-function getDragContext(ev) {
-  const taskCard = ev?.currentTarget;
-  const dragImage = ev?.dataTransfer;
-  if (!taskCard || !dragImage?.setDragImage) return null;
-  return { taskCard, dragImage };
+function shouldSuppressTaskClick() {
+  return draggedId !== null || pendingDragStart !== null || Date.now() < suppressTaskClickUntil;
 }
 
 function resetActiveDragState() {
@@ -119,11 +134,6 @@ function hideDraggedCard(taskCard) {
   activeDraggedCard.style.setProperty("visibility", "hidden", "important");
 }
 
-function setTransparentDragImage(dragImage) {
-  transparentDragImage ??= createTransparentDragImage();
-  dragImage.setDragImage(transparentDragImage, 0, 0);
-}
-
 function cleanupDragPreview() {
   activeDragPreview?.remove();
   activeDragPreview = null;
@@ -144,7 +154,7 @@ function resetDragMotion() {
 
 function prepareMove(category) {
   const targetIndex = resolveDropIndex(category);
-  removeHighlight(category);
+  clearDropZoneHighlights();
   const optimisticMove = applyOptimisticMove(draggedId, category, targetIndex);
   renderMoveColumns(optimisticMove);
   cleanupDragPreview();
@@ -219,16 +229,23 @@ function getTaskIndex(column, taskId) {
   return column.tasks.findIndex((task) => task.id == taskId);
 }
 
-function updatePendingDropTarget(ev) {
-  const columnId = getDropZoneId(ev?.currentTarget);
+function updatePendingDropTargetByPoint(point) {
+  const columnId = getDropZoneId(point);
   if (!columnId) return;
+  const nextDropIndex = getDropIndexForColumn(columnId, point.clientY);
+  syncDropZoneHighlight(columnId);
   pendingDropPath = columnId;
-  pendingDropIndex = getDropIndexForColumn(columnId, ev.clientY);
+  pendingDropIndex = nextDropIndex;
   updateDropIndicator(columnId, pendingDropIndex);
 }
 
-function getDropZoneId(dropZone) {
-  return dropZone?.querySelector(".drag_area")?.id || null;
+function getDropZoneId(pointOrDropZone) {
+  if (typeof pointOrDropZone?.clientX === "number" && typeof pointOrDropZone?.clientY === "number") {
+    const dropZone = getDropZoneFromPoint(pointOrDropZone.clientX, pointOrDropZone.clientY);
+    return dropZone?.id || null;
+  }
+
+  return pointOrDropZone?.querySelector(".drag_area")?.id || null;
 }
 
 function getDropIndexForColumn(columnId, pointerY) {
@@ -265,6 +282,7 @@ function getNormalizedDropIndex(tasks, targetIndex) {
 
 function resetPendingDropTarget() {
   clearDropIndicators();
+  clearDropZoneHighlights();
   pendingDropPath = null;
   pendingDropIndex = null;
 }
@@ -317,25 +335,87 @@ function buildPreviewShadow(tilt) {
   return `0 26px 44px rgba(0, 0, 0, 0.24), ${tilt * 1.8}px 16px 24px rgba(0, 0, 0, 0.18)`;
 }
 
-function handleGlobalDragOver(ev) {
-  positionDragPreview(ev);
+function handlePointerMove(ev) {
+  const point = getEventPoint(ev);
+  if (!point) return;
+
+  if (!draggedId && pendingDragStart && shouldStartDragging(point)) {
+    beginDragging(point);
+  }
+
+  if (!draggedId) return;
+  if (ev.cancelable) ev.preventDefault();
+  positionDragPreview(point);
+  updatePendingDropTargetByPoint(point);
 }
 
-function createTransparentDragImage() {
-  const pixel = document.createElement("div");
-  Object.assign(pixel.style, getTransparentPixelStyles());
-  document.body.appendChild(pixel);
-  return pixel;
+function handlePointerEnd(ev) {
+  if (pendingDragStart && !draggedId) {
+    pendingDragStart = null;
+    return;
+  }
+
+  if (!draggedId) return;
+  if (ev.cancelable) ev.preventDefault();
+  if (!pendingDropPath) {
+    endDragging();
+    return;
+  }
+
+  void moveTo(pendingDropPath);
 }
 
-function getTransparentPixelStyles() {
-  return {
-    width: "1px",
-    height: "1px",
-    opacity: "0",
-    pointerEvents: "none",
-    position: "fixed",
-    top: "0",
-    left: "0",
-  };
+function handlePointerCancel() {
+  endDragging();
+}
+
+function shouldStartDragging(point) {
+  if (!pendingDragStart) return false;
+  const deltaX = point.clientX - pendingDragStart.startX;
+  const deltaY = point.clientY - pendingDragStart.startY;
+  return Math.hypot(deltaX, deltaY) >= DRAG_START_DISTANCE;
+}
+
+function getEventPoint(ev) {
+  if (typeof ev?.clientX === "number" && typeof ev?.clientY === "number") {
+    return { clientX: ev.clientX, clientY: ev.clientY };
+  }
+
+  const touch = ev?.touches?.[0] || ev?.changedTouches?.[0];
+  if (!touch) return null;
+  return { clientX: touch.clientX, clientY: touch.clientY };
+}
+
+function getEventInputType(ev) {
+  if (ev?.type?.startsWith("touch")) return "touch";
+  if (ev?.type?.startsWith("mouse")) return "mouse";
+  return ev?.type || "unknown";
+}
+
+function isValidDragStartEvent(ev) {
+  if (ev?.type === "mousedown") {
+    return ev.button === 0;
+  }
+
+  return ev?.type === "touchstart";
+}
+
+function getDropZoneFromPoint(clientX, clientY) {
+  if (typeof document.elementsFromPoint === "function") {
+    return document.elementsFromPoint(clientX, clientY).find((element) => element.classList?.contains("drag_area")) || null;
+  }
+
+  return document.elementFromPoint(clientX, clientY)?.closest?.(".drag_area") || null;
+}
+
+function syncDropZoneHighlight(columnId) {
+  if (pendingDropPath === columnId) return;
+  clearDropZoneHighlights();
+  document.getElementById(columnId)?.classList.add("drag-area-highlight");
+}
+
+function clearDropZoneHighlights() {
+  document.querySelectorAll(".drag-area-highlight").forEach((dropZone) => {
+    dropZone.classList.remove("drag-area-highlight");
+  });
 }
