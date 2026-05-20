@@ -17,7 +17,7 @@
 }
 
 .key_matix {
-  width: 560px;
+  min-width: 560px;
   height: 562px;
   display: flex;
   flex-direction: column;
@@ -35,6 +35,18 @@
 .todo_done {
   display: flex;
   justify-content: space-between;
+}
+
+.urgent_icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.urgent_divider {
+  height: 60%;
+  border: 2px solid #d1d1d1;
+  border-radius: 2px;
 }
 
 .summary_card_link {
@@ -147,17 +159,17 @@
 .urgent {
   width: 100%;
   height: 168px;
-  background: #fff;
-  border-radius: 30px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
+  justify-content: space-between;
+  padding: 0 60px;
+  background: #fff;
+  border-radius: 30px;
 }
 
 .tasks {
   display: flex;
-  gap: 24px;
+  justify-content: space-between;
 }
 
 .hr_mobile {
@@ -177,14 +189,6 @@
   font-weight: 400;
   display: flex;
   color: #000000;
-}
-
-.urgent hr {
-  width: 102px;
-  border: none;
-  transform: rotate(90deg);
-  border-top: 3px solid #d1d1d1;
-  border-radius: 2px;
 }
 
 #deadline {
@@ -244,40 +248,15 @@
   color: rgba(42, 54, 71, 1);
 }
 
-@media(min-width: 1251px) and (max-width:1300px) {
-  .summery_and_good_morning {
-    gap: 32px;
-  }
-}
-
-@media(min-width: 1122px) and (max-width:1250px) {
-  .main_header_summary {
-    width: 700px;
-    padding: 64px 40px;
-  }
-
+@media(min-width: 1116px) and (max-width:1308px) {
   .summery_and_good_morning {
     padding: 0 40px;
     gap: 32px;
   }
 }
 
-@media(min-width: 1115px) and (max-width:1121px) {
-  .main_header_summary {
-    width: 700px;
-    padding: 64px 40px;
-  }
-
-  .summery_and_good_morning {
-    padding: 0 40px;
-    gap: 24px;
-  }
-}
 
 @media(min-width: 680px) and (max-width:1115px) {
-  .main_header_summary {
-    width: auto;
-  }
 
   .respo_header_text_size {
     font-size: 20px;
@@ -322,7 +301,6 @@
   .urgent {
     width: 576px;
     height: 110px;
-    padding: 16px;
     gap: 0;
   }
 
@@ -442,6 +420,7 @@
     position: static;
     align-items: center;
     padding: 24px 16px;
+    min-width: 0;
     width: 100%;
     height: auto;
   }
@@ -454,6 +433,10 @@
   .done {
     width: 130px;
     height: 110px;
+  }
+
+  .summery_and_good_morning {
+    padding: 0;
   }
 
   #to_do_count,
@@ -470,7 +453,7 @@
     width: 280px;
     height: 110px;
     padding: 16px;
-    gap: 0;
+    gap: 16px;
   }
 
   #urgent_count {
@@ -483,6 +466,7 @@
 
   #deadline {
     font-size: 16px;
+    gap: 8px;
   }
 
   #deadline span {
@@ -549,6 +533,21 @@
     font-size: 36px;
     font-weight: 400;
     text-align: center;
+  }
+
+  .summary_icon_swap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .summary_icon_swap img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .summary_card_link img {
+    width: 40px;
+    height: 40px;
   }
 
   .fadeOut {
