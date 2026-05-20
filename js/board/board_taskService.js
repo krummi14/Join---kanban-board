@@ -4,6 +4,11 @@ import { generateSingleAvatar, generateExtraAvatar, getNoAssigneesCardTemplate }
 
 let tasks = [];
 const TASKS_ROOT_PATH = "tasks";
+const BOARD_CACHE_OPTIONS = {
+  preferCache: true,
+  refreshInBackground: true,
+  maxAgeMs: 15000,
+};
 
 export function getTasks() {
   return tasks;
@@ -14,11 +19,20 @@ export function setTasks(newTasks) {
 }
 
 export async function loadTasks(BOARD_COLUMNS) {
-  const { tasksRootData, columnData } = await loadTaskSources(BOARD_COLUMNS);
+  const tasksRootData = await getData(TASKS_ROOT_PATH, BOARD_CACHE_OPTIONS);
   const unifiedTasks = mapUnifiedTasks(tasksRootData, BOARD_COLUMNS);
-  const legacyTasks = mapLegacyTasks(BOARD_COLUMNS, columnData);
-  tasks = mergeTaskCollections(unifiedTasks, legacyTasks);
+  if (unifiedTasks.length > 0) {
+    tasks = unifiedTasks;
+    return tasks;
+  }
+
+  const columnData = await loadLegacyTaskSources(BOARD_COLUMNS);
+  tasks = mapLegacyTasks(BOARD_COLUMNS, columnData);
   return tasks;
+}
+
+export function syncTaskLocally(taskId, updatedData) {
+  syncLocalTaskUpdate(taskId, updatedData);
 }
 
 function generateAvatarHTML(assignees) {
@@ -189,20 +203,12 @@ function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function loadTaskSources(boardColumns) {
-  return Promise.all([
-    getData(TASKS_ROOT_PATH),
-    ...boardColumns.map((column) => getData(column.path)),
-  ]).then(([tasksRootData, ...columnData]) => ({ tasksRootData, columnData }));
+function loadLegacyTaskSources(boardColumns) {
+  return Promise.all(boardColumns.map((column) => getData(column.path, BOARD_CACHE_OPTIONS)));
 }
 
 function mapLegacyTasks(boardColumns, columnData) {
   return boardColumns.flatMap((column, index) => mapLegacyColumnTasks(column, columnData[index]));
-}
-
-function mergeTaskCollections(unifiedTasks, legacyTasks) {
-  const unifiedIds = new Set(unifiedTasks.map((task) => task.id));
-  return [...unifiedTasks, ...legacyTasks.filter((task) => !unifiedIds.has(task.id))];
 }
 
 function buildAvatarMarkup(visibleAssignees, extraAssigneeCount) {

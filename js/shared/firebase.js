@@ -2,9 +2,18 @@ import { extractIDs } from "./list.js";
 import { insertNewContactData, editCurrentContactData } from "./assets.js";
 
 const FIREBASE_CACHE_PREFIX = "join-cache:";
+const FIREBASE_CACHE_META_PREFIX = "join-cache-meta:";
 
-export async function getData(path = "") {
+export async function getData(path = "", options = {}) {
     const normalizedPath = normalizePath(path);
+    const requestOptions = normalizeGetDataOptions(options);
+    const cachedData = readCachedData(normalizedPath);
+
+    if (requestOptions.preferCache && cachedData !== null) {
+        refreshCachedDataInBackground(normalizedPath, requestOptions);
+        return cachedData;
+    }
+
     try {
         return await fetchAndCacheData(normalizedPath);
     } catch (error) {
@@ -103,6 +112,10 @@ function getCacheKey(path = "") {
     return `${FIREBASE_CACHE_PREFIX}${path || "__root__"}`;
 }
 
+function getCacheMetaKey(path = "") {
+    return `${FIREBASE_CACHE_META_PREFIX}${path || "__root__"}`;
+}
+
 function readCachedData(path = "") {
     try {
         const cached = localStorage.getItem(getCacheKey(path));
@@ -115,6 +128,7 @@ function readCachedData(path = "") {
 function writeCachedData(path = "", data = null) {
     try {
         localStorage.setItem(getCacheKey(path), JSON.stringify(data));
+        writeCachedMeta(path);
     } catch {
         return;
     }
@@ -123,9 +137,49 @@ function writeCachedData(path = "", data = null) {
 function removeCachedData(path = "") {
     try {
         localStorage.removeItem(getCacheKey(path));
+        localStorage.removeItem(getCacheMetaKey(path));
     } catch {
         return;
     }
+}
+
+function writeCachedMeta(path = "") {
+    try {
+        localStorage.setItem(getCacheMetaKey(path), String(Date.now()));
+    } catch {
+        return;
+    }
+}
+
+function readCachedAge(path = "") {
+    try {
+        const value = localStorage.getItem(getCacheMetaKey(path));
+        if (!value) return Number.POSITIVE_INFINITY;
+        const timestamp = Number(value);
+        if (!Number.isFinite(timestamp)) return Number.POSITIVE_INFINITY;
+        return Date.now() - timestamp;
+    } catch {
+        return Number.POSITIVE_INFINITY;
+    }
+}
+
+function normalizeGetDataOptions(options = {}) {
+    return {
+        preferCache: Boolean(options.preferCache),
+        refreshInBackground: Boolean(options.refreshInBackground),
+        maxAgeMs: Number.isFinite(options.maxAgeMs) ? options.maxAgeMs : 0,
+    };
+}
+
+function refreshCachedDataInBackground(normalizedPath, options) {
+    if (!shouldRefreshCache(normalizedPath, options)) return;
+    void fetchAndCacheData(normalizedPath).catch(() => undefined);
+}
+
+function shouldRefreshCache(normalizedPath, options) {
+    if (!options.refreshInBackground) return false;
+    if (options.maxAgeMs <= 0) return true;
+    return readCachedAge(normalizedPath) >= options.maxAgeMs;
 }
 
 function mergeCachedParent(path, data) {

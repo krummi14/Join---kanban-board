@@ -1,7 +1,7 @@
 import { createAddTaskForm } from "../addtask/addTaskForm.js";
 import { createAddTaskFormTemplate } from "../template/add_task_template.js";
 import { createEditTaskTemplate } from "../template/board_edit_template.js";
-import { getTasks, toggleSubtask } from "./board_taskService.js";
+import { getTasks, syncTaskLocally, toggleSubtask } from "./board_taskService.js";
 import {
   generateTaskOverlay,
   getAssigneeTemplate,
@@ -9,7 +9,6 @@ import {
   getNoSubtasksTemplate,
   generateSubtask,
 } from "../template/board_template.js";
-import { loadTasks } from "./board_taskService.js";
 import { initializeDueDatePicker } from "../addtask/dueDate.js";
 
 
@@ -47,7 +46,7 @@ function generateSubtasksContent(task) {
 
 window.toggleSubtask = async function (taskId, index) {
   await toggleSubtask(taskId, index);
-  await refreshBoard();
+  refreshBoard();
 };
 
 function formatDate(dateString) {
@@ -157,9 +156,8 @@ function createAssigneeMarkup(assignee, currentUser) {
   return getAssigneeTemplate(assignee, isYou);
 }
 
-async function refreshBoard() {
-  const tasks = await loadTasks(window.BOARD_COLUMNS);
-  window.syncBoardColumns?.(tasks);
+function refreshBoard() {
+  window.syncBoardColumns?.(getTasks());
 }
 
 function formatDateParts(date) {
@@ -181,8 +179,9 @@ function getEditControllerConfig() {
   return { onSave: handleEditSave, mode: "edit" };
 }
 
-async function handleEditSave(taskId) {
-  await refreshBoard();
+async function handleEditSave(taskId, updatedTask) {
+  syncTaskLocally(taskId, updatedTask);
+  refreshBoard();
   closeOverlay();
   openOverlay(taskId);
 }

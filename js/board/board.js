@@ -2,6 +2,7 @@
 
 // 📦 Task Service (Daten / Firebase)
 import {
+  getTasks,
   loadTasks,
   deleteTask as deleteTaskService,
 } from "./board_taskService.js";
@@ -31,7 +32,7 @@ import {
   getDialogAddTaskTemplate
 } from "../template/board_template.js";
 
-import { initAddTask } from "../addtask/addTask.js";
+let addTaskDialogResourcesPromise = null;
 
 // 📊 Board config
 let BOARD_COLUMNS = [
@@ -55,14 +56,15 @@ async function initBoard() {
 async function deleteTask(taskId) {
   await deleteTaskService(taskId);
   closeOverlay();
-  syncBoardColumns(await loadTasks(BOARD_COLUMNS));
+  syncBoardColumns(getTasks());
 }
 
-function openAddNewtaskDialog(path = "to_do") {
+async function openAddNewtaskDialog(path = "to_do") {
   stopWindowEvent();
   contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate();
-  window.getAddTaskFormTemplate?.(`${path}`);
-  initAddTask();
+  const [{ initAddTask }, { createAddTaskFormTemplate }] = await loadAddTaskDialogResources();
+  renderAddTaskDialog(path, createAddTaskFormTemplate);
+  await initAddTask();
   const contentDialogAddTask = document.getElementById("addTask_dialog");
   contentDialogAddTask.showModal();
   contentDialogAddTask.classList.add("dialog_opend");
@@ -83,7 +85,7 @@ function closeDialogOnBodyclick(event) {
 async function filterAndShowTask() {
   const filterWord = getFilterWord();
   if (emptyInputField(filterWord)) return;
-  let tasks = await loadTasks(BOARD_COLUMNS);
+  const tasks = getTasks();
   if (toShortfilterWord(filterWord)) return;
   const filteredTasks = filterTasksByTitle(tasks, filterWord);
   if (wordDoesntExist(filteredTasks)) return;
@@ -172,6 +174,23 @@ function removeShowButton() {
 function initializeUserInitials() {
   if (typeof window.userInitials !== "function") return;
   window.userInitials();
+}
+
+function loadAddTaskDialogResources() {
+  if (!addTaskDialogResourcesPromise) {
+    addTaskDialogResourcesPromise = Promise.all([
+      import("../addtask/addTask.js"),
+      import("../template/add_task_template.js"),
+    ]);
+  }
+
+  return addTaskDialogResourcesPromise;
+}
+
+function renderAddTaskDialog(path, createAddTaskFormTemplate) {
+  const addTaskContainer = document.getElementById("addTaskContainer");
+  if (!addTaskContainer) return;
+  addTaskContainer.innerHTML = createAddTaskFormTemplate(path);
 }
 
 function syncBoardColumns(tasks) {

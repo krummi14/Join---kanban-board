@@ -26,7 +26,7 @@ export async function updateExistingTask(context, taskId) {
   updatedTask.id = taskId;
   await putUserData(`${context.createTaskPath}/${taskId}`, updatedTask);
   if (context.options?.onSave) {
-    await context.options.onSave(taskId);
+    await context.options.onSave(taskId, updatedTask);
   }
 }
 
