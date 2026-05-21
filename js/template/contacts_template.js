@@ -59,7 +59,7 @@ function createContactListEntry(contactsIndex) {
         return `
             <div id="contact_wrapper_${contactsIndex}" class="contact_wrapper" onclick="openContactInformation(${contactsIndex})">
                 <span id="initial_bg_color_${contactsIndex}" class="contact_initials contact_initials_bg">${filterInitialsOfName(contactsIndex)}</span>
-                <ul>
+                <ul class="contact_name_and_email_ul">
                     <li class="contact_name">${contactsList[contactsIndex].name}</li>
                     <li class="contact_email">${contactsList[contactsIndex].email}</li>
                 </ul>

@@ -9,7 +9,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 560px;
+    width: auto;
+    /*width: 560px;*/
     background-color: rgba(255, 255, 255, 1);
     padding: 24px 0;
 }
@@ -83,6 +84,7 @@
     font-size: 16px;
     font-weight: 400;
     color: white;
+    flex: 0 0 auto;
 }
 
 .contact_main_framework {
@@ -113,10 +115,11 @@
     font-weight: 400;
     color: rgba(0, 124, 238, 1);
 }
+
 @media(min-width: 1160px) and (max-width:1250px) {
-    .contact_list {
+    /*.contact_list {
         width: 360px;
-    }
+    }*/
 
     .contact_list_scrollmethode {
         width: 100%;
@@ -128,9 +131,9 @@
 }
 
 @media(min-width: 1116px) and (max-width:1159px) {
-    .contact_list {
+    /*.contact_list {
         width: 320px;
-    }
+    }*/
 
     .contact_list_scrollmethode {
         width: 100%;
@@ -139,6 +142,15 @@
 }
 
 @media(min-width: 320px) and (max-width:1115px) {
+    .contact_name_and_email_ul {
+        list-style: none;
+        flex: 1 1 auto;
+        min-width: 0;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
     .background_add_contact_button {
         display: none;
     }
