@@ -25,11 +25,11 @@
 }
 
 .summery_and_good_morning {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 80px;
-  padding: 0 104px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 80px;
+    margin: 0px 50px 50px 50px;
 }
 
 
@@ -270,9 +270,29 @@ padding: 0;
 
 @media(min-width: 1116px) and (max-width:1308px) {
   .summery_and_good_morning {
-    padding: 0 40px;
+    padding: 0;
     gap: 32px;
   }
+
+  .user_name {
+    font-size: 49px;
+    font-weight: 700;
+    color: #29abe2;
+}
+
+.good_morning {
+    font-size: 38px;
+    font-weight: 500;
+    color: rgba(42, 54, 71, 1);
+}
+
+.summery_and_good_morning {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    margin: 0px 0px 50px 50px;
+}
 }
 
 
