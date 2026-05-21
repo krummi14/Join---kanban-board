@@ -32,6 +32,26 @@
   padding: 0 104px;
 }
 
+
+@media(max-width: 800px) {
+.summery_and_good_morning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 80px;
+padding: 0;
+}
+
+.main_header_summary {
+ width: auto;
+  padding-bottom: 64px;
+}
+
+
+}
+
+
+
 .todo_done {
   display: flex;
   justify-content: space-between;

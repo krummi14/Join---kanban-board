@@ -240,7 +240,7 @@
   background: white;
   border-radius: 30px;
   width: min(90%, 520px);
-  max-height: 90vh;
+  max-height: 74vh;
   display: flex;
   flex-direction: column;
   gap: 8px;
