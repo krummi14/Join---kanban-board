@@ -64,6 +64,10 @@
   gap: 8px;
 }
 
+.add_task_page_container {
+  max-width: 1100px;
+}
+
 .form_buttons {
   display: flex;
   justify-content: flex-end;
