@@ -6,9 +6,7 @@
   width: 100%;
   overflow-y: auto;
   max-height: 100%;
-  padding-top: 96px;
-  padding-left: 64px;
-  padding-right: 64px;
+  padding: 96px 64px;
 }
 
 .legal_notice_main {
@@ -27,19 +25,19 @@
 }
 
 .imprint_list li {
-    list-style-type: disc;
-    margin-left: 32px;
+  list-style-type: disc;
+  margin-left: 32px;
 }
 
 @media(min-width: 320px) and (max-width:1115px) {
-    .legalnotice_content {
-        padding-top: 24px;
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-bottom: 24px;
-    }
+  .legalnotice_content {
+    padding-top: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 24px;
+  }
 
-    .legalnotice_content_gap {
-        padding-right: 24px;
-    }
+  .legalnotice_content_gap {
+    padding-right: 24px;
+  }
 }
