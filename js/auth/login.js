@@ -6,10 +6,17 @@ const clearErrors = () => {
 };
 
 function validateEmail(email) {
-  if (!email) return showError("email-error", "Enter your email");
+  if (!email) {
+    showError("email-error", "Enter your email");
+    return false;
+  }
 
-  if (!email.includes("@"))
-    return showError("email-error", "Invalid email address");
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!regex.test(email)) {
+    showError("email-error", "Please enter a valid email address");
+    return false;
+  }
 
   showError("email-error", "");
   return true;

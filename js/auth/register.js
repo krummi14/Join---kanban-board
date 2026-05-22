@@ -1,5 +1,7 @@
 import { putUserData, getData } from "../shared/firebase.js";
 
+let formSubmitted = false;
+
 const clearErrors = () => {
   showError("name-error", "");
   showError("email-error", "");
@@ -8,17 +10,40 @@ const clearErrors = () => {
   showError("privacy-error", "");
 };
 
+function showOrClear(errorId, message, show) {
+  if (!show) return;
+  showError(errorId, message);
+}
+
+
+
+
+
+
+
 function validateName(name) {
-  const regex = /^[A-Za-z]+ [A-Za-z]+$/;
-  if (!regex.test(name)) {
-    showError("name-error", "Enter first & last name, letters only.");
+  if (!name) {
+    showError("name-error", "Please enter your name");
     return false;
   }
+
+  const regex = /^[A-Za-z]+ [A-Za-z]+$/;
+
+  if (!regex.test(name)) {
+    showError("name-error", "Enter first & last name");
+    return false;
+  }
+
   showError("name-error", "");
   return true;
 }
 
 function validateEmail(email) {
+  if (!email) {
+    showError("email-error", "Please enter your email");
+    return false;
+  }
+
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!regex.test(email)) {
@@ -50,10 +75,16 @@ function isValidPassword(password) {
 }
 
 function checkPasswordRule(password) {
+  if (!password) {
+    showError("password-error", "Please enter a password");
+    return false;
+  }
+
   if (!isValidPassword(password)) {
     showError("password-error", "8+ chars, 1 number, 1 special");
     return false;
   }
+
   showError("password-error", "");
   return true;
 }
@@ -136,24 +167,44 @@ async function canRegisterUser(data) {
   return false;
 }
 
-document.getElementById("signup-btn").addEventListener("click", handleSignup);
+window.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("signup-btn");
 
-function checkName(inputEvent) {
-  validateName(inputEvent.target.value);
+  console.log("BUTTON FOUND:", btn);
+
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    console.log("CLICK WORKS");
+    handleSignup();
+  });
+});
+
+function checkName(e) {
+  if (!formSubmitted) return;
+  validateName(e.target.value);
 }
-function checkEmail(inputEvent) {
-  validateEmail(inputEvent.target.value);
+
+
+function checkEmail(e) {
+  if (!formSubmitted) return;
+  validateEmail(e.target.value);
 }
-function checkPassword(inputEvent) {
+
+function checkPassword(e) {
+  if (!formSubmitted) return;
+
   validatePassword(
-    inputEvent.target.value,
-    document.getElementById("confirm-password").value,
+    e.target.value,
+    document.getElementById("confirm-password").value
   );
 }
-function checkConfirm(inputEvent) {
+function checkConfirm(e) {
+  if (!formSubmitted) return;
+
   validatePassword(
     document.getElementById("password").value,
-    inputEvent.target.value,
+    e.target.value
   );
 }
 

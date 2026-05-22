@@ -98,8 +98,9 @@ input:focus {
 
 .error {
   color: red;
-  font-size: 12px;
+  font-size: 16px;
   margin: 0;
+    padding: 5px;
 }
 
 .close_button {
@@ -193,7 +194,7 @@ input:focus {
 
   .button_basic_characteristics {
     font-size: 18px;
-    padding: 10px 0;
+    /*padding: 10px 0;*/
   }
 
   .button_basic_characteristics_weight {
