@@ -126,6 +126,8 @@ function userInitials() {
 }
 
 function getInitials(fullName) {
+    if (fullName == "Guest") return "G";
+
     const names =
         String(fullName || "")
             .trim()
