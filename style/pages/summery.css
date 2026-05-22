@@ -254,7 +254,7 @@
 @media(min-width: 1116px) and (max-width:1308px) {
 
   .summery_and_good_morning {
-    gap: 60px;
+    gap: 50px;
   }
 
   .user_name {
