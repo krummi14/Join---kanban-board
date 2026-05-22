@@ -6,6 +6,10 @@
   border-radius: 2px;
 }
 
+.main_summery {
+  height: calc(100vh - 96px);
+}
+
 .main_header_summary {
   width: 800px;
   padding-bottom: 64px;
@@ -18,39 +22,19 @@
 
 .key_matix {
   min-width: 560px;
-  height: 562px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
 .summery_and_good_morning {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 80px;
-    margin: 0px 50px 50px 50px;
-}
-
-
-@media(max-width: 800px) {
-.summery_and_good_morning {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 80px;
-padding: 0;
+  padding-left: 104px;
 }
-
-.main_header_summary {
- width: auto;
-  padding-bottom: 64px;
-}
-
-
-}
-
-
 
 .todo_done {
   display: flex;
@@ -78,7 +62,7 @@ padding: 0;
 .to_do,
 .done {
   width: 264px;
-  height: 168px;
+  height: 100%;
   background: #fff;
   border-radius: 30px;
   display: flex;
@@ -178,7 +162,6 @@ padding: 0;
 
 .urgent {
   width: 100%;
-  height: 168px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -230,7 +213,7 @@ padding: 0;
 .tasks_in_progress,
 .awaiting_feedback {
   width: 168px;
-  height: 168px;
+  height: 100%;
   background: #fff;
   border-radius: 30px;
   display: flex;
@@ -269,32 +252,34 @@ padding: 0;
 }
 
 @media(min-width: 1116px) and (max-width:1308px) {
-  .summery_and_good_morning {
-    padding: 0;
-    gap: 32px;
-  }
 
   .user_name {
     font-size: 49px;
     font-weight: 700;
     color: #29abe2;
-}
+  }
 
-.good_morning {
+  .good_morning {
     font-size: 38px;
     font-weight: 500;
     color: rgba(42, 54, 71, 1);
+  }
 }
 
-.summery_and_good_morning {
+@media(max-width: 800px) {
+  .summery_and_good_morning {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 30px;
-    margin: 0px 0px 50px 50px;
-}
-}
+    gap: 80px;
+    padding: 0;
+  }
 
+  .main_header_summary {
+    width: auto;
+    padding-bottom: 64px;
+  }
+}
 
 @media(min-width: 680px) and (max-width:1115px) {
 
