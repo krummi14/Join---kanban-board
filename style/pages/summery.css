@@ -253,6 +253,10 @@
 
 @media(min-width: 1116px) and (max-width:1308px) {
 
+  .summery_and_good_morning {
+    gap: 60px;
+  }
+
   .user_name {
     font-size: 49px;
     font-weight: 700;
@@ -266,22 +270,15 @@
   }
 }
 
-@media(max-width: 800px) {
-  .summery_and_good_morning {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 80px;
-    padding: 0;
-  }
-
-  .main_header_summary {
-    width: auto;
-    padding-bottom: 64px;
-  }
-}
-
 @media(min-width: 680px) and (max-width:1115px) {
+  .main_header_summary {
+    width: 600px;
+  }
+
+  .summery_and_good_morning {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 
   .respo_header_text_size {
     font-size: 20px;
@@ -298,7 +295,6 @@
   .key_matix {
     position: static;
     align-items: center;
-    padding: 24px 16px;
     width: 100%;
     height: auto;
   }
@@ -425,8 +421,14 @@
 }
 
 @media(min-width: 320px) and (max-width:679px) {
+  .summery_and_good_morning {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 64px;
+  }
+
   .main_header_summary {
-    width: auto;
+    width: 100%;
   }
 
   .respo_header_text_size {
@@ -444,7 +446,6 @@
   .key_matix {
     position: static;
     align-items: center;
-    padding: 24px 16px;
     min-width: 0;
     width: 100%;
     height: auto;
@@ -458,10 +459,6 @@
   .done {
     width: 130px;
     height: 110px;
-  }
-
-  .summery_and_good_morning {
-    padding: 0;
   }
 
   #to_do_count,
