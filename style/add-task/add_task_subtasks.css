@@ -42,7 +42,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 100px;
+  max-height: 80px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -129,8 +129,7 @@
 }
 
 #addTaskContainer .requiredNotice {
-  position: absolute;
-  top: 870px;
+  margin-top: auto;
   font-size: 20px;
   color: #000000;
 }
