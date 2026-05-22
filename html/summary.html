@@ -56,132 +56,132 @@
   </section>
 
   <section class="content" id="content">
-    <div>
-      <header class="header_framework">
-        <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
 
-        <p class="join_header_text">
-          Kanban Project Management Tool
+    <header class="header_framework">
+      <img class="join_logo_respo" src="../assets/img/join_logo_respo.svg" alt="">
+
+      <p class="join_header_text">
+        Kanban Project Management Tool
+      </p>
+
+      <div>
+        <a class="help_link" href="./help.html" aria-label="Open help page">
+          <img src="../assets/icon/help_off.svg" alt="help icon">
+        </a>
+
+        <div id="user" onclick="addMenu()">G</div>
+
+        <section id="logout_menu" class="logout_menu">
+          <a class="help_logout_menu" href="./help.html">Help</a>
+          <a href="./legal_notice.html">Legal Notice</a>
+          <a href="./privacy_policy.html">Privacy Policy</a>
+          <a href="#" onclick="logout()">Log out</a>
+        </section>
+      </div>
+    </header>
+
+    <main id="main_framework" class="main_framework main_summery">
+
+      <section class="main_header main_header_summary">
+        <h1>Join 360</h1>
+
+        <hr class="hr_desktop">
+
+        <p class="respo_header_text_size">
+          Key Metrics at a Glance
         </p>
 
-        <div>
-          <a class="help_link" href="./help.html" aria-label="Open help page">
-            <img src="../assets/icon/help_off.svg" alt="help icon">
-          </a>
+        <hr class="hr_mobile">
+      </section>
 
-          <div id="user" onclick="addMenu()">G</div>
+      <div class="summery_and_good_morning">
 
-          <section id="logout_menu" class="logout_menu">
-            <a class="help_logout_menu" href="./help.html">Help</a>
-            <a href="./legal_notice.html">Legal Notice</a>
-            <a href="./privacy_policy.html">Privacy Policy</a>
-            <a href="#" onclick="logout()">Log out</a>
-          </section>
-        </div>
-      </header>
+        <section class="key_matix">
 
-      <main id="main_framework" class="main_framework main_summery">
+          <section class="todo_done">
 
-        <section class="main_header main_header_summary">
-          <h1>Join 360</h1>
+            <a class="to_do summary_card_link" href="./board.html" aria-label="Open board from to-do metrics">
 
-          <hr class="hr_desktop">
+              <span class="summary_icon_swap summary_icon_swap_todo" aria-hidden="true">
+                <img class="summary_icon_default" src="../assets/icon/to_do.svg" alt="">
 
-          <p class="respo_header_text_size">
-            Key Metrics at a Glance
-          </p>
+                <img class="summary_icon_hover" src="../assets/icon/to_do_negative.svg" alt="">
+              </span>
 
-          <hr class="hr_mobile">
-        </section>
-
-        <div class="summery_and_good_morning">
-
-          <section class="key_matix">
-
-            <section class="todo_done">
-
-              <a class="to_do summary_card_link" href="./board.html" aria-label="Open board from to-do metrics">
-
-                <span class="summary_icon_swap summary_icon_swap_todo" aria-hidden="true">
-                  <img class="summary_icon_default" src="../assets/icon/to_do.svg" alt="">
-
-                  <img class="summary_icon_hover" src="../assets/icon/to_do_negative.svg" alt="">
-                </span>
-
-                <div id="to_do_count">
-                  0<br><span>To-do</span>
-                </div>
-              </a>
-
-              <a class="done summary_card_link" href="./board.html" aria-label="Open board from done metrics">
-
-                <span class="summary_icon_swap summary_icon_swap_done" aria-hidden="true">
-                  <img class="summary_icon_default" src="../assets/icon/done.svg" alt="">
-
-                  <img class="summary_icon_hover" src="../assets/icon/done_negative.svg" alt="">
-                </span>
-
-                <div id="done_count">
-                  0<br><span>Done</span>
-                </div>
-              </a>
-            </section>
-
-            <a class="urgent summary_card_link" href="./board.html" aria-label="Open board from urgent metrics">
-
-              <div class="urgent_icon">
-                <img src="../assets/icon/urgent.svg" alt="urgent icon">
-                <div id="urgent_count">
-                  0<br><span>Urgent</span>
-                </div>
-              </div>
-
-              <div class="urgent_divider"></div>
-
-              <div id="deadline">
-                November 11, 2026<br>
-                <span>Upcoming Deadline</span>
+              <div id="to_do_count">
+                0<br><span>To-do</span>
               </div>
             </a>
 
-            <div class="tasks">
+            <a class="done summary_card_link" href="./board.html" aria-label="Open board from done metrics">
 
-              <a class="tasks_in_board summary_card_link" href="./board.html"
-                aria-label="Open board from tasks in board metrics">
+              <span class="summary_icon_swap summary_icon_swap_done" aria-hidden="true">
+                <img class="summary_icon_default" src="../assets/icon/done.svg" alt="">
 
-                <div id="board_count">
-                  0<br><span>Tasks in <br> Board</span>
-                </div>
-              </a>
+                <img class="summary_icon_hover" src="../assets/icon/done_negative.svg" alt="">
+              </span>
 
-              <a class="tasks_in_progress summary_card_link" href="./board.html"
-                aria-label="Open board from tasks in progress metrics">
+              <div id="done_count">
+                0<br><span>Done</span>
+              </div>
+            </a>
+          </section>
 
-                <div id="progress_count">
-                  0<br><span>Tasks in <br> Progress</span>
-                </div>
-              </a>
+          <a class="urgent summary_card_link" href="./board.html" aria-label="Open board from urgent metrics">
 
-              <a class="awaiting_feedback summary_card_link" href="./board.html"
-                aria-label="Open board from awaiting feedback metrics">
-
-                <div id="feedback_count">
-                  0<br><span>Awaiting <br> Feedback</span>
-                </div>
-              </a>
+            <div class="urgent_icon">
+              <img src="../assets/icon/urgent.svg" alt="urgent icon">
+              <div id="urgent_count">
+                0<br><span>Urgent</span>
+              </div>
             </div>
-          </section>
 
-          <section id="good_morning">
-            <h2 class="good_morning">
-              <span id="greeting_text">Good Morning,</span>
-              <br>
-              <span id="user_name" class="user_name"></span>
-            </h2>
-          </section>
-        </div>
-      </main>
-    </div>
+            <div class="urgent_divider"></div>
+
+            <div id="deadline">
+              November 11, 2026<br>
+              <span>Upcoming Deadline</span>
+            </div>
+          </a>
+
+          <div class="tasks">
+
+            <a class="tasks_in_board summary_card_link" href="./board.html"
+              aria-label="Open board from tasks in board metrics">
+
+              <div id="board_count">
+                0<br><span>Tasks in <br> Board</span>
+              </div>
+            </a>
+
+            <a class="tasks_in_progress summary_card_link" href="./board.html"
+              aria-label="Open board from tasks in progress metrics">
+
+              <div id="progress_count">
+                0<br><span>Tasks in <br> Progress</span>
+              </div>
+            </a>
+
+            <a class="awaiting_feedback summary_card_link" href="./board.html"
+              aria-label="Open board from awaiting feedback metrics">
+
+              <div id="feedback_count">
+                0<br><span>Awaiting <br> Feedback</span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section id="good_morning">
+          <h2 class="good_morning">
+            <span id="greeting_text">Good Morning,</span>
+            <br>
+            <span id="user_name" class="user_name"></span>
+          </h2>
+        </section>
+      </div>
+    </main>
+
     <footer id="responsive_menu" class="responsive_menu">
 
       <a href="./summary.html" class="responsive_menu_button">
