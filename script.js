@@ -146,14 +146,20 @@ function getInitials(fullName) {
 
 /* ---------------- FORM VALIDATION ---------------- */
 
-function showError(errorId, message) {
-    let errorField =
-        document.getElementById(errorId);
 
-    if (errorField) {
-        errorField.textContent = message;
+function showError(errorId, message) {
+    const el = document.getElementById(errorId);
+    if (!el) return;
+
+    el.textContent = message;
+
+    if (message) {
+        el.classList.add("show");
+    } else {
+        el.classList.remove("show");
     }
 }
+
 
 /* ---------------- ADD TASK TEMPLATE ---------------- */
 
