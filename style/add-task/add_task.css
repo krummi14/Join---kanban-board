@@ -14,13 +14,15 @@
   min-width: 0;
 }
 
-#addTaskContainer .left_form,
-#addTaskContainer .right_form,
-#addTaskContainer .priority,
-#addTaskContainer .assignee,
-#addTaskContainer .category,
-#addTaskContainer .subtask,
-#addTaskContainer .priority_assignee {
+#addTaskContainer :is(
+  .left_form,
+  .right_form,
+  .priority,
+  .assignee,
+  .category,
+  .subtask,
+  .priority_assignee
+) {
   display: flex;
   flex-direction: column;
 }
@@ -45,7 +47,7 @@
   gap: 8px;
 }
 
-#addTaskContainer #description { /*ÜBELTÄTER*/
+#addTaskContainer #description {
   width: 100%;
   max-width: 464px;
   min-width: 0;
@@ -57,10 +59,12 @@
   gap: 24px;
 }
 
-#addTaskContainer .priority,
-#addTaskContainer .assignee,
-#addTaskContainer .category,
-#addTaskContainer .subtask {
+#addTaskContainer :is(
+  .priority,
+  .assignee,
+  .category,
+  .subtask
+) {
   gap: 8px;
 }
 
@@ -72,7 +76,9 @@
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  margin-top: auto;
+  position: absolute;
+  top: 850px;
+  left: 930px;
 }
 
 .form_buttons_none {
@@ -99,52 +105,29 @@
   border-top: 1px solid #d1d1d1;
 }
 
-@media(min-width: 1160px) and (max-width:1250px) {
-  #addTaskContainer #taskForm {
-    /*width: 888px;*/
-    height: 536px;
-    padding: 0 40px;
+@media(max-width:1115px) {
+  .add_task_page_container {
+    width: 800px;
   }
 
-  .main_header {
-    padding: 64px 40px;
-  }
-}
-
-@media(min-width: 1116px) and (max-width:1159px) {
-  #addTaskContainer #taskForm {
-    /*width: 864px;*/
-    height: 576px;
-    padding: 0 40px;
+  .add_task_main {
+    align-items: center;
   }
 
-  .main_drag_and_drop {
+  .add_task_main .main_header {
+    padding: 24px 32px;
+  }
+
+  .add_task_page_container {
     padding: 0 16px;
   }
-
-  .main_header {
-    padding: 40px 40px;
-  }
-
-  #addTaskContainer .left_form {
-    width: 320px;
-  }
-
-  #addTaskContainer .right_form {
-    width: 320px;
-  }
-}
-
-@media(min-width: 320px) and (max-width:1115px) {
 
   #addTaskContainer #taskForm {
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     justify-content: center;
     position: static;
-    width: 100%;
     padding: 0 16px;
-    width: 100%;
     height: auto;
     gap: 8px;
   }
@@ -169,8 +152,10 @@
     padding: 0;
     justify-content: start;
   }
+}
 
-  #addTaskContainer .priority {
+@media(max-width:800px) {
+  .add_task_page_container {
     width: 100%;
   }
 }
