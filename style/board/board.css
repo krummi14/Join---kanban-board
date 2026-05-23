@@ -97,6 +97,8 @@
 @media(min-width: 1116px) and (max-width:1250px) {
   .main_drag_and_drop {
     padding: 0 48px;
+    overflow-x: auto;
+    width: calc(100vw - 232px);
   }
 
   .board_main_header {
@@ -123,6 +125,8 @@
   }
 
   .main_drag_and_drop {
+    overflow-x: auto;
+    width: auto;
     overflow: visible;
     height: auto;
     flex-direction: column;
