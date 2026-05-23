@@ -62,7 +62,7 @@
 .to_do,
 .done {
   width: 264px;
-  height: 100%;
+  height: 168px;
   background: #fff;
   border-radius: 30px;
   display: flex;
@@ -118,20 +118,20 @@
   box-shadow: 0 12px 24px rgba(42, 54, 71, 0.12);
 }
 
-.to_do:hover #to_do_count,
-.done:hover #done_count,
-.urgent:hover #urgent_count,
-.urgent:hover #deadline,
-.tasks_in_board:hover #board_count,
-.tasks_in_progress:hover #progress_count,
-.awaiting_feedback:hover #feedback_count,
-.to_do:hover #to_do_count span,
-.done:hover #done_count span,
-.urgent:hover #urgent_count span,
-.urgent:hover #deadline span,
-.tasks_in_board:hover #board_count span,
-.tasks_in_progress:hover #progress_count span,
-.awaiting_feedback:hover #feedback_count span {
+.summary_card_link:hover :is(#to_do_count,
+  #done_count,
+  #urgent_count,
+  #deadline,
+  #board_count,
+  #progress_count,
+  #feedback_count),
+.summary_card_link:hover :is(#to_do_count,
+  #done_count,
+  #urgent_count,
+  #deadline,
+  #board_count,
+  #progress_count,
+  #feedback_count) span {
   color: #ffffff;
 }
 
@@ -162,6 +162,7 @@
 
 .urgent {
   width: 100%;
+  height: 168px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -213,7 +214,7 @@
 .tasks_in_progress,
 .awaiting_feedback {
   width: 168px;
-  height: 100%;
+  height: 168px;
   background: #fff;
   border-radius: 30px;
   display: flex;
@@ -272,6 +273,7 @@
 
 @media(min-width: 680px) and (max-width:1115px) {
   .main_header_summary {
+    margin-left: 32px;
     width: 600px;
   }
 
@@ -306,8 +308,8 @@
 
   .to_do,
   .done {
-    width: 280px;
-    height: 110px;
+    width: 242px;
+    height: 142px;
   }
 
   #to_do_count,
@@ -321,8 +323,8 @@
   }
 
   .urgent {
-    width: 576px;
-    height: 110px;
+    width: 505px;
+    height: 142px;
     gap: 0;
   }
 
@@ -346,43 +348,24 @@
     gap: 16px;
   }
 
-  .tasks_in_board {
-    height: 116px;
-    width: 180px;
-  }
-
-  #board_count {
-    font-size: 47px;
-  }
-
-  #board_count span {
-    font-size: 16px;
-  }
-
-  .tasks_in_progress {
-    height: 116px;
-    width: 180px;
-  }
-
-  #progress_count {
-    font-size: 47px;
-  }
-
-  #progress_count span {
-    font-size: 16px;
-  }
-
+  .tasks_in_board,
+  .tasks_in_progress,
   .awaiting_feedback {
-    height: 116px;
-    width: 180px;
+    height: 142px;
+    width: 158px;
   }
 
+  #board_count,
+  #progress_count,
   #feedback_count {
     font-size: 47px;
   }
 
-  #feedback_count span {
+  #progress_count span,
+  #feedback_count span,
+  #board_count span {
     font-size: 16px;
+    font-weight: 400;
   }
 
   #good_morning {
@@ -421,7 +404,7 @@
   }
 }
 
-@media(min-width: 320px) and (max-width:679px) {
+@media(max-width:679px) {
   .summery_and_good_morning {
     padding-left: 16px;
     padding-right: 16px;
@@ -452,39 +435,22 @@
     height: auto;
   }
 
-  .todo_done {
-    gap: 16px;
+  .todo_done,
+  .urgent,
+  .tasks {
+    gap: 24px;
   }
 
   .to_do,
   .done {
-    width: 130px;
+    width: 186px;
     height: 110px;
-  }
-
-  #to_do_count,
-  #done_count {
-    font-size: 47px;
-  }
-
-  #to_do_count span,
-  #done_count span {
-    font-size: 16px;
   }
 
   .urgent {
-    width: 280px;
+    width: 396px;
     height: 110px;
     padding: 16px;
-    gap: 16px;
-  }
-
-  #urgent_count {
-    font-size: 47px;
-  }
-
-  #urgent_count span {
-    font-size: 16px;
   }
 
   #deadline {
@@ -492,50 +458,29 @@
     gap: 8px;
   }
 
-  #deadline span {
-    font-size: 16px;
-  }
-
-  .tasks {
-    gap: 16px;
-  }
-
-  .tasks_in_board {
-    height: 116px;
-    width: 80px;
-  }
-
-  #board_count {
-    font-size: 47px;
-  }
-
-  #board_count span {
-    font-size: 16px;
-  }
-
-  .tasks_in_progress {
-    height: 116px;
-    width: 80px;
-  }
-
-  #progress_count {
-    font-size: 47px;
-  }
-
-  #progress_count span {
-    font-size: 16px;
-  }
-
+  .tasks_in_board,
+  .tasks_in_progress,
   .awaiting_feedback {
     height: 116px;
-    width: 80px;
+    width: 116px;
   }
 
-  #feedback_count {
+  #board_count,
+  #progress_count,
+  #feedback_count,
+  #urgent_count,
+  #to_do_count,
+  #done_count {
     font-size: 47px;
   }
 
-  #feedback_count span {
+  #board_count span,
+  #progress_count span,
+  #feedback_count span,
+  #urgent_count span,
+  #deadline span,
+  #to_do_count span,
+  #done_count span {
     font-size: 16px;
   }
 
@@ -558,17 +503,9 @@
     text-align: center;
   }
 
-  .summary_icon_swap {
-    width: 40px;
-    height: 40px;
-  }
-
+  .summary_icon_swap,
+  .summary_card_link img,
   .summary_icon_swap img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .summary_card_link img {
     width: 40px;
     height: 40px;
   }
@@ -587,5 +524,32 @@
       opacity: 0;
       transform: scale(1.1);
     }
+  }
+}
+
+@media(max-width:679px) {
+
+  .todo_done,
+  .urgent,
+  .tasks {
+    gap: 16px;
+  }
+
+  .to_do,
+  .done {
+    width: 142px;
+    height: 110px;
+  }
+
+  .urgent {
+    width: 300px;
+    height: 110px;
+    padding: 16px;
+  }
+
+  .tasks_in_board,
+  .tasks_in_progress,
+  .awaiting_feedback {
+    width: 90px;
   }
 }
