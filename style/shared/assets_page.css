@@ -208,7 +208,7 @@
   }
 
   .add_task_button_mobile {
-    display: block;
+    display: flex;
     height: 40px;
     width: 40px;
   }

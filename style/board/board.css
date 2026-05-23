@@ -11,6 +11,7 @@
 }
 
 .board_main_header {
+  max-width: 1335px;
   padding: 80px 104px;
   padding-bottom: 40px;
 }
@@ -41,6 +42,8 @@
 }
 
 .main_drag_and_drop {
+  box-sizing: border-box;
+  max-width: 1335px;
   display: flex;
   flex-direction: row;
   gap: 32px;
@@ -166,7 +169,7 @@
   }
 }
 
-@media (min-width: 320px) and (max-width: 780px) {    
+@media (min-width: 320px) and (max-width: 780px) {
   .task {
     height: 540px;
   }

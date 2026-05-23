@@ -10,8 +10,10 @@ export function generateTaskHTML(task) {
 function buildTaskCardContent(task) {
   return [
     generateCategory(task),
-    generateTitle(task),
-    generateDescription(task),
+    `<div>
+      ${generateTitle(task)}
+      ${generateDescription(task)}
+      </div>`,
     generateTaskBottom(task),
   ].join("");
 }
