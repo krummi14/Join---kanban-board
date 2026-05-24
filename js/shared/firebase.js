@@ -4,6 +4,7 @@ import { insertNewContactData, editCurrentContactData } from "./assets.js";
 const FIREBASE_CACHE_PREFIX = "join-cache:";
 const FIREBASE_CACHE_META_PREFIX = "join-cache-meta:";
 
+/** Reads data from Firebase with optional cache support. */
 export async function getData(path = "", options = {}) {
     const normalizedPath = normalizePath(path);
     const requestOptions = normalizeGetDataOptions(options);
@@ -21,6 +22,7 @@ export async function getData(path = "", options = {}) {
     }
 }
 
+/** Creates a new contact entry and updates the local cache. */
 export async function putNewData(path = "", contactsIndex) {
     let newId = extractIDs();
     let newContact = insertNewContactData(contactsIndex);
@@ -32,6 +34,7 @@ export async function putNewData(path = "", contactsIndex) {
     return newId;
 }
 
+/** Updates an existing contact entry and synchronizes the cache. */
 export async function putEditData(path = "", contactsIndex) {
     let editContact = editCurrentContactData(contactsIndex); // Daten aus dem Dialog holen
     let currentId = editContact.id
@@ -47,6 +50,7 @@ export async function putEditData(path = "", contactsIndex) {
     return currentId;
 }
 
+/** Deletes data at the given Firebase path. */
 export async function deleteData(path = "") {
     const normalizedPath = normalizePath(path);
     let response = await fetch(buildUrl(normalizedPath), {
@@ -57,6 +61,7 @@ export async function deleteData(path = "") {
     return await response.json();
 }
 
+/** Writes partial user data to Firebase and merges the cache. */
 export async function putUserData(path = "", data = {}) {
     const normalizedPath = normalizePath(path);
     await fetch(buildUrl(normalizedPath), {
@@ -72,10 +77,12 @@ export async function putUserData(path = "", data = {}) {
     mergeCachedParent(normalizedPath, nextData);
 }
 
+/** Builds the Firebase REST URL for a normalized path. */
 function buildUrl(path = "") {
     return `${BASE_URL}${path}.json`;
 }
 
+/** Fetches data from Firebase and stores it in the cache. */
 async function fetchAndCacheData(normalizedPath) {
     let response = await fetch(buildUrl(normalizedPath));
     if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
@@ -84,6 +91,7 @@ async function fetchAndCacheData(normalizedPath) {
     return responseToJson;
 }
 
+/** Falls back to cached data when a request fails. */
 function readCachedFallback(normalizedPath, error) {
     const cachedData = readCachedData(normalizedPath);
     if (cachedData === null) throw error;
@@ -91,6 +99,7 @@ function readCachedFallback(normalizedPath, error) {
     return cachedData;
 }
 
+/** Writes a full JSON document to Firebase. */
 async function putJson(normalizedPath, data) {
     await fetch(buildUrl(normalizedPath), {
         method: "PUT",
@@ -99,23 +108,28 @@ async function putJson(normalizedPath, data) {
     });
 }
 
+/** Synchronizes a successful write into the relevant cache entries. */
 function syncCachedWrite(normalizedPath, data) {
     writeCachedData(normalizedPath, data);
     mergeCachedParent(normalizedPath, data);
 }
 
+/** Normalizes a Firebase path string. */
 function normalizePath(path = "") {
     return String(path || "").replace(/^\/+|\/+$/g, "");
 }
 
+/** Returns the local-storage cache key for a path. */
 function getCacheKey(path = "") {
     return `${FIREBASE_CACHE_PREFIX}${path || "__root__"}`;
 }
 
+/** Returns the local-storage metadata key for a path. */
 function getCacheMetaKey(path = "") {
     return `${FIREBASE_CACHE_META_PREFIX}${path || "__root__"}`;
 }
 
+/** Reads cached JSON data for a path. */
 function readCachedData(path = "") {
     try {
         const cached = localStorage.getItem(getCacheKey(path));
@@ -125,6 +139,7 @@ function readCachedData(path = "") {
     }
 }
 
+/** Stores JSON data in the cache and updates its metadata. */
 function writeCachedData(path = "", data = null) {
     try {
         localStorage.setItem(getCacheKey(path), JSON.stringify(data));
@@ -134,6 +149,7 @@ function writeCachedData(path = "", data = null) {
     }
 }
 
+/** Removes cached data and metadata for a path. */
 function removeCachedData(path = "") {
     try {
         localStorage.removeItem(getCacheKey(path));
@@ -143,6 +159,7 @@ function removeCachedData(path = "") {
     }
 }
 
+/** Stores the cache timestamp metadata for a path. */
 function writeCachedMeta(path = "") {
     try {
         localStorage.setItem(getCacheMetaKey(path), String(Date.now()));
@@ -151,6 +168,7 @@ function writeCachedMeta(path = "") {
     }
 }
 
+/** Returns the current age of a cached entry in milliseconds. */
 function readCachedAge(path = "") {
     try {
         const value = localStorage.getItem(getCacheMetaKey(path));
@@ -163,6 +181,7 @@ function readCachedAge(path = "") {
     }
 }
 
+/** Normalizes the getData option object. */
 function normalizeGetDataOptions(options = {}) {
     return {
         preferCache: Boolean(options.preferCache),
@@ -171,17 +190,20 @@ function normalizeGetDataOptions(options = {}) {
     };
 }
 
+/** Starts a background cache refresh when configured to do so. */
 function refreshCachedDataInBackground(normalizedPath, options) {
     if (!shouldRefreshCache(normalizedPath, options)) return;
     void fetchAndCacheData(normalizedPath).catch(() => undefined);
 }
 
+/** Returns whether the cache should be refreshed in the background. */
 function shouldRefreshCache(normalizedPath, options) {
     if (!options.refreshInBackground) return false;
     if (options.maxAgeMs <= 0) return true;
     return readCachedAge(normalizedPath) >= options.maxAgeMs;
 }
 
+/** Merges a written child record into its cached parent object. */
 function mergeCachedParent(path, data) {
     const { parentPath, leafKey } = splitPath(path);
     if (!leafKey) return;
@@ -190,6 +212,7 @@ function mergeCachedParent(path, data) {
     writeCachedData(parentPath, { ...parentData, [leafKey]: data });
 }
 
+/** Removes a deleted child record from its cached parent object. */
 function removeFromCachedParent(path) {
     const { parentPath, leafKey } = splitPath(path);
     if (!leafKey) return;
@@ -200,6 +223,7 @@ function removeFromCachedParent(path) {
     writeCachedData(parentPath, nextParentData);
 }
 
+/** Splits a Firebase path into parent and leaf segments. */
 function splitPath(path = "") {
     const segments = normalizePath(path).split("/").filter(Boolean);
     return {
@@ -208,6 +232,7 @@ function splitPath(path = "") {
     };
 }
 
+/** Returns whether a value is a plain object. */
 function isPlainObject(value) {
     return value !== null && typeof value === "object" && !Array.isArray(value);
 }

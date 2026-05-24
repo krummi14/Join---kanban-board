@@ -1,5 +1,6 @@
 import { filterInitialsOfName } from "../contacts/contact.js";
 
+/** Returns the contacts list header table for a letter group. */
 export function getContactsListHeaderTemplate(contactsIndex) {
     const initialLetter = getContactInitialLetter(contactsIndex);
     return `
@@ -12,6 +13,7 @@ export function getContactsListHeaderTemplate(contactsIndex) {
     `;
 }
 
+/** Returns the table row markup for a single contact list item. */
 export function getContactsListContentTemplate(contactsIndex) {
     return `
       <tr>
@@ -22,6 +24,7 @@ export function getContactsListContentTemplate(contactsIndex) {
     `;
 }
 
+/** Returns the markup for the contact information panel. */
 export function getContactsInformationTemplate(contactsIndex) {
     return [
       createContactInformationHeader(contactsIndex),
@@ -31,6 +34,7 @@ export function getContactsInformationTemplate(contactsIndex) {
     ].join("");
 }
 
+/** Returns the edit or create contact dialog markup. */
 export function getContactDialogTemplate(contactsIndex) {
     return `
       <dialog onclick="closeContactDialog(${contactsIndex})" id="contact_dialog_${contactsIndex}" class="contact_dialog_content dialog_closed">
@@ -42,6 +46,7 @@ export function getContactDialogTemplate(contactsIndex) {
     `;
 }
 
+/** Returns the responsive mobile edit/delete action menu markup. */
 export function getContactDialogEditandDeleteMobileTemplate(contactsIndex) {
         return `
             <nav id="edit_and_delete_mobile_menu" class="edit_and_delete_mobile_menu" onclick="closeDialogOnBodyclick(event)">
@@ -51,10 +56,12 @@ export function getContactDialogEditandDeleteMobileTemplate(contactsIndex) {
         `;
 }
 
+        /** Returns the initial letter used for the current contact group. */
 function getContactInitialLetter(contactsIndex) {
         return contactsList[contactsIndex].name[0];
 }
 
+        /** Returns the clickable list entry markup for one contact. */
 function createContactListEntry(contactsIndex) {
         return `
             <div id="contact_wrapper_${contactsIndex}" class="contact_wrapper" onclick="openContactInformation(${contactsIndex})">
@@ -67,6 +74,7 @@ function createContactListEntry(contactsIndex) {
         `;
 }
 
+/** Returns the header markup for the contact information panel. */
 function createContactInformationHeader(contactsIndex) {
         return `
             <div class="contact_information_header">
@@ -79,6 +87,7 @@ function createContactInformationHeader(contactsIndex) {
         `;
 }
 
+/** Returns the desktop edit and delete action buttons. */
 function createDesktopContactActions(contactsIndex) {
         return [
             createDesktopContactActionButton("openEditContactDialog", contactsIndex, true, "&#128393", "Edit"),
@@ -86,16 +95,19 @@ function createDesktopContactActions(contactsIndex) {
         ].join("");
 }
 
+    /** Returns a desktop contact action button. */
 function createDesktopContactActionButton(action, contactsIndex, needsEvent, icon, text, argsPrefix = "") {
         const args = buildContactActionArgs(contactsIndex, needsEvent, argsPrefix);
         return `<button class="edit_and_delete_button edit_and_delete_button_none" onclick="${action}(${args})"><p class="edit_and_delete_icon">${icon}</p> <p class="edit_and_delete_text">${text}</p></button>`;
 }
 
+    /** Builds the onclick argument list for a contact action. */
 function buildContactActionArgs(contactsIndex, needsEvent, argsPrefix = "") {
         const suffix = needsEvent ? `${contactsIndex}, event` : contactsIndex;
         return argsPrefix ? `${argsPrefix}, ${contactsIndex}` : suffix;
 }
 
+    /** Returns the body markup for the contact information panel. */
 function createContactInformationBody(contactsIndex) {
         return `
             <span class="contact_information_body">
@@ -105,6 +117,7 @@ function createContactInformationBody(contactsIndex) {
         `;
 }
 
+/** Returns the markup for a single contact info row. */
 function createContactInfoRow(label, value, valueClass) {
         return `
             <span class="contact_email_and_phone_information">
@@ -114,6 +127,7 @@ function createContactInfoRow(label, value, valueClass) {
         `;
 }
 
+/** Returns the contact success message markup. */
 function createContactSuccessMessage() {
         return `
             <span class="contact_createdSuccesfully_span">
@@ -125,6 +139,7 @@ function createContactSuccessMessage() {
         `;
 }
 
+/** Returns the dialog header markup for a contact dialog. */
 function createContactDialogHeader(contactsIndex) {
         return `
             <header class="contact_dialog_header">
@@ -134,6 +149,7 @@ function createContactDialogHeader(contactsIndex) {
         `;
 }
 
+/** Returns the static header content for the contact dialog. */
 function createContactDialogHeaderContent() {
         return `
             <div id="contact_dialog_header_direction" class="contact_dialog_header_direction">
@@ -145,6 +161,7 @@ function createContactDialogHeaderContent() {
         `;
 }
 
+/** Returns the main content markup for the contact dialog. */
 function createContactDialogMain(contactsIndex) {
         return `
             <main class="contact_dialog_main">
@@ -157,6 +174,7 @@ function createContactDialogMain(contactsIndex) {
         `;
 }
 
+/** Returns the avatar area markup for the contact dialog. */
 function createContactDialogInitial(contactsIndex) {
         return `
             <div id="initial_bg_color_contact_dialog_${contactsIndex}" class="contact_initials contact_initials_bg contact_initials_size contact_dialog_initial_responsive_position">
@@ -166,6 +184,7 @@ function createContactDialogInitial(contactsIndex) {
         `;
 }
 
+/** Returns the form wrapper markup for the contact dialog. */
 function createContactDialogForm(contactsIndex) {
         return `
             <form id="contact_dialog_input_and_button_${contactsIndex}" class="contact_dialog_input_and_button_direction">
@@ -175,6 +194,7 @@ function createContactDialogForm(contactsIndex) {
         `;
 }
 
+/** Returns all input fields for the contact dialog form. */
 function createContactDialogInputs(contactsIndex) {
         return `
             <div class="contact_dialog_input_direction">
@@ -188,6 +208,7 @@ function createContactDialogInputs(contactsIndex) {
         `;
 }
 
+/** Returns the markup for one contact dialog input field. */
 function createContactDialogInputField(contactsIndex, field, type, placeholder, iconPath) {
         return `
             <div class="input-wrapper">
@@ -197,10 +218,12 @@ function createContactDialogInputField(contactsIndex, field, type, placeholder, 
         `;
 }
 
+        /** Returns the error placeholder for a contact dialog field. */
 function createContactDialogError(contactsIndex, field) {
         return `<div id="${field}_error_${contactsIndex}" class="error" style="margin-bottom: 16px; margin-left: 24px;"></div>`;
 }
 
+        /** Returns the action buttons for the contact dialog. */
 function createContactDialogButtons(contactsIndex) {
         return `
             <div class="contact_dialog_button_direction">
@@ -212,6 +235,7 @@ function createContactDialogButtons(contactsIndex) {
         `;
 }
 
+        /** Returns a mobile contact action button. */
 function createMobileContactActionButton(action, contactsIndex, needsEvent, icon, text, argsPrefix = "") {
         const args = buildContactActionArgs(contactsIndex, needsEvent, argsPrefix);
         return `<button class="edit_and_delete_button" onclick="${action}(${args})"><p class="edit_and_delete_icon">${icon}</p> <p class="edit_and_delete_text">${text}</p></button>`;

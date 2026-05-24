@@ -5,6 +5,7 @@ import {
   resetPriorityButtons,
   setPriority,
 } from "./priority.js";
+
 import {
   closeCategoryDropdown,
   renderCategoryOptions,
@@ -14,6 +15,7 @@ import {
   validateCategorySelection,
   toggleCategoryDropdown,
 } from "./category.js";
+
 import {
   closeAssigneeDropdown,
   renderAssigneeContacts,
@@ -21,6 +23,7 @@ import {
   toggleAssigneeDropdown,
   toggleAssigneeSelection,
 } from "./assignees.js";
+
 import {
   addSubtask,
   cancelSubtaskEdit,
@@ -33,6 +36,7 @@ import {
   startSubtaskEdit,
   updateSubtaskButtonState,
 } from "./subtasks.js";
+
 import {
   closeDueDatePicker,
   closeDueDatePickerOnOutsideClick,
@@ -42,10 +46,12 @@ import {
   resetDueDatePicker,
   setDueDateValue,
 } from "./dueDate.js";
+
 import { handleTaskSubmit } from "./persistence.js";
 
 const formControllers = new WeakMap();
 
+/** Creates and initializes an Add Task form controller. */
 export function createAddTaskForm(taskForm, createTaskPath, options = {}) {
   if (!taskForm) return null;
   const existing = formControllers.get(taskForm);
@@ -59,6 +65,7 @@ export function createAddTaskForm(taskForm, createTaskPath, options = {}) {
 
 export { validateCategorySelection };
 
+/** Creates the runtime context object for the form. */
 function createContext(taskForm, createTaskPath, options) {
   const context = {
     taskForm,
@@ -71,6 +78,7 @@ function createContext(taskForm, createTaskPath, options) {
   return context;
 }
 
+/** Creates the event handlers used by the form controller. */
 function createHandlers(context) {
   return {
     documentClick: (event) => closeDropdownsOnOutsideClick(context, event),
@@ -86,6 +94,7 @@ function createHandlers(context) {
   };
 }
 
+/** Initializes the form UI and its supporting modules. */
 function initializeForm(context) {
   initializeDueDatePicker(context);
   setupSubtaskControls(context);
@@ -95,6 +104,7 @@ function initializeForm(context) {
   registerEvents(context);
 }
 
+/** Creates the public controller API for the form. */
 function createController(context) {
   return {
     reset: () => resetTaskFormState(context),
@@ -107,6 +117,7 @@ function createController(context) {
   };
 }
 
+/** Registers the document and form event listeners. */
 function registerEvents(context) {
   document.addEventListener("click", context.handlers.documentClick);
   context.taskForm.addEventListener("reset", context.handlers.formReset);
@@ -116,6 +127,7 @@ function registerEvents(context) {
   context.taskForm.addEventListener("keydown", context.handlers.formKeydown);
 }
 
+/** Removes the document and form event listeners. */
 function unregisterEvents(context) {
   document.removeEventListener("click", context.handlers.documentClick);
   context.taskForm.removeEventListener("reset", context.handlers.formReset);
@@ -125,6 +137,7 @@ function unregisterEvents(context) {
   context.taskForm.removeEventListener("keydown", context.handlers.formKeydown);
 }
 
+/** Initializes the subtask input controls and listeners. */
 function setupSubtaskControls(context) {
   updateSubtaskButtonState(context);
   renderSubtasks(context);
@@ -134,6 +147,7 @@ function setupSubtaskControls(context) {
   context.elements.addSubtaskButton?.addEventListener("click", context.handlers.addSubtaskClick);
 }
 
+/** Removes the subtask-specific event listeners. */
 function teardownSubtaskControls(context) {
   context.elements.subtaskInput?.removeEventListener("input", context.handlers.subtaskInput);
   context.elements.subtaskInput?.removeEventListener("keydown", context.handlers.subtaskKeydown);
@@ -141,6 +155,7 @@ function teardownSubtaskControls(context) {
   context.elements.addSubtaskButton?.removeEventListener("click", context.handlers.addSubtaskClick);
 }
 
+/** Delegates click events to the matching form handlers. */
 function delegateFormClick(context, event) {
   if (handleDueDateClick(context, event.target)) return;
   if (handlePriorityClick(context, event.target)) return;
@@ -153,6 +168,7 @@ function delegateFormClick(context, event) {
   handleRemoveSubtaskClick(context, event.target);
 }
 
+/** Handles keyboard interactions inside the Add Task form. */
 function handleFormKeydown(context, event) {
   if (handleDueDateKeydown(context, event)) return;
   const input = getScopedMatch(context, event.target, "[data-edit-subtask-input]");
@@ -168,6 +184,7 @@ function handleFormKeydown(context, event) {
   }
 }
 
+/** Handles clicks on priority buttons. */
 function handlePriorityClick(context, target) {
   const button = getScopedMatch(context, target, "[data-priority]");
   if (!button) return false;
@@ -175,6 +192,7 @@ function handlePriorityClick(context, target) {
   return true;
 }
 
+/** Handles generic toggle clicks scoped to the current form. */
 function handleToggleClick(context, target, selector, action) {
   const element = getScopedMatch(context, target, selector);
   if (!element) return false;
@@ -182,6 +200,7 @@ function handleToggleClick(context, target, selector, action) {
   return true;
 }
 
+/** Handles clicks on category selection options. */
 function handleCategoryOptionClick(context, target) {
   const option = getScopedMatch(context, target, "[data-category-value]");
   if (!option) return false;
@@ -189,6 +208,7 @@ function handleCategoryOptionClick(context, target) {
   return true;
 }
 
+/** Handles clicks that remove a subtask item. */
 function handleRemoveSubtaskClick(context, target) {
   const button = getScopedMatch(context, target, "[data-remove-subtask]");
   if (!button) return false;
@@ -196,43 +216,26 @@ function handleRemoveSubtaskClick(context, target) {
   return true;
 }
 
+/** Handles clicks that start editing a subtask item. */
 function handleEditSubtaskClick(context, target) {
-  console.log("EDIT SUBTASK CLICK TARGET:", target);
-
   const button = getScopedMatch(
     context,
     target,
     "[data-edit-subtask]"
   );
 
-  console.log("EDIT BUTTON:", button);
-
   if (!button) return false;
-
-  console.log(
-    "EDIT SUBTASK INDEX:",
-    button.dataset.editSubtask
-  );
-
-  console.log(
-    "SUBTASKS BEFORE EDIT:",
-    context.state.subtasks
-  );
 
   startSubtaskEdit(
     context,
     Number(button.dataset.editSubtask)
   );
 
-  console.log(
-    "EDITING INDEX NOW:",
-    context.state.editingSubtaskIndex
-  );
-
   return true;
 }
 
 
+/** Handles clicks that save an edited subtask item. */
 function handleSaveSubtaskEditClick(context, target) {
   const button = getScopedMatch(context, target, "[data-save-subtask-edit]");
   if (!button) return false;
@@ -240,6 +243,7 @@ function handleSaveSubtaskEditClick(context, target) {
   return true;
 }
 
+/** Handles clicks that cancel subtask editing. */
 function handleCancelSubtaskEditClick(context, target) {
   const button = getScopedMatch(context, target, "[data-cancel-subtask-edit]");
   if (!button) return false;
@@ -247,31 +251,33 @@ function handleCancelSubtaskEditClick(context, target) {
   return true;
 }
 
+/** Handles assignee checkbox changes inside the form. */
 function handleAssigneeChange(context, event) {   //CHANGE
-  console.log("CHANGE EVENT TARGET:", event.target);
-  console.log("ASSIGNEE ID:", event.target?.dataset?.assigneeId);
-
   const checkbox = getScopedMatch(context, event.target, "[data-assignee-id]");
   if (!checkbox) return;
 
   toggleAssigneeSelection(context, checkbox.dataset.assigneeId);
 }
 
+/** Returns a selector match scoped to the current task form. */
 function getScopedMatch(context, target, selector) {
   const element = target.closest(selector);
   return element && context.taskForm.contains(element) ? element : null;
 }
 
+/** Closes open dropdowns when clicking outside their wrappers. */
 function closeDropdownsOnOutsideClick(context, event) {
   closeDueDatePickerOnOutsideClick(context, event);
   closeOutside(event, context.elements.assigneeDropdown, () => closeAssigneeDropdown(context));
   closeOutside(event, context.elements.categoryDropdown, () => closeCategoryDropdown(context));
 }
 
+/** Schedules a reset of the derived form state after reset events. */
 function resetTaskFormState(context) {
   window.setTimeout(() => refreshFormState(context), 0);
 }
 
+/** Refreshes the full UI state after a form reset. */
 function refreshFormState(context) {
   resetState(context.state);
   resetDueDatePicker(context);
@@ -286,6 +292,7 @@ function refreshFormState(context) {
   updateSubtaskButtonState(context);
 }
 
+/** Resets the stored state fields to their defaults. */
 function resetState(state) {
   state.selectedPriority = "";
   state.selectedAssignees = [];
@@ -294,6 +301,7 @@ function resetState(state) {
   state.editingSubtaskIndex = null;
 }
 
+/** Prefills the form with the values of an existing task. */
 function prefillTask(context, task = {}) {
   setBasicFields(context, task);
   context.taskForm.dataset.editId = task.id || "";
@@ -306,12 +314,14 @@ function prefillTask(context, task = {}) {
   setSelectedAssignees(context, (task.assignees || []).map((assignee) => assignee.id));
 }
 
+/** Applies the basic text and date fields from a task object. */
 function setBasicFields(context, task) {
   if (context.elements.title) context.elements.title.value = task.title || "";
   if (context.elements.description) context.elements.description.value = task.description || "";
   setDueDateValue(context, task.dueDate || "");
 }
 
+/** Destroys the controller and unregisters its listeners. */
 function destroy(context) {
   unregisterEvents(context);
   teardownSubtaskControls(context);

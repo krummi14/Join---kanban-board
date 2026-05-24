@@ -2,6 +2,7 @@ import { getData, putNewData, putEditData, deleteData } from "../shared/firebase
 import { createList } from "../shared/list.js";
 import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditandDeleteMobileTemplate } from "../template/contacts_template.js";
 
+/** Initializes the contacts page data and UI. */
 async function initContacts() {
     const data = await getData("/contacts");
     createList(data);
@@ -9,6 +10,7 @@ async function initContacts() {
     userInitials();
 }
 
+/** Validates a contact name field. */
 function validateName(name, contactsIndex) {
     const regex = /^[A-Za-z]+ [A-Za-z]+$/;
     if (!regex.test(name)) {
@@ -19,6 +21,7 @@ function validateName(name, contactsIndex) {
     return true;
 }
 
+/** Validates a contact phone field. */
 function validatePhone(phone, contactsIndex) {
     const regex = /^\+\d{2}\s\d{6,}$/;
     if (!regex.test(phone)) {
@@ -29,6 +32,7 @@ function validatePhone(phone, contactsIndex) {
     return true;
 }
 
+/** Validates a contact email field. */
 function validateEmail(email, contactsIndex) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(email)) {
@@ -39,6 +43,7 @@ function validateEmail(email, contactsIndex) {
     return true;
 }
 
+/** Validates the full contact form for the current dialog. */
 function validateForm(contactsIndex) {
     let name = document.getElementById(`contact_dialog_input_name_${contactsIndex}`).value.trim();
     let email = document.getElementById(`contact_dialog_input_email_${contactsIndex}`).value.trim();
@@ -49,16 +54,19 @@ function validateForm(contactsIndex) {
     return validName && validEmail && validPhone;
 }
 
+/** Saves changes to an existing contact when the form is valid. */
 function saveContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     editContact(editOrAddNewContact, contactsIndex);
 }
 
+/** Saves a newly created contact when the form is valid. */
 function saveNewContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     addNewContact(editOrAddNewContact, contactsIndex);
 }
 
+/** Creates a new contact and refreshes the contacts view. */
 async function addNewContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let newContactId = await putNewData("/contacts/", contactsIndex);
@@ -69,6 +77,7 @@ async function addNewContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
+/** Deletes a contact and updates the open contact state. */
 async function deleteContact(openDialog, openContactResponsive, contactsIndex) {
     let deleteIndex = (contactsList[contactsIndex].id) - 1;
     await deleteData("/contacts/" + deleteIndex);
@@ -83,6 +92,7 @@ async function deleteContact(openDialog, openContactResponsive, contactsIndex) {
     }
 }
 
+/** Updates an existing contact and refreshes the current detail view. */
 async function editContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let currentContactId = await putEditData("/contacts/", contactsIndex);
@@ -93,6 +103,7 @@ async function editContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
+/** Returns the initials for the contact at the given list index. */
 export function filterInitialsOfName(contactsIndex) {
     if (contactsIndex == contactsList.length) {
         return;
@@ -103,6 +114,7 @@ export function filterInitialsOfName(contactsIndex) {
     };
 }
 
+/** Renders the complete contacts list view. */
 function renderContacts() {
     contentContactsListHeader.innerHTML = "";
     prenameInitialsList = [];
@@ -114,6 +126,7 @@ function renderContacts() {
     }
 }
 
+/** Creates a new contact section when the first letter changes. */
 function firstLetterOfPrenameIsEqual(contactsIndex) {
     let firstLetterOfContact = contactsList[contactsIndex].name[0];
     if (!prenameInitialsList.includes(firstLetterOfContact)) {
@@ -123,11 +136,13 @@ function firstLetterOfPrenameIsEqual(contactsIndex) {
     pushContactIntoTableheader(contactsIndex);
 }
 
+/** Appends a contact row to its matching letter group. */
 function pushContactIntoTableheader(contactsIndex) {
     let contentContactsList = document.getElementById(`new_row_${contactsList[contactsIndex].name[0]}`);
     contentContactsList.innerHTML += getContactsListContentTemplate(contactsIndex);
 }
 
+/** Assigns and stores a display color for a contact avatar. */
 function contactColor(contactsIndex) {
     let contentInitialBackgroundColor = document.getElementById(`initial_bg_color_${contactsIndex}`);
     let randomColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
@@ -135,6 +150,7 @@ function contactColor(contactsIndex) {
     intitialBackgroundcolors.push(randomColor);
 }
 
+/** Opens the selected contact information panel. */
 function openContactInformation(contactsIndex) {
     if (isActiveContact(contactsIndex)) return closeCurrentContact(contactsIndex);
     closePreviousContact(contactsIndex);
@@ -144,6 +160,7 @@ function openContactInformation(contactsIndex) {
     activeContact = contactsIndex;
 }
 
+/** Closes the active contact information panel. */
 function closeContactInformation(contactsIndex) {
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
     contentContactMain.style.overflow = "";
@@ -152,17 +169,20 @@ function closeContactInformation(contactsIndex) {
     activeContact = null;
 }
 
+/** Renders the selected contact information content. */
 function createContentInformation(contactsIndex) {
     contentContactInformation.innerHTML = getContactsInformationTemplate(contactsIndex);
     contactColorInContactInformation(contactsIndex)
 }
 
+/** Applies the stored avatar color in the contact information panel. */
 function contactColorInContactInformation(contactsIndex) {
     let contentInitialBackgroundColorContactInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
     contentInitialBackgroundColorContactInformation.style.backgroundColor = initialsColor;
 }
 
+/** Applies the correct avatar color state in the contact dialog. */
 function contactColorInContactDialog(contactsIndex) {
     let contentInitialBackgroundColorContactDialog = document.getElementById(`initial_bg_color_contact_dialog_${contactsIndex}`);
     let contentInitialImageAddNewContact = document.getElementById(`initial_img_${(contactsIndex)}`);
@@ -177,6 +197,7 @@ function contactColorInContactDialog(contactsIndex) {
     }
 }
 
+/** Opens the edit-contact dialog for the selected contact. */
 function openEditContactDialog(contactsIndex, event) {
     if (event) event.stopPropagation();
     contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
@@ -188,6 +209,7 @@ function openEditContactDialog(contactsIndex, event) {
     getCurrentContactData(contactsIndex);
 }
 
+/** Fills the contact dialog with the current contact data. */
 function getCurrentContactData(contactsIndex) {
     let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
     let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
@@ -197,6 +219,7 @@ function getCurrentContactData(contactsIndex) {
     contactInputPhone.value = contactsList[contactsIndex].phone;
 }
 
+/** Closes the contact dialog with its exit animation. */
 function closeContactDialog(contactsIndex) {
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
     contentDialogContact.classList.remove("dialog_opend");
@@ -206,10 +229,12 @@ function closeContactDialog(contactsIndex) {
     }, 125);
 }
 
+/** Stops dialog body clicks from bubbling to the dialog backdrop. */
 function closeDialogOnBodyclick(event) {
     event.stopPropagation()
 }
 
+/** Opens the dialog for creating a new contact. */
 function openAddNewContactDialog(contactsIndex, event) {
     contactsIndex = contactsList.length;
     if (event) event.stopPropagation();
@@ -224,6 +249,7 @@ function openAddNewContactDialog(contactsIndex, event) {
     contactColorInContactDialog(contactsIndex);
 }
 
+/** Switches the contact dialog UI into create mode. */
 function createAddNewContactDialog(contactsIndex) {
     let contentDialogContactHeader = document.getElementById('edit_or_addNew_headline');
     let contentDialogContactDescription = document.getElementById('addNew_description_text');
@@ -234,6 +260,7 @@ function createAddNewContactDialog(contactsIndex) {
     styleAddNewContactDialog(contentDialogContactHeader, contentDialogContactDescription, contact_dialog_header_direction, contentDialogContactButtonDelete, contentDialogContactButtonSave, contentDialogContactButtonCancel, contentDialogContactButtonCreate);
 }
 
+/** Applies the visual state for the add-new-contact dialog. */
 function styleAddNewContactDialog(headerText, descriptionText, directionOfHeaderAndDescription, deleteButton, saveButton, cancelButton, createButton) {
     headerText.innerText = "Add contact";
     descriptionText.style.display = "block";
@@ -243,6 +270,7 @@ function styleAddNewContactDialog(headerText, descriptionText, directionOfHeader
     createButton.classList.remove("display_none_button_or_img");
 }
 
+/** Shows the success message for created or edited contacts. */
 function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
     if (editOrAddNewContact == 'addNewContact') {
         styleOfCreadedOrEditedSuccessfully();
@@ -256,6 +284,7 @@ function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
     }
 }
 
+/** Animates the contact created or edited success banner. */
 function styleOfCreadedOrEditedSuccessfully() {
     let contentContactCreatedSuccesfully = document.getElementById("contact_createdSuccesfully");
     contentContactCreatedSuccesfully.classList.remove("contact_createdSuccesfully_deactive");
@@ -268,14 +297,17 @@ function styleOfCreadedOrEditedSuccessfully() {
     }, 4000);
 }
 
+/** Hides the contact information panel on responsive layouts. */
 function closeContactInformationResponsive() {
     contentContact.classList.add('responsive_contactInformation_none');
 }
 
+/** Renders the responsive edit/delete action buttons. */
 function createEditButtonResponsive(contactsIndex) {
     contentEditButton.innerHTML = getContactDialogEditandDeleteMobileTemplate(contactsIndex);
 }
 
+/** Toggles the responsive contact action menu. */
 function addEditAndDeleteResponisve(event) {
     if (event) event.stopPropagation();
     let editAndDeleteMenu = document.getElementById('edit_and_delete_mobile_menu');
@@ -283,19 +315,23 @@ function addEditAndDeleteResponisve(event) {
     if (!editAndDeleteMenu || menuStatus == 'off') closeResponsiveActionMenu(editAndDeleteMenu);
 }
 
+/** Returns whether the given contact is currently active. */
 function isActiveContact(contactsIndex) {
     return activeContact == contactsIndex;
 }
 
+/** Closes the currently active contact when it is clicked again. */
 function closeCurrentContact(contactsIndex) {
     closeContactInformation(contactsIndex);
 }
 
+/** Closes the previously active contact before opening another. */
 function closePreviousContact(contactsIndex) {
     if (activeContact === null || activeContact === contactsIndex) return;
     closeContactInformation(activeContact);
 }
 
+/** Activates the visual contact detail state for the selected contact. */
 function activateContactView(contactsIndex) {
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
     contentContactMain.style.overflow = "hidden";
@@ -305,6 +341,7 @@ function activateContactView(contactsIndex) {
     contentContact.classList.remove('responsive_contactInformation_none');
 }
 
+/** Opens the responsive contact action menu. */
 function openResponsiveActionMenu(editAndDeleteMenu) {
     contentContact.style.overflow = "hidden";
     editAndDeleteMenu.classList.remove('close');
@@ -312,6 +349,7 @@ function openResponsiveActionMenu(editAndDeleteMenu) {
     menuStatus = 'off';
 }
 
+/** Closes the responsive contact action menu. */
 function closeResponsiveActionMenu(editAndDeleteMenu) {
     editAndDeleteMenu.classList.add('close');
     menuStatus = 'on';

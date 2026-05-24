@@ -14,31 +14,37 @@ import { initializeDueDatePicker } from "../addtask/dueDate.js";
 
 let addTaskFormController = null;
 
+/** Opens the task overlay for the selected task. */
 export function openOverlay(taskId) {
   const task = findTask(taskId);
   if (!task) return;
   renderOverlay(generateTaskOverlay(task));
 }
 
+/** Closes the task overlay. */
 export function closeOverlay() {
   getOverlayElement()?.classList.add("hidden");
 }
 
+/** Closes the overlay when its backdrop is clicked. */
 export function handleOverlayClick(event) {
   if (event.target.id !== "overlay") return;
   closeOverlay();
 }
 
+/** Returns the current user name stored in local storage. */
 function getCurrentUserName() {
   return localStorage.getItem("userName") || "";
 }
 
+/** Returns the assignee section markup for a task overlay. */
 function generateAssigneesContent(task) {
   const currentUser = getCurrentUserName();
   if (!task.assignees?.length) return getNoAssigneesTemplate();
   return task.assignees.map((assignee) => createAssigneeMarkup(assignee, currentUser)).join("");
 }
 
+/** Returns the subtask section markup for a task overlay. */
 function generateSubtasksContent(task) {
   if (!task.subtasks?.length) return getNoSubtasksTemplate();
   return task.subtasks.map((subtask, index) => generateSubtask(task, subtask, index)).join("");
@@ -49,6 +55,7 @@ window.toggleSubtask = async function (taskId, index) {
   refreshBoard();
 };
 
+/** Formats a stored due date for display in the overlay. */
 function formatDate(dateString) {
   if (!dateString) return "";
   if (dateString.includes("/")) return dateString;
@@ -57,6 +64,7 @@ function formatDate(dateString) {
   return formatDateParts(date);
 }
 
+/** Opens the edit form for the selected task. */
 async function editTask(taskId) {
   const task = findTask(taskId);
   if (!task) return;
@@ -69,6 +77,7 @@ async function editTask(taskId) {
 // ======================
 // RENDER EDIT FORM
 // ======================
+/** Renders the edit-task form inside the overlay. */
 function renderEditForm(task) {
   const overlay = document.getElementById("overlay");
 
@@ -97,11 +106,13 @@ function renderEditForm(task) {
 // INIT CONTROLLER
 // ======================
 
+/** Initializes the add-task form controller in edit mode. */
 function initEditController(form, task) {
   destroyEditController();
   addTaskFormController = createAddTaskForm(form, getTaskSourcePath(task), getEditControllerConfig());
 }
 
+/** Applies board-specific UI adjustments for edit mode. */
 function setupEditUI() {
   const submitBtn = document.getElementById("createTask");
   const clearBtn = document.querySelector(".clear_btn");
@@ -113,6 +124,7 @@ function setupEditUI() {
   menu?.classList.add("d_none");
 }
 
+/** Prefills the edit form with the selected task data. */
 function initEditPrefill(task) {
   if (!addTaskFormController) return;
   addTaskFormController.prefillTask(task);
@@ -137,14 +149,17 @@ window.toggleCategoryDropdown = function (event) {
   toggleMenuVisibility("categoryDropdownMenu");
 };
 
+/** Finds a task by id in the current task collection. */
 function findTask(taskId) {
   return getTasks().find((task) => task.id === taskId);
 }
 
+/** Returns the overlay root element. */
 function getOverlayElement() {
   return document.getElementById("overlay");
 }
 
+/** Renders markup into the overlay and shows it. */
 function renderOverlay(markup) {
   const overlay = getOverlayElement();
   if (!overlay) return;
@@ -152,15 +167,18 @@ function renderOverlay(markup) {
   overlay.classList.remove("hidden");
 }
 
+/** Returns the markup for one assignee row inside the overlay. */
 function createAssigneeMarkup(assignee, currentUser) {
   const isYou = assignee.name === currentUser;
   return getAssigneeTemplate(assignee, isYou);
 }
 
+/** Refreshes the board after overlay-based task changes. */
 function refreshBoard() {
   window.syncBoardColumns?.(getTasks());
 }
 
+/** Formats a Date object as a day/month/year string. */
 function formatDateParts(date) {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -168,14 +186,17 @@ function formatDateParts(date) {
   return `${day}/${month}/${year}`;
 }
 
+/** Destroys the active edit controller if one exists. */
 function destroyEditController() {
   addTaskFormController?.destroy();
 }
 
+/** Returns the storage path that should back the edit form. */
 function getTaskSourcePath(task) {
   return task.sourcePath || task.status;
 }
 
+/** Moves a task from the overlay into a different board column. */
 async function moveTaskFromOverlay(taskId, targetPath) {
   const task = findTask(taskId);
   const boardColumns = window.BOARD_COLUMNS;
@@ -186,10 +207,12 @@ async function moveTaskFromOverlay(taskId, targetPath) {
   closeOverlay();
 }
 
+/** Returns the controller configuration used in edit mode. */
 function getEditControllerConfig() {
   return { onSave: handleEditSave, mode: "edit" };
 }
 
+/** Handles a successful task save from the edit overlay. */
 async function handleEditSave(taskId, updatedTask) {
   syncTaskLocally(taskId, updatedTask);
   refreshBoard();
@@ -197,6 +220,7 @@ async function handleEditSave(taskId, updatedTask) {
   openOverlay(taskId);
 }
 
+/** Toggles the visibility of a simple dropdown menu. */
 function toggleMenuVisibility(menuId) {
   const menu = document.getElementById(menuId);
   if (!menu) return;

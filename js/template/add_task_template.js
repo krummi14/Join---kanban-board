@@ -4,6 +4,7 @@ import {
 } from "../addtask/contactUtils.js";
 
 
+/** Returns the markup for a read-only subtask item. */
 export function createSubtaskItem(st, index) {
   return `
     <section class="subtask_item">
@@ -16,6 +17,7 @@ export function createSubtaskItem(st, index) {
   `;
 }
 
+/** Returns the markup for an editable subtask item. */
 export function createEditableSubtaskItem(st, index) {
   return `
     <section class="subtask_item editing">
@@ -30,6 +32,7 @@ export function createEditableSubtaskItem(st, index) {
   `;
 }
 
+/** Returns the markup for a subtask action button. */
 function createSubtaskActionButton(action, index, label, iconPath) {
   return `
     <button type="button" class="subtask_item_action_button" data-${action}="${index}" aria-label="${label}">
@@ -38,6 +41,7 @@ function createSubtaskActionButton(action, index, label, iconPath) {
   `;
 }
 
+/** Escapes a string for safe use inside an HTML attribute. */
 function escapeHtmlAttribute(value) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -46,6 +50,7 @@ function escapeHtmlAttribute(value) {
     .replace(/>/g, "&gt;");
 }
 
+  /** Returns the markup for an assignee option row. */
 export function createAssigneeOption(contact) {   //CHANGE 
   return `
     <label class="assignee_option" for="assignee_${contact.id}">
@@ -55,6 +60,7 @@ export function createAssigneeOption(contact) {   //CHANGE
   `;
 }
 
+/** Returns the text content markup for an assignee option. */
 function createAssigneeOptionText(contact) {
   return `
     <div class="assignee_option_text">
@@ -66,6 +72,7 @@ function createAssigneeOptionText(contact) {
   `;
 }
 
+/** Returns the checkbox markup for an assignee option. */
 function createAssigneeOptionCheckbox(contactId) {
   return `
     <span class="assignee_option_checkbox">
@@ -75,6 +82,7 @@ function createAssigneeOptionCheckbox(contactId) {
     </span>
   `;
 }
+/** Returns the initials used for an assignee avatar. */
 function getAssigneeInitials(name) {
   const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return "";
@@ -82,10 +90,12 @@ function getAssigneeInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
+/** Returns a stable color for an assignee avatar. */
 function getAssigneeColor(name) {
   return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][String(name || "").length % 6];
 }
 
+/** Returns the full Add Task form markup. */
 export function createAddTaskFormTemplate(path) {
   return `  
       <form id="taskForm">
@@ -97,6 +107,7 @@ export function createAddTaskFormTemplate(path) {
   `;
 } 
 
+/** Returns the left column of the Add Task form. */
 function createAddTaskLeftForm() {
   return `
     <section class="left_form">
@@ -108,6 +119,7 @@ function createAddTaskLeftForm() {
   `;
 }
 
+/** Returns the title section markup. */
 function createTitleSection() {
   return `
     <section class="title">
@@ -117,6 +129,7 @@ function createTitleSection() {
   `;
 }
 
+/** Returns the description section markup. */
 function createDescriptionSection() {
   return `
     <section class="description">
@@ -126,6 +139,7 @@ function createDescriptionSection() {
   `;
 }
 
+/** Returns the due-date section markup. */
 function createDueDateSection() {
   return `
     <section class="due_date due_date_picker" data-due-date-picker>
@@ -135,6 +149,7 @@ function createDueDateSection() {
   `;
 }
 
+/** Returns the due-date input field markup. */
 function createDueDateField() {
   return `
     <input type="text" id="dueDate" name="dueDate" class="due_date_input" placeholder="dd/mm/yyyy" inputmode="numeric" autocomplete="off" required aria-haspopup="dialog" aria-expanded="false" aria-controls="dueDateMenu">
@@ -142,10 +157,12 @@ function createDueDateField() {
   `;
 }
 
+/** Returns the due-date calendar icon markup. */
 function createDueDateIcon() {
   return `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3.5" y="5.5" width="17" height="15" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 3.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17 3.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3.5 9H20.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 13H8.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 13H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 13H16.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 }
 
+/** Returns the due-date calendar menu markup. */
 function createDueDateMenu() {
   return `
     <section id="dueDateMenu" class="due_date_menu d_none" aria-label="Due date calendar">
@@ -156,6 +173,7 @@ function createDueDateMenu() {
   `;
 }
 
+/** Returns the due-date calendar header markup. */
 function createDueDateMenuHeader() {
   return `
     <div class="due_date_menu_header">
@@ -166,10 +184,12 @@ function createDueDateMenuHeader() {
   `;
 }
 
+/** Returns the weekday label row markup. */
 function createDueDateWeekdays() {
   return `<div class="due_date_weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>`;
 }
 
+/** Returns the right column of the Add Task form. */
 function createAddTaskRightForm(path) {
   return `
     <section class="right_form">
@@ -183,6 +203,7 @@ function createAddTaskRightForm(path) {
   `;
 }
 
+/** Returns the priority section markup. */
 function createPrioritySection() {
   return `
     <section class="priority">
@@ -192,6 +213,7 @@ function createPrioritySection() {
   `;
 }
 
+/** Returns the priority button group markup. */
 function createPriorityButtons() {
   return [
     createPriorityButton("urgent", "Urgent", "btn_urgent_off.svg", "Button Urgent"),
@@ -200,10 +222,12 @@ function createPriorityButtons() {
   ].join("");
 }
 
+/** Returns the markup for a single priority button. */
 function createPriorityButton(priority, label, iconName, altText) {
   return `<button type="button" id="prio_${priority}" data-priority="${priority}">${label} <img src="../assets/icon/${iconName}" alt="${altText}"></button>`;
 }
 
+/** Returns the assignee section markup. */
 function createAssigneeSection() {
   return `
     <section class="assignee">
@@ -213,6 +237,7 @@ function createAssigneeSection() {
   `;
 }
 
+/** Returns the assignee toggle button markup. */
 function createAssigneeToggle() {
   return `
     <button type="button" id="assignee" class="assignee_toggle" data-assignee-toggle="true" aria-expanded="false" aria-controls="assigneeDropdownMenu">
@@ -222,6 +247,7 @@ function createAssigneeToggle() {
   `;
 }
 
+/** Returns the category section markup. */
 function createCategorySection() {
   return `
     <section class="category">
@@ -231,6 +257,7 @@ function createCategorySection() {
   `;
 }
 
+/** Returns the category toggle button markup. */
 function createCategoryToggle() {
   return `
     <input type="hidden" name="category" id="category" value="">
@@ -241,6 +268,7 @@ function createCategoryToggle() {
   `;
 }
 
+/** Returns the category dropdown menu markup. */
 function createCategoryMenu() {
   return `
     <section id="categoryDropdownMenu" class="category_menu">
@@ -250,6 +278,7 @@ function createCategoryMenu() {
   `;
 }
 
+/** Returns the subtask section markup. */
 function createSubtaskSection() {
   return `
     <section class="subtask">
@@ -260,10 +289,12 @@ function createSubtaskSection() {
   `;
 }
 
+/** Returns the subtask input field markup. */
 function createSubtaskInput() {
   return `<input type="text" id="subtask" name="subtask" placeholder="Add new subtask">`;
 }
 
+/** Returns the subtask action buttons markup. */
 function createSubtaskButtons() {
   return `
     <div class="subtask_action_buttons">
@@ -273,6 +304,7 @@ function createSubtaskButtons() {
   `;
 }
 
+/** Returns the desktop form action buttons markup. */
 function createFormButtons(path) {
   return `
     <section class="form_buttons">
@@ -282,6 +314,7 @@ function createFormButtons(path) {
   `;
 }
 
+/** Returns the mobile form action buttons markup. */
 function createFormButtonsMobile(path) {
   return `
     <section class="form_buttons_mobile">
@@ -291,6 +324,7 @@ function createFormButtonsMobile(path) {
   `;
 }
 
+/** Returns the avatar markup for a selected assignee. */
 export function createSelectedAssigneeAvatar(
   contact
 ) {
@@ -306,6 +340,7 @@ export function createSelectedAssigneeAvatar(
   `;
 }
 
+/** Returns the assignee load error markup. */
 export function createAssigneeLoadError() {
 
   return `
@@ -315,6 +350,7 @@ export function createAssigneeLoadError() {
   `;
 }
 
+/** Returns the empty assignee state markup. */
 export function createAssigneeEmptyState() {
 
   return `
@@ -326,6 +362,7 @@ export function createAssigneeEmptyState() {
 
 
 
+/** Returns the dropdown option markup for a task category. */
 function getCategoryOptionTemplate(category) {
   return `
     <div class="dropdown_item" data-category-value="${category}">

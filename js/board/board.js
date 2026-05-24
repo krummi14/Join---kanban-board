@@ -45,6 +45,7 @@ let BOARD_COLUMNS = [
 
 window.BOARD_COLUMNS = BOARD_COLUMNS;
 
+/** Initializes the board page and loads its tasks. */
 async function initBoard() {
   initializeUserInitials();
   const tasks = await loadTasks(BOARD_COLUMNS);
@@ -54,12 +55,14 @@ async function initBoard() {
 
 
 // 🗑️ DELETE TASK
+/** Deletes a task and refreshes the board view. */
 async function deleteTask(taskId) {
   await deleteTaskService(taskId);
   closeOverlay();
   syncBoardColumns(getTasks());
 }
 
+/** Moves a task card to an adjacent column. */
 async function moveTaskFromCard(event, taskId, direction) {
   event?.stopPropagation();
   const targetPath = resolveAdjacentColumnPath(taskId, direction);
@@ -69,6 +72,7 @@ async function moveTaskFromCard(event, taskId, direction) {
   syncBoardColumns(getTasks());
 }
 
+/** Resolves the adjacent column path for a task card move. */
 function resolveAdjacentColumnPath(taskId, direction) {
   const task = getTasks().find((entry) => entry.id === taskId);
   if (!task) return null;
@@ -78,6 +82,7 @@ function resolveAdjacentColumnPath(taskId, direction) {
   return BOARD_COLUMNS[nextIndex]?.path || null;
 }
 
+/** Opens the add-task dialog for the requested board column. */
 async function openAddNewtaskDialog(path = "to_do") {
   stopWindowEvent();
   contentDialogOfAddTask.innerHTML = getDialogAddTaskTemplate();
@@ -90,6 +95,7 @@ async function openAddNewtaskDialog(path = "to_do") {
   contentDialogAddTask.classList.remove("dialog_closed");
 }
 
+/** Closes the add-task dialog with its exit animation. */
 function closeAddNewTaskDialog() {
   const contentDialogAddTask = document.getElementById("addTask_dialog");
   contentDialogAddTask.classList.remove("dialog_opend");
@@ -97,10 +103,12 @@ function closeAddNewTaskDialog() {
   window.setTimeout(() => contentDialogAddTask.close(), 125);
 }
 
+/** Stops dialog body clicks from bubbling to the overlay. */
 function closeDialogOnBodyclick(event) {
   event.stopPropagation();
 }
 
+/** Filters tasks by the current search input and updates the board. */
 async function filterAndShowTask() {
   const filterWord = getFilterWord();
   if (emptyInputField(filterWord)) return;
@@ -112,6 +120,7 @@ async function filterAndShowTask() {
   updateHTML(buildFilteredColumns(filteredTasks, BOARD_COLUMNS));
 }
 
+/** Handles an empty board search input state. */
 function emptyInputField(filterWord) {
   if (!filterWord || filterWord.trim() == "") {
     if (boardIsFiltered) {
@@ -126,6 +135,7 @@ function emptyInputField(filterWord) {
   return false;
 }
 
+/** Handles search inputs that are too short to filter. */
 function toShortfilterWord(filterWord) {
   if (isShortFilter(filterWord)) {
     boardIsFiltered = false;
@@ -136,6 +146,7 @@ function toShortfilterWord(filterWord) {
   return false;
 }
 
+/** Handles filter results with no matching tasks. */
 function wordDoesntExist(filteredTasks, boardIsFiltered) {
   if (filteredTasks.length == 0) {
     boardIsFiltered = false;
@@ -146,20 +157,24 @@ function wordDoesntExist(filteredTasks, boardIsFiltered) {
   return false;
 }
 
+/** Returns the current board search term. */
 function getFilterWord() {
   const searchInput = document.getElementById("search_input_value");
   return searchInput ? searchInput.value : null;
 }
 
+/** Returns whether a filter term is shorter than the minimum length. */
 function isShortFilter(filterWord) {
   return filterWord.length < 3;
 }
 
+/** Filters tasks whose title includes the search term. */
 function filterTasksByTitle(tasks, filterWord) {
   const normalizedFilter = filterWord.toLowerCase();
   return tasks.filter((task) => task.title.toLowerCase().includes(normalizedFilter));
 }
 
+/** Builds a filtered board-columns array from a task subset. */
 function buildFilteredColumns(tasks, boardColumns) {
   return boardColumns.map((column) => ({
     ...column,
@@ -167,34 +182,41 @@ function buildFilteredColumns(tasks, boardColumns) {
   }));
 }
 
+/** Shows the informational overlay for board search feedback. */
 function showSearchInformation() {
   openInfoToWriteAtLeastThreeLetters();
   addSearchInformationAsOverlay();
 }
 
+/** Adds the search information overlay styling. */
 function addSearchInformationAsOverlay() {
   contentSearchInformation.classList.add('loading_screen_overlay');
   document.body.classList.add('scroll_lock');
 }
 
+/** Reveals the search information message. */
 function openInfoToWriteAtLeastThreeLetters() {
   contentSearchInformation.classList.remove("task_information_none");
 }
 
+/** Closes the search information overlay. */
 function closeSearchInformation() {
   contentSearchInformation.classList.add("task_information_none");
   document.body.classList.remove('scroll_lock');
 }
 
+/** Shows the board action button that was previously hidden. */
 function removeShowButton() {
   contentShowButton.classList.remove('load_button_none');
 }
 
+/** Initializes the user badge when the board page loads. */
 function initializeUserInitials() {
   if (typeof window.userInitials !== "function") return;
   window.userInitials();
 }
 
+/** Lazy-loads the resources needed for the add-task dialog. */
 function loadAddTaskDialogResources() {
   if (!addTaskDialogResourcesPromise) {
     addTaskDialogResourcesPromise = Promise.all([
@@ -206,12 +228,14 @@ function loadAddTaskDialogResources() {
   return addTaskDialogResourcesPromise;
 }
 
+/** Renders the add-task form inside the board dialog. */
 function renderAddTaskDialog(path, createAddTaskFormTemplate) {
   const addTaskContainer = document.getElementById("addTaskContainer");
   if (!addTaskContainer) return;
   addTaskContainer.innerHTML = createAddTaskFormTemplate(path);
 }
 
+/** Synchronizes the board columns with the current task list. */
 function syncBoardColumns(tasks) {
   BOARD_COLUMNS = buildFilteredColumns(tasks, BOARD_COLUMNS);
   window.BOARD_COLUMNS = BOARD_COLUMNS;
@@ -221,12 +245,14 @@ function syncBoardColumns(tasks) {
 
 window.syncBoardColumns = syncBoardColumns;
 
+/** Binds the overlay click handler for outside-close behavior. */
 function bindOverlayClick() {
   const overlay = document.getElementById("overlay");
   if (!overlay) return;
   overlay.addEventListener("click", handleOverlayClick);
 }
 
+/** Stops the current global event from bubbling when present. */
 function stopWindowEvent() {
   if (!event) return;
   event.stopPropagation();

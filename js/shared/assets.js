@@ -1,5 +1,6 @@
 import { extractIDs } from "./list.js";
 
+/** Collects the form values for a new contact payload. */
 export function insertNewContactData(contactsIndex) {
     let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
     let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
@@ -12,6 +13,7 @@ export function insertNewContactData(contactsIndex) {
     };
 }
 
+/** Collects the updated form values for an existing contact. */
 export function editCurrentContactData(contactsIndex) {
     let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
     let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
@@ -26,6 +28,7 @@ export function editCurrentContactData(contactsIndex) {
 
 
 
+/** Normalizes a status string for comparisons. */
 export function normalizeStatus(status) {
   return String(status || "")
     .toLowerCase()
@@ -35,6 +38,7 @@ export function normalizeStatus(status) {
 }
 
 // 🔧 CATEGORY NORMALIZER
+/** Normalizes a category string for comparisons. */
 export function normalizeCategory(category) {
   return String(category || "")
     .toLowerCase()

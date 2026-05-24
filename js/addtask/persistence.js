@@ -5,6 +5,7 @@ import { getDueDateStorageValue } from "./dueDate.js";
 
 const TASKS_STORAGE_PATH = "tasks";
 
+/** Handles form submission and persists the current task data. */
 export async function handleTaskSubmit(context, event) {
   event.preventDefault();
   const form = context.taskForm;
@@ -16,11 +17,13 @@ export async function handleTaskSubmit(context, event) {
   }
 }
 
+/** Chooses whether to create a new task or update an existing one. */
 async function persistTaskSubmission(context, editId) {
   if (editId) return updateExistingTask(context, editId);
   return saveTask(context);
 }
 
+/** Updates an existing task in storage. */
 export async function updateExistingTask(context, taskId) {
   const updatedTask = buildTaskPayload(context);
   updatedTask.id = taskId;
@@ -30,6 +33,7 @@ export async function updateExistingTask(context, taskId) {
   }
 }
 
+/** Saves a new task in storage. */
 export async function saveTask(context) {
   const task = buildTaskPayload(context);
   await putUserData(`${TASKS_STORAGE_PATH}/${task.id}`, task);
@@ -39,6 +43,7 @@ export async function saveTask(context) {
   return task;
 }
 
+/** Builds the task payload from the current form state. */
 export function buildTaskPayload(context) {
   return {
     id: context.taskForm.dataset.editId || Date.now().toString(),
@@ -53,6 +58,7 @@ export function buildTaskPayload(context) {
   };
 }
 
+/** Resolves the task status that should be persisted. */
 function resolveTaskStatus(context) {
   if (context.taskForm.dataset.editId) {
     return context.taskForm.dataset.status || normalizeStatus(context.createTaskPath);
@@ -61,6 +67,7 @@ function resolveTaskStatus(context) {
   return normalizeStatus(context.createTaskPath);
 }
 
+/** Normalizes subtasks into the persisted task payload format. */
 function createSubtaskPayload(subtasks) {
   return subtasks.map((subtask) => ({
     title: subtask.title || subtask,

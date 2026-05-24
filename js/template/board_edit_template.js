@@ -1,3 +1,4 @@
+/** Returns the markup for the edit-task overlay form. */
 export function createEditTaskTemplate() {
   return `
   <div class="edit_overlay">
@@ -11,6 +12,7 @@ export function createEditTaskTemplate() {
   `;
 }
 
+/** Returns the close button markup for the edit overlay. */
 function createEditCloseButton() {
   return `
     <div class="close_button">
@@ -21,6 +23,7 @@ function createEditCloseButton() {
   `;
 }
 
+/** Returns the assembled edit-form sections markup. */
 function createEditFormSections() {
   return [
     createEditTitleSection(),
@@ -33,6 +36,7 @@ function createEditFormSections() {
   ].join("");
 }
 
+/** Returns the edit-task title section markup. */
 function createEditTitleSection() {
   return `
     <div class="edit_title">
@@ -42,6 +46,7 @@ function createEditTitleSection() {
   `;
 }
 
+/** Returns the edit-task description section markup. */
 function createEditDescriptionSection() {
   return `
     <div class="edit_description">
@@ -51,6 +56,7 @@ function createEditDescriptionSection() {
   `;
 }
 
+/** Returns the edit-task due-date picker section markup. */
 function createEditDueDateSection() {
   return `
     <div
@@ -178,6 +184,7 @@ function createEditDueDateSection() {
   `;
 }
 
+/** Returns the edit-task priority section markup. */
 function createEditPrioritySection() {
   return `
     <div class="edit_priority">
@@ -191,6 +198,7 @@ function createEditPrioritySection() {
   `;
 }
 
+/** Returns the edit-task assignee section markup. */
 function createEditAssigneeSection() {
   return `
     <section class="edit_assigned_to">
@@ -204,6 +212,7 @@ function createEditAssigneeSection() {
   `;
 }
 
+/** Returns the assignee toggle button markup. */
 function createAssigneeToggleButton() {
   return `
     <button
@@ -219,12 +228,14 @@ function createAssigneeToggleButton() {
   `;
 }
 
+/** Returns the empty assignee dropdown menu markup. */
 function createAssigneeDropdownMenu() {
   return `
     <section id="assigneeDropdownMenu" class="assignee_menu d_none"></section>
   `;
 }
 
+/** Returns the edit-task subtask section markup. */
 function createEditSubtaskSection() {
   return `
     <section class="edit_subtasks subtask">
@@ -245,6 +256,7 @@ function createEditSubtaskSection() {
   `;
 }
 
+/** Returns the edit-task submit action section markup. */
 function createEditActionSection() {
   return `
     <div class="edit_actions">

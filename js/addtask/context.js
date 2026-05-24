@@ -1,3 +1,4 @@
+/** Creates the default state object for the Add Task form. */
 export function createState() {
   return {
     assigneeContacts: [],
@@ -9,6 +10,7 @@ export function createState() {
   };
 }
 
+/** Collects and returns the DOM elements used by the form. */
 export function createElements(taskForm) {
   return {
     ...getInputElements(taskForm),
@@ -20,6 +22,7 @@ export function createElements(taskForm) {
   };
 }
 
+/** Returns the form input elements used by the Add Task module. */
 function getInputElements(taskForm) {
   return {
     title: byId(taskForm, "title"),
@@ -33,6 +36,7 @@ function getInputElements(taskForm) {
   };
 }
 
+/** Returns the dropdown-related elements used by the Add Task module. */
 function getDropdownElements(taskForm) {
   return {
     assigneeToggle: byId(taskForm, "assignee"),
@@ -47,6 +51,7 @@ function getDropdownElements(taskForm) {
   };
 }
 
+/** Finds an element by id within the current form. */
 export function byId(taskForm, id) {
   return taskForm.querySelector(`#${id}`);
 }

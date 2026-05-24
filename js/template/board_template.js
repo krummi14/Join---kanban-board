@@ -1,4 +1,5 @@
 import { getContactInitials } from "../addtask/addTaskForm.js";
+/** Returns the markup for a board task card. */
 export function generateTaskHTML(task) {
   return `
     <div class="task" onclick="handleTaskCardClick(event, '${task.id}')" onmousedown="startDragging(event, '${task.id}')" ontouchstart="startDragging(event, '${task.id}')">
@@ -7,6 +8,7 @@ export function generateTaskHTML(task) {
   `;
 }
 
+/** Builds the inner markup for a task card. */
 function buildTaskCardContent(task) {
   return [
     generateTaskTop(task),
@@ -18,6 +20,7 @@ function buildTaskCardContent(task) {
   ].join("");
 }
 
+/** Returns the top section of a task card. */
 function generateTaskTop(task) {
   return `
     <div class="task_top">
@@ -27,6 +30,7 @@ function generateTaskTop(task) {
   `;
 }
 
+/** Returns the move-action section for a task card. */
 function generateCardMoveActions(task) {
   const actionButtons = [
     generateCardMoveButton(task.id, -1, "Previous column", "\u2BC5"),
@@ -37,6 +41,7 @@ function generateCardMoveActions(task) {
   return `<div class="task_card_actions">${actionButtons}</div>`;
 }
 
+/** Returns the markup for one card move button. */
 function generateCardMoveButton(taskId, direction, label, icon) {
   const targetPath = getAdjacentTaskPath(taskId, direction);
   if (!targetPath) return "";
@@ -53,6 +58,7 @@ function generateCardMoveButton(taskId, direction, label, icon) {
   `;
 }
 
+/** Resolves the adjacent board column path for a task. */
 function getAdjacentTaskPath(taskId, direction) {
   const boardColumns = window.BOARD_COLUMNS || [];
   const task = window.BOARD_COLUMNS?.flatMap((column) => column.tasks || []).find((entry) => entry.id === taskId);
@@ -62,6 +68,7 @@ function getAdjacentTaskPath(taskId, direction) {
   return boardColumns[currentIndex + direction]?.path || null;
 }
 
+/** Returns the bottom section of a task card. */
 function generateTaskBottom(task) {
   return `
     <div class="task_bottom">
@@ -73,6 +80,7 @@ function generateTaskBottom(task) {
   `;
 }
 
+/** Returns the category badge markup for a task. */
 function generateCategory(task) {
   return `
     <span class="task_category ${task.categoryClass}">
@@ -81,6 +89,7 @@ function generateCategory(task) {
   `;
 }
 
+/** Returns the title markup for a task. */
 function generateTitle(task) {
   return `
     <span class="task_title">
@@ -89,6 +98,7 @@ function generateTitle(task) {
   `;
 }
 
+/** Returns the description markup for a task. */
 function generateDescription(task) {
   return `
     <span class="task_description">
@@ -97,6 +107,7 @@ function generateDescription(task) {
   `;
 }
 
+/** Returns the subtask progress markup for a task. */
 function generateProgress(task) {
   if (!task.totalSubtasks) return "";
   return `
@@ -112,6 +123,7 @@ function generateProgress(task) {
   `;
 }
 
+/** Returns the footer markup for a task card. */
 function generateFooter(task) {
   return `
     <div class="task_footer">
@@ -126,12 +138,14 @@ function generateFooter(task) {
   `;
 }
 
+/** Returns the avatar markup block for a task footer. */
 function generateAvatars(task) {
   return `
     ${task.avatarHTML}
   `;
 }
 
+/** Returns the markup for a single assignee avatar. */
 export function generateSingleAvatar(assignee) {
   return `
     <div class="avatar" style="background:${getColorFromName(assignee.name)}">
@@ -140,6 +154,7 @@ export function generateSingleAvatar(assignee) {
   `;
 }
 
+/** Returns the overflow avatar markup for hidden assignees. */
 export function generateExtraAvatar(rest) {
   return `
     <div class="avatar" style="background:#2a3647">
@@ -148,18 +163,21 @@ export function generateExtraAvatar(rest) {
   `;
 }
 
+/** Returns a stable avatar color derived from a name. */
 function getColorFromName(name) {
   return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][
     name.length % 6
   ];
 }
 
+/** Returns the empty-state markup for cards without assignees. */
 export function getNoAssigneesCardTemplate() {
   return `<span class="no_assignees">No Users assigned</span>`;
 }
 
 /*overlay*/
 
+/** Returns the markup for the task details overlay. */
 export function generateTaskOverlay(task) {
   return `
     <div class="task_overlay">
@@ -168,6 +186,7 @@ export function generateTaskOverlay(task) {
   `;
 }
 
+/** Builds the inner markup for the task overlay. */
 function buildTaskOverlayContent(task) {
   return [
     generateOverlayHeader(task),
@@ -182,6 +201,7 @@ function buildTaskOverlayContent(task) {
   ].join("");
 }
 
+/** Returns the move-action section for the task overlay. */
 function generateOverlayMoveActions(task) {
   const moveOptions = getMoveOptions(task.status);
   if (!moveOptions.length) return "";
@@ -195,10 +215,12 @@ function generateOverlayMoveActions(task) {
   `;
 }
 
+/** Returns the available move targets for the current task status. */
 function getMoveOptions(currentStatus) {
   return getBoardMoveTargets().filter((target) => target.path !== currentStatus);
 }
 
+/** Returns the board move targets used by the overlay. */
 function getBoardMoveTargets() {
   return [
     { path: "to_do", label: "To do" },
@@ -208,6 +230,7 @@ function getBoardMoveTargets() {
   ];
 }
 
+/** Returns the markup for one overlay move button. */
 function generateMoveActionButton(taskId, option) {
   return `
     <button class="overlay_move_button" onclick="moveTaskFromOverlay('${taskId}', '${option.path}')">
@@ -216,6 +239,7 @@ function generateMoveActionButton(taskId, option) {
   `;
 }
 
+/** Returns the overlay action buttons markup. */
 function generateOverlayActions(task) {
   return `
     <div class="overlay_actions">
@@ -242,6 +266,7 @@ function generateOverlayActions(task) {
   `;
 }
 
+/** Returns the overlay header markup. */
 function generateOverlayHeader(task) {
   return `
     <div class="overlay_header">
@@ -251,10 +276,12 @@ function generateOverlayHeader(task) {
   `;
 }
 
+/** Returns the overlay title markup. */
 function generateOverlayTitle(task) {
   return `<h2>${task.title}</h2>`;
 }
 
+/** Returns the overlay description markup. */
 function generateOverlayDescription(task) {
   return `
     <div class="task_description_card">
@@ -263,12 +290,14 @@ function generateOverlayDescription(task) {
   `;
 }
 
+/** Returns the overlay due-date markup. */
 function generateOverlayDueDate(task) {
   return `
     <p>Due date: ${formatDate(task.dueDate)}</p>
   `;
 }
 
+/** Returns the overlay priority markup. */
 function generateOverlayPriority(task) {
   return `
     <div class="task_priority_overlay">
@@ -278,6 +307,7 @@ function generateOverlayPriority(task) {
   `;
 }
 
+/** Returns the overlay assignees section markup. */
 function generateOverlayAssignees(task) {
   return `
     <div class="task_assignees_overlay">
@@ -287,6 +317,7 @@ function generateOverlayAssignees(task) {
   `;
 }
 
+/** Returns the markup for one overlay assignee row. */
 export function generateAssignee(a) {
   return `
     <div class="assignee_row">
@@ -302,6 +333,7 @@ export function generateAssignee(a) {
   `;
 }
 
+/** Wraps the overlay subtask content in its section markup. */
 function generateSubtasksWrapper(content) {
   return `
     <div class="task_subtasks">
@@ -311,6 +343,7 @@ function generateSubtasksWrapper(content) {
   `;
 }
 
+/** Returns the add-task dialog markup used from the board. */
 export function getDialogAddTaskTemplate() {
   return `
       <dialog onclick="closeAddNewTaskDialog()" id="addTask_dialog" class="addTask_dialog_content dialog_closed">
@@ -323,6 +356,7 @@ export function getDialogAddTaskTemplate() {
     `;
 }
 
+  /** Returns the header markup for the add-task dialog. */
 function buildAddTaskDialogHeader() {
   return `
     <section class="main_header main_addTask_dialog_header">
@@ -334,6 +368,7 @@ function buildAddTaskDialogHeader() {
   `;
 }
 
+/** Returns the success-feedback markup for the add-task dialog. */
 function buildTaskAddedFeedback() {
   return `
     <section id="taskAddedFeedback" class="task_added_feedback" role="status" aria-live="polite">
@@ -342,6 +377,7 @@ function buildTaskAddedFeedback() {
   `;
 }
 
+/** Returns the markup for one overlay subtask item. */
 export function generateSubtask(task, st, i) {
   return `
     <label class="subtask_item">
@@ -362,6 +398,7 @@ export function generateSubtask(task, st, i) {
   `;
 }
 
+/** Returns the checkbox markup for an overlay subtask. */
 function buildSubtaskCheckbox(taskId, isDone, index) {
   return `
     <input type="checkbox"
@@ -370,14 +407,17 @@ function buildSubtaskCheckbox(taskId, isDone, index) {
   `;
 }
 
+/** Returns the empty-state markup for missing subtasks. */
 export function getNoSubtasksTemplate() {
   return `<p>No subtasks yet</p>`;
 }
 
+/** Returns the empty-state markup for missing assignees. */
 export function getNoAssigneesTemplate() {
   return `<p>No Users assigned</p>`;
 }
 
+/** Returns the overlay assignee markup with optional user marker. */
 export function getAssigneeTemplate(a, isYou) {
   return `
     <div class="assignee_row">
@@ -395,6 +435,7 @@ export function getAssigneeTemplate(a, isYou) {
 
 
 
+/** Returns the legacy edit-task overlay markup. */
 export function createEditTaskTemplate() {
   return `
   <div class="edit_overlay">

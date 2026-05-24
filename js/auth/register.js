@@ -2,6 +2,7 @@ import { putUserData, getData } from "../shared/firebase.js";
 
 let formSubmitted = false;
 
+/** Clears all visible signup validation errors. */
 const clearErrors = () => {
   showError("name-error", "");
   showError("email-error", "");
@@ -10,17 +11,13 @@ const clearErrors = () => {
   showError("privacy-error", "");
 };
 
+/** Shows an error message only when the condition requires it. */
 function showOrClear(errorId, message, show) {
   if (!show) return;
   showError(errorId, message);
 }
 
-
-
-
-
-
-
+/** Validates the signup name field. */
 function validateName(name) {
   if (!name) {
     showError("name-error", "Please enter your name");
@@ -38,6 +35,7 @@ function validateName(name) {
   return true;
 }
 
+/** Validates the signup email field. */
 function validateEmail(email) {
   if (!email) {
     showError("email-error", "Please enter your email");
@@ -55,6 +53,7 @@ function validateEmail(email) {
   return true;
 }
 
+/** Checks whether an email address already exists in storage. */
 async function emailExists(email) {
   const users = await getData("users");
   if (!users) return false;
@@ -65,15 +64,18 @@ async function emailExists(email) {
   return false;
 }
 
+/** Checks whether the password and confirmation match. */
 function passwordsMatch(password, confirm) {
   return password === confirm;
 }
 
+/** Validates the password against the signup rules. */
 function isValidPassword(password) {
   const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
   return regex.test(password);
 }
 
+/** Validates the password rule requirements. */
 function checkPasswordRule(password) {
   if (!password) {
     showError("password-error", "Please enter a password");
@@ -89,6 +91,7 @@ function checkPasswordRule(password) {
   return true;
 }
 
+/** Validates that the password confirmation matches. */
 function checkPasswordMatch(password, confirm) {
   if (!confirm) {
     showError("confirm-error", "Please confirm your password");
@@ -104,12 +107,14 @@ function checkPasswordMatch(password, confirm) {
   return true;
 }
 
+/** Validates the complete password input pair. */
 function validatePassword(password, confirm) {
   if (!checkPasswordRule(password)) return false;
   if (!checkPasswordMatch(password, confirm)) return false;
   return true;
 }
 
+/** Validates the privacy-policy checkbox. */
 function validatePrivacy(checked) {
   if (!checked) {
     showError("privacy-error", "Accept privacy policy");
@@ -118,6 +123,7 @@ function validatePrivacy(checked) {
   return true;
 }
 
+/** Collects the current values from the signup form. */
 function getFormData() {
   return {
     name: document.getElementById("name").value.trim(),
@@ -128,6 +134,7 @@ function getFormData() {
   };
 }
 
+/** Runs the full signup validation pipeline. */
 function runValidation(userInput) {
   if (!validateName(userInput.name)) return false;
   if (!validateEmail(userInput.email)) return false;
@@ -136,11 +143,13 @@ function runValidation(userInput) {
   return true;
 }
 
+/** Persists a newly registered user. */
 async function registerUser(name, email, password) {
   const id = Date.now().toString();
   await putUserData("users/" + id, { name, email, password });
 }
 
+/** Displays the signup success state. */
 function finishSignup() {
   document.getElementById("success-modal").classList.remove("hidden");
 
@@ -151,6 +160,7 @@ function finishSignup() {
   });
 }
 
+/** Handles the complete signup flow. */
 async function handleSignup() {
   clearErrors();
   const data = getFormData();
@@ -160,6 +170,7 @@ async function handleSignup() {
   finishSignup();
 }
 
+/** Checks whether the current user data can be registered. */
 async function canRegisterUser(data) {
   if (!runValidation(data)) return false;
   if (!await emailExists(data.email)) return true;
@@ -169,13 +180,8 @@ async function canRegisterUser(data) {
 
 window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("signup-btn");
-
-  console.log("BUTTON FOUND:", btn);
-
   if (!btn) return;
-
   btn.addEventListener("click", () => {
-    console.log("CLICK WORKS");
     handleSignup();
   });
 });
@@ -186,11 +192,13 @@ function checkName(e) {
 }
 
 
+/** Revalidates the email field after blur. */
 function checkEmail(e) {
   if (!formSubmitted) return;
   validateEmail(e.target.value);
 }
 
+/** Revalidates the password field after blur. */
 function checkPassword(e) {
   if (!formSubmitted) return;
 
@@ -199,6 +207,7 @@ function checkPassword(e) {
     document.getElementById("confirm-password").value
   );
 }
+/** Revalidates the confirmation field after blur. */
 function checkConfirm(e) {
   if (!formSubmitted) return;
 
@@ -209,9 +218,7 @@ function checkConfirm(e) {
 }
 
 document.getElementById("name").addEventListener("blur", checkName);
-
 document.getElementById("email").addEventListener("blur", checkEmail);
-
 document.getElementById("password").addEventListener("blur", checkPassword);
 
 document
@@ -222,6 +229,7 @@ document.getElementById("go-login")?.addEventListener("click", () => {
   location.href = "index.html";
 });
 
+/** Enables or disables the signup button based on form validity. */
 function toggleSignupButton() {
   const data = getFormData();
 

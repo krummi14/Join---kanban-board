@@ -1,7 +1,9 @@
+/** Initializes the legal notice page header state. */
 async function initLegalNotice() {
     userInitials();
 }
 
+/** Updates the user badge with the current user's initials. */
 function userInitials() {
     const userName = localStorage.getItem("userName");
     if (userName !== 'Guest') {
@@ -10,7 +12,7 @@ function userInitials() {
         refUser.innerHTML = initials;
     }
 }
-// Funktion, um die Initialen aus einem vollständigen Namen zu extrahieren (generiert aus ChatGPT)
+/** Extracts initials from a full name. */
 function getInitials(fullName) {
     // Namen in einzelne Wörter aufteilen
     const names = fullName.trim().split(' ');

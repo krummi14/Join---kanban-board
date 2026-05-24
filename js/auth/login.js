@@ -1,10 +1,12 @@
 import { getData } from "../shared/firebase.js";
 
+/** Clears the visible login validation errors. */
 const clearErrors = () => {
   showError("email-error", "");
   showError("password-error", "");
 };
 
+/** Validates the login email field. */
 function validateEmail(email) {
   if (!email) {
     showError("email-error", "Enter your email");
@@ -22,6 +24,7 @@ function validateEmail(email) {
   return true;
 }
 
+/** Validates the login password field. */
 function validatePassword(password) {
   if (!password)
     return showError("password-error", "Enter your password");
@@ -30,12 +33,14 @@ function validatePassword(password) {
   return true;
 }
 
+/** Validates the login credentials before authentication. */
 function validateLogin(email, password) {
   if (!validateEmail(email)) return false;
   if (!validatePassword(password)) return false;
   return true;
 }
 
+/** Looks up a user id that matches the provided credentials. */
 async function checkUser(email, password) {
   const users = await getData("users");
   if (!users) return null;
@@ -48,6 +53,7 @@ async function checkUser(email, password) {
   return null;
 }
 
+/** Logs in a user and redirects on success. */
 async function loginUser(email, password) {
   clearErrors();
   const id = await authenticateUser(email, password);
@@ -56,6 +62,7 @@ async function loginUser(email, password) {
   redirectToSummary();
 }
 
+/** Authenticates a user and reports invalid credentials. */
 async function authenticateUser(email, password) {
   if (!validateLogin(email, password)) return null;
   const id = await checkUser(email, password);
@@ -64,6 +71,7 @@ async function authenticateUser(email, password) {
   return null;
 }
 
+/** Persists the login session details in local storage. */
 async function persistLoginSession(id) {
   localStorage.setItem("user", id);
   let userName = await getData(`users/${id}/name`);
@@ -71,15 +79,18 @@ async function persistLoginSession(id) {
   localStorage.setItem("greetingShown", "false");
 }
 
+/** Redirects the user to the summary page. */
 function redirectToSummary() {
   location.href = "../html/summary.html";
 }
 
 
+/** Revalidates the email field on blur. */
 function checkEmail(e) {
   validateEmail(e.target.value.trim());
 }
 
+/** Revalidates the password field on blur. */
 function checkPassword(e) {
   validatePassword(e.target.value);
 }

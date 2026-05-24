@@ -108,6 +108,7 @@ window.addEventListener("load", () => {
 
 /* ---------------- LOGOUT ---------------- */
 
+/** Clears the current session and redirects to the login page. */
 function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("greetingShown");
@@ -118,6 +119,7 @@ function logout() {
 
 /* ---------------- USER INITIALS ---------------- */
 
+/** Updates the header badge with the current user's initials. */
 function userInitials() {
     if (userName !== "Guest") {
         let initials = getInitials(userName);
@@ -125,6 +127,7 @@ function userInitials() {
     }
 }
 
+/** Extracts initials from a full user name. */
 function getInitials(fullName) {
     if (fullName == "Guest") return "G";
 
@@ -149,6 +152,7 @@ function getInitials(fullName) {
 /* ---------------- FORM VALIDATION ---------------- */
 
 
+/** Shows or clears a validation error message by element id. */
 function showError(errorId, message) {
     const el = document.getElementById(errorId);
     if (!el) return;
@@ -165,6 +169,7 @@ function showError(errorId, message) {
 
 /* ---------------- ADD TASK TEMPLATE ---------------- */
 
+/** Renders the Add Task form template into its container. */
 function getAddTaskFormTemplate(path) {
     document.getElementById("addTaskContainer").innerHTML =
         createAddTaskFormTemplate(path);
@@ -172,6 +177,7 @@ function getAddTaskFormTemplate(path) {
 
 /* ---------------- MOBILE MENU ---------------- */
 
+/** Toggles the mobile logout menu open or closed. */
 function addMenu() {
     if (menuStatus === "on") {
         contentSection.style.overflow = "hidden";
