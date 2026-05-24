@@ -87,15 +87,15 @@ function getAssigneeColor(name) {
 }
 
 export function createAddTaskFormTemplate(path) {
-  return `
+  return `  
       <form id="taskForm">
         ${createAddTaskLeftForm()}
         <hr class="hr_add_task_none">
         ${createAddTaskRightForm(path)}
-        ${createFormButtonsMobile(path)}
       </form>
+      ${createFormButtonsMobile(path)}
   `;
-}
+} 
 
 function createAddTaskLeftForm() {
   return `
