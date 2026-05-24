@@ -18,6 +18,10 @@ let pendingDragStart = null;
 
 const TASK_CLICK_SUPPRESSION_MS = 250;
 const DRAG_START_DISTANCE = 6;
+const TOUCH_LONG_PRESS_MS = 320;
+const TOUCH_SCROLL_CANCEL_DISTANCE = 10;
+
+let pendingTouchLongPressId = null;
 
 export function initDragDrop(boardColumns) {
   BOARD_COLUMNS_REF = boardColumns;
@@ -34,17 +38,64 @@ export function startDragging(ev, id) {
   if (!isValidDragStartEvent(ev)) return;
   const point = getEventPoint(ev);
   if (!point) return;
-  pendingDragStart = {
+  pendingDragStart = createPendingDragStart(ev, id, point);
+  if (pendingDragStart?.inputType === "touch") {
+    setPendingTouchState();
+    armTouchLongPress();
+  }
+}
+
+function createPendingDragStart(ev, id, point) {
+  return {
     id,
     taskCard: ev?.currentTarget,
     startX: point.clientX,
     startY: point.clientY,
+    inputType: getEventInputType(ev),
+    longPressReady: false,
   };
+}
+
+function armTouchLongPress() {
+  clearPendingTouchLongPress();
+  pendingTouchLongPressId = window.setTimeout(enableTouchDragStart, TOUCH_LONG_PRESS_MS);
+}
+
+function enableTouchDragStart() {
+  if (pendingDragStart?.inputType !== "touch") return;
+  pendingDragStart.longPressReady = true;
+  suppressTaskClickUntil = Date.now() + TASK_CLICK_SUPPRESSION_MS;
+  setTouchDragReadyState();
+}
+
+function clearPendingTouchLongPress() {
+  if (pendingTouchLongPressId === null) return;
+  window.clearTimeout(pendingTouchLongPressId);
+  pendingTouchLongPressId = null;
+}
+
+function clearPendingDragStart() {
+  clearTouchFeedbackState();
+  clearPendingTouchLongPress();
+  pendingDragStart = null;
+}
+
+function setPendingTouchState() {
+  pendingDragStart?.taskCard?.classList.add("task-touch-pressing");
+}
+
+function setTouchDragReadyState() {
+  pendingDragStart?.taskCard?.classList.remove("task-touch-pressing");
+  pendingDragStart?.taskCard?.classList.add("task-touch-drag-ready");
+}
+
+function clearTouchFeedbackState() {
+  pendingDragStart?.taskCard?.classList.remove("task-touch-pressing", "task-touch-drag-ready");
 }
 
 function beginDragging(point) {
   if (!pendingDragStart?.taskCard) {
-    pendingDragStart = null;
+    clearPendingDragStart();
     return;
   }
 
@@ -55,7 +106,7 @@ function beginDragging(point) {
   createDragPreview(pendingDragStart.taskCard);
   hideDraggedCard(pendingDragStart.taskCard);
   positionDragPreview(point);
-  pendingDragStart = null;
+  clearPendingDragStart();
 }
 
 export function handleTaskCardClick(ev, taskId) {
@@ -69,7 +120,7 @@ export function handleTaskCardClick(ev, taskId) {
 }
 
 export function endDragging() {
-  pendingDragStart = null;
+  clearPendingDragStart();
   cleanupDragPreview();
   cleanupDraggedCard();
   resetDragMotion();
@@ -339,6 +390,11 @@ function handlePointerMove(ev) {
   const point = getEventPoint(ev);
   if (!point) return;
 
+  if (!draggedId && shouldCancelPendingTouchDrag(point)) {
+    clearPendingDragStart();
+    return;
+  }
+
   if (!draggedId && pendingDragStart && shouldStartDragging(point)) {
     beginDragging(point);
   }
@@ -351,7 +407,7 @@ function handlePointerMove(ev) {
 
 function handlePointerEnd(ev) {
   if (pendingDragStart && !draggedId) {
-    pendingDragStart = null;
+    clearPendingDragStart();
     return;
   }
 
@@ -373,7 +429,18 @@ function shouldStartDragging(point) {
   if (!pendingDragStart) return false;
   const deltaX = point.clientX - pendingDragStart.startX;
   const deltaY = point.clientY - pendingDragStart.startY;
+  if (pendingDragStart.inputType === "touch" && !pendingDragStart.longPressReady) return false;
   return Math.hypot(deltaX, deltaY) >= DRAG_START_DISTANCE;
+}
+
+function shouldCancelPendingTouchDrag(point) {
+  if (!pendingDragStart || pendingDragStart.inputType !== "touch" || pendingDragStart.longPressReady) {
+    return false;
+  }
+
+  const deltaX = point.clientX - pendingDragStart.startX;
+  const deltaY = point.clientY - pendingDragStart.startY;
+  return Math.hypot(deltaX, deltaY) >= TOUCH_SCROLL_CANCEL_DISTANCE;
 }
 
 function getEventPoint(ev) {

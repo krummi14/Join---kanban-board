@@ -5,6 +5,7 @@ import {
   getTasks,
   loadTasks,
   deleteTask as deleteTaskService,
+  moveTask as moveTaskService,
 } from "./board_taskService.js";
 
 // 🎨 View Layer (Rendering)
@@ -57,6 +58,24 @@ async function deleteTask(taskId) {
   await deleteTaskService(taskId);
   closeOverlay();
   syncBoardColumns(getTasks());
+}
+
+async function moveTaskFromCard(event, taskId, direction) {
+  event?.stopPropagation();
+  const targetPath = resolveAdjacentColumnPath(taskId, direction);
+  if (!targetPath) return;
+  const result = await moveTaskService(taskId, targetPath, BOARD_COLUMNS);
+  if (!result) return;
+  syncBoardColumns(getTasks());
+}
+
+function resolveAdjacentColumnPath(taskId, direction) {
+  const task = getTasks().find((entry) => entry.id === taskId);
+  if (!task) return null;
+  const currentIndex = BOARD_COLUMNS.findIndex((column) => column.path === task.status);
+  if (currentIndex === -1) return null;
+  const nextIndex = currentIndex + Number(direction || 0);
+  return BOARD_COLUMNS[nextIndex]?.path || null;
 }
 
 async function openAddNewtaskDialog(path = "to_do") {
@@ -225,6 +244,7 @@ window.openOverlay = openOverlay;
 window.closeOverlay = closeOverlay;
 
 window.deleteTask = deleteTask;
+window.moveTaskFromCard = moveTaskFromCard;
 window.updateHTML = updateHTML;
 window.openAddNewtaskDialog = openAddNewtaskDialog;
 window.closeAddNewTaskDialog = closeAddNewTaskDialog;

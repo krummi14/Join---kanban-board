@@ -9,13 +9,57 @@ export function generateTaskHTML(task) {
 
 function buildTaskCardContent(task) {
   return [
-    generateCategory(task),
+    generateTaskTop(task),
     `<div>
       ${generateTitle(task)}
       ${generateDescription(task)}
       </div>`,
     generateTaskBottom(task),
   ].join("");
+}
+
+function generateTaskTop(task) {
+  return `
+    <div class="task_top">
+      ${generateCategory(task)}
+      ${generateCardMoveActions(task)}
+    </div>
+  `;
+}
+
+function generateCardMoveActions(task) {
+  const actionButtons = [
+    generateCardMoveButton(task.id, -1, "Previous column", "\u2BC5"),
+    generateCardMoveButton(task.id, 1, "Next column", "\u2BC6"),
+  ].filter(Boolean).join("");
+
+  if (!actionButtons) return "";
+  return `<div class="task_card_actions">${actionButtons}</div>`;
+}
+
+function generateCardMoveButton(taskId, direction, label, icon) {
+  const targetPath = getAdjacentTaskPath(taskId, direction);
+  if (!targetPath) return "";
+  return `
+    <button
+      type="button"
+      class="task_move_button"
+      aria-label="${label}"
+      onclick="moveTaskFromCard(event, '${taskId}', ${direction})"
+      onmousedown="event.stopPropagation()"
+      ontouchstart="event.stopPropagation()">
+      ${icon}
+    </button>
+  `;
+}
+
+function getAdjacentTaskPath(taskId, direction) {
+  const boardColumns = window.BOARD_COLUMNS || [];
+  const task = window.BOARD_COLUMNS?.flatMap((column) => column.tasks || []).find((entry) => entry.id === taskId);
+  if (!task) return null;
+  const currentIndex = boardColumns.findIndex((column) => column.path === task.status);
+  if (currentIndex === -1) return null;
+  return boardColumns[currentIndex + direction]?.path || null;
 }
 
 function generateTaskBottom(task) {
@@ -25,7 +69,6 @@ function generateTaskBottom(task) {
         ${generateProgress(task)}
         ${generateFooter(task)}
       </div>
-      <div class="task_right"></div>
     </div>
   `;
 }
@@ -134,8 +177,43 @@ function buildTaskOverlayContent(task) {
     generateOverlayPriority(task),
     generateOverlayAssignees(task),
     generateSubtasksWrapper(generateSubtasksContent(task)),
+    generateOverlayMoveActions(task),
     generateOverlayActions(task),
   ].join("");
+}
+
+function generateOverlayMoveActions(task) {
+  const moveOptions = getMoveOptions(task.status);
+  if (!moveOptions.length) return "";
+  return `
+    <div class="overlay_move_actions" aria-label="Move task">
+      <p class="overlay_move_label">Move to</p>
+      <div class="overlay_move_buttons">
+        ${moveOptions.map((option) => generateMoveActionButton(task.id, option)).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function getMoveOptions(currentStatus) {
+  return getBoardMoveTargets().filter((target) => target.path !== currentStatus);
+}
+
+function getBoardMoveTargets() {
+  return [
+    { path: "to_do", label: "To do" },
+    { path: "in_progress", label: "In progress" },
+    { path: "await_feedback", label: "Await feedback" },
+    { path: "done", label: "Done" },
+  ];
+}
+
+function generateMoveActionButton(taskId, option) {
+  return `
+    <button class="overlay_move_button" onclick="moveTaskFromOverlay('${taskId}', '${option.path}')">
+      ${option.label}
+    </button>
+  `;
 }
 
 function generateOverlayActions(task) {

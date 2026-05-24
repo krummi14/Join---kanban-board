@@ -1,7 +1,7 @@
 import { createAddTaskForm } from "../addtask/addTaskForm.js";
 import { createAddTaskFormTemplate } from "../template/add_task_template.js";
 import { createEditTaskTemplate } from "../template/board_edit_template.js";
-import { getTasks, syncTaskLocally, toggleSubtask } from "./board_taskService.js";
+import { getTasks, moveTask, syncTaskLocally, toggleSubtask } from "./board_taskService.js";
 import {
   generateTaskOverlay,
   getAssigneeTemplate,
@@ -124,6 +124,7 @@ window.generateAssigneesContent = generateAssigneesContent;
 window.generateSubtasksContent = generateSubtasksContent;
 window.formatDate = formatDate;
 window.editTask = editTask;
+window.moveTaskFromOverlay = moveTaskFromOverlay;
 window.createAddTaskFormTemplate = createAddTaskFormTemplate;
 
 window.toggleAssigneeDropdown = function (event) {
@@ -173,6 +174,16 @@ function destroyEditController() {
 
 function getTaskSourcePath(task) {
   return task.sourcePath || task.status;
+}
+
+async function moveTaskFromOverlay(taskId, targetPath) {
+  const task = findTask(taskId);
+  const boardColumns = window.BOARD_COLUMNS;
+  if (!task || task.status === targetPath || !Array.isArray(boardColumns)) return;
+  const result = await moveTask(taskId, targetPath, boardColumns);
+  if (!result) return;
+  refreshBoard();
+  closeOverlay();
 }
 
 function getEditControllerConfig() {
