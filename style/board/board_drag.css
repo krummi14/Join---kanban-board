@@ -1,0 +1,65 @@
+/* =========================
+   BOARD DRAG AND MOVE
+   ========================= */
+
+.task.task-touch-pressing {
+  transform: scale(0.985);
+  box-shadow: 0 10px 24px rgba(42, 54, 71, 0.14);
+}
+
+.task.task-touch-drag-ready {
+  transform: scale(1.015);
+  box-shadow: 0 18px 32px rgba(41, 171, 226, 0.24);
+}
+
+.task * {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.task img {
+  -webkit-user-drag: none;
+}
+
+.task.task-dragging {
+  visibility: hidden !important;
+  cursor: grabbing;
+}
+
+.task.task-drag-preview {
+  transform-origin: center top;
+  will-change: transform, box-shadow;
+  transition: box-shadow 90ms linear;
+}
+
+.task.task-drop-before {
+  margin-top: 20px;
+}
+
+.task.task-drop-after {
+  margin-bottom: 20px;
+}
+
+.task_card_actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.task_move_button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  background: #f6f7f8;
+  color: #2a3647;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 120ms ease, background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.task_move_button:hover {
+  background: #e2f3ff;
+  color: #29abe2;
+}

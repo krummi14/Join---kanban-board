@@ -1,0 +1,299 @@
+@media(min-width: 1116px) and (max-width:1308px) {
+  .summery_and_good_morning {
+    gap: 50px;
+  }
+
+  .user_name {
+    font-size: 49px;
+    font-weight: 700;
+    color: #29abe2;
+  }
+
+  .good_morning {
+    font-size: 38px;
+    font-weight: 500;
+    color: rgba(42, 54, 71, 1);
+  }
+}
+
+@media(min-width: 680px) and (max-width:1115px) {
+  .main_header_summary {
+    margin-left: 32px;
+    width: 600px;
+  }
+
+  .summery_and_good_morning {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 64px;
+  }
+
+  .respo_header_text_size {
+    font-size: 20px;
+  }
+
+  .hr_desktop {
+    display: none;
+  }
+
+  .hr_mobile {
+    display: block;
+  }
+
+  .key_matix {
+    position: static;
+    align-items: center;
+    width: 100%;
+    height: auto;
+  }
+
+  .todo_done {
+    gap: 16px;
+  }
+
+  .to_do,
+  .done {
+    width: 242px;
+    height: 142px;
+  }
+
+  #to_do_count,
+  #done_count {
+    font-size: 47px;
+  }
+
+  #to_do_count span,
+  #done_count span {
+    font-size: 16px;
+  }
+
+  .urgent {
+    width: 505px;
+    height: 142px;
+    gap: 0;
+  }
+
+  #urgent_count {
+    font-size: 47px;
+  }
+
+  #urgent_count span {
+    font-size: 16px;
+  }
+
+  #deadline {
+    font-size: 16px;
+  }
+
+  #deadline span {
+    font-size: 16px;
+  }
+
+  .tasks {
+    gap: 16px;
+  }
+
+  .tasks_in_board,
+  .tasks_in_progress,
+  .awaiting_feedback {
+    height: 142px;
+    width: 158px;
+  }
+
+  #board_count,
+  #progress_count,
+  #feedback_count {
+    font-size: 47px;
+  }
+
+  #progress_count span,
+  #feedback_count span,
+  #board_count span {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  #good_morning {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 95%;
+    top: 0;
+    left: 0;
+    background-color: #f6f7f8;
+  }
+
+  .good_morning {
+    font-size: 36px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .fadeOut {
+    animation: splashOut 0.8s ease forwards;
+  }
+
+  @keyframes splashOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media(max-width:679px) {
+  .summery_and_good_morning {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 64px;
+  }
+
+  .main_header_summary {
+    width: 100%;
+  }
+
+  .respo_header_text_size {
+    font-size: 20px;
+  }
+
+  .hr_desktop {
+    display: none;
+  }
+
+  .hr_mobile {
+    display: block;
+  }
+
+  .key_matix {
+    position: static;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .todo_done,
+  .urgent,
+  .tasks {
+    gap: 24px;
+  }
+
+  .to_do,
+  .done {
+    width: 186px;
+    height: 110px;
+  }
+
+  .urgent {
+    width: 396px;
+    height: 110px;
+    padding: 16px;
+  }
+
+  #deadline {
+    font-size: 16px;
+    gap: 8px;
+  }
+
+  .tasks_in_board,
+  .tasks_in_progress,
+  .awaiting_feedback {
+    height: 116px;
+    width: 116px;
+  }
+
+  #board_count,
+  #progress_count,
+  #feedback_count,
+  #urgent_count,
+  #to_do_count,
+  #done_count {
+    font-size: 47px;
+  }
+
+  #board_count span,
+  #progress_count span,
+  #feedback_count span,
+  #urgent_count span,
+  #deadline span,
+  #to_do_count span,
+  #done_count span {
+    font-size: 16px;
+  }
+
+  #good_morning {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 95%;
+    top: 0;
+    left: 0;
+    background-color: #f6f7f8;
+  }
+
+  .good_morning {
+    font-size: 36px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .summary_icon_swap,
+  .summary_card_link img,
+  .summary_icon_swap img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .fadeOut {
+    animation: splashOut 0.8s ease forwards;
+  }
+
+  @keyframes splashOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media(max-width:679px) {
+  .todo_done,
+  .urgent,
+  .tasks {
+    gap: 16px;
+  }
+
+  .to_do,
+  .done {
+    width: 142px;
+    height: 110px;
+  }
+
+  .urgent {
+    width: 300px;
+    height: 110px;
+    padding: 16px;
+  }
+
+  .tasks_in_board,
+  .tasks_in_progress,
+  .awaiting_feedback {
+    width: 90px;
+  }
+}

@@ -1,5 +1,5 @@
 import { getTasksForColumn } from "./board_taskService.js";
-import { generateTaskHTML } from "../template/board_template.js";
+import { generateTaskHTML } from "../template/board_card_template.js";
 
 /** Renders one board column into its container. */
 export function renderColumn(category, boardColumns) {

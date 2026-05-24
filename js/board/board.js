@@ -31,7 +31,7 @@ import {
 
 import {
   getDialogAddTaskTemplate
-} from "../template/board_template.js";
+} from "../template/board_dialog_template.js";
 
 let addTaskDialogResourcesPromise = null;
 

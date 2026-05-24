@@ -8,7 +8,7 @@ import {
   getNoAssigneesTemplate,
   getNoSubtasksTemplate,
   generateSubtask,
-} from "../template/board_template.js";
+} from "../template/board_overlay_template.js";
 import { initializeDueDatePicker } from "../addtask/dueDate.js";
 
 

@@ -1,6 +1,6 @@
 import { deleteData, getData, putUserData } from "../shared/firebase.js";
 import { normalizeCategory } from "../shared/assets.js";
-import { generateSingleAvatar, generateExtraAvatar, getNoAssigneesCardTemplate } from "../template/board_template.js";
+import { generateSingleAvatar, generateExtraAvatar, getNoAssigneesCardTemplate } from "../template/board_card_template.js";
 
 let tasks = [];
 const TASKS_ROOT_PATH = "tasks";
