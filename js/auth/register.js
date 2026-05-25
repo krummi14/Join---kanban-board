@@ -11,13 +11,7 @@ const clearErrors = () => {
   showError("privacy-error", "");
 };
 
-/** Shows an error message only when the condition requires it. */
-function showOrClear(errorId, message, show) {
-  if (!show) return;
-  showError(errorId, message);
-}
 
-/** Validates the signup name field. */
 function validateName(name) {
   if (!name) {
     showError("name-error", "Please enter your name");
@@ -26,7 +20,7 @@ function validateName(name) {
 
   const regex = /^[A-Za-z]+ [A-Za-z]+$/;
 
-  if (!regex.test(name)) {
+  if (!regex.test(name.trim())) {
     showError("name-error", "Enter first & last name");
     return false;
   }
@@ -45,7 +39,7 @@ function validateEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!regex.test(email)) {
-    showError("email-error", "Please enter a valid email address");
+    showError("email-error", "Please enter a valid email");
     return false;
   }
 
@@ -56,23 +50,21 @@ function validateEmail(email) {
 /** Checks whether an email address already exists in storage. */
 async function emailExists(email) {
   const users = await getData("users");
+
   if (!users) return false;
 
   for (let id in users) {
-    if (users[id].email === email) return true;
+    if (users[id].email === email) {
+      return true;
+    }
   }
+
   return false;
 }
 
-/** Checks whether the password and confirmation match. */
-function passwordsMatch(password, confirm) {
-  return password === confirm;
-}
 
-/** Validates the password against the signup rules. */
 function isValidPassword(password) {
-  const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
-  return regex.test(password);
+  return password.length >= 3;
 }
 
 /** Validates the password rule requirements. */
@@ -83,7 +75,7 @@ function checkPasswordRule(password) {
   }
 
   if (!isValidPassword(password)) {
-    showError("password-error", "8+ chars, 1 number, 1 special");
+    showError("password-error", "Password too short");
     return false;
   }
 
@@ -110,7 +102,9 @@ function checkPasswordMatch(password, confirm) {
 /** Validates the complete password input pair. */
 function validatePassword(password, confirm) {
   if (!checkPasswordRule(password)) return false;
+
   if (!checkPasswordMatch(password, confirm)) return false;
+
   return true;
 }
 
@@ -120,6 +114,8 @@ function validatePrivacy(checked) {
     showError("privacy-error", "Accept privacy policy");
     return false;
   }
+
+  showError("privacy-error", "");
   return true;
 }
 
@@ -136,22 +132,45 @@ function getFormData() {
 
 /** Runs the full signup validation pipeline. */
 function runValidation(userInput) {
-  if (!validateName(userInput.name)) return false;
-  if (!validateEmail(userInput.email)) return false;
-  if (!validatePassword(userInput.password, userInput.confirm)) return false;
-  if (!validatePrivacy(userInput.privacy)) return false;
+  let valid = true;
+
+  if (!validateName(userInput.name)) valid = false;
+
+  if (!validateEmail(userInput.email)) valid = false;
+
+  if (!validatePassword(userInput.password, userInput.confirm))
+    valid = false;
+
+  if (!validatePrivacy(userInput.privacy)) valid = false;
+
+  return valid;
+}
+
+async function canRegisterUser(data) {
+  if (await emailExists(data.email)) {
+    showError("email-error", "Email already exists");
+    return false;
+  }
+
   return true;
 }
 
 /** Persists a newly registered user. */
 async function registerUser(name, email, password) {
   const id = Date.now().toString();
-  await putUserData("users/" + id, { name, email, password });
+
+  await putUserData("users/" + id, {
+    name,
+    email,
+    password,
+  });
 }
 
 /** Displays the signup success state. */
 function finishSignup() {
-  document.getElementById("success-modal").classList.remove("hidden");
+  document
+    .getElementById("success-modal")
+    .classList.remove("hidden");
 
   confetti({
     particleCount: 120,
@@ -162,86 +181,83 @@ function finishSignup() {
 
 /** Handles the complete signup flow. */
 async function handleSignup() {
+  formSubmitted = true;
+
   clearErrors();
+
   const data = getFormData();
+
   if (!runValidation(data)) return;
-  if (!await canRegisterUser(data)) return;
-  await registerUser(data.name, data.email, data.password);
+
+  if (!(await canRegisterUser(data))) return;
+
+  await registerUser(
+    data.name,
+    data.email,
+    data.password
+  );
+
   finishSignup();
 }
 
-/** Checks whether the current user data can be registered. */
-async function canRegisterUser(data) {
-  if (!runValidation(data)) return false;
-  if (!await emailExists(data.email)) return true;
-  showError("email-error", "Email already exists");
-  return false;
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("signup-btn");
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    handleSignup();
-  });
-});
 
 function checkName(e) {
   if (!formSubmitted) return;
+
   validateName(e.target.value);
 }
 
-
-/** Revalidates the email field after blur. */
 function checkEmail(e) {
   if (!formSubmitted) return;
+
   validateEmail(e.target.value);
 }
 
-/** Revalidates the password field after blur. */
-function checkPassword(e) {
-  if (!formSubmitted) return;
-
-  validatePassword(
-    e.target.value,
-    document.getElementById("confirm-password").value
-  );
-}
-/** Revalidates the confirmation field after blur. */
-function checkConfirm(e) {
+function checkPassword() {
   if (!formSubmitted) return;
 
   validatePassword(
     document.getElementById("password").value,
-    e.target.value
+    document.getElementById("confirm-password").value
   );
 }
 
-document.getElementById("name").addEventListener("blur", checkName);
-document.getElementById("email").addEventListener("blur", checkEmail);
-document.getElementById("password").addEventListener("blur", checkPassword);
+function checkConfirm() {
+  if (!formSubmitted) return;
 
-document
-  .getElementById("confirm-password")
-  .addEventListener("blur", checkConfirm);
-
-document.getElementById("go-login")?.addEventListener("click", () => {
-  location.href = "index.html";
-});
-
-/** Enables or disables the signup button based on form validity. */
-function toggleSignupButton() {
-  const data = getFormData();
-
-  const valid =
-    validateName(data.name) &&
-    validateEmail(data.email) &&
-    validatePassword(data.password, data.confirm) &&
-    validatePrivacy(data.privacy);
-
-  document.getElementById("signup-btn").disabled = !valid;
+  validatePassword(
+    document.getElementById("password").value,
+    document.getElementById("confirm-password").value
+  );
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+  const btn =
+    document.getElementById("signup-btn");
+
+  if (!btn) return;
+
+  btn.addEventListener("click", handleSignup);
+
+  document
+    .getElementById("name")
+    .addEventListener("input", checkName);
+
+  document
+    .getElementById("email")
+    .addEventListener("input", checkEmail);
+
+  document
+    .getElementById("password")
+    .addEventListener("input", checkPassword);
+
+  document
+    .getElementById("confirm-password")
+    .addEventListener("input", checkConfirm);
+});
+
 document
-  .querySelectorAll("input")
-  .forEach((input) => input.addEventListener("input", toggleSignupButton));
+  .getElementById("go-login")
+  ?.addEventListener("click", () => {
+    location.href = "index.html";
+  });
