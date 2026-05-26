@@ -239,7 +239,7 @@
 
     .contact_dialog_initial_responsive_position {
         position: absolute;
-        top: 34%;
+        top: 32%;
         z-index: 2;
     }
 
@@ -247,6 +247,7 @@
         align-items: center;
         width: 100%;
         padding: 0 16px;
+        padding-bottom: 32px;
     }
 
     .contact_dialog_input_direction {
@@ -287,5 +288,13 @@
 
     .contact_createdSuccesfully_deactive_animation {
         animation: slideUpSuccesfully 2s forwards;
+    }
+}
+
+@media(min-width: 320px) and (max-width:340px) {
+    .contact_dialog_initial_responsive_position {
+        position: absolute;
+        top: 34%;
+        z-index: 2;
     }
 }

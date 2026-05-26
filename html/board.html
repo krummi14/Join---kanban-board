@@ -89,7 +89,7 @@
           </a>
         </div>
         <div class="input_wrapper_direction">
-          <form class="input-wrapper input-wrapper_size" onsubmit="filterAndShowTask(); return false;">
+          <form class="input-wrapper input-wrapper_size" onkeydown="filterAndShowTask()" onsubmit="filterAndShowTask(); return false;">
             <input id="search_input_value" class="input_size" type="text" placeholder="Find Task">
             <div class="input-icon input_icon_border_left">
               <button type="submit" class="close_button find_task_button"></button>

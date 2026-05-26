@@ -109,13 +109,14 @@ function closeDialogOnBodyclick(event) {
 }
 
 /** Filters tasks by the current search input and updates the board. */
+
 async function filterAndShowTask() {
   const filterWord = getFilterWord();
   if (emptyInputField(filterWord)) return;
-  const tasks = getTasks();
   if (toShortfilterWord(filterWord)) return;
+  const tasks = getTasks();
   const filteredTasks = filterTasksByTitle(tasks, filterWord);
-  if (wordDoesntExist(filteredTasks)) return;
+  if (wordDoesntExist(filteredTasks)) return; closeSearchInformation();
   boardIsFiltered = true;
   updateHTML(buildFilteredColumns(filteredTasks, BOARD_COLUMNS));
 }
@@ -123,23 +124,19 @@ async function filterAndShowTask() {
 /** Handles an empty board search input state. */
 function emptyInputField(filterWord) {
   if (!filterWord || filterWord.trim() == "") {
-    if (boardIsFiltered) {
-      boardIsFiltered = false;
-      updateHTML(BOARD_COLUMNS);
-      return true;
-    } else {
-      showSearchInformation();
-      return true;
-    }
+    closeSearchInformation();
+    boardIsFiltered = false;
+    updateHTML(BOARD_COLUMNS);
+    return true;
   }
   return false;
 }
 
 /** Handles search inputs that are too short to filter. */
 function toShortfilterWord(filterWord) {
-  if (isShortFilter(filterWord)) {
+  if (filterWord.length > 0 && filterWord.length < 3) {
     boardIsFiltered = false;
-    showSearchInformation();
+    closeSearchInformation();
     updateHTML(BOARD_COLUMNS);
     return true;
   }

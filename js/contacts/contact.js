@@ -23,9 +23,9 @@ function validateName(name, contactsIndex) {
 
 /** Validates a contact phone field. */
 function validatePhone(phone, contactsIndex) {
-    const regex = /^\+\d{2}\s\d{6,}$/;
+    const regex = /^(\+\d{2}\s?|0)\d{5,}$/;
     if (!regex.test(phone)) {
-        showError(`phone_error_${contactsIndex}`, "Please enter a valid phone number (f.e. +49 184551984)");
+        showError(`phone_error_${contactsIndex}`, "Please enter a valid phone number (f.e. +49184551984 or 0712353456)");
         return false;
     }
     showError(`phone_error_${contactsIndex}`, "");
