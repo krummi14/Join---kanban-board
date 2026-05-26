@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: priority.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: priority.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { byId } from "./context.js";
+
+const PRIORITIES = ["urgent", "medium", "low"];
+const DEFAULT_PRIORITY = "medium";
+
+/** Applies the default priority to the current form. */
+export function applyDefaultPriority(context) {
+  setPriority(context, DEFAULT_PRIORITY);
+}
+
+/** Resets every priority button to its inactive state. */
+export function resetPriorityButtons(context) {
+  PRIORITIES.forEach((priority) => resetPriorityButton(context, priority));
+}
+
+/** Sets the selected priority and updates the button states. */
+export function setPriority(context, priority) {
+  const button = byId(context.taskForm, `prio_${priority}`);
+  if (!button) return;
+  const isActive = button.classList.contains("active");
+  resetPriorityButtons(context);
+  if (isActive) {
+    context.state.selectedPriority = "";
+    return;
+  }
+  button.classList.add("active");
+  button.innerHTML = createPriorityMarkup(priority, "on");
+  context.state.selectedPriority = priority;
+}
+
+/** Resets a single priority button to its default markup. */
+function resetPriorityButton(context, priority) {
+  const button = byId(context.taskForm, `prio_${priority}`);
+  if (!button) return;
+  button.classList.remove("active");
+  button.innerHTML = createPriorityMarkup(priority, "off");
+}
+
+/** Creates the HTML markup for a priority button label. */
+function createPriorityMarkup(priority, state) {
+  return `${capitalize(priority)} &lt;img src="../assets/icon/btn_${priority}_${state}.svg" alt="Button ${capitalize(priority)}">`;
+}
+
+/** Capitalizes the first character of a text value. */
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addDueDateDayCells">addDueDateDayCells</a></li><li><a href="global.html#addLeadingEmptyCells">addLeadingEmptyCells</a></li><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#applyDefaultPriority">applyDefaultPriority</a></li><li><a href="global.html#buildDayGridMarkup">buildDayGridMarkup</a></li><li><a href="global.html#buildTaskPayload">buildTaskPayload</a></li><li><a href="global.html#byId">byId</a></li><li><a href="global.html#cancelSubtaskEdit">cancelSubtaskEdit</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#changeVisibleMonth">changeVisibleMonth</a></li><li><a href="global.html#clearDueDateValidation">clearDueDateValidation</a></li><li><a href="global.html#clearSubtaskInput">clearSubtaskInput</a></li><li><a href="global.html#clearSubtaskInteractionState">clearSubtaskInteractionState</a></li><li><a href="global.html#clearTaskAddedFeedbackTimer">clearTaskAddedFeedbackTimer</a></li><li><a href="global.html#closeAssigneeDropdown">closeAssigneeDropdown</a></li><li><a href="global.html#closeCategoryDropdown">closeCategoryDropdown</a></li><li><a href="global.html#closeDropdownsOnOutsideClick">closeDropdownsOnOutsideClick</a></li><li><a href="global.html#closeDueDatePicker">closeDueDatePicker</a></li><li><a href="global.html#closeDueDatePickerOnOutsideClick">closeDueDatePickerOnOutsideClick</a></li><li><a href="global.html#closeOutside">closeOutside</a></li><li><a href="global.html#createAddTaskForm">createAddTaskForm</a></li><li><a href="global.html#createContext">createContext</a></li><li><a href="global.html#createController">createController</a></li><li><a href="global.html#createDueDateDayCell">createDueDateDayCell</a></li><li><a href="global.html#createElements">createElements</a></li><li><a href="global.html#createHandlers">createHandlers</a></li><li><a href="global.html#createPriorityMarkup">createPriorityMarkup</a></li><li><a href="global.html#createState">createState</a></li><li><a href="global.html#createSubtaskPayload">createSubtaskPayload</a></li><li><a href="global.html#delegateFormClick">delegateFormClick</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#ensureSubtaskArray">ensureSubtaskArray</a></li><li><a href="global.html#fetchContacts">fetchContacts</a></li><li><a href="global.html#finalizeManualDueDateInput">finalizeManualDueDateInput</a></li><li><a href="global.html#finishTaskAddedFeedback">finishTaskAddedFeedback</a></li><li><a href="global.html#focusSubtaskEditInput">focusSubtaskEditInput</a></li><li><a href="global.html#formatDisplayDate">formatDisplayDate</a></li><li><a href="global.html#formatISODate">formatISODate</a></li><li><a href="global.html#formatMonthYear">formatMonthYear</a></li><li><a href="global.html#getAssignedContacts">getAssignedContacts</a></li><li><a href="global.html#getContactColor">getContactColor</a></li><li><a href="global.html#getContactInitials">getContactInitials</a></li><li><a href="global.html#getCreateTaskStatus">getCreateTaskStatus</a></li><li><a href="global.html#getDropdownElements">getDropdownElements</a></li><li><a href="global.html#getDueDateDayClasses">getDueDateDayClasses</a></li><li><a href="global.html#getDueDateDayHint">getDueDateDayHint</a></li><li><a href="global.html#getDueDateDayState">getDueDateDayState</a></li><li><a href="global.html#getDueDateMonthData">getDueDateMonthData</a></li><li><a href="global.html#getDueDateStorageValue">getDueDateStorageValue</a></li><li><a href="global.html#getDueDateWeekdayLabels">getDueDateWeekdayLabels</a></li><li><a href="global.html#getInputElements">getInputElements</a></li><li><a href="global.html#getMonthStart">getMonthStart</a></li><li><a href="global.html#getScopedDueDateMatch">getScopedDueDateMatch</a></li><li><a href="global.html#getScopedMatch">getScopedMatch</a></li><li><a href="global.html#getSelectedContacts">getSelectedContacts</a></li><li><a href="global.html#getStoredDueDate">getStoredDueDate</a></li><li><a href="global.html#getTodayDateString">getTodayDateString</a></li><li><a href="global.html#handleAssigneeChange">handleAssigneeChange</a></li><li><a href="global.html#handleCancelSubtaskEditClick">handleCancelSubtaskEditClick</a></li><li><a href="global.html#handleCategoryOptionClick">handleCategoryOptionClick</a></li><li><a href="global.html#handleDueDateClick">handleDueDateClick</a></li><li><a href="global.html#handleDueDateDayClick">handleDueDateDayClick</a></li><li><a href="global.html#handleDueDateEscapeKey">handleDueDateEscapeKey</a></li><li><a href="global.html#handleDueDateKeydown">handleDueDateKeydown</a></li><li><a href="global.html#handleDueDateNavClick">handleDueDateNavClick</a></li><li><a href="global.html#handleDueDateToggleClick">handleDueDateToggleClick</a></li><li><a href="global.html#handleDueDateToggleKey">handleDueDateToggleKey</a></li><li><a href="global.html#handleEditSubtaskClick">handleEditSubtaskClick</a></li><li><a href="global.html#handleEmptySubtaskInput">handleEmptySubtaskInput</a></li><li><a href="global.html#handleFormKeydown">handleFormKeydown</a></li><li><a href="global.html#handleManualDueDateInput">handleManualDueDateInput</a></li><li><a href="global.html#handlePriorityClick">handlePriorityClick</a></li><li><a href="global.html#handleRemoveSubtaskClick">handleRemoveSubtaskClick</a></li><li><a href="global.html#handleSaveSubtaskEditClick">handleSaveSubtaskEditClick</a></li><li><a href="global.html#handleSubtaskKeydown">handleSubtaskKeydown</a></li><li><a href="global.html#handleTaskCreated">handleTaskCreated</a></li><li><a href="global.html#handleTaskSubmit">handleTaskSubmit</a></li><li><a href="global.html#handleToggleClick">handleToggleClick</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initializeDueDatePicker">initializeDueDatePicker</a></li><li><a href="global.html#initializeForm">initializeForm</a></li><li><a href="global.html#isPastDueDate">isPastDueDate</a></li><li><a href="global.html#normalizeDisplayInput">normalizeDisplayInput</a></li><li><a href="global.html#parseDisplayDate">parseDisplayDate</a></li><li><a href="global.html#parseISODate">parseISODate</a></li><li><a href="global.html#persistTaskSubmission">persistTaskSubmission</a></li><li><a href="global.html#prefillTask">prefillTask</a></li><li><a href="global.html#refreshFormState">refreshFormState</a></li><li><a href="global.html#registerDueDateInputEvents">registerDueDateInputEvents</a></li><li><a href="global.html#registerEvents">registerEvents</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssigneeContacts">renderAssigneeContacts</a></li><li><a href="global.html#renderAssigneeOptions">renderAssigneeOptions</a></li><li><a href="global.html#renderCategoryOptions">renderCategoryOptions</a></li><li><a href="global.html#renderDueDatePicker">renderDueDatePicker</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#reportPastDueDate">reportPastDueDate</a></li><li><a href="global.html#resetCategorySelection">resetCategorySelection</a></li><li><a href="global.html#resetDueDatePicker">resetDueDatePicker</a></li><li><a href="global.html#resetInvalidManualDueDateInput">resetInvalidManualDueDateInput</a></li><li><a href="global.html#resetPriorityButton">resetPriorityButton</a></li><li><a href="global.html#resetPriorityButtons">resetPriorityButtons</a></li><li><a href="global.html#resetState">resetState</a></li><li><a href="global.html#resetSubtaskInput">resetSubtaskInput</a></li><li><a href="global.html#resetTaskFormState">resetTaskFormState</a></li><li><a href="global.html#resolveTaskStatus">resolveTaskStatus</a></li><li><a href="global.html#restartTaskAddedFeedback">restartTaskAddedFeedback</a></li><li><a href="global.html#saveSubtaskEdit">saveSubtaskEdit</a></li><li><a href="global.html#saveTask">saveTask</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectDueDate">selectDueDate</a></li><li><a href="global.html#setBasicFields">setBasicFields</a></li><li><a href="global.html#setCategory">setCategory</a></li><li><a href="global.html#setDropdownState">setDropdownState</a></li><li><a href="global.html#setDueDatePickerState">setDueDatePickerState</a></li><li><a href="global.html#setDueDateValue">setDueDateValue</a></li><li><a href="global.html#setPriority">setPriority</a></li><li><a href="global.html#setSelectedAssignees">setSelectedAssignees</a></li><li><a href="global.html#setSubtasks">setSubtasks</a></li><li><a href="global.html#setupSubtaskControls">setupSubtaskControls</a></li><li><a href="global.html#showContactLoadError">showContactLoadError</a></li><li><a href="global.html#showEmptyContacts">showEmptyContacts</a></li><li><a href="global.html#showTaskAddedFeedback">showTaskAddedFeedback</a></li><li><a href="global.html#startSubtaskEdit">startSubtaskEdit</a></li><li><a href="global.html#syncAssigneeCheckboxes">syncAssigneeCheckboxes</a></li><li><a href="global.html#syncDueDateValue">syncDueDateValue</a></li><li><a href="global.html#syncEditingSubtaskIndex">syncEditingSubtaskIndex</a></li><li><a href="global.html#syncNormalizedDueDateInput">syncNormalizedDueDateInput</a></li><li><a href="global.html#teardownSubtaskControls">teardownSubtaskControls</a></li><li><a href="global.html#toggleAssigneeDropdown">toggleAssigneeDropdown</a></li><li><a href="global.html#toggleAssigneeSelection">toggleAssigneeSelection</a></li><li><a href="global.html#toggleCategoryDropdown">toggleCategoryDropdown</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDueDatePicker">toggleDueDatePicker</a></li><li><a href="global.html#unregisterEvents">unregisterEvents</a></li><li><a href="global.html#updateAssigneeLabel">updateAssigneeLabel</a></li><li><a href="global.html#updateExistingTask">updateExistingTask</a></li><li><a href="global.html#updateManualDueDateIsoValue">updateManualDueDateIsoValue</a></li><li><a href="global.html#updateSubtaskButtonState">updateSubtaskButtonState</a></li><li><a href="global.html#updateUserBadge">updateUserBadge</a></li><li><a href="global.html#validateCategorySelection">validateCategorySelection</a></li><li><a href="global.html#waitForTaskAddedFeedbackToFinish">waitForTaskAddedFeedbackToFinish</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue May 26 2026 22:26:00 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

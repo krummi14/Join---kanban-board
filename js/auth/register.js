@@ -11,7 +11,15 @@ const clearErrors = () => {
   showError("privacy-error", "");
 };
 
-
+/**
+ * Validates the signup name field.
+ * 
+ * Ensures that a full name (first + last name) is entered.
+ * Requires at least two words in alphabetical format.
+ * 
+ * @param {string} name - The full name entered by the user.
+ * @returns {boolean} True if valid, otherwise false.
+ */
 function validateName(name) {
   if (!name) {
     showError("name-error", "Please enter your name");
@@ -29,7 +37,14 @@ function validateName(name) {
   return true;
 }
 
-/** Validates the signup email field. */
+/**
+ * Validates the signup email field.
+ * 
+ * Checks if the email is present and matches a valid format.
+ * 
+ * @param {string} email - The email entered by the user.
+ * @returns {boolean} True if valid, otherwise false.
+ */
 function validateEmail(email) {
   if (!email) {
     showError("email-error", "Please enter your email");
@@ -47,7 +62,14 @@ function validateEmail(email) {
   return true;
 }
 
-/** Checks whether an email address already exists in storage. */
+/**
+ * Checks whether an email address already exists in the database.
+ * 
+ * Prevents duplicate registrations by scanning stored user entries.
+ * 
+ * @param {string} email - The email to check.
+ * @returns {Promise<boolean>} True if the email already exists.
+ */
 async function emailExists(email) {
   const users = await getData("users");
 
@@ -62,12 +84,25 @@ async function emailExists(email) {
   return false;
 }
 
+/** Checks whether a password meets the minimum requirements.
+ * 
+ * Currently validates minimum length.
+ * 
+ * @param {string} password - The password entered by the user.
+ * @returns {boolean} True if valid length, otherwise false.
+ */
+  function isValidPassword(password) {
+    return password.length >= 3;
+  }
 
-function isValidPassword(password) {
-  return password.length >= 3;
-}
-
-/** Validates the password rule requirements. */
+/**
+ * Validates password strength requirements.
+ * 
+ * Ensures password is not empty and meets minimum length rules.
+ * 
+ * @param {string} password - The password entered by the user.
+ * @returns {boolean} True if valid, otherwise false.
+ */
 function checkPasswordRule(password) {
   if (!password) {
     showError("password-error", "Please enter a password");
@@ -83,7 +118,15 @@ function checkPasswordRule(password) {
   return true;
 }
 
-/** Validates that the password confirmation matches. */
+/**
+ * Validates that the password confirmation matches the password.
+ * 
+ * Ensures both password fields are identical.
+ * 
+ * @param {string} password - The original password.
+ * @param {string} confirm - The confirmation password.
+ * @returns {boolean} True if both match, otherwise false.
+ */
 function checkPasswordMatch(password, confirm) {
   if (!confirm) {
     showError("confirm-error", "Please confirm your password");
@@ -99,7 +142,15 @@ function checkPasswordMatch(password, confirm) {
   return true;
 }
 
-/** Validates the complete password input pair. */
+/**
+ * Validates the complete password input (rules + match check).
+ * 
+ * Combines password strength validation and confirmation check.
+ * 
+ * @param {string} password - The password entered by the user.
+ * @param {string} confirm - The confirmation password.
+ * @returns {boolean} True if valid, otherwise false.
+ */
 function validatePassword(password, confirm) {
   if (!checkPasswordRule(password)) return false;
 
@@ -108,7 +159,14 @@ function validatePassword(password, confirm) {
   return true;
 }
 
-/** Validates the privacy-policy checkbox. */
+/**
+ * Validates whether the privacy policy checkbox is checked.
+ * 
+ * Ensures user acceptance of privacy policy before signup.
+ * 
+ * @param {boolean} checked - Whether the checkbox is selected.
+ * @returns {boolean} True if accepted, otherwise false.
+ */
 function validatePrivacy(checked) {
   if (!checked) {
     showError("privacy-error", "Accept privacy policy");
@@ -119,7 +177,16 @@ function validatePrivacy(checked) {
   return true;
 }
 
-/** Collects the current values from the signup form. */
+/**
+ * Collects all current values from the signup form.
+ * 
+ * @returns {Object} The form data object.
+ * @returns {string} return.name - User's full name.
+ * @returns {string} return.email - User's email.
+ * @returns {string} return.password - User's password.
+ * @returns {string} return.confirm - Password confirmation.
+ * @returns {boolean} return.privacy - Privacy checkbox state.
+ */
 function getFormData() {
   return {
     name: document.getElementById("name").value.trim(),
@@ -130,7 +197,14 @@ function getFormData() {
   };
 }
 
-/** Runs the full signup validation pipeline. */
+/**
+ * Runs the full signup validation pipeline.
+ * 
+ * Executes all field validations and returns overall result.
+ * 
+ * @param {Object} userInput - The signup form data.
+ * @returns {boolean} True if all validations pass.
+ */
 function runValidation(userInput) {
   let valid = true;
 
@@ -146,6 +220,12 @@ function runValidation(userInput) {
   return valid;
 }
 
+/**
+ * Checks whether a user can be registered (email uniqueness check).
+ * 
+ * @param {Object} data - User signup data.
+ * @returns {Promise<boolean>} True if registration is allowed.
+ */
 async function canRegisterUser(data) {
   if (await emailExists(data.email)) {
     showError("email-error", "Email already exists");
@@ -155,7 +235,15 @@ async function canRegisterUser(data) {
   return true;
 }
 
-/** Persists a newly registered user. */
+/**
+ * Saves a newly registered user into the database.
+ * 
+ * Creates a unique user ID and stores user credentials.
+ * 
+ * @param {string} name - User's full name.
+ * @param {string} email - User's email.
+ * @param {string} password - User's password.
+ */
 async function registerUser(name, email, password) {
   const id = Date.now().toString();
 
@@ -166,7 +254,11 @@ async function registerUser(name, email, password) {
   });
 }
 
-/** Displays the signup success state. */
+/**
+ * Displays the signup success state.
+ * 
+ * Shows success modal and triggers confetti animation.
+ */
 function finishSignup() {
   document
     .getElementById("success-modal")
@@ -179,7 +271,12 @@ function finishSignup() {
   });
 }
 
-/** Handles the complete signup flow. */
+/**
+ * Handles the complete signup flow.
+ * 
+ * Runs validation, checks for duplicates,
+ * registers the user and shows success state.
+ */
 async function handleSignup() {
   formSubmitted = true;
 
@@ -200,19 +297,37 @@ async function handleSignup() {
   finishSignup();
 }
 
-
+/**
+ * Revalidates the name field after user input.
+ * 
+ * Only triggers validation after the first form submission.
+ * 
+ * @param {Event} e - Input event.
+ */
 function checkName(e) {
   if (!formSubmitted) return;
 
   validateName(e.target.value);
 }
 
+/**
+ * Revalidates the email field after user input.
+ * 
+ * Only triggers validation after the first form submission.
+ * 
+ * @param {Event} e - Input event.
+ */
 function checkEmail(e) {
   if (!formSubmitted) return;
 
   validateEmail(e.target.value);
 }
 
+/**
+ * Revalidates the password fields after user input.
+ * 
+ * Ensures both password and confirmation are validated together.
+ */
 function checkPassword() {
   if (!formSubmitted) return;
 

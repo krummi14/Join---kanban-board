@@ -2,13 +2,25 @@ import { getData } from "../shared/firebase.js";
 
 let loginSubmitted = false;
 
-/** Clears the visible login validation errors. */
+/**
+ * Clears all visible login validation errors.
+ * 
+ * Removes error messages from email and password fields.
+ */
 const clearErrors = () => {
   showError("email-error", "");
   showError("password-error", "");
 };
 
-/** Validates the login email field. */
+/**
+ * Validates the login email field.
+ * 
+ * Checks if the email is present and matches a valid email format.
+ * Displays an error message if validation fails.
+ * 
+ * @param {string} email - The email entered by the user.
+ * @returns {boolean} True if valid, otherwise false.
+ */
 function validateEmail(email) {
   if (!email) {
     showError("email-error", "Enter your email");
@@ -26,7 +38,15 @@ function validateEmail(email) {
   return true;
 }
 
-/** Validates the login password field. */
+/**
+ * Validates the login password field.
+ * 
+ * Ensures the password is not empty before login.
+ * Displays an error message if validation fails.
+ * 
+ * @param {string} password - The password entered by the user.
+ * @returns {boolean} True if valid, otherwise false.
+ */
 function validatePassword(password) {
   if (!password) {
     showError("password-error", "Enter your password");
@@ -37,7 +57,15 @@ function validatePassword(password) {
   return true;
 }
 
-/** Validates the login credentials before authentication. */
+/**
+ * Validates login credentials before authentication.
+ * 
+ * Runs email and password validation and combines results.
+ * 
+ * @param {string} email - The email entered by the user.
+ * @param {string} password - The password entered by the user.
+ * @returns {boolean} True if both fields are valid.
+ */
 function validateLogin(email, password) {
   let isValid = true;
 
@@ -47,7 +75,16 @@ function validateLogin(email, password) {
   return isValid;
 }
 
-/** Looks up a user id that matches the provided credentials. */
+/**
+ * Searches for a user that matches the provided credentials.
+ * 
+ * Queries the database and returns the user ID if email
+ * and password match an existing account.
+ * 
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<string|null>} The user ID or null if not found.
+ */
 async function checkUser(email, password) {
   const users = await getData("users");
 
@@ -64,7 +101,15 @@ async function checkUser(email, password) {
   return null;
 }
 
-/** Logs in a user and redirects on success. */
+/**
+ * Logs in a user and redirects on successful authentication.
+ * 
+ * Clears previous errors, authenticates the user,
+ * stores session data, and redirects to summary page.
+ * 
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ */
 async function loginUser(email, password) {
   loginSubmitted = true;
 
@@ -79,7 +124,16 @@ async function loginUser(email, password) {
   redirectToSummary();
 }
 
-/** Authenticates a user and reports invalid credentials. */
+/**
+ * Authenticates the user credentials.
+ * 
+ * Validates input fields and checks credentials against the database.
+ * Shows an error message if authentication fails.
+ * 
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<string|null>} The user ID if valid, otherwise null.
+ */
 async function authenticateUser(email, password) {
   if (!validateLogin(email, password)) return null;
 
@@ -92,7 +146,13 @@ async function authenticateUser(email, password) {
   return null;
 }
 
-/** Persists the login session details in local storage. */
+/**
+ * Saves the login session to local storage.
+ * 
+ * Stores user ID, username, and greeting state for later use.
+ * 
+ * @param {string} id - The authenticated user ID.
+ */
 async function persistLoginSession(id) {
   localStorage.setItem("user", id);
 
@@ -102,19 +162,32 @@ async function persistLoginSession(id) {
   localStorage.setItem("greetingShown", "false");
 }
 
-/** Redirects the user to the summary page. */
+/**
+ * Redirects the user to the summary page after login.
+ */
 function redirectToSummary() {
   location.href = "../html/summary.html";
 }
 
-/** Revalidates the email field after first submit. */
+/**
+ * Revalidates the email field after user interaction.
+ * 
+ * Only triggers validation if a login attempt has already been made.
+ * 
+ * @param {Event} e - Input blur event.
+ */
 function checkEmail(e) {
   if (!loginSubmitted) return;
 
   validateEmail(e.target.value.trim());
 }
-
-/** Revalidates the password field after first submit. */
+/**
+ * Revalidates the password field after user interaction.
+ * 
+ * Only triggers validation after the first login attempt.
+ * 
+ * @param {Event} e - Input blur event.
+ */
 function checkPassword(e) {
   if (!loginSubmitted) return;
 

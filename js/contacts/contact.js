@@ -2,7 +2,10 @@ import { getData, putNewData, putEditData, deleteData } from "../shared/firebase
 import { createList } from "../shared/list.js";
 import { getContactsListHeaderTemplate, getContactsListContentTemplate, getContactsInformationTemplate, getContactDialogTemplate, getContactDialogEditandDeleteMobileTemplate } from "../template/contacts_template.js";
 
-/** Initializes the contacts page data and UI. */
+/**
+ * Initializes the contacts page data and UI.
+ * Loads contacts from backend, builds list and renders UI.
+ */
 async function initContacts() {
     const data = await getData("/contacts");
     createList(data);
@@ -10,7 +13,11 @@ async function initContacts() {
     userInitials();
 }
 
-/** Validates a contact name field. */
+/**
+ * Validates a contact name field.
+ * @param {string} name - Contact full name
+ * @param {number} contactsIndex - Index of contact in list
+ */
 function validateName(name, contactsIndex) {
     const regex = /^[A-Za-z]+ [A-Za-z]+$/;
     if (!regex.test(name)) {
@@ -21,7 +28,11 @@ function validateName(name, contactsIndex) {
     return true;
 }
 
-/** Validates a contact phone field. */
+/**
+ * Validates a contact phone field.
+ * @param {string} phone - Phone number
+ * @param {number} contactsIndex - Index of contact in list
+ */
 function validatePhone(phone, contactsIndex) {
     const regex = /^(\+\d{2}\s?|0)\d{5,}$/;
     if (!regex.test(phone)) {
@@ -32,7 +43,11 @@ function validatePhone(phone, contactsIndex) {
     return true;
 }
 
-/** Validates a contact email field. */
+/**
+ * Validates a contact email field.
+ * @param {string} email - Email address
+ * @param {number} contactsIndex - Index of contact in list
+ */
 function validateEmail(email, contactsIndex) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(email)) {
@@ -43,30 +58,47 @@ function validateEmail(email, contactsIndex) {
     return true;
 }
 
-/** Validates the full contact form for the current dialog. */
+/**
+ * Validates the full contact form for the current dialog.
+ * @param {number} contactsIndex - Index of contact in list
+ */
 function validateForm(contactsIndex) {
     let name = document.getElementById(`contact_dialog_input_name_${contactsIndex}`).value.trim();
     let email = document.getElementById(`contact_dialog_input_email_${contactsIndex}`).value.trim();
     let phone = document.getElementById(`contact_dialog_input_phone_${contactsIndex}`).value.trim();
+
     const validName = validateName(name, contactsIndex);
     const validEmail = validateEmail(email, contactsIndex);
     const validPhone = validatePhone(phone, contactsIndex);
+
     return validName && validEmail && validPhone;
 }
 
-/** Saves changes to an existing contact when the form is valid. */
+/**
+ * Saves changes to an existing contact when the form is valid.
+ * @param {string} editOrAddNewContact - Action type
+ * @param {number} contactsIndex - Index of contact
+ */
 function saveContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     editContact(editOrAddNewContact, contactsIndex);
 }
 
-/** Saves a newly created contact when the form is valid. */
+/**
+ * Saves a newly created contact when the form is valid.
+ * @param {string} editOrAddNewContact - Action type
+ * @param {number} contactsIndex - Index of contact
+ */
 function saveNewContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
     addNewContact(editOrAddNewContact, contactsIndex);
 }
 
-/** Creates a new contact and refreshes the contacts view. */
+/**
+ * Creates a new contact and refreshes the contacts view.
+ * @param {string} editOrAddNewContact - Action type
+ * @param {number} contactsIndex - Index of contact
+ */
 async function addNewContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let newContactId = await putNewData("/contacts/", contactsIndex);
@@ -77,13 +109,19 @@ async function addNewContact(editOrAddNewContact, contactsIndex) {
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
-/** Deletes a contact and updates the open contact state. */
+/**
+ * Deletes a contact and updates the list view.
+ * @param {boolean} openDialog
+ * @param {boolean} openContactResponsive
+ * @param {number} contactsIndex
+ */
 async function deleteContact(openDialog, openContactResponsive, contactsIndex) {
     let deleteIndex = (contactsList[contactsIndex].id) - 1;
     await deleteData("/contacts/" + deleteIndex);
     contactsList = contactsList.filter(contact => contact.id !== deleteIndex + 1);
     renderContacts();
     closeContactInformation(contactsIndex);
+
     if (openDialog) {
         closeContactDialog(contactsIndex);
     }
@@ -92,75 +130,108 @@ async function deleteContact(openDialog, openContactResponsive, contactsIndex) {
     }
 }
 
-/** Updates an existing contact and refreshes the current detail view. */
+/**
+ * Updates an existing contact and refreshes view.
+ * @param {string} editOrAddNewContact
+ * @param {number} contactsIndex
+ */
 async function editContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
     let currentContactId = await putEditData("/contacts/", contactsIndex);
     renderContacts();
+
     let newContactsIndex = contactsList.findIndex(contact => contact.id == currentContactId);
     closeContactDialog(contactsIndex);
     openContactInformation(newContactsIndex);
     openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact);
 }
 
-/** Returns the initials for the contact at the given list index. */
+/**
+ * Returns initials for a contact.
+ * @param {number} contactsIndex
+ * @returns {string|undefined}
+ */
 export function filterInitialsOfName(contactsIndex) {
     if (contactsIndex == contactsList.length) {
         return;
     } else {
         let contactName = contactsList[contactsIndex].name;
         let initials = contactName.split(' ').map(initial => initial.charAt(0)).join('');
-        return initials
-    };
+        return initials;
+    }
 }
 
-/** Renders the complete contacts list view. */
+/**
+ * Renders full contacts list grouped by first letter.
+ */
 function renderContacts() {
     contentContactsListHeader.innerHTML = "";
     prenameInitialsList = [];
     intitialBackgroundcolors = [];
+
     contactsList.sort((a, b) => a.name.localeCompare(b.name));
+
     for (let contactsIndex = 0; contactsIndex < contactsList.length; contactsIndex++) {
         firstLetterOfPrenameIsEqual(contactsIndex);
         contactColor(contactsIndex);
     }
 }
 
-/** Creates a new contact section when the first letter changes. */
+/**
+ * Creates new group section when first letter changes.
+ * @param {number} contactsIndex
+ */
 function firstLetterOfPrenameIsEqual(contactsIndex) {
     let firstLetterOfContact = contactsList[contactsIndex].name[0];
+
     if (!prenameInitialsList.includes(firstLetterOfContact)) {
         contentContactsListHeader.innerHTML += getContactsListHeaderTemplate(contactsIndex);
     }
+
     prenameInitialsList.push(firstLetterOfContact);
     pushContactIntoTableheader(contactsIndex);
 }
 
-/** Appends a contact row to its matching letter group. */
+/**
+ * Appends contact into its letter group.
+ * @param {number} contactsIndex
+ */
 function pushContactIntoTableheader(contactsIndex) {
     let contentContactsList = document.getElementById(`new_row_${contactsList[contactsIndex].name[0]}`);
     contentContactsList.innerHTML += getContactsListContentTemplate(contactsIndex);
 }
 
-/** Assigns and stores a display color for a contact avatar. */
+/**
+ * Assigns random background color to contact avatar.
+ * @param {number} contactsIndex
+ */
 function contactColor(contactsIndex) {
     let contentInitialBackgroundColor = document.getElementById(`initial_bg_color_${contactsIndex}`);
     let randomColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+
     contentInitialBackgroundColor.style.backgroundColor = randomColor;
     intitialBackgroundcolors.push(randomColor);
 }
 
-/** Opens the selected contact information panel. */
+/**
+ * Opens contact information panel.
+ * @param {number} contactsIndex
+ */
 function openContactInformation(contactsIndex) {
     if (isActiveContact(contactsIndex)) return closeCurrentContact(contactsIndex);
+
     closePreviousContact(contactsIndex);
     activateContactView(contactsIndex);
     createContentInformation(contactsIndex);
     createEditButtonResponsive(contactsIndex);
+
     activeContact = contactsIndex;
 }
 
-/** Closes the active contact information panel. */
+/**
+ * Closes contact information panel.
+ * @param {number} contactsIndex
+ */
 function closeContactInformation(contactsIndex) {
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
     contentContactMain.style.overflow = "";
@@ -169,25 +240,36 @@ function closeContactInformation(contactsIndex) {
     activeContact = null;
 }
 
-/** Renders the selected contact information content. */
+/**
+ * Renders contact detail view.
+ * @param {number} contactsIndex
+ */
 function createContentInformation(contactsIndex) {
     contentContactInformation.innerHTML = getContactsInformationTemplate(contactsIndex);
-    contactColorInContactInformation(contactsIndex)
+    contactColorInContactInformation(contactsIndex);
 }
 
-/** Applies the stored avatar color in the contact information panel. */
+/**
+ * Applies stored avatar color in detail view.
+ * @param {number} contactsIndex
+ */
 function contactColorInContactInformation(contactsIndex) {
     let contentInitialBackgroundColorContactInformation = document.getElementById(`initial_bg_color_contact_information_${contactsIndex}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
+
     contentInitialBackgroundColorContactInformation.style.backgroundColor = initialsColor;
 }
 
-/** Applies the correct avatar color state in the contact dialog. */
+/**
+ * Applies avatar color in contact dialog.
+ * @param {number} contactsIndex
+ */
 function contactColorInContactDialog(contactsIndex) {
     let contentInitialBackgroundColorContactDialog = document.getElementById(`initial_bg_color_contact_dialog_${contactsIndex}`);
     let contentInitialImageAddNewContact = document.getElementById(`initial_img_${(contactsIndex)}`);
     let contentInitialText = document.getElementById(`initial_text_${(contactsIndex)}`);
     let initialsColor = intitialBackgroundcolors[contactsIndex];
+
     if (initialsColor == undefined) {
         contentInitialBackgroundColorContactDialog.style.backgroundColor = "rgba(209, 209, 209, 1)";
         contentInitialImageAddNewContact.classList.remove("display_none_button_or_img");
@@ -197,59 +279,89 @@ function contactColorInContactDialog(contactsIndex) {
     }
 }
 
-/** Opens the edit-contact dialog for the selected contact. */
+/**
+ * Opens edit contact dialog.
+ * @param {number} contactsIndex
+ * @param {Event} event
+ */
 function openEditContactDialog(contactsIndex, event) {
     if (event) event.stopPropagation();
+
     contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
+
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
     contentDialogContact.showModal();
     contentDialogContact.classList.add("dialog_opend");
     contentDialogContact.classList.remove("dialog_closed");
+
     contactColorInContactDialog(contactsIndex);
     getCurrentContactData(contactsIndex);
 }
 
-/** Fills the contact dialog with the current contact data. */
+/**
+ * Loads current contact data into dialog.
+ * @param {number} contactsIndex
+ */
 function getCurrentContactData(contactsIndex) {
     let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
     let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
     let contactInputPhone = document.getElementById(`contact_dialog_input_phone_${contactsIndex}`);
+
     contactInputName.value = contactsList[contactsIndex].name;
     contactInputEmail.value = contactsList[contactsIndex].email;
     contactInputPhone.value = contactsList[contactsIndex].phone;
 }
 
-/** Closes the contact dialog with its exit animation. */
+/**
+ * Closes contact dialog.
+ * @param {number} contactsIndex
+ */
 function closeContactDialog(contactsIndex) {
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
     contentDialogContact.classList.remove("dialog_opend");
     contentDialogContact.classList.add("dialog_closed");
+
     setTimeout(function () {
         contentDialogContact.close();
     }, 125);
 }
 
-/** Stops dialog body clicks from bubbling to the dialog backdrop. */
+/**
+ * Stops event bubbling inside dialog.
+ * @param {Event} event
+ */
 function closeDialogOnBodyclick(event) {
-    event.stopPropagation()
+    event.stopPropagation();
 }
 
-/** Opens the dialog for creating a new contact. */
+/**
+ * Opens dialog for new contact.
+ * @param {number} contactsIndex
+ * @param {Event} event
+ */
 function openAddNewContactDialog(contactsIndex, event) {
     contactsIndex = contactsList.length;
+
     if (event) event.stopPropagation();
+
     contentDialogOfEditContact.innerHTML = getContactDialogTemplate(contactsIndex);
+
     let contentDialogContact = document.getElementById(`contact_dialog_${contactsIndex}`);
     contentDialogContact.showModal();
     contentDialogContact.classList.add("dialog_opend");
     contentDialogContact.classList.remove("dialog_closed");
+
     if (contactsIndex == contactsList.length) {
         createAddNewContactDialog(contactsIndex);
     }
+
     contactColorInContactDialog(contactsIndex);
 }
 
-/** Switches the contact dialog UI into create mode. */
+/**
+ * Switches dialog to "add new contact" mode.
+ * @param {number} contactsIndex
+ */
 function createAddNewContactDialog(contactsIndex) {
     let contentDialogContactHeader = document.getElementById('edit_or_addNew_headline');
     let contentDialogContactDescription = document.getElementById('addNew_description_text');
@@ -257,10 +369,21 @@ function createAddNewContactDialog(contactsIndex) {
     let contentDialogContactButtonSave = document.getElementById(`contact_dialog_button_save_${contactsIndex}`);
     let contentDialogContactButtonCancel = document.getElementById(`contact_dialog_button_cancel_${contactsIndex}`);
     let contentDialogContactButtonCreate = document.getElementById(`contact_dialog_button_create_${contactsIndex}`);
-    styleAddNewContactDialog(contentDialogContactHeader, contentDialogContactDescription, contact_dialog_header_direction, contentDialogContactButtonDelete, contentDialogContactButtonSave, contentDialogContactButtonCancel, contentDialogContactButtonCreate);
+
+    styleAddNewContactDialog(
+        contentDialogContactHeader,
+        contentDialogContactDescription,
+        contact_dialog_header_direction,
+        contentDialogContactButtonDelete,
+        contentDialogContactButtonSave,
+        contentDialogContactButtonCancel,
+        contentDialogContactButtonCreate
+    );
 }
 
-/** Applies the visual state for the add-new-contact dialog. */
+/**
+ * Applies UI style for add-contact dialog.
+ */
 function styleAddNewContactDialog(headerText, descriptionText, directionOfHeaderAndDescription, deleteButton, saveButton, cancelButton, createButton) {
     headerText.innerText = "Add contact";
     descriptionText.style.display = "block";
@@ -270,7 +393,10 @@ function styleAddNewContactDialog(headerText, descriptionText, directionOfHeader
     createButton.classList.remove("display_none_button_or_img");
 }
 
-/** Shows the success message for created or edited contacts. */
+/**
+ * Shows success message after create/edit.
+ * @param {string} editOrAddNewContact
+ */
 function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
     if (editOrAddNewContact == 'addNewContact') {
         styleOfCreadedOrEditedSuccessfully();
@@ -278,60 +404,90 @@ function openContactWasCreatedOrEditedSuccesfull(editOrAddNewContact) {
     if (editOrAddNewContact == 'editContact') {
         let contentContactEditedTextSuccessfully = document.getElementById("contact_etited_text");
         let contentContactCreatedTextSuccessfully = document.getElementById("contact_created_text");
+
         contentContactEditedTextSuccessfully.classList.remove("contact_etited_text_deactive");
         contentContactCreatedTextSuccessfully.classList.add("contact_etited_text_deactive");
+
         styleOfCreadedOrEditedSuccessfully();
     }
 }
 
-/** Animates the contact created or edited success banner. */
+/**
+ * Animates success banner.
+ */
 function styleOfCreadedOrEditedSuccessfully() {
     let contentContactCreatedSuccesfully = document.getElementById("contact_createdSuccesfully");
+
     contentContactCreatedSuccesfully.classList.remove("contact_createdSuccesfully_deactive");
     contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_animation");
+
     setTimeout(function () {
         contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_deactive_animation");
     }, 2000);
+
     setTimeout(function () {
         contentContactCreatedSuccesfully.classList.add("contact_createdSuccesfully_deactive");
     }, 4000);
 }
 
-/** Hides the contact information panel on responsive layouts. */
+/**
+ * Hides contact info on mobile.
+ */
 function closeContactInformationResponsive() {
     contentContact.classList.add('responsive_contactInformation_none');
 }
 
-/** Renders the responsive edit/delete action buttons. */
+/**
+ * Renders edit/delete buttons for mobile.
+ * @param {number} contactsIndex
+ */
 function createEditButtonResponsive(contactsIndex) {
     contentEditButton.innerHTML = getContactDialogEditandDeleteMobileTemplate(contactsIndex);
 }
 
-/** Toggles the responsive contact action menu. */
+/**
+ * Toggles mobile action menu.
+ * @param {Event} event
+ */
 function addEditAndDeleteResponisve(event) {
     if (event) event.stopPropagation();
+
     let editAndDeleteMenu = document.getElementById('edit_and_delete_mobile_menu');
+
     if (menuStatus == 'on') return openResponsiveActionMenu(editAndDeleteMenu);
     if (!editAndDeleteMenu || menuStatus == 'off') closeResponsiveActionMenu(editAndDeleteMenu);
 }
 
-/** Returns whether the given contact is currently active. */
+/**
+ * Returns whether contact is active.
+ * @param {number} contactsIndex
+ * @returns {boolean}
+ */
 function isActiveContact(contactsIndex) {
     return activeContact == contactsIndex;
 }
 
-/** Closes the currently active contact when it is clicked again. */
+/**
+ * Closes currently active contact.
+ * @param {number} contactsIndex
+ */
 function closeCurrentContact(contactsIndex) {
     closeContactInformation(contactsIndex);
 }
 
-/** Closes the previously active contact before opening another. */
+/**
+ * Closes previous active contact.
+ * @param {number} contactsIndex
+ */
 function closePreviousContact(contactsIndex) {
     if (activeContact === null || activeContact === contactsIndex) return;
     closeContactInformation(activeContact);
 }
 
-/** Activates the visual contact detail state for the selected contact. */
+/**
+ * Activates contact view.
+ * @param {number} contactsIndex
+ */
 function activateContactView(contactsIndex) {
     let contentContactWrapper = document.getElementById(`contact_wrapper_${contactsIndex}`);
     contentContactMain.style.overflow = "hidden";
@@ -341,7 +497,10 @@ function activateContactView(contactsIndex) {
     contentContact.classList.remove('responsive_contactInformation_none');
 }
 
-/** Opens the responsive contact action menu. */
+/**
+ * Opens responsive action menu.
+ * @param {HTMLElement} editAndDeleteMenu
+ */
 function openResponsiveActionMenu(editAndDeleteMenu) {
     contentContact.style.overflow = "hidden";
     editAndDeleteMenu.classList.remove('close');
@@ -349,7 +508,10 @@ function openResponsiveActionMenu(editAndDeleteMenu) {
     menuStatus = 'off';
 }
 
-/** Closes the responsive contact action menu. */
+/**
+ * Closes responsive action menu.
+ * @param {HTMLElement} editAndDeleteMenu
+ */
 function closeResponsiveActionMenu(editAndDeleteMenu) {
     editAndDeleteMenu.classList.add('close');
     menuStatus = 'on';

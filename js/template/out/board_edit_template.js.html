@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: board_edit_template.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: board_edit_template.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** Returns the markup for the edit-task overlay form. */
+export function createEditTaskTemplate() {
+  return `
+  &lt;div class="edit_overlay">
+    ${createEditCloseButton()}
+    &lt;div id="addTaskContainer" class="scroll-area add_task_container">
+      &lt;form id="taskForm" class="edit_form">
+        ${createEditFormSections()}
+      &lt;/form>
+    &lt;/div>
+  &lt;/div>
+  `;
+}
+
+/** Returns the close button markup for the edit overlay. */
+function createEditCloseButton() {
+  return `
+    &lt;div class="close_button">
+      &lt;div class="close_icon_wrapper close_icon_margin">
+        &lt;img src="../assets/img/close.svg" class="close_icon" onclick="closeOverlay()">
+      &lt;/div>
+    &lt;/div>
+  `;
+}
+
+/** Returns the assembled edit-form sections markup. */
+function createEditFormSections() {
+  return [
+    createEditTitleSection(),
+    createEditDescriptionSection(),
+    createEditDueDateSection(),
+    createEditPrioritySection(),
+    createEditAssigneeSection(),
+    createEditSubtaskSection(),
+    createEditActionSection(),
+  ].join("");
+}
+
+/** Returns the edit-task title section markup. */
+function createEditTitleSection() {
+  return `
+    &lt;div class="edit_title">
+      &lt;label>Title&lt;span class="red_star">*&lt;/span>&lt;/label>
+      &lt;input id="title" type="text" required class="input_style">
+    &lt;/div>
+  `;
+}
+
+/** Returns the edit-task description section markup. */
+function createEditDescriptionSection() {
+  return `
+    &lt;div class="edit_description">
+      &lt;label>Description&lt;/label>
+      &lt;textarea id="description" class="input_style">&lt;/textarea>
+    &lt;/div>
+  `;
+}
+
+/** Returns the edit-task due-date picker section markup. */
+function createEditDueDateSection() {
+  return `
+    &lt;div
+      class="edit_duedate due_date due_date_picker"
+      data-due-date-picker>
+      &lt;label for="dueDate">
+        Due Date&lt;span class="red_star">*&lt;/span>
+      &lt;/label>
+
+      &lt;div class="due_date_picker_field">
+        &lt;input
+          type="text"
+          id="dueDate"
+          name="dueDate"
+          class="due_date_input input_style"
+          placeholder="dd/mm/yyyy"
+          inputmode="numeric"
+          autocomplete="off"
+          required
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="dueDateMenu">
+
+        &lt;button
+          type="button"
+          class="due_date_icon"
+          data-due-date-toggle="true"
+          aria-label="Open due date calendar">
+          &lt;svg
+            viewBox="0 0 24 24"
+            fill="none">
+            &lt;rect
+              x="3.5"
+              y="5.5"
+              width="17"
+              height="15"
+              rx="2.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+
+            &lt;path
+              d="M7 3.5V7"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+
+            &lt;path
+              d="M17 3.5V7"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+
+            &lt;path
+              d="M3.5 9H20.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+
+            &lt;path
+              d="M8 13H8.01"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+
+            &lt;path
+              d="M12 13H12.01"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+
+            &lt;path
+              d="M16 13H16.01"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          &lt;/svg>
+        &lt;/button>
+
+        &lt;section
+          id="dueDateMenu"
+          class="due_date_menu d_none"
+          aria-label="Due date calendar">
+          &lt;div class="due_date_menu_header">
+            &lt;button
+              type="button"
+              class="due_date_nav_button"
+              data-due-date-nav="-1">
+              &amp;#8249;
+            &lt;/button>
+
+            &lt;span
+              id="dueDateMonthLabel"
+              class="due_date_month_label">&lt;/span>
+
+            &lt;button
+              type="button"
+              class="due_date_nav_button"
+              data-due-date-nav="1">
+              &amp;#8250;
+            &lt;/button>
+          &lt;/div>
+
+          &lt;div class="due_date_weekdays">
+            &lt;span>Mon&lt;/span>
+            &lt;span>Tue&lt;/span>
+            &lt;span>Wed&lt;/span>
+            &lt;span>Thu&lt;/span>
+            &lt;span>Fri&lt;/span>
+            &lt;span>Sat&lt;/span>
+            &lt;span>Sun&lt;/span>
+          &lt;/div>
+
+          &lt;div
+            id="dueDateDays"
+            class="due_date_days">&lt;/div>
+        &lt;/section>
+      &lt;/div>
+    &lt;/div>
+  `;
+}
+
+/** Returns the edit-task priority section markup. */
+function createEditPrioritySection() {
+  return `
+    &lt;div class="edit_priority">
+      &lt;p class="bold_font">Priority&lt;/p>
+      &lt;div class="priority_buttons">
+        &lt;button type="button" id="prio_urgent" data-priority="urgent">Urgent&lt;/button>
+        &lt;button type="button" id="prio_medium" data-priority="medium">Medium&lt;/button>
+        &lt;button type="button" id="prio_low" data-priority="low">Low&lt;/button>
+      &lt;/div>
+    &lt;/div>
+  `;
+}
+
+/** Returns the edit-task assignee section markup. */
+function createEditAssigneeSection() {
+  return `
+    &lt;section class="edit_assigned_to">
+      &lt;label for="assignee">Assignee&lt;/label>
+      &lt;section class="assignee_dropdown">
+        ${createAssigneeToggleButton()}
+        ${createAssigneeDropdownMenu()}
+        &lt;section id="selectedContacts">&lt;/section>
+      &lt;/section>
+    &lt;/section>
+  `;
+}
+
+/** Returns the assignee toggle button markup. */
+function createAssigneeToggleButton() {
+  return `
+    &lt;button
+      type="button"
+      id="assignee"
+      class="assignee_toggle"
+      data-assignee-toggle="true"
+      aria-expanded="false"
+      aria-controls="assigneeDropdownMenu">
+      &lt;span id="assigneeLabel">Select contacts to assign&lt;/span>
+      &lt;span class="assignee_arrow">&lt;img src="../assets/icon/drop_down_arrow.svg" alt="Dropdown Arrow">&lt;/span>
+    &lt;/button>
+  `;
+}
+
+/** Returns the empty assignee dropdown menu markup. */
+function createAssigneeDropdownMenu() {
+  return `
+    &lt;section id="assigneeDropdownMenu" class="assignee_menu d_none">&lt;/section>
+  `;
+}
+
+/** Returns the edit-task subtask section markup. */
+function createEditSubtaskSection() {
+  return `
+    &lt;section class="edit_subtasks subtask">
+      &lt;label for="subtask">Subtasks&lt;/label>
+      &lt;section class="subtask_input_wrapper">
+        &lt;input type="text" id="subtask" name="subtask" placeholder="Add new subtask">
+        &lt;div class="subtask_action_buttons">
+          &lt;button type="button" id="clearSubtaskButton" class="subtask_action_button" aria-label="Clear subtask input">
+            &lt;img src="../assets/icon/subtask_close.svg" alt="Clear subtask input">
+          &lt;/button>
+          &lt;button type="button" id="addSubtaskButton" class="subtask_action_button" aria-label="Add subtask">
+            &lt;img src="../assets/icon/subtask_check.svg" alt="Add subtask">
+          &lt;/button>
+        &lt;/div>
+      &lt;/section>
+      &lt;section id="subtaskList" class="subtask_list">&lt;/section>
+    &lt;/section>
+  `;
+}
+
+/** Returns the edit-task submit action section markup. */
+function createEditActionSection() {
+  return `
+    &lt;div class="edit_actions">
+      &lt;button type="submit">Ok ✓&lt;/button>
+    &lt;/div>
+  `;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#buildContactActionArgs">buildContactActionArgs</a></li><li><a href="global.html#createAddTaskFormTemplate">createAddTaskFormTemplate</a></li><li><a href="global.html#createAddTaskLeftForm">createAddTaskLeftForm</a></li><li><a href="global.html#createAddTaskRightForm">createAddTaskRightForm</a></li><li><a href="global.html#createAssigneeDropdownMenu">createAssigneeDropdownMenu</a></li><li><a href="global.html#createAssigneeEmptyState">createAssigneeEmptyState</a></li><li><a href="global.html#createAssigneeLoadError">createAssigneeLoadError</a></li><li><a href="global.html#createAssigneeOption">createAssigneeOption</a></li><li><a href="global.html#createAssigneeOptionCheckbox">createAssigneeOptionCheckbox</a></li><li><a href="global.html#createAssigneeOptionText">createAssigneeOptionText</a></li><li><a href="global.html#createAssigneeSection">createAssigneeSection</a></li><li><a href="global.html#createAssigneeToggle">createAssigneeToggle</a></li><li><a href="global.html#createAssigneeToggleButton">createAssigneeToggleButton</a></li><li><a href="global.html#createCategoryMenu">createCategoryMenu</a></li><li><a href="global.html#createCategorySection">createCategorySection</a></li><li><a href="global.html#createCategoryToggle">createCategoryToggle</a></li><li><a href="global.html#createContactDialogButtons">createContactDialogButtons</a></li><li><a href="global.html#createContactDialogError">createContactDialogError</a></li><li><a href="global.html#createContactDialogForm">createContactDialogForm</a></li><li><a href="global.html#createContactDialogHeader">createContactDialogHeader</a></li><li><a href="global.html#createContactDialogHeaderContent">createContactDialogHeaderContent</a></li><li><a href="global.html#createContactDialogInitial">createContactDialogInitial</a></li><li><a href="global.html#createContactDialogInputField">createContactDialogInputField</a></li><li><a href="global.html#createContactDialogInputs">createContactDialogInputs</a></li><li><a href="global.html#createContactDialogMain">createContactDialogMain</a></li><li><a href="global.html#createContactInfoRow">createContactInfoRow</a></li><li><a href="global.html#createContactInformationBody">createContactInformationBody</a></li><li><a href="global.html#createContactInformationHeader">createContactInformationHeader</a></li><li><a href="global.html#createContactListEntry">createContactListEntry</a></li><li><a href="global.html#createContactSuccessMessage">createContactSuccessMessage</a></li><li><a href="global.html#createDescriptionSection">createDescriptionSection</a></li><li><a href="global.html#createDesktopContactActionButton">createDesktopContactActionButton</a></li><li><a href="global.html#createDesktopContactActions">createDesktopContactActions</a></li><li><a href="global.html#createDueDateField">createDueDateField</a></li><li><a href="global.html#createDueDateIcon">createDueDateIcon</a></li><li><a href="global.html#createDueDateMenu">createDueDateMenu</a></li><li><a href="global.html#createDueDateMenuHeader">createDueDateMenuHeader</a></li><li><a href="global.html#createDueDateSection">createDueDateSection</a></li><li><a href="global.html#createDueDateWeekdays">createDueDateWeekdays</a></li><li><a href="global.html#createEditActionSection">createEditActionSection</a></li><li><a href="global.html#createEditAssigneeSection">createEditAssigneeSection</a></li><li><a href="global.html#createEditCloseButton">createEditCloseButton</a></li><li><a href="global.html#createEditDescriptionSection">createEditDescriptionSection</a></li><li><a href="global.html#createEditDueDateSection">createEditDueDateSection</a></li><li><a href="global.html#createEditFormSections">createEditFormSections</a></li><li><a href="global.html#createEditPrioritySection">createEditPrioritySection</a></li><li><a href="global.html#createEditSubtaskSection">createEditSubtaskSection</a></li><li><a href="global.html#createEditTaskTemplate">createEditTaskTemplate</a></li><li><a href="global.html#createEditTitleSection">createEditTitleSection</a></li><li><a href="global.html#createEditableSubtaskItem">createEditableSubtaskItem</a></li><li><a href="global.html#createFormButtons">createFormButtons</a></li><li><a href="global.html#createFormButtonsMobile">createFormButtonsMobile</a></li><li><a href="global.html#createMobileContactActionButton">createMobileContactActionButton</a></li><li><a href="global.html#createPriorityButton">createPriorityButton</a></li><li><a href="global.html#createPriorityButtons">createPriorityButtons</a></li><li><a href="global.html#createPrioritySection">createPrioritySection</a></li><li><a href="global.html#createSelectedAssigneeAvatar">createSelectedAssigneeAvatar</a></li><li><a href="global.html#createSubtaskActionButton">createSubtaskActionButton</a></li><li><a href="global.html#createSubtaskButtons">createSubtaskButtons</a></li><li><a href="global.html#createSubtaskInput">createSubtaskInput</a></li><li><a href="global.html#createSubtaskItem">createSubtaskItem</a></li><li><a href="global.html#createSubtaskSection">createSubtaskSection</a></li><li><a href="global.html#createTitleSection">createTitleSection</a></li><li><a href="global.html#escapeHtmlAttribute">escapeHtmlAttribute</a></li><li><a href="global.html#getAssigneeColor">getAssigneeColor</a></li><li><a href="global.html#getAssigneeInitials">getAssigneeInitials</a></li><li><a href="global.html#getCategoryOptionTemplate">getCategoryOptionTemplate</a></li><li><a href="global.html#getContactDialogEditandDeleteMobileTemplate">getContactDialogEditandDeleteMobileTemplate</a></li><li><a href="global.html#getContactDialogTemplate">getContactDialogTemplate</a></li><li><a href="global.html#getContactInitialLetter">getContactInitialLetter</a></li><li><a href="global.html#getContactsInformationTemplate">getContactsInformationTemplate</a></li><li><a href="global.html#getContactsListContentTemplate">getContactsListContentTemplate</a></li><li><a href="global.html#getContactsListHeaderTemplate">getContactsListHeaderTemplate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue May 26 2026 22:19:01 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
