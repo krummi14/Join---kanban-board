@@ -242,3 +242,24 @@ function addMenu() {
         }, 125);
     }
 }
+
+/**
+ * Highlights the active responsive menu button for the current page.
+ * 
+ * Compares the current pathname with the footer navigation targets
+ * and applies the shared mobile active-state class to the match.
+ */
+function highlightActiveResponsiveMenuButton() {
+    const responsiveMenu = document.getElementById("responsive_menu");
+    if (!responsiveMenu) return;
+
+    const currentPath = window.location.pathname.split("/").pop();
+    const menuButtons = responsiveMenu.querySelectorAll(".responsive_menu_button");
+
+    menuButtons.forEach((button) => {
+        const targetPath = new URL(button.href, window.location.href).pathname.split("/").pop();
+        button.classList.toggle("responsive_menu_button_onClick", targetPath === currentPath);
+    });
+}
+
+highlightActiveResponsiveMenuButton();

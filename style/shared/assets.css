@@ -189,7 +189,15 @@ input:focus {
     content: url("../../assets/icon/summary_respo_white.svg");
   }
 
+  .responsive_menu_button_onClick .responsive_menu_summary_img {
+    content: url("../../assets/icon/summary_respo_white.svg");
+  }
+
   .responsive_menu_button:hover .responsive_menu_add_task_img {
+    content: url("../../assets/icon/add_task_respo_white.svg");
+  }
+
+  .responsive_menu_button_onClick .responsive_menu_add_task_img {
     content: url("../../assets/icon/add_task_respo_white.svg");
   }
 
@@ -197,7 +205,15 @@ input:focus {
     content: url("../../assets/icon/board_respo_white.svg");
   }
 
+  .responsive_menu_button_onClick .responsive_menu_board_img {
+    content: url("../../assets/icon/board_respo_white.svg");
+  }
+
   .responsive_menu_button:hover .responsive_menu_contacts_img {
+    content: url("../../assets/icon/contacts_respo_white.svg");
+  }
+
+  .responsive_menu_button_onClick .responsive_menu_contacts_img {
     content: url("../../assets/icon/contacts_respo_white.svg");
   }
 

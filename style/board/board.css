@@ -112,14 +112,10 @@
     padding: 40px 32px 24px;
   }
 
-  .input_wrapper_direction {
-    width: 100%;
-  }
-
   .main_drag_and_drop {
     flex-direction: column;
     align-items: stretch;
-    gap: 56px; /* <<< WICHTIGER ABSTAND */
+    gap: 56px;
     height: auto;
     overflow: visible;
     padding: 0 32px 48px;

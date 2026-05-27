@@ -41,13 +41,14 @@
 }
 
 .task_card_actions {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
 }
 
 .task_move_button {
+  display: none;
   width: 28px;
   height: 28px;
   border: none;
@@ -62,4 +63,16 @@
 .task_move_button:hover {
   background: #e2f3ff;
   color: #29abe2;
+}
+
+@media (max-width: 1500px) {
+  .task_card_actions {
+    display: flex;
+  }
+
+  .task_move_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
