@@ -1,12 +1,67 @@
 import { getData } from "../shared/firebase.js";
 
+
 let loginSubmitted = false;
 
-/**
- * Clears all visible login validation errors.
- * 
- * Removes error messages from email and password fields.
- */
+/** Animates splash logo exactly to the header logo position. */
+function animateSplashLogo() {
+
+  const splashLogo = document.querySelector(".splash_logo");
+  const headerLogo = document.querySelector(".logo");
+
+  if (!splashLogo || !headerLogo) return;
+
+  const headerRect = headerLogo.getBoundingClientRect();
+
+  const logoWidth = headerRect.width;
+  const logoHeight = headerRect.height;
+
+  const startX = window.innerWidth / 2 - logoWidth / 2;
+  const startY = window.innerHeight / 2 - logoHeight / 2;
+
+  splashLogo.style.width = `${logoWidth}px`;
+  splashLogo.style.height = `${logoHeight}px`;
+
+  const animation = splashLogo.animate(
+    [
+      {
+        transform: `translate(${startX}px, ${startY}px) scale(1.6)`,
+        opacity: 1,
+      },
+      {
+        transform: `translate(${startX}px, ${startY}px) scale(1)`,
+        opacity: 1,
+        offset: 0.65,
+      },
+      {
+        transform: `translate(${headerRect.left}px, ${headerRect.top}px) scale(1)`,
+        opacity: 0.1,
+      }
+    ],
+    {
+      duration: 1000,
+      easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+      fill: "forwards",
+    }
+  );
+
+  animation.onfinish = () => {
+
+    setTimeout(() => {
+
+      splashLogo.style.transition = "opacity 0.25s ease";
+      splashLogo.style.opacity = "0";
+
+      headerLogo.style.opacity = "1";
+
+      setTimeout(() => {
+        splashLogo.style.display = "none";
+      }, 250);
+
+    }, 80);
+  };
+}
+
 const clearErrors = () => {
   showError("email-error", "");
   showError("password-error", "");
@@ -195,6 +250,8 @@ function checkPassword(e) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  animateSplashLogo();
 
   document.getElementById("login-btn")
     .addEventListener("click", () => {

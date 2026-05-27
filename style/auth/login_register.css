@@ -15,37 +15,23 @@
 
 /* ---------------- SPLASH SCREEN ---------------- */
 /* ---------------- SPLASH LOGO (FIXED + SMOOTH CENTER START) ---------------- */
-
 .splash_logo {
-    width: 180px;
+    position: fixed;
 
-    /* EXAKT zentriert ohne Tricks */
-    transform: scale(1.6);
+    left: 0;
+    top: 0;
+
+    width: 100px;
+    height: auto;
+
     opacity: 1;
 
-    will-change: transform, opacity;
+    z-index: 9999;
 
-    animation: splashMove 1.25s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    pointer-events: none;
+
+    will-change: transform;
 }
-
-/* Smooth animation */
-@keyframes splashMove {
-    0% {
-        transform: scale(1.6);
-        opacity: 1;
-    }
-
-    65% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1) translate(-40vw, -40vh);
-        opacity: 0;
-    }
-}
-
 /* Mobile Splash Logo */
 .splash_logo_mobile {
     display: none;
@@ -54,8 +40,8 @@
 /* Header Logo */
 .logo {
     width: 100px;
+   
 }
-
 /* ---------------- FOOTER ---------------- */
 
 .footer-login {
