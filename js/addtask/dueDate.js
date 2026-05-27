@@ -3,7 +3,14 @@ import { closeOutside } from "./dropdowns.js";
 const INVALID_DATE_HINT = "Imagine you have zero cookies and want to share them with zero friends.";
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-/** Initializes the due-date picker state and event bindings. */
+/**
+ * Initializes the due-date picker state and event bindings.
+ * 
+ * Sets the minimum selectable date, initializes the visible calendar month,
+ * registers manual input listeners, and synchronizes the initial value.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 export function initializeDueDatePicker(context) {
   const input = context.elements.dueDate;
   if (!input) return;
@@ -14,24 +21,56 @@ export function initializeDueDatePicker(context) {
   syncDueDateValue(context, input.value || "");
 }
 
-/** Closes the due-date picker. */
+/**
+ * Closes the due-date picker.
+ * 
+ * Forces the date picker UI into its closed state.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 export function closeDueDatePicker(context) {
   setDueDatePickerState(context, false);
 }
 
-/** Closes the due-date picker when clicking outside of it. */
+/**
+ * Closes the due-date picker when clicking outside of it.
+ * 
+ * Delegates outside-click handling to the shared helper and collapses
+ * the picker only when the click target is outside the picker wrapper.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {Event} event - Click event to evaluate.
+ */
 export function closeDueDatePickerOnOutsideClick(context, event) {
   closeOutside(event, context.elements.dueDatePicker, () => closeDueDatePicker(context));
 }
 
-/** Handles click interactions inside the due-date picker. */
+/**
+ * Handles click interactions inside the due-date picker.
+ * 
+ * Routes clicks to navigation, day selection, or toggle handling
+ * and returns whether a matching due-date control handled the click.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {HTMLElement} target - Click target inside the form.
+ * @returns {boolean} True when a due-date control handled the click.
+ */
 export function handleDueDateClick(context, target) {
   if (handleDueDateNavClick(context, target)) return true;
   if (handleDueDateDayClick(context, target)) return true;
   return handleDueDateToggleClick(context, target);
 }
 
-/** Handles keyboard interactions for the due-date picker toggle. */
+/**
+ * Handles keyboard interactions for the due-date picker toggle.
+ * 
+ * Limits handling to due-date toggle elements and supports opening,
+ * closing, and escape behavior for keyboard users.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {KeyboardEvent} event - Keyboard event from the form.
+ * @returns {boolean} True when a due-date key interaction was handled.
+ */
 export function handleDueDateKeydown(context, event) {
   const toggle = getScopedDueDateMatch(context, event.target, "[data-due-date-toggle]");
   if (!toggle) return false;
@@ -39,18 +78,40 @@ export function handleDueDateKeydown(context, event) {
   return handleDueDateEscapeKey(context, event);
 }
 
-/** Resets the due-date picker to its empty state. */
+/**
+ * Resets the due-date picker to its empty state.
+ * 
+ * Clears the stored date value and collapses the picker UI.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 export function resetDueDatePicker(context) {
   syncDueDateValue(context, "");
   closeDueDatePicker(context);
 }
 
-/** Sets the stored due-date value for the form. */
+/**
+ * Sets the stored due-date value for the form.
+ * 
+ * Accepts an ISO date string and synchronizes the picker state,
+ * display value, and current calendar view.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {string} value - ISO date value to apply.
+ */
 export function setDueDateValue(context, value) {
   syncDueDateValue(context, value || "");
 }
 
-/** Returns the ISO due-date value stored on the input. */
+/**
+ * Returns the ISO due-date value stored on the input.
+ * 
+ * Reads the normalized due-date value from the input dataset,
+ * which is used for task persistence.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @returns {string} The stored ISO due-date value.
+ */
 export function getDueDateStorageValue(context) {
   return context.elements.dueDate?.dataset.isoValue || "";
 }
@@ -159,7 +220,14 @@ function parseISODate(value) {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-/** Returns the weekday labels used by the due-date picker. */
+/**
+ * Returns the weekday labels used by the due-date picker.
+ * 
+ * Provides a shallow copy of the weekday labels so callers cannot
+ * mutate the shared constant array.
+ * 
+ * @returns {string[]} The weekday labels used by the calendar grid.
+ */
 export function getDueDateWeekdayLabels() {
   return WEEKDAY_LABELS.slice();
 }

@@ -1,6 +1,14 @@
 import { filterInitialsOfName } from "../contacts/contact.js";
 
-/** Returns the contacts list header table for a letter group. */
+/**
+ * Returns the contacts list header table for a letter group.
+ * 
+ * Creates the grouped table wrapper used to render contacts
+ * under the same initial letter.
+ * 
+ * @param {number} contactsIndex - Contact index used to derive the letter.
+ * @returns {string} Header table markup.
+ */
 export function getContactsListHeaderTemplate(contactsIndex) {
     const initialLetter = getContactInitialLetter(contactsIndex);
     return `
@@ -13,7 +21,12 @@ export function getContactsListHeaderTemplate(contactsIndex) {
     `;
 }
 
-/** Returns the table row markup for a single contact list item. */
+/**
+ * Returns the table row markup for a single contact list item.
+ * 
+ * @param {number} contactsIndex - Contact index to render.
+ * @returns {string} Contact list row markup.
+ */
 export function getContactsListContentTemplate(contactsIndex) {
     return `
       <tr>
@@ -24,7 +37,14 @@ export function getContactsListContentTemplate(contactsIndex) {
     `;
 }
 
-/** Returns the markup for the contact information panel. */
+/**
+ * Returns the markup for the contact information panel.
+ * 
+ * Combines the information header, detail rows, and success message area.
+ * 
+ * @param {number} contactsIndex - Contact index to render.
+ * @returns {string} Contact information markup.
+ */
 export function getContactsInformationTemplate(contactsIndex) {
     return [
       createContactInformationHeader(contactsIndex),
@@ -34,7 +54,14 @@ export function getContactsInformationTemplate(contactsIndex) {
     ].join("");
 }
 
-/** Returns the edit or create contact dialog markup. */
+/**
+ * Returns the edit or create contact dialog markup.
+ * 
+ * Builds the outer dialog shell used for both editing and creating contacts.
+ * 
+ * @param {number} contactsIndex - Contact index tied to the dialog ids.
+ * @returns {string} Contact dialog markup.
+ */
 export function getContactDialogTemplate(contactsIndex) {
     return `
       <dialog onclick="closeContactDialog(${contactsIndex})" id="contact_dialog_${contactsIndex}" class="contact_dialog_content dialog_closed">
@@ -46,7 +73,12 @@ export function getContactDialogTemplate(contactsIndex) {
     `;
 }
 
-/** Returns the responsive mobile edit/delete action menu markup. */
+/**
+ * Returns the responsive mobile edit/delete action menu markup.
+ * 
+ * @param {number} contactsIndex - Contact index passed to the action handlers.
+ * @returns {string} Mobile action menu markup.
+ */
 export function getContactDialogEditandDeleteMobileTemplate(contactsIndex) {
         return `
             <nav id="edit_and_delete_mobile_menu" class="edit_and_delete_mobile_menu" onclick="closeDialogOnBodyclick(event)">
@@ -56,12 +88,22 @@ export function getContactDialogEditandDeleteMobileTemplate(contactsIndex) {
         `;
 }
 
-        /** Returns the initial letter used for the current contact group. */
+    /**
+     * Returns the initial letter used for the current contact group.
+     * 
+     * @param {number} contactsIndex - Contact index to inspect.
+     * @returns {string} Initial group letter.
+     */
 function getContactInitialLetter(contactsIndex) {
         return contactsList[contactsIndex].name[0];
 }
 
-        /** Returns the clickable list entry markup for one contact. */
+    /**
+     * Returns the clickable list entry markup for one contact.
+     * 
+     * @param {number} contactsIndex - Contact index to render.
+     * @returns {string} Contact list entry markup.
+     */
 function createContactListEntry(contactsIndex) {
         return `
             <div id="contact_wrapper_${contactsIndex}" class="contact_wrapper" onclick="openContactInformation(${contactsIndex})">

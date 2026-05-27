@@ -228,7 +228,12 @@ function getFilterWord() {
   return searchInput ? searchInput.value : null;
 }
 
-/** Returns whether a filter term is shorter than the minimum length. */
+/**
+ * Returns whether a filter term is shorter than the minimum length.
+ * 
+ * @param {string} filterWord - Current board filter value.
+ * @returns {boolean} True when the filter is shorter than three characters.
+ */
 function isShortFilter(filterWord) {
   return filterWord.length < 3;
 }
@@ -272,7 +277,11 @@ function showSearchInformation() {
   addSearchInformationAsOverlay();
 }
 
-/** Adds the search information overlay styling. */
+/**
+ * Adds the search information overlay styling.
+ * 
+ * Applies the modal-like overlay classes used for the board search hint.
+ */
 function addSearchInformationAsOverlay() {
   contentSearchInformation.classList.add('loading_screen_overlay');
   document.body.classList.add('scroll_lock');
@@ -293,7 +302,11 @@ function closeSearchInformation() {
   document.body.classList.remove('scroll_lock');
 }
 
-/** Shows the board action button that was previously hidden. */
+/**
+ * Shows the board action button that was previously hidden.
+ * 
+ * Restores the floating action button after loading states finish.
+ */
 function removeShowButton() {
   contentShowButton.classList.remove('load_button_none');
 }
@@ -367,7 +380,11 @@ function bindOverlayClick() {
   overlay.addEventListener("click", handleOverlayClick);
 }
 
-/** Stops the current global event from bubbling when present. */
+/**
+ * Stops the current global event from bubbling when present.
+ * 
+ * Used by legacy inline handlers that depend on the global browser event.
+ */
 function stopWindowEvent() {
   if (!event) return;
   event.stopPropagation();

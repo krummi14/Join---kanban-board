@@ -4,7 +4,13 @@ import {
 } from "../addtask/contactUtils.js";
 
 
-/** Returns the markup for a read-only subtask item. */
+/**
+ * Returns the markup for a read-only subtask item.
+ * 
+ * @param {Object} st - Subtask object.
+ * @param {number} index - Subtask index.
+ * @returns {string} Read-only subtask markup.
+ */
 export function createSubtaskItem(st, index) {
   return `
     <section class="subtask_item">
@@ -17,7 +23,13 @@ export function createSubtaskItem(st, index) {
   `;
 }
 
-/** Returns the markup for an editable subtask item. */
+/**
+ * Returns the markup for an editable subtask item.
+ * 
+ * @param {Object} st - Subtask object.
+ * @param {number} index - Subtask index.
+ * @returns {string} Editable subtask markup.
+ */
 export function createEditableSubtaskItem(st, index) {
   return `
     <section class="subtask_item editing">
@@ -32,7 +44,15 @@ export function createEditableSubtaskItem(st, index) {
   `;
 }
 
-/** Returns the markup for a subtask action button. */
+/**
+ * Returns the markup for a subtask action button.
+ * 
+ * @param {string} action - Data attribute name for the action.
+ * @param {number} index - Subtask index.
+ * @param {string} label - Accessible label for the action.
+ * @param {string} iconPath - Icon path used in the button.
+ * @returns {string} Action button markup.
+ */
 function createSubtaskActionButton(action, index, label, iconPath) {
   return `
     <button type="button" class="subtask_item_action_button" data-${action}="${index}" aria-label="${label}">
@@ -41,7 +61,12 @@ function createSubtaskActionButton(action, index, label, iconPath) {
   `;
 }
 
-/** Escapes a string for safe use inside an HTML attribute. */
+/**
+ * Escapes a string for safe use inside an HTML attribute.
+ * 
+ * @param {string} value - Raw text value.
+ * @returns {string} Escaped attribute-safe value.
+ */
 function escapeHtmlAttribute(value) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -50,8 +75,13 @@ function escapeHtmlAttribute(value) {
     .replace(/>/g, "&gt;");
 }
 
-  /** Returns the markup for an assignee option row. */
-export function createAssigneeOption(contact) {   //CHANGE 
+/**
+ * Returns the markup for an assignee option row.
+ * 
+ * @param {Object} contact - Contact rendered in the assignee dropdown.
+ * @returns {string} Assignee option markup.
+ */
+export function createAssigneeOption(contact) {
   return `
     <label class="assignee_option" for="assignee_${contact.id}">
       ${createAssigneeOptionText(contact)}
@@ -95,7 +125,15 @@ function getAssigneeColor(name) {
   return ["#ff7a00", "#9327ff", "#00c4cc", "#1fd7c1", "#ff5eb3", "#6e52ff"][String(name || "").length % 6];
 }
 
-/** Returns the full Add Task form markup. */
+/**
+ * Returns the full Add Task form markup.
+ * 
+ * Builds both form columns and the responsive action buttons used
+ * by the add-task experience.
+ * 
+ * @param {string} path - Target board column for new tasks.
+ * @returns {string} Complete add-task form markup.
+ */
 export function createAddTaskFormTemplate(path) {
   return `  
       <form id="taskForm">
@@ -324,7 +362,12 @@ function createFormButtonsMobile(path) {
   `;
 }
 
-/** Returns the avatar markup for a selected assignee. */
+/**
+ * Returns the avatar markup for a selected assignee.
+ * 
+ * @param {Object} contact - Selected assignee contact.
+ * @returns {string} Selected-assignee avatar markup.
+ */
 export function createSelectedAssigneeAvatar(
   contact
 ) {

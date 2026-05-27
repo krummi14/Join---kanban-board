@@ -1,3 +1,11 @@
+/**
+ * Returns the add-task dialog shell markup.
+ * 
+ * Builds the board dialog wrapper, header, container slot,
+ * and transient success feedback element.
+ * 
+ * @returns {string} Dialog markup.
+ */
 export function getDialogAddTaskTemplate() {
   return `
       <dialog onclick="closeAddNewTaskDialog()" id="addTask_dialog" class="addTask_dialog_content dialog_closed">
@@ -10,6 +18,11 @@ export function getDialogAddTaskTemplate() {
     `;
 }
 
+  /**
+   * Builds the static header for the add-task dialog.
+   * 
+   * @returns {string} Dialog header markup.
+   */
 function buildAddTaskDialogHeader() {
   return `
     <section class="main_header main_addTask_dialog_header">
@@ -21,6 +34,11 @@ function buildAddTaskDialogHeader() {
   `;
 }
 
+/**
+ * Builds the success feedback element for task creation.
+ * 
+ * @returns {string} Feedback markup.
+ */
 function buildTaskAddedFeedback() {
   return `
     <section id="taskAddedFeedback" class="task_added_feedback" role="status" aria-live="polite">

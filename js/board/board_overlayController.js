@@ -14,37 +14,69 @@ import { initializeDueDatePicker } from "../addtask/dueDate.js";
 
 let addTaskFormController = null;
 
-/** Opens the task overlay for the selected task. */
+/**
+ * Opens the task overlay for the selected task.
+ * 
+ * Resolves the task from the current board cache and renders
+ * its detail markup into the overlay.
+ * 
+ * @param {string} taskId - Id of the task to display.
+ */
 export function openOverlay(taskId) {
   const task = findTask(taskId);
   if (!task) return;
   renderOverlay(generateTaskOverlay(task));
 }
 
-/** Closes the task overlay. */
+/**
+ * Closes the task overlay.
+ * 
+ * Hides the overlay root without destroying its current content.
+ */
 export function closeOverlay() {
   getOverlayElement()?.classList.add("hidden");
 }
 
-/** Closes the overlay when its backdrop is clicked. */
+/**
+ * Closes the overlay when its backdrop is clicked.
+ * 
+ * @param {MouseEvent} event - Click event from the overlay root.
+ */
 export function handleOverlayClick(event) {
   if (event.target.id !== "overlay") return;
   closeOverlay();
 }
 
-/** Returns the current user name stored in local storage. */
+/**
+ * Returns the current user name stored in local storage.
+ * 
+ * @returns {string} Stored user name or an empty string.
+ */
 function getCurrentUserName() {
   return localStorage.getItem("userName") || "";
 }
 
-/** Returns the assignee section markup for a task overlay. */
+/**
+ * Returns the assignee section markup for a task overlay.
+ * 
+ * Marks the current user in the list and falls back to the empty state
+ * when the task has no assignees.
+ * 
+ * @param {Object} task - Task displayed in the overlay.
+ * @returns {string} Assignee section markup.
+ */
 function generateAssigneesContent(task) {
   const currentUser = getCurrentUserName();
   if (!task.assignees?.length) return getNoAssigneesTemplate();
   return task.assignees.map((assignee) => createAssigneeMarkup(assignee, currentUser)).join("");
 }
 
-/** Returns the subtask section markup for a task overlay. */
+/**
+ * Returns the subtask section markup for a task overlay.
+ * 
+ * @param {Object} task - Task displayed in the overlay.
+ * @returns {string} Subtask section markup.
+ */
 function generateSubtasksContent(task) {
   if (!task.subtasks?.length) return getNoSubtasksTemplate();
   return task.subtasks.map((subtask, index) => generateSubtask(task, subtask, index)).join("");
@@ -55,7 +87,14 @@ window.toggleSubtask = async function (taskId, index) {
   refreshBoard();
 };
 
-/** Formats a stored due date for display in the overlay. */
+/**
+ * Formats a stored due date for display in the overlay.
+ * 
+ * Accepts both already formatted strings and ISO-like date values.
+ * 
+ * @param {string} dateString - Stored task due date.
+ * @returns {string} Display-ready date string.
+ */
 function formatDate(dateString) {
   if (!dateString) return "";
   if (dateString.includes("/")) return dateString;
@@ -64,7 +103,14 @@ function formatDate(dateString) {
   return formatDateParts(date);
 }
 
-/** Opens the edit form for the selected task. */
+/**
+ * Opens the edit form for the selected task.
+ * 
+ * Replaces the task detail view with the reusable add-task form
+ * configured for edit mode.
+ * 
+ * @param {string} taskId - Id of the task to edit.
+ */
 async function editTask(taskId) {
   const task = findTask(taskId);
   if (!task) return;
@@ -149,12 +195,21 @@ window.toggleCategoryDropdown = function (event) {
   toggleMenuVisibility("categoryDropdownMenu");
 };
 
-/** Finds a task by id in the current task collection. */
+/**
+ * Finds a task by id in the current task collection.
+ * 
+ * @param {string} taskId - Id of the requested task.
+ * @returns {Object|undefined} Matching task record.
+ */
 function findTask(taskId) {
   return getTasks().find((task) => task.id === taskId);
 }
 
-/** Returns the overlay root element. */
+/**
+ * Returns the overlay root element.
+ * 
+ * @returns {HTMLElement|null} Overlay container element.
+ */
 function getOverlayElement() {
   return document.getElementById("overlay");
 }
@@ -173,7 +228,11 @@ function createAssigneeMarkup(assignee, currentUser) {
   return getAssigneeTemplate(assignee, isYou);
 }
 
-/** Refreshes the board after overlay-based task changes. */
+/**
+ * Refreshes the board after overlay-based task changes.
+ * 
+ * Delegates to the board page's synchronized render helper when present.
+ */
 function refreshBoard() {
   window.syncBoardColumns?.(getTasks());
 }

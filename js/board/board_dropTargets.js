@@ -1,6 +1,14 @@
 import { updateColumns } from "./board_taskView.js";
 
-/** Updates the pending drop target from the current pointer position. */
+/**
+ * Updates the pending drop target from the current pointer position.
+ * 
+ * Resolves the hovered drop zone, computes the insertion index,
+ * and updates both highlight and indicator state.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {Object} point - Pointer coordinates.
+ */
 export function updatePendingDropTargetByPoint(state, point) {
   const columnId = getDropZoneId(state, point);
   if (!columnId) return;
@@ -11,7 +19,11 @@ export function updatePendingDropTargetByPoint(state, point) {
   updateDropIndicator(columnId, state.pendingDropIndex);
 }
 
-/** Clears the pending drop target and all active drag markers. */
+/**
+ * Clears the pending drop target and all active drag markers.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ */
 export function resetPendingDropTarget(state) {
   clearDropIndicators();
   clearDropZoneHighlights();
@@ -19,13 +31,30 @@ export function resetPendingDropTarget(state) {
   state.pendingDropIndex = null;
 }
 
-/** Resolves the effective drop index for a target board column. */
+/**
+ * Resolves the effective drop index for a target board column.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {string} category - Target board column path.
+ * @returns {number} Effective insertion index.
+ */
 export function resolveDropIndex(state, category) {
   if (state.pendingDropPath === category && Number.isInteger(state.pendingDropIndex)) return state.pendingDropIndex;
   return getColumnTaskCount(state, category);
 }
 
-/** Applies an optimistic move in the local board data. */
+/**
+ * Applies an optimistic move in the local board data.
+ * 
+ * Removes the dragged task from its current column and inserts it into
+ * the requested target column before the server write completes.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {string} taskId - Id of the dragged task.
+ * @param {string} nextPath - Target board column path.
+ * @param {number|null} targetIndex - Preferred insertion index.
+ * @returns {Object|null} Move descriptor for later rendering or rollback.
+ */
 export function applyOptimisticMove(state, taskId, nextPath, targetIndex) {
   const previousColumn = findTaskColumn(state, taskId);
   const nextColumn = findColumn(state, nextPath);
@@ -38,7 +67,12 @@ export function applyOptimisticMove(state, taskId, nextPath, targetIndex) {
   return { previousPath: previousColumn.path, newPath: nextColumn.path, previousIndex, nextIndex, task };
 }
 
-/** Rolls back a previously applied optimistic move after persistence fails. */
+/**
+ * Rolls back a previously applied optimistic move after persistence fails.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {Object|null} optimisticMove - Move descriptor returned earlier.
+ */
 export function rollbackOptimisticMove(state, optimisticMove) {
   if (!optimisticMove) return;
   const previousColumn = findColumn(state, optimisticMove.previousPath);
@@ -48,23 +82,42 @@ export function rollbackOptimisticMove(state, optimisticMove) {
   previousColumn.tasks.splice(optimisticMove.previousIndex, 0, optimisticMove.task);
 }
 
-/** Re-renders the columns affected by the provided move data. */
+/**
+ * Re-renders the columns affected by the provided move data.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {Object|null} moveData - Move result or optimistic move descriptor.
+ */
 export function renderMoveColumns(state, moveData) {
   if (!moveData) return;
   renderColumns(state, getUpdatedPaths(moveData));
 }
 
-/** Re-renders a specific set of board column paths. */
+/**
+ * Re-renders a specific set of board column paths.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {Array<string>} paths - Column paths to re-render.
+ */
 export function renderColumns(state, paths) {
   updateColumns(paths, state.boardColumns);
 }
 
-/** Returns the unique board column paths affected by a move result. */
+/**
+ * Returns the unique board column paths affected by a move result.
+ * 
+ * @param {Object} moveData - Move descriptor containing old and new paths.
+ * @returns {Array<string>} Unique affected column paths.
+ */
 export function getUpdatedPaths(moveData) {
   return [...new Set([moveData.previousPath, moveData.newPath])];
 }
 
-/** Clears the active drop-zone highlight styling. */
+/**
+ * Clears the active drop-zone highlight styling.
+ * 
+ * Removes the CSS class used to emphasize the current drop target.
+ */
 export function clearDropZoneHighlights() {
   document.querySelectorAll(".drag-area-highlight").forEach((dropZone) => {
     dropZone.classList.remove("drag-area-highlight");

@@ -1,4 +1,11 @@
-/** Returns the markup for the edit-task overlay form. */
+/**
+ * Returns the markup for the edit-task overlay form.
+ * 
+ * Builds the board overlay used to edit an existing task
+ * with the reusable add-task controls.
+ * 
+ * @returns {string} Edit overlay markup.
+ */
 export function createEditTaskTemplate() {
   return `
   <div class="edit_overlay">
@@ -12,7 +19,11 @@ export function createEditTaskTemplate() {
   `;
 }
 
-/** Returns the close button markup for the edit overlay. */
+/**
+ * Returns the close button markup for the edit overlay.
+ * 
+ * @returns {string} Close button markup.
+ */
 function createEditCloseButton() {
   return `
     <div class="close_button">
@@ -23,7 +34,11 @@ function createEditCloseButton() {
   `;
 }
 
-/** Returns the assembled edit-form sections markup. */
+/**
+ * Returns the assembled edit-form sections markup.
+ * 
+ * @returns {string} Combined edit-form markup.
+ */
 function createEditFormSections() {
   return [
     createEditTitleSection(),
@@ -56,7 +71,13 @@ function createEditDescriptionSection() {
   `;
 }
 
-/** Returns the edit-task due-date picker section markup. */
+/**
+ * Returns the edit-task due-date picker section markup.
+ * 
+ * Reuses the same calendar structure as the add-task form.
+ * 
+ * @returns {string} Due-date section markup.
+ */
 function createEditDueDateSection() {
   return `
     <div
@@ -198,7 +219,11 @@ function createEditPrioritySection() {
   `;
 }
 
-/** Returns the edit-task assignee section markup. */
+/**
+ * Returns the edit-task assignee section markup.
+ * 
+ * @returns {string} Assignee section markup.
+ */
 function createEditAssigneeSection() {
   return `
     <section class="edit_assigned_to">
@@ -235,7 +260,11 @@ function createAssigneeDropdownMenu() {
   `;
 }
 
-/** Returns the edit-task subtask section markup. */
+/**
+ * Returns the edit-task subtask section markup.
+ * 
+ * @returns {string} Subtask section markup.
+ */
 function createEditSubtaskSection() {
   return `
     <section class="edit_subtasks subtask">

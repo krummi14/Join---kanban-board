@@ -9,7 +9,16 @@ import {
 
 import { setDropdownState, toggleDropdown } from "./dropdowns.js";
 
-/** Renders the available assignee contacts into the dropdown. */
+/**
+ * Renders the available contacts into the assignee dropdown.
+ * 
+ * Loads the contact data, stores it in the shared add-task state,
+ * and updates the dropdown UI based on the result.
+ * Shows an error or empty state when no selectable contacts exist.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @returns {Promise<void>}
+ */
 export async function renderAssigneeContacts(context) {
   const menu = context.elements.assigneeMenu;
   try {
@@ -23,21 +32,45 @@ export async function renderAssigneeContacts(context) {
   renderAssigneeOptions(context, menu);
 }
 
-/** Renders the assignee option list for the current contacts. */
+/**
+ * Renders the assignee option list for the current contact set.
+ * 
+ * Replaces the dropdown content with contact options and synchronizes
+ * the current checkbox and label state afterward.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {HTMLElement|null} menu - Dropdown container for assignee options.
+ */
 function renderAssigneeOptions(context, menu) {
   menu.innerHTML = context.state.assigneeContacts.map(createAssigneeOption).join("");
   syncAssigneeCheckboxes(context);
   updateAssigneeLabel(context);
 }
 
-/** Replaces the selected assignee ids with a new set. */
+/**
+ * Replaces the selected assignee ids with a new selection.
+ * 
+ * Copies the provided ids into the shared state and refreshes
+ * the checkbox and avatar label UI to match the new selection.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {string[]} [contactIds=[]] - Contact ids that should be selected.
+ */
 export function setSelectedAssignees(context, contactIds = []) {
   context.state.selectedAssignees = [...contactIds];
   syncAssigneeCheckboxes(context);
   updateAssigneeLabel(context);
 }
 
-/** Toggles a single assignee in the current selection. */
+/**
+ * Toggles a single assignee inside the current selection.
+ * 
+ * Removes the contact id when it is already selected,
+ * otherwise adds it and updates the related UI state.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {string} contactId - Contact id to add or remove.
+ */
 export function toggleAssigneeSelection(context, contactId) {
   const index = context.state.selectedAssignees.indexOf(contactId);
 
@@ -51,7 +84,14 @@ export function toggleAssigneeSelection(context, contactId) {
   updateAssigneeLabel(context);
 }
 
-/** Opens or closes the assignee dropdown. */
+/**
+ * Toggles the open state of the assignee dropdown.
+ * 
+ * Uses the shared dropdown helper to switch between the
+ * expanded and collapsed state for the assignee selector.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 export function toggleAssigneeDropdown(context) {
   toggleDropdown(
     context.elements.assigneeToggle,
@@ -60,7 +100,14 @@ export function toggleAssigneeDropdown(context) {
   );
 }
 
-/** Closes the assignee dropdown. */
+/**
+ * Closes the assignee dropdown.
+ * 
+ * Forces the dropdown helper state to collapsed so the
+ * assignee menu is hidden regardless of its previous state.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 export function closeAssigneeDropdown(context) {
   setDropdownState(
     context.elements.assigneeToggle,
@@ -70,14 +117,29 @@ export function closeAssigneeDropdown(context) {
   );
 }
 
-/** Returns the contact records for the selected assignees. */
+/**
+ * Returns the contact records for the currently selected assignees.
+ * 
+ * Filters the loaded contact list by the selected assignee ids
+ * and returns the matching contact objects.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @returns {Array<Object>} The selected contact records.
+ */
 export function getAssignedContacts(context) {
   return context.state.assigneeContacts.filter((contact) =>
     context.state.selectedAssignees.includes(contact.id),
   );
 }
 
-/** Synchronizes the assignee checkboxes with the current selection. */
+/**
+ * Synchronizes assignee checkboxes with the current selection state.
+ * 
+ * Updates the checked state of each assignee input and mirrors
+ * that state on the surrounding option element for styling.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 function syncAssigneeCheckboxes(context) {
   context.taskForm.querySelectorAll("[data-assignee-id]").forEach((checkbox) => {
     const isSelected = context.state.selectedAssignees.includes(checkbox.dataset.assigneeId);
@@ -86,21 +148,44 @@ function syncAssigneeCheckboxes(context) {
   });
 }
 
-/** Updates the selected-contact avatar label. */
+/**
+ * Updates the selected-contact avatar label.
+ * 
+ * Renders the avatar preview for all currently selected contacts
+ * into the label container below the assignee dropdown.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ */
 function updateAssigneeLabel(context) {
   const label = context.elements.selectedContacts;
   if (!label) return;
   label.innerHTML = getSelectedContacts(context).map(createSelectedAssigneeAvatar).join("");
 }
 
-/** Returns the selected contact records. */
+/**
+ * Returns the contact records for the current selection.
+ * 
+ * Filters the loaded contacts to those whose ids are present
+ * in the selected-assignee state array.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @returns {Array<Object>} The selected contact objects.
+ */
 function getSelectedContacts(context) {
   return context.state.assigneeContacts.filter((contact) =>
     context.state.selectedAssignees.includes(contact.id),
   );
 }
 
-/** Shows the assignee load error state and logs the failure. */
+/**
+ * Shows the assignee load error state and logs the failure.
+ * 
+ * Replaces the dropdown content with an error message when contact
+ * loading fails and writes the original error to the console.
+ * 
+ * @param {HTMLElement|null} menu - Dropdown container for assignee options.
+ * @param {unknown} error - Original error thrown while loading contacts.
+ */
 function showContactLoadError(menu, error) {
   if (menu) {
     menu.innerHTML = createAssigneeLoadError();
@@ -109,7 +194,15 @@ function showContactLoadError(menu, error) {
   console.error("Failed to load contacts for assignee dropdown.", error);
 }
 
-/** Shows the empty state when no contacts are available. */
+/**
+ * Shows the empty state when no contacts are available.
+ * 
+ * Replaces the dropdown content with the empty-state markup
+ * and clears the selected-avatar label rendering.
+ * 
+ * @param {Object} context - Shared add-task context with state and elements.
+ * @param {HTMLElement|null} menu - Dropdown container for assignee options.
+ */
 function showEmptyContacts(context, menu) {
   if (menu) {
     menu.innerHTML = createAssigneeEmptyState();
@@ -118,7 +211,14 @@ function showEmptyContacts(context, menu) {
   updateAssigneeLabel(context);
 }
 
-/** Fetches and normalizes the contacts available for assignment. */
+/**
+ * Fetches and normalizes the contacts available for assignment.
+ * 
+ * Loads the contact collection from Firebase, filters invalid entries,
+ * maps them into a predictable shape, and sorts them alphabetically.
+ * 
+ * @returns {Promise<Array<{id: string, name: string}>>} The normalized contacts.
+ */
 async function fetchContacts() {
   const contacts = await getData("contacts");
 

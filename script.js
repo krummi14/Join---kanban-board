@@ -102,7 +102,6 @@ window.addEventListener("load", () => {
 
     if (!splash) return;
 
-    // jedes Reload sichtbar
     setTimeout(() => {
         splash.classList.add("fade-out");
     }, 1200);

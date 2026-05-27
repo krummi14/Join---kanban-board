@@ -3,7 +3,12 @@ import { getData } from "../shared/firebase.js";
 
 let loginSubmitted = false;
 
-/** Animates splash logo exactly to the header logo position. */
+/**
+ * Animates the splash logo toward the header logo position.
+ * 
+ * Measures the final logo position in the page header and plays
+ * a staged intro animation before hiding the splash element.
+ */
 function animateSplashLogo() {
 
   const splashLogo = document.querySelector(".splash_logo");
@@ -62,6 +67,12 @@ function animateSplashLogo() {
   };
 }
 
+/**
+ * Clears all visible login validation errors.
+ * 
+ * Resets both email and password error placeholders
+ * before a new validation or login attempt starts.
+ */
 const clearErrors = () => {
   showError("email-error", "");
   showError("password-error", "");
@@ -219,6 +230,9 @@ async function persistLoginSession(id) {
 
 /**
  * Redirects the user to the summary page after login.
+ * 
+ * Navigates to the authenticated landing page once the
+ * login flow has completed successfully.
  */
 function redirectToSummary() {
   location.href = "../html/summary.html";
@@ -249,6 +263,12 @@ function checkPassword(e) {
   validatePassword(e.target.value);
 }
 
+/**
+ * Registers the login page event handlers after the DOM is ready.
+ * 
+ * Wires up login, guest login, signup navigation, field validation,
+ * and the splash intro animation for the authentication page.
+ */
 document.addEventListener("DOMContentLoaded", () => {
 
   animateSplashLogo();

@@ -1,5 +1,13 @@
 import { getContactInitials } from "../addtask/addTaskForm.js";
 
+/**
+ * Returns the complete overlay markup for a board task.
+ * 
+ * Wraps the composed task detail content in the outer overlay container.
+ * 
+ * @param {Object} task - Normalized board task.
+ * @returns {string} Overlay markup.
+ */
 export function generateTaskOverlay(task) {
   return `
     <div class="task_overlay">
@@ -8,6 +16,15 @@ export function generateTaskOverlay(task) {
   `;
 }
 
+/**
+ * Builds the inner content for the task detail overlay.
+ * 
+ * Combines the task metadata, assignees, subtasks, move actions,
+ * and footer action buttons into one fragment.
+ * 
+ * @param {Object} task - Normalized board task.
+ * @returns {string} Overlay body markup.
+ */
 function buildTaskOverlayContent(task) {
   return [
     generateOverlayHeader(task),
@@ -22,6 +39,12 @@ function buildTaskOverlayContent(task) {
   ].join("");
 }
 
+/**
+ * Builds the move-action area for the task overlay.
+ * 
+ * @param {Object} task - Normalized board task.
+ * @returns {string} Move-action markup.
+ */
 function generateOverlayMoveActions(task) {
   const moveOptions = getMoveOptions(task.status);
   if (!moveOptions.length) return "";
@@ -35,10 +58,21 @@ function generateOverlayMoveActions(task) {
   `;
 }
 
+/**
+ * Returns the allowed board move targets for the current status.
+ * 
+ * @param {string} currentStatus - Current task status.
+ * @returns {Array<Object>} Allowed move target descriptors.
+ */
 function getMoveOptions(currentStatus) {
   return getBoardMoveTargets().filter((target) => target.path !== currentStatus);
 }
 
+/**
+ * Returns all supported board move targets.
+ * 
+ * @returns {Array<Object>} Static move target descriptors.
+ */
 function getBoardMoveTargets() {
   return [
     { path: "to_do", label: "To do" },
@@ -48,6 +82,13 @@ function getBoardMoveTargets() {
   ];
 }
 
+/**
+ * Returns one move button for the task overlay.
+ * 
+ * @param {string} taskId - Task id to move.
+ * @param {Object} option - Move target descriptor.
+ * @returns {string} Move button markup.
+ */
 function generateMoveActionButton(taskId, option) {
   return `
     <button class="overlay_move_button" onclick="moveTaskFromOverlay('${taskId}', '${option.path}')">
@@ -178,10 +219,24 @@ export function getNoSubtasksTemplate() {
   return `<p>No subtasks yet</p>`;
 }
 
+/**
+ * Returns the assignee empty state shown in the overlay.
+ * 
+ * @returns {string} Empty-state markup.
+ */
 export function getNoAssigneesTemplate() {
   return `<p>No Users assigned</p>`;
 }
 
+/**
+ * Returns the overlay row for one assignee.
+ * 
+ * Marks the current user when appropriate.
+ * 
+ * @param {Object} a - Assignee object.
+ * @param {boolean} isYou - Whether the assignee matches the current user.
+ * @returns {string} Assignee row markup.
+ */
 export function getAssigneeTemplate(a, isYou) {
   return `
     <div class="assignee_row">

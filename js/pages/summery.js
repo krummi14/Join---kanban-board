@@ -1,9 +1,21 @@
-/** Returns whether the summary page is currently in mobile mode. */
+/**
+ * Returns whether the summary page is currently in mobile mode.
+ * 
+ * Evaluates the viewport breakpoint used by the summary page
+ * to switch between desktop and mobile greeting behavior.
+ * 
+ * @returns {boolean} True when the mobile breakpoint is active.
+ */
 function isMobileMode() {
   return window.matchMedia("(max-width: 1115px)").matches;
 }
 
-/** Renders the greeting text and user badge. */
+/**
+ * Renders the greeting text and user badge.
+ * 
+ * Updates the time-based greeting and personalized user display
+ * before writing the current initials into the header badge.
+ */
 function renderGreeting() {
   updateGreetingText();
   updateGreetingUser();
@@ -61,7 +73,12 @@ function syncGreetingVisibility() {
 
 mq.addEventListener("change", syncGreetingVisibility);
 
-/** Initializes the summary page greeting and metrics. */
+/**
+ * Initializes the summary page greeting and metrics.
+ * 
+ * Decides whether the greeting should be shown, handles the mobile
+ * fade-out flow, and triggers the summary metric rendering.
+ */
 async function initSummery() {
   if (shouldSkipGreeting()) return renderSummaryWithoutGreeting();
 
@@ -118,7 +135,15 @@ function normalizeStatusKey(status) {
     .replace(/\s+/g, "_");
 }
 
-  /** Updates a single metric counter element. */
+/**
+ * Updates a single metric counter element.
+ * 
+ * Writes the provided count and label into the matching metric tile.
+ * 
+ * @param {string} elementId - Id of the target metric element.
+ * @param {number} count - Numeric value to display.
+ * @param {string} label - Label shown below the value.
+ */
 function updateMetricCount(elementId, count, label) {
   const element = document.getElementById(elementId);
 
@@ -268,7 +293,15 @@ function getUpcomingDeadline(tasks) {
     .sort((left, right) => left - right)[0];
 }
 
-  /** Builds the fallback markup when no deadline exists. */
+  /**
+   * Builds the fallback markup when no deadline exists.
+   * 
+   * Returns the summary tile content used when no upcoming urgent
+   * deadline can be determined from the current tasks.
+   * 
+   * @param {string} label - Deadline label text.
+   * @returns {string} Fallback deadline markup.
+   */
 function buildNoDeadlineMarkup(label) {
   return `No deadline<br><span>${label}</span>`;
 }

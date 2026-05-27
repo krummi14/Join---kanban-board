@@ -3,7 +3,11 @@ const DRAG_START_DISTANCE = 6;
 const TOUCH_LONG_PRESS_MS = 320;
 const TOUCH_SCROLL_CANCEL_DISTANCE = 10;
 
-/** Creates the mutable drag state used across board drag interactions. */
+/**
+ * Creates the mutable drag state used across board drag interactions.
+ * 
+ * @returns {Object} Fresh drag state object.
+ */
 export function createDragState() {
   return {
     draggedId: null,
@@ -24,7 +28,14 @@ export function createDragState() {
   };
 }
 
-/** Starts tracking a pending drag interaction for the current pointer event. */
+/**
+ * Starts tracking a pending drag interaction for the current pointer event.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {MouseEvent|TouchEvent} ev - Initial drag-start event.
+ * @param {string} id - Dragged task id.
+ * @param {Object} point - Pointer coordinates.
+ */
 export function startPendingDrag(state, ev, id, point) {
   state.pendingDragStart = createPendingDragStart(ev, id, point);
   if (state.pendingDragStart?.inputType !== "touch") return;
@@ -32,14 +43,23 @@ export function startPendingDrag(state, ev, id, point) {
   armTouchLongPress(state);
 }
 
-/** Clears any pending drag-start state and touch feedback. */
+/**
+ * Clears any pending drag-start state and touch feedback.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ */
 export function clearPendingDragStart(state) {
   clearTouchFeedbackState(state);
   clearPendingTouchLongPress(state);
   state.pendingDragStart = null;
 }
 
-/** Promotes the pending drag interaction into an active drag. */
+/**
+ * Promotes the pending drag interaction into an active drag.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {Object} point - Pointer coordinates.
+ */
 export function beginDragging(state, point) {
   if (!state.pendingDragStart?.taskCard) {
     clearPendingDragStart(state);
@@ -56,12 +76,21 @@ export function beginDragging(state, point) {
   clearPendingDragStart(state);
 }
 
-/** Returns whether the current click should be ignored during drag handling. */
+/**
+ * Returns whether the current click should be ignored during drag handling.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @returns {boolean} True when click handling should be suppressed.
+ */
 export function shouldSuppressTaskClick(state) {
   return state.draggedId !== null || state.pendingDragStart !== null || Date.now() < state.suppressTaskClickUntil;
 }
 
-/** Clears preview, hidden-card, and motion state after a drag update. */
+/**
+ * Clears preview, hidden-card, and motion state after a drag update.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ */
 export function cleanupDragArtifacts(state) {
   cleanupDragPreview(state);
   cleanupDraggedCard(state);
@@ -88,7 +117,12 @@ export function shouldCancelPendingTouchDrag(state, point) {
   return Math.hypot(deltaX, deltaY) >= TOUCH_SCROLL_CANCEL_DISTANCE;
 }
 
-/** Positions the floating preview under the current pointer location. */
+/**
+ * Positions the floating preview under the current pointer location.
+ * 
+ * @param {Object} state - Mutable board drag state.
+ * @param {Object} ev - Pointer coordinates.
+ */
 export function positionDragPreview(state, ev) {
   if (!state.activeDragPreview || !hasPointerCoordinates(ev)) return;
   const previewState = getPreviewState(state, ev);
@@ -96,7 +130,12 @@ export function positionDragPreview(state, ev) {
   state.activeDragPreview.style.boxShadow = buildPreviewShadow(previewState.tilt);
 }
 
-/** Extracts normalized pointer coordinates from mouse or touch events. */
+/**
+ * Extracts normalized pointer coordinates from mouse or touch events.
+ * 
+ * @param {MouseEvent|TouchEvent} ev - Pointer event.
+ * @returns {Object|null} Normalized coordinates or null.
+ */
 export function getEventPoint(ev) {
   if (typeof ev?.clientX === "number" && typeof ev?.clientY === "number") {
     return { clientX: ev.clientX, clientY: ev.clientY };
@@ -107,7 +146,12 @@ export function getEventPoint(ev) {
   return { clientX: touch.clientX, clientY: touch.clientY };
 }
 
-/** Returns whether the event is allowed to start a drag interaction. */
+/**
+ * Returns whether the event is allowed to start a drag interaction.
+ * 
+ * @param {MouseEvent|TouchEvent} ev - Potential drag-start event.
+ * @returns {boolean} True when the event can start dragging.
+ */
 export function isValidDragStartEvent(ev) {
   if (ev?.type === "mousedown") {
     return ev.button === 0;

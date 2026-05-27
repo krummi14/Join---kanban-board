@@ -10,17 +10,33 @@ const BOARD_CACHE_OPTIONS = {
   maxAgeMs: 15000,
 };
 
-/** Returns the in-memory task collection. */
+/**
+ * Returns the in-memory task collection.
+ * 
+ * @returns {Array<Object>} Current normalized task list.
+ */
 export function getTasks() {
   return tasks;
 }
 
-/** Replaces the in-memory task collection. */
+/**
+ * Replaces the in-memory task collection.
+ * 
+ * @param {Array<Object>} newTasks - Next normalized task list.
+ */
 export function setTasks(newTasks) {
   tasks = newTasks;
 }
 
-/** Loads tasks from the unified or legacy board sources. */
+/**
+ * Loads tasks from the unified or legacy board sources.
+ * 
+ * Prefers the unified tasks root and falls back to the legacy
+ * per-column storage structure when needed.
+ * 
+ * @param {Array<Object>} BOARD_COLUMNS - Current board column configuration.
+ * @returns {Promise<Array<Object>>} Loaded normalized task list.
+ */
 export async function loadTasks(BOARD_COLUMNS) {
   const tasksRootData = await getData(TASKS_ROOT_PATH, BOARD_CACHE_OPTIONS);
   const unifiedTasks = mapUnifiedTasks(tasksRootData, BOARD_COLUMNS);
@@ -34,7 +50,12 @@ export async function loadTasks(BOARD_COLUMNS) {
   return tasks;
 }
 
-/** Synchronizes one updated task into the local task cache. */
+/**
+ * Synchronizes one updated task into the local task cache.
+ * 
+ * @param {string} taskId - Id of the updated task.
+ * @param {Object} updatedData - Partial task data to merge locally.
+ */
 export function syncTaskLocally(taskId, updatedData) {
   syncLocalTaskUpdate(taskId, updatedData);
 }
@@ -47,7 +68,13 @@ function generateAvatarHTML(assignees) {
   return buildAvatarMarkup(visibleAssignees, extraAssigneeCount);
 }
 
-/** Returns the tasks that belong to a specific board column. */
+/**
+ * Returns the tasks that belong to a specific board column.
+ * 
+ * @param {string} category - Requested board column path.
+ * @param {Array<Object>} BOARD_COLUMNS - Current board column state.
+ * @returns {Array<Object>} Sorted tasks for the requested column.
+ */
 export function getTasksForColumn(category, BOARD_COLUMNS) {
   const column = BOARD_COLUMNS.find(
     (c) => normalizeCategory(c.path) === normalizeCategory(category)
@@ -62,7 +89,18 @@ export function getTasksForColumn(category, BOARD_COLUMNS) {
   );
 }
 
-/** Moves a task to another board column and persists the change. */
+/**
+ * Moves a task to another board column and persists the change.
+ * 
+ * Updates storage, synchronizes local column arrays, and then writes
+ * order changes for all affected columns.
+ * 
+ * @param {string} taskId - Id of the task to move.
+ * @param {string} targetCategory - Destination board column path.
+ * @param {Array<Object>} BOARD_COLUMNS - Current board column state.
+ * @param {number|null} [targetIndex=null] - Preferred insertion index.
+ * @returns {Promise<Object|null>} Move result used for targeted rerenders.
+ */
 export async function moveTask(taskId, targetCategory, BOARD_COLUMNS, targetIndex = null) {
   const moveContext = getMoveContext(taskId, targetCategory, BOARD_COLUMNS);
   if (!moveContext) return null;
@@ -77,7 +115,12 @@ export async function moveTask(taskId, targetCategory, BOARD_COLUMNS, targetInde
   }
 }
 
-/** Deletes a task from storage and the local cache. */
+/**
+ * Deletes a task from storage and the local cache.
+ * 
+ * @param {string} taskId - Id of the task to delete.
+ * @returns {Promise<void>}
+ */
 export async function deleteTask(taskId) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
@@ -86,7 +129,13 @@ export async function deleteTask(taskId) {
   tasks = tasks.filter((t) => t.id !== taskId);
 }
 
-/** Toggles the done state of a task subtask. */
+/**
+ * Toggles the done state of a task subtask.
+ * 
+ * @param {string} taskId - Parent task id.
+ * @param {number} index - Subtask index to toggle.
+ * @returns {Promise<void>}
+ */
 export async function toggleSubtask(taskId, index) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
@@ -95,7 +144,13 @@ export async function toggleSubtask(taskId, index) {
   await putUserData(getStoragePath(task), getTaskForStorage(task, task.status));
 }
 
-/** Updates a task in storage and synchronizes the local cache. */
+/**
+ * Updates a task in storage and synchronizes the local cache.
+ * 
+ * @param {string} taskId - Id of the task to update.
+ * @param {Object} updatedData - Partial task fields to persist.
+ * @returns {Promise<void>}
+ */
 export async function updateTask(taskId, updatedData) {
   const task = tasks.find((entry) => entry.id === taskId);
   if (!task) return;

@@ -4,7 +4,9 @@ import { getContactsListHeaderTemplate, getContactsListContentTemplate, getConta
 
 /**
  * Initializes the contacts page data and UI.
- * Loads contacts from backend, builds list and renders UI.
+ * 
+ * Loads the persisted contacts, rebuilds the in-memory list,
+ * renders the grouped sidebar, and restores the user badge.
  */
 async function initContacts() {
     const data = await getData("/contacts");
@@ -15,8 +17,12 @@ async function initContacts() {
 
 /**
  * Validates a contact name field.
- * @param {string} name - Contact full name
- * @param {number} contactsIndex - Index of contact in list
+ * 
+ * Requires a first and last name separated by a space.
+ * 
+ * @param {string} name - Contact full name.
+ * @param {number} contactsIndex - Index of contact in list.
+ * @returns {boolean} True when the name is valid.
  */
 function validateName(name, contactsIndex) {
     const regex = /^[A-Za-z]+ [A-Za-z]+$/;
@@ -30,8 +36,13 @@ function validateName(name, contactsIndex) {
 
 /**
  * Validates a contact phone field.
- * @param {string} phone - Phone number
- * @param {number} contactsIndex - Index of contact in list
+ * 
+ * Accepts either international numbers with a leading plus sign
+ * or local numbers beginning with zero.
+ * 
+ * @param {string} phone - Phone number.
+ * @param {number} contactsIndex - Index of contact in list.
+ * @returns {boolean} True when the phone number is valid.
  */
 function validatePhone(phone, contactsIndex) {
     const regex = /^(\+\d{2}\s?|0)\d{5,}$/;
@@ -45,8 +56,10 @@ function validatePhone(phone, contactsIndex) {
 
 /**
  * Validates a contact email field.
- * @param {string} email - Email address
- * @param {number} contactsIndex - Index of contact in list
+ * 
+ * @param {string} email - Email address.
+ * @param {number} contactsIndex - Index of contact in list.
+ * @returns {boolean} True when the email address is valid.
  */
 function validateEmail(email, contactsIndex) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,7 +73,9 @@ function validateEmail(email, contactsIndex) {
 
 /**
  * Validates the full contact form for the current dialog.
- * @param {number} contactsIndex - Index of contact in list
+ * 
+ * @param {number} contactsIndex - Index of contact in list.
+ * @returns {boolean} True when all fields are valid.
  */
 function validateForm(contactsIndex) {
     let name = document.getElementById(`contact_dialog_input_name_${contactsIndex}`).value.trim();
@@ -76,8 +91,9 @@ function validateForm(contactsIndex) {
 
 /**
  * Saves changes to an existing contact when the form is valid.
- * @param {string} editOrAddNewContact - Action type
- * @param {number} contactsIndex - Index of contact
+ * 
+ * @param {string} editOrAddNewContact - Action type.
+ * @param {number} contactsIndex - Index of contact.
  */
 function saveContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
@@ -86,8 +102,9 @@ function saveContact(editOrAddNewContact, contactsIndex) {
 
 /**
  * Saves a newly created contact when the form is valid.
- * @param {string} editOrAddNewContact - Action type
- * @param {number} contactsIndex - Index of contact
+ * 
+ * @param {string} editOrAddNewContact - Action type.
+ * @param {number} contactsIndex - Index of contact.
  */
 function saveNewContact(editOrAddNewContact, contactsIndex) {
     if (!validateForm(contactsIndex)) return;
@@ -96,8 +113,12 @@ function saveNewContact(editOrAddNewContact, contactsIndex) {
 
 /**
  * Creates a new contact and refreshes the contacts view.
- * @param {string} editOrAddNewContact - Action type
- * @param {number} contactsIndex - Index of contact
+ * 
+ * Persists the new contact, re-renders the list, opens the newly
+ * created detail view, and shows the success message.
+ * 
+ * @param {string} editOrAddNewContact - Action type.
+ * @param {number} contactsIndex - Index of contact.
  */
 async function addNewContact(editOrAddNewContact, contactsIndex) {
     activeContact = null;
@@ -111,9 +132,10 @@ async function addNewContact(editOrAddNewContact, contactsIndex) {
 
 /**
  * Deletes a contact and updates the list view.
- * @param {boolean} openDialog
- * @param {boolean} openContactResponsive
- * @param {number} contactsIndex
+ * 
+ * @param {boolean} openDialog - Whether the edit dialog should be closed.
+ * @param {boolean} openContactResponsive - Whether the mobile detail view should be closed.
+ * @param {number} contactsIndex - Index of the contact to delete.
  */
 async function deleteContact(openDialog, openContactResponsive, contactsIndex) {
     let deleteIndex = (contactsList[contactsIndex].id) - 1;
@@ -148,8 +170,9 @@ async function editContact(editOrAddNewContact, contactsIndex) {
 
 /**
  * Returns initials for a contact.
- * @param {number} contactsIndex
- * @returns {string|undefined}
+ * 
+ * @param {number} contactsIndex - Contact index to inspect.
+ * @returns {string|undefined} Derived initials for the contact.
  */
 export function filterInitialsOfName(contactsIndex) {
     if (contactsIndex == contactsList.length) {
@@ -162,7 +185,10 @@ export function filterInitialsOfName(contactsIndex) {
 }
 
 /**
- * Renders full contacts list grouped by first letter.
+ * Renders the full contacts list grouped by first letter.
+ * 
+ * Sorts contacts alphabetically, rebuilds all list groups,
+ * and refreshes avatar colors for the current view.
  */
 function renderContacts() {
     contentContactsListHeader.innerHTML = "";
@@ -214,8 +240,12 @@ function contactColor(contactsIndex) {
 }
 
 /**
- * Opens contact information panel.
- * @param {number} contactsIndex
+ * Opens the contact information panel.
+ * 
+ * Handles toggling the active state, closing the previous selection,
+ * and rendering the selected contact detail view.
+ * 
+ * @param {number} contactsIndex - Contact index to open.
  */
 function openContactInformation(contactsIndex) {
     if (isActiveContact(contactsIndex)) return closeCurrentContact(contactsIndex);
@@ -280,9 +310,13 @@ function contactColorInContactDialog(contactsIndex) {
 }
 
 /**
- * Opens edit contact dialog.
- * @param {number} contactsIndex
- * @param {Event} event
+ * Opens the edit contact dialog.
+ * 
+ * Creates the edit dialog markup, shows the modal, restores avatar color,
+ * and pre-fills the current contact data.
+ * 
+ * @param {number} contactsIndex - Contact index to edit.
+ * @param {Event} event - Optional triggering event.
  */
 function openEditContactDialog(contactsIndex, event) {
     if (event) event.stopPropagation();
@@ -335,9 +369,13 @@ function closeDialogOnBodyclick(event) {
 }
 
 /**
- * Opens dialog for new contact.
- * @param {number} contactsIndex
- * @param {Event} event
+ * Opens the dialog for creating a new contact.
+ * 
+ * Reuses the contact dialog shell in create mode and switches
+ * the form controls to the add-contact state.
+ * 
+ * @param {number} contactsIndex - Ignored incoming index placeholder.
+ * @param {Event} event - Optional triggering event.
  */
 function openAddNewContactDialog(contactsIndex, event) {
     contactsIndex = contactsList.length;

@@ -26,7 +26,14 @@ import {
 
 const dragState = createDragState();
 
-/** Initializes the global drag-and-drop listeners for the board. */
+/**
+ * Initializes the global drag-and-drop listeners for the board.
+ * 
+ * Stores the active board column state and registers the shared
+ * pointer listeners exactly once.
+ * 
+ * @param {Array<Object>} boardColumns - Current board column state.
+ */
 export function initDragDrop(boardColumns) {
   dragState.boardColumns = boardColumns;
   if (dragState.dragTrackingInitialized) return;
@@ -38,7 +45,12 @@ export function initDragDrop(boardColumns) {
   dragState.dragTrackingInitialized = true;
 }
 
-/** Starts tracking a possible drag gesture for a task card. */
+/**
+ * Starts tracking a possible drag gesture for a task card.
+ * 
+ * @param {MouseEvent|TouchEvent} ev - Initial pointer event.
+ * @param {string} id - Id of the touched task.
+ */
 export function startDragging(ev, id) {
   if (!isValidDragStartEvent(ev)) return;
   const point = getEventPoint(ev);
@@ -46,7 +58,12 @@ export function startDragging(ev, id) {
   startPendingDrag(dragState, ev, id, point);
 }
 
-/** Opens the task overlay unless the click should be suppressed. */
+/**
+ * Opens the task overlay unless the click should be suppressed.
+ * 
+ * @param {MouseEvent|TouchEvent} ev - Click event on the task card.
+ * @param {string} taskId - Id of the clicked task.
+ */
 export function handleTaskCardClick(ev, taskId) {
   if (shouldSuppressTaskClick(dragState)) {
     ev?.preventDefault();
@@ -57,7 +74,12 @@ export function handleTaskCardClick(ev, taskId) {
   window.openOverlay?.(taskId);
 }
 
-/** Ends the current drag interaction and resets drag state. */
+/**
+ * Ends the current drag interaction and resets drag state.
+ * 
+ * Clears pending drag state, removes drag artifacts,
+ * and resets the active drop target bookkeeping.
+ */
 export function endDragging() {
   clearPendingDragStart(dragState);
   cleanupDragArtifacts(dragState);
@@ -65,7 +87,14 @@ export function endDragging() {
   dragState.draggedId = null;
 }
 
-/** Moves the currently dragged task into the target category. */
+/**
+ * Moves the currently dragged task into the target category.
+ * 
+ * Applies an optimistic move locally, persists the change,
+ * and rolls it back when persistence fails.
+ * 
+ * @param {string} category - Target board column path.
+ */
 export async function moveTo(category) {
   if (!dragState.draggedId) return;
   const targetIndex = resolveDropIndex(dragState, category);

@@ -4,7 +4,16 @@ import { insertNewContactData, editCurrentContactData } from "./assets.js";
 const FIREBASE_CACHE_PREFIX = "join-cache:";
 const FIREBASE_CACHE_META_PREFIX = "join-cache-meta:";
 
-/** Reads data from Firebase with optional cache support. */
+/**
+ * Reads data from Firebase with optional cache support.
+ * 
+ * Normalizes the requested path, consults the configured cache behavior,
+ * and falls back to cached data when network requests fail.
+ * 
+ * @param {string} [path=""] - Firebase path to read.
+ * @param {Object} [options={}] - Cache and refresh options.
+ * @returns {Promise<*>} The loaded Firebase data.
+ */
 export async function getData(path = "", options = {}) {
     const normalizedPath = normalizePath(path);
     const requestOptions = normalizeGetDataOptions(options);
@@ -22,7 +31,16 @@ export async function getData(path = "", options = {}) {
     }
 }
 
-/** Creates a new contact entry and updates the local cache. */
+/**
+ * Creates a new contact entry and updates the local cache.
+ * 
+ * Generates a new contact id, builds the payload from the current form,
+ * persists it to Firebase, and synchronizes local cache state.
+ * 
+ * @param {string} [path=""] - Base Firebase path for contacts.
+ * @param {number} contactsIndex - Contact form index used to read inputs.
+ * @returns {Promise<number>} The newly created contact id.
+ */
 export async function putNewData(path = "", contactsIndex) {
     let newId = extractIDs();
     let newContact = insertNewContactData(contactsIndex);
@@ -34,7 +52,16 @@ export async function putNewData(path = "", contactsIndex) {
     return newId;
 }
 
-/** Updates an existing contact entry and synchronizes the cache. */
+/**
+ * Updates an existing contact entry and synchronizes the cache.
+ * 
+ * Reads the edited contact values from the dialog, writes them back
+ * to Firebase, and updates both cache and in-memory contact state.
+ * 
+ * @param {string} [path=""] - Base Firebase path for contacts.
+ * @param {number} contactsIndex - Contact index being edited.
+ * @returns {Promise<number>} The id of the updated contact.
+ */
 export async function putEditData(path = "", contactsIndex) {
     let editContact = editCurrentContactData(contactsIndex); // Daten aus dem Dialog holen
     let currentId = editContact.id
@@ -50,7 +77,15 @@ export async function putEditData(path = "", contactsIndex) {
     return currentId;
 }
 
-/** Deletes data at the given Firebase path. */
+/**
+ * Deletes data at the given Firebase path.
+ * 
+ * Removes the remote record and clears matching cache entries
+ * in both the direct path and cached parent object.
+ * 
+ * @param {string} [path=""] - Firebase path to delete.
+ * @returns {Promise<*>} The Firebase delete response payload.
+ */
 export async function deleteData(path = "") {
     const normalizedPath = normalizePath(path);
     let response = await fetch(buildUrl(normalizedPath), {
@@ -61,7 +96,16 @@ export async function deleteData(path = "") {
     return await response.json();
 }
 
-/** Writes partial user data to Firebase and merges the cache. */
+/**
+ * Writes partial user data to Firebase and merges the cache.
+ * 
+ * Sends a PATCH request for the provided fields and keeps the local
+ * cache synchronized with the merged result.
+ * 
+ * @param {string} [path=""] - Firebase path to update.
+ * @param {Object} [data={}] - Partial data to merge into the record.
+ * @returns {Promise<void>}
+ */
 export async function putUserData(path = "", data = {}) {
     const normalizedPath = normalizePath(path);
     await fetch(buildUrl(normalizedPath), {

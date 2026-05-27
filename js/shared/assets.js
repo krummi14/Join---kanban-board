@@ -1,6 +1,14 @@
 import { extractIDs } from "./list.js";
 
-/** Collects the form values for a new contact payload. */
+/**
+ * Collects the form values for a new contact payload.
+ * 
+ * Reads the current add-contact dialog inputs and builds the
+ * normalized contact object used for persistence.
+ * 
+ * @param {number} contactsIndex - Dialog index used to resolve input ids.
+ * @returns {Object} The new contact payload.
+ */
 export function insertNewContactData(contactsIndex) {
     let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
     let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
@@ -13,7 +21,15 @@ export function insertNewContactData(contactsIndex) {
     };
 }
 
-/** Collects the updated form values for an existing contact. */
+/**
+ * Collects the updated form values for an existing contact.
+ * 
+ * Reads the edit dialog inputs and rebuilds the current contact object
+ * while preserving the existing contact id.
+ * 
+ * @param {number} contactsIndex - Contact index used to resolve inputs.
+ * @returns {Object} The updated contact payload.
+ */
 export function editCurrentContactData(contactsIndex) {
     let contactInputEmail = document.getElementById(`contact_dialog_input_email_${contactsIndex}`);
     let contactInputName = document.getElementById(`contact_dialog_input_name_${contactsIndex}`);
@@ -28,7 +44,15 @@ export function editCurrentContactData(contactsIndex) {
 
 
 
-/** Normalizes a status string for comparisons. */
+/**
+ * Normalizes a status string for comparisons.
+ * 
+ * Converts underscores and hyphens to spaces and lowercases
+ * the value so status checks can be compared consistently.
+ * 
+ * @param {string} status - Raw status string.
+ * @returns {string} Normalized status value.
+ */
 export function normalizeStatus(status) {
   return String(status || "")
     .toLowerCase()
@@ -37,8 +61,15 @@ export function normalizeStatus(status) {
     .trim();
 }
 
-// 🔧 CATEGORY NORMALIZER
-/** Normalizes a category string for comparisons. */
+/**
+ * Normalizes a category string for comparisons.
+ * 
+ * Lowercases the input and collapses repeated whitespace so
+ * category values can be compared in a stable format.
+ * 
+ * @param {string} category - Raw category string.
+ * @returns {string} Normalized category value.
+ */
 export function normalizeCategory(category) {
   return String(category || "")
     .toLowerCase()

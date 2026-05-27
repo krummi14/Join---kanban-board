@@ -2,7 +2,12 @@ import { putUserData, getData } from "../shared/firebase.js";
 
 let formSubmitted = false;
 
-/** Clears all visible signup validation errors. */
+/**
+ * Clears all visible signup validation errors.
+ * 
+ * Resets every field-specific error area before the
+ * registration flow runs a fresh validation pass.
+ */
 const clearErrors = () => {
   showError("name-error", "");
   showError("email-error", "");
@@ -84,16 +89,17 @@ async function emailExists(email) {
   return false;
 }
 
-/** Checks whether a password meets the minimum requirements.
+/**
+ * Checks whether a password meets the minimum requirements.
  * 
  * Currently validates minimum length.
  * 
  * @param {string} password - The password entered by the user.
  * @returns {boolean} True if valid length, otherwise false.
  */
-  function isValidPassword(password) {
-    return password.length >= 3;
-  }
+function isValidPassword(password) {
+  return password.length >= 3;
+}
 
 /**
  * Validates password strength requirements.
@@ -337,6 +343,12 @@ function checkPassword() {
   );
 }
 
+/**
+ * Revalidates the confirmation field after user input.
+ * 
+ * Runs the combined password validation again so the confirmation
+ * state always reflects the latest password values.
+ */
 function checkConfirm() {
   if (!formSubmitted) return;
 
@@ -346,6 +358,12 @@ function checkConfirm() {
   );
 }
 
+/**
+ * Registers the signup page event handlers after the DOM is ready.
+ * 
+ * Connects the signup button and live validation listeners
+ * for the registration page.
+ */
 window.addEventListener("DOMContentLoaded", () => {
   const btn =
     document.getElementById("signup-btn");
