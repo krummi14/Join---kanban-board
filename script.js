@@ -244,6 +244,60 @@ function addMenu() {
 }
 
 /**
+ * Returns the current page filename.
+ *
+ * Uses the last pathname segment so desktop and responsive
+ * navigation can compare against the same normalized value.
+ *
+ * @returns {string} Current page filename.
+ */
+function getCurrentPageName() {
+    return window.location.pathname.split("/").pop();
+}
+
+/**
+ * Returns the target page filename for a navigation link.
+ *
+ * @param {HTMLAnchorElement} link - Navigation link to inspect.
+ * @returns {string} Linked page filename.
+ */
+function getNavTargetPage(link) {
+    return new URL(link.href, window.location.href).pathname.split("/").pop();
+}
+
+/**
+ * Updates a sidebar icon to its active or inactive asset.
+ *
+ * @param {HTMLImageElement | null} icon - Sidebar icon element.
+ * @param {boolean} isActive - Whether the icon should be active.
+ */
+function updateSidebarIconState(icon, isActive) {
+    if (!icon?.src) return;
+
+    const currentState = isActive ? "_off.svg" : "_on.svg";
+    const nextState = isActive ? "_on.svg" : "_off.svg";
+
+    icon.src = icon.src.replace(currentState, nextState);
+}
+
+/**
+ * Highlights the active sidebar navigation button for the current page.
+ */
+function highlightActiveSidebarButton() {
+    const sidebarNav = document.querySelector(".sidebar .nav");
+    if (!sidebarNav) return;
+
+    const currentPage = getCurrentPageName();
+    const menuLinks = sidebarNav.querySelectorAll("a[href]");
+
+    menuLinks.forEach((link) => {
+        const isActive = getNavTargetPage(link) === currentPage;
+        link.classList.toggle("sidebar_nav_link_active", isActive);
+        updateSidebarIconState(link.querySelector("img"), isActive);
+    });
+}
+
+/**
  * Highlights the active responsive menu button for the current page.
  * 
  * Compares the current pathname with the footer navigation targets
@@ -253,13 +307,13 @@ function highlightActiveResponsiveMenuButton() {
     const responsiveMenu = document.getElementById("responsive_menu");
     if (!responsiveMenu) return;
 
-    const currentPath = window.location.pathname.split("/").pop();
+    const currentPage = getCurrentPageName();
     const menuButtons = responsiveMenu.querySelectorAll(".responsive_menu_button");
 
     menuButtons.forEach((button) => {
-        const targetPath = new URL(button.href, window.location.href).pathname.split("/").pop();
-        button.classList.toggle("responsive_menu_button_onClick", targetPath === currentPath);
+        button.classList.toggle("responsive_menu_button_onClick", getNavTargetPage(button) === currentPage);
     });
 }
 
+highlightActiveSidebarButton();
 highlightActiveResponsiveMenuButton();

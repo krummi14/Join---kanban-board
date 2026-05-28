@@ -39,6 +39,14 @@
   background-image: url(./assets/icon/contact_on.svg);
 }
 
+.sidebar .nav a {
+  display: block;
+}
+
+.sidebar .nav a.sidebar_nav_link_active {
+  background: #091931;
+}
+
 .sidebar li a {
   color: #cdcdcd;
 }
