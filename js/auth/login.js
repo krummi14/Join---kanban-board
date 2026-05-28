@@ -12,7 +12,7 @@ let loginSubmitted = false;
 function animateSplashLogo() {
 
   const splashLogo = document.querySelector(".splash_logo");
-  const headerLogo = document.querySelector(".logo");
+  const headerLogo = document.getElementById("header_logo");
 
   if (!splashLogo || !headerLogo) return;
 
@@ -23,14 +23,17 @@ function animateSplashLogo() {
 
   const startX = window.innerWidth / 2 - logoWidth / 2;
   const startY = window.innerHeight / 2 - logoHeight / 2;
+  const targetX = headerRect.left + headerRect.width / 2 - logoWidth / 2;
+  const targetY = headerRect.top + headerRect.height / 2 - logoHeight / 2;
 
   splashLogo.style.width = `${logoWidth}px`;
   splashLogo.style.height = `${logoHeight}px`;
+  splashLogo.style.transformOrigin = "center center";
 
   const animation = splashLogo.animate(
     [
       {
-        transform: `translate(${startX}px, ${startY}px) scale(1.6)`,
+        transform: `translate(${startX}px, ${startY}px) scale(3)`,
         opacity: 1,
       },
       {
@@ -39,7 +42,7 @@ function animateSplashLogo() {
         offset: 0.65,
       },
       {
-        transform: `translate(${headerRect.left}px, ${headerRect.top}px) scale(1)`,
+        transform: `translate(${targetX}px, ${targetY}px) scale(1)`,
         opacity: 0.1,
       }
     ],
@@ -271,7 +274,11 @@ function checkPassword(e) {
  */
 document.addEventListener("DOMContentLoaded", () => {
 
-  animateSplashLogo();
+  if (document.readyState === "complete") {
+    animateSplashLogo();
+  } else {
+    window.addEventListener("load", animateSplashLogo, { once: true });
+  }
 
   document.getElementById("login-btn")
     .addEventListener("click", () => {
